@@ -1,0 +1,15 @@
+<html>
+    <head>
+    <title>De Bico | N&atilde;o se esque&ccedil;a do seu palpite!</title>
+    </head>
+     
+    <body>
+        <div>
+            <p>Salve, <strong>${apostador.nomeTela}!</strong></p>
+            <p>N&atilde;o se esque&ccedil;a que voc&ecirc; ainda tem jogos do <strong>$campeonato.nome</strong> para palpitar no bol&atilde;o. E o seu prazo termina hoje!</p>
+            <p>Para fazer o seu palpite agora, <a href="$link_acesso">clique aqui</a>.</p>
+            <p>Um abra&ccedil;o e boa sorte!</p>
+            <p><a href="http://www.debico.com.br/">www.debico.com.br</a></p>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,29 @@
+package br.com.debico.campeonato.brms.rules 
+
+import br.com.debico.model.*
+
+rule "Quando mandate faz mais gols, vencedor"
+    agenda-group "calcula_resultado"
+when
+    $partida : Partida( status == StatusPartida.ND, ( placar.golsVisitante < placar.golsMandante )  )
+then
+    $partida.setStatus( StatusPartida.VM );
+end
+
+
+rule "Quando visitante faz mais gols, vencedor"
+    agenda-group "calcula_resultado"
+when
+    $partida : Partida( status ==  StatusPartida.ND, ( placar.golsVisitante > placar.golsMandante )  )
+then
+    $partida.setStatus( StatusPartida.VV );
+end
+
+
+rule "Quando o numero de gols eh igual, empate"
+    agenda-group "calcula_resultado"
+when
+    $partida : Partida( status ==  StatusPartida.ND, ( placar.golsVisitante == placar.golsMandante ) )
+then
+    $partida.setStatus( StatusPartida.EM );
+end

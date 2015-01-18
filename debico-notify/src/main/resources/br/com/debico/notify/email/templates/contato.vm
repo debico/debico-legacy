@@ -1,0 +1,17 @@
+<html>
+    <head>
+    <title>De Bico | Contato</title>
+    </head>
+     
+    <body>
+        <div>
+            <p>Salve!</p>
+            <p>${contato} deixou uma mensagem de contato. Confira abaixo:</p>
+            <p><strong>Assunto:</strong> <em>${assunto}</em></p>
+            <p><strong>Mensagem:</strong></p>
+            <p><em>${mensagem}.</em></p>
+            <p>Um abra&ccedil;o!</p>
+            <p><a href="http://www.debico.com.br/">www.debico.com.br</a></p>
+        </div>
+    </body>
+</html>

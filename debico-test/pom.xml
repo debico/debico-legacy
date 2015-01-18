@@ -1,0 +1,31 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>br.com.debico</groupId>
+		<artifactId>debico</artifactId>
+		<version>2.0.0</version>
+	</parent>
+	<artifactId>debico-test</artifactId>
+	<description>Projeto de apoio para a realização dos testes em outros módulos. Não deve ser empacotado em ambiente produtivo.</description>
+
+	<properties>
+		<mock-javamail.version>1.9</mock-javamail.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>br.com.debico</groupId>
+			<artifactId>debico-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jvnet.mock-javamail</groupId>
+			<artifactId>mock-javamail</artifactId>
+			<version>${mock-javamail.version}</version>
+		</dependency>
+	</dependencies>
+</project>

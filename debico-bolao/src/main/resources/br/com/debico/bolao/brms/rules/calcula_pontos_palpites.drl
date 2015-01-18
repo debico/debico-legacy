@@ -1,0 +1,128 @@
+package br.com.debico.bolao.brms.rules
+
+import br.com.debico.model.*
+
+rule "Calcula resultados na cabeca"
+    salience -1
+    agenda-group "resultado_palpite"
+    no-loop 
+when
+    $pontuacao : ApostadorPontuacao( )
+    $partida : Partida( status != StatusPartida.ND )
+    $palpite : Palpite( 
+            computado == false,
+            apostador == $pontuacao.apostador, 
+            partida == $partida, 
+            placar.golsVisitante == $partida.placar.golsVisitante, 
+            placar.golsMandante == $partida.placar.golsMandante )
+then
+    $palpite.setPontos( 5 );
+    $palpite.setComputado( true );
+    $palpite.setDataComputado( new java.util.Date() );
+    
+    $pontuacao.somarPontosTotal( 5 );
+    $pontuacao.setPlacar( $pontuacao.getPlacar() + 1 );
+        
+    //nao precisamos mais desse palpite em memoria.
+    retract ( $palpite );
+end
+
+rule "Calcula resultados vencedor"
+    salience -2
+    agenda-group "resultado_palpite"
+    no-loop 
+when
+    $pontuacao : ApostadorPontuacao( )
+    $partida : Partida( status == StatusPartida.VM || status == StatusPartida.VV  )
+    $palpite : Palpite( 
+            apostador == $pontuacao.apostador, 
+            computado == false, 
+            partida == $partida, 
+                (
+	                (placar.golsVisitante > placar.golsMandante && $partida.placar.golsVisitante > $partida.placar.golsMandante) 
+	                || (placar.golsMandante > placar.golsVisitante && $partida.placar.golsMandante > $partida.placar.golsVisitante)
+                
+                )
+            )
+then
+    $pontuacao.somarPontosTotal( 2 );
+    $pontuacao.setVencedor( $pontuacao.getVencedor() + 1 );
+    $palpite.setPontos(2);
+    $palpite.setDataComputado(new java.util.Date());
+    
+    // usamos modify pois  outras regras terao de ser revisitadas.
+    modify ($palpite) { setComputado(true) }
+end
+
+
+rule "Calcula resultados empate"
+    salience -3
+    agenda-group "resultado_palpite"
+    no-loop 
+when
+    $pontuacao : ApostadorPontuacao( )
+    $partida : Partida( status == StatusPartida.EM  )
+    $palpite : Palpite( 
+            apostador == $pontuacao.apostador,
+            computado == false, 
+            partida == $partida,
+                (placar.golsVisitante == placar.golsMandante && $partida.placar.golsVisitante == $partida.placar.golsMandante)
+            )
+then
+    $pontuacao.somarPontosTotal( 2 );
+    $pontuacao.setEmpates( $pontuacao.getEmpates() + 1 );
+    
+    $palpite.setPontos(2);
+    $palpite.setDataComputado(new java.util.Date());
+    
+    // usamos modify pois  outras regras terao de ser revisitadas.
+    modify ($palpite) { setComputado(true) }
+end
+
+
+rule "Calcula gols corretos"
+    salience -4
+    agenda-group "resultado_palpite"
+when
+    $pontuacao : ApostadorPontuacao( )
+    $partida : Partida( status != StatusPartida.ND  )
+    $palpite : Palpite( 
+            //nao importa se foi computado
+            apostador == $pontuacao.apostador,
+            partida == $partida,
+                (placar.golsVisitante == $partida.placar.golsVisitante || placar.golsMandante == $partida.placar.golsMandante )
+            )
+then
+    $palpite.somarPontos( 1 );
+    $palpite.setComputado( true );
+    $palpite.setDataComputado( new java.util.Date() );
+    
+    $pontuacao.somarPontosTotal( 1 );
+    $pontuacao.setGols( $pontuacao.getGols() + 1 );
+    
+    //pode ser removido
+    retract ( $palpite );
+end
+
+//nao acertou nada
+rule "Calcula resultados incorretos"
+    salience -5
+    agenda-group "resultado_palpite"
+when
+    $pontuacao : ApostadorPontuacao( )
+    $partida : Partida( status != StatusPartida.ND  )
+    $palpite : Palpite( 
+            apostador == $pontuacao.apostador, 
+            computado == false,
+            partida == $partida,
+            (placar.golsVisitante != $partida.placar.golsVisitante && placar.golsMandante != $partida.placar.golsMandante )
+            )
+then
+    $palpite.setPontos( 0 );
+    $palpite.setComputado( true );
+    $palpite.setDataComputado( new java.util.Date() );
+    $pontuacao.setErrados( $pontuacao.getErrados() + 1 );
+    
+    //fim
+    retract ( $palpite );
+end

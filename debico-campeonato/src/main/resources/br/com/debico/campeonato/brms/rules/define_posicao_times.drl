@@ -1,0 +1,58 @@
+/**
+* Algoritimo de ordenacao do Ranking dos times na tabela/grupo.
+*
+* <ol>
+*  <li>Pontos</li>
+*  <li>Número de Vitórias</li>
+*  <li>Saldo de Gols</li>
+*  <li>Gols Marcados</li>
+* </ol>
+* 
+* Ainda fica faltando alguns outros critérios que não vamos implementar agora.
+*
+* Nao adicionar mais regras no operador "OU". 
+* A partir de agora buscar no regulamento o que faz parte do criterio de desempates: cartao, penaltis, etc.
+*
+* "The CE not is first order logic's non-existential quantifier and checks for 
+* the non-existence of something in the Working Memory. 
+* Think of "not" as meaning "there must be none of..."."
+*/
+package br.com.debico.campeonato.brms.rules 
+
+import br.com.debico.model.campeonato.PontuacaoTime
+import br.com.debico.campeonato.CampeonatoParametrizacao
+import java.util.ArrayList
+
+import function br.com.debico.campeonato.brms.CampeonatoRegrasUtils.calculaStatusPosicao;
+import function br.com.debico.campeonato.brms.CampeonatoRegrasUtils.calculaStatusClassificacao;
+
+rule "Define posicao ranking"
+	agenda-group "calcula_posicao_times"
+	salience 1
+when
+	$param : CampeonatoParametrizacao( )
+	$ranking : PontuacaoTime( )
+	// existe alguem com menos pontos?
+	not PontuacaoTime (	pontos < $ranking.pontos )
+	// alguem com menos pontos que nao sou eu?
+	not PontuacaoTime (	pontos == $ranking.pontos, !time.equals($ranking.time) &&
+						// alguem com menos pontos que nao sou eu e tem menos vitorias? 
+						(vitorias < $ranking.vitorias ||
+							// que tem menos vitorias e menos saldo de gols? 
+							(vitorias == $ranking.vitorias && saldoGols < $ranking.saldoGols) ||
+							// que tem menos saldo de gols e menos gols pro? 
+							(vitorias == $ranking.vitorias && saldoGols == $ranking.saldoGols && golsPro < $ranking.golsPro) ||
+							// pelo nome \o/
+							(vitorias == $ranking.vitorias && saldoGols == $ranking.saldoGols && golsPro == $ranking.golsPro && time.compareTo($ranking.time) < 0 ) ) )
+							// se tiver mais, so encadear.
+	// a lista vai diminuindo conforme removemos times da memoria
+	$totalTimes : ArrayList()
+					from collect( PontuacaoTime( ) )
+then
+	$ranking.setStatusPosicao( calculaStatusPosicao($ranking.getPosicao(), $totalTimes.size()) );
+	$ranking.setPosicao( $totalTimes.size() );
+	$ranking.setStatusClassificacao( calculaStatusClassificacao($param, $ranking.getPosicao()) );
+	
+	// System.out.println("Posicao Atualizada: " + $ranking);
+	retract($ranking);
+end

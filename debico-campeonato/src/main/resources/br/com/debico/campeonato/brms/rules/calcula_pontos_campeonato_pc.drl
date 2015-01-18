@@ -1,0 +1,51 @@
+package br.com.debico.campeonato.brms.rules 
+
+import br.com.debico.model.*
+import br.com.debico.model.campeonato.*
+
+import function br.com.debico.campeonato.brms.CampeonatoRegrasUtils.calculaPontosCorridos;
+
+rule "Calcula pontos time vencedor mandante"
+    salience -1
+    agenda-group "calcula_pontos_campeonato_pc"
+when
+    $partida : Partida ( status == StatusPartida.VM, computadaCampeonato == false )
+    $pontosMandante : PontuacaoTime ( time == $partida.mandante )
+    $pontosVisitante : PontuacaoTime ( time == $partida.visitante )
+then
+    calculaPontosCorridos($partida, $pontosMandante, $pontosVisitante);
+    $partida.setComputadaCampeonato( true );
+    $partida.setDataComputada( new java.util.Date() );
+    
+    retract( $partida );
+end
+
+rule "Calcula pontos time vencedor visitante"
+    salience -2
+    agenda-group "calcula_pontos_campeonato_pc"
+when
+    $partida : Partida ( status == StatusPartida.VV, computadaCampeonato == false )
+    $pontosMandante : PontuacaoTime ( time == $partida.mandante )
+    $pontosVisitante : PontuacaoTime ( time == $partida.visitante )
+then
+    calculaPontosCorridos($partida, $pontosVisitante, $pontosMandante);
+    $partida.setComputadaCampeonato( true );
+    $partida.setDataComputada( new java.util.Date() );
+    
+    retract( $partida );
+end
+
+rule "Calcula pontos empate"
+    salience -3
+    agenda-group "calcula_pontos_campeonato_pc"
+when
+    $partida : Partida ( status == StatusPartida.EM, computadaCampeonato == false )
+    $pontosMandante : PontuacaoTime ( time == $partida.mandante )
+    $pontosVisitante : PontuacaoTime ( time == $partida.visitante )
+then
+    calculaPontosCorridos($partida, $pontosMandante, $pontosVisitante);
+    $partida.setComputadaCampeonato( true );
+    $partida.setDataComputada( new java.util.Date() );
+    
+    retract( $partida );
+end

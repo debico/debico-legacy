@@ -1,0 +1,55 @@
+package br.com.debico.campeonato.brms.rules 
+
+import br.com.debico.model.*
+import br.com.debico.model.campeonato.*
+
+rule "Partida da chave terminou em empates, mandante ganhou nos penaltis."
+    agenda-group "calcula_resultado_chave_unica"
+    salience -1
+when
+	// na verdade, se for Empate e essa partida pertencer a uma chave em fase eliminatoria, deve ter penais.
+	$chave : ChaveUnica( )
+	$partida : PartidaChave(   chave == $chave,
+	                           status == StatusPartida.EM, 
+	                           ( decisaoPenaltis && penaltis.golsMandante > penaltis.golsVisitante ) )
+then
+	$chave.setVencedor( $partida.getMandante() );
+end
+
+
+rule "Partida da chave terminou em empates, visitante ganhou nos penaltis."
+    agenda-group "calcula_resultado_chave_unica"
+    salience -2
+when
+	// na verdade, se for Empate e essa partida pertencer a uma chave em fase eliminatoria, deve ter penais.
+	$chave : ChaveUnica( )
+	$partida : PartidaChave(   chave == $chave, 
+	                           status == StatusPartida.EM, 
+	                           ( decisaoPenaltis && penaltis.golsMandante < penaltis.golsVisitante ) )
+then
+	$chave.setVencedor( $partida.getVisitante() );
+end
+
+
+rule "Partida da chave vencida pelo mandante."
+    agenda-group "calcula_resultado_chave_unica"
+    salience -3
+when
+    $chave : ChaveUnica( )
+	$partida : PartidaChave( chave == $chave, status == StatusPartida.VM )
+then
+	$chave.setVencedor( $partida.getMandante() );
+end
+
+
+rule "Partida da chave vencida pelo visitante."
+    agenda-group "calcula_resultado_chave_unica"
+    salience -4
+when
+    $chave : ChaveUnica( )
+	$partida : PartidaChave( chave == $chave, status == StatusPartida.VV )
+then
+	$chave.setVencedor( $partida.getVisitante() );
+end
+
+
