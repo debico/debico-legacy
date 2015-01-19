@@ -1,5 +1,6 @@
 package br.com.debico.test.spring;
 
+import org.junit.BeforeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.Advised;
@@ -18,6 +19,11 @@ public abstract class AbstractUnitTest {
 
 	public AbstractUnitTest() {
 
+	}
+	
+	@BeforeClass
+	public static void initialize() {
+		System.setProperty("spring.profiles.active", "dev");
 	}
 
 	/**

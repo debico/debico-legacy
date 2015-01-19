@@ -1,11 +1,12 @@
 package br.com.debico.model;
 
-import static org.junit.Assert.assertThat;
-
 import org.hamcrest.core.Is;
 import org.hamcrest.core.IsNot;
 import org.hamcrest.text.IsEmptyString;
 import org.junit.Test;
+
+import static org.junit.Assert.assertThat;
+
 
 public class TestApostador {
 

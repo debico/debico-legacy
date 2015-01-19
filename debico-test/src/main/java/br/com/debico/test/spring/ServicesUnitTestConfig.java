@@ -16,8 +16,8 @@ import br.com.debico.core.dao.spring.TipoDAOConfig;
  * @since 1.2.0
  */
 @Configuration
-@EnableDAO(type = TipoDAOConfig.JPA_EMBEDDED_DATABASE)
 @PropertySource({ "/debico-test.properties", "/debico-embedded.properties" })
+@EnableDAO(type = TipoDAOConfig.JPA_EMBEDDED_DATABASE)
 public class ServicesUnitTestConfig extends ServicesIntegrationTestConfig {
 
 	public ServicesUnitTestConfig() {

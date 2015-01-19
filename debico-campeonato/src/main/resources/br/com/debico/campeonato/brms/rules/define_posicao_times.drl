@@ -20,7 +20,7 @@
 package br.com.debico.campeonato.brms.rules 
 
 import br.com.debico.model.campeonato.PontuacaoTime
-import br.com.debico.campeonato.CampeonatoParametrizacao
+import br.com.debico.model.campeonato.CampeonatoParametrizacao
 import java.util.ArrayList
 
 import function br.com.debico.campeonato.brms.CampeonatoRegrasUtils.calculaStatusPosicao;

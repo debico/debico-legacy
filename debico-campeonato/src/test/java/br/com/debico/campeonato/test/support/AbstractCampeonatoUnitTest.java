@@ -13,11 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.debico.campeonato.CampeonatoService;
 import br.com.debico.model.campeonato.CampeonatoPontosCorridos;
 import br.com.debico.test.spring.AbstractUnitTest;
-import br.com.debico.test.spring.ServicesUnitTestConfig;
 
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
-@ContextConfiguration(classes = { ServicesUnitTestConfig.class })
+@ContextConfiguration(classes = { CampeonatoUnitTestConfig.class })
 public abstract class AbstractCampeonatoUnitTest extends AbstractUnitTest {
 
 	protected static final Logger LOGGER = LoggerFactory

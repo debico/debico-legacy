@@ -71,14 +71,12 @@
 		<hibernate.version>4.3.5.Final</hibernate.version>
 		<hibernate-jpa.version>1.0.0.Final</hibernate-jpa.version>
 
-		<!-- Web -->
-		<jackson.version>2.4.0</jackson.version>
-
 		<!-- Tests -->
 		<junit.version>4.11</junit.version>
-		<mockito.version>1.10.8</mockito.version>	
 		<hamcrest.version>1.3</hamcrest.version>
-		<h2.version>1.4.181</h2.version>
+
+		<!-- Web -->
+		<jackson.version>2.4.0</jackson.version>
 
 		<!-- Plugins -->
 		<surefire.version>2.17</surefire.version>
@@ -117,13 +115,6 @@
 			<artifactId>guava</artifactId>
 			<version>${guava.version}</version>
 		</dependency>
-
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-			<version>${mockito.version}</version>
-			<scope>test</scope>
-		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -142,8 +133,6 @@
 			<version>${hamcrest.version}</version>
 			<scope>test</scope>
 		</dependency>
-
-
 	</dependencies>
 
 	<dependencyManagement>
@@ -179,8 +168,8 @@
 				<version>${project.version}</version>
 				<scope>test</scope>
 			</dependency>
-			
-			
+
+
 			<dependency>
 				<groupId>joda-time</groupId>
 				<artifactId>joda-time</artifactId>
@@ -258,12 +247,6 @@
 			</dependency>
 
 			<dependency>
-				<groupId>com.h2database</groupId>
-				<artifactId>h2</artifactId>
-				<version>${h2.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-test</artifactId>
 				<version>${spring.version}</version>
@@ -322,6 +305,31 @@
 
 	<build>
 		<plugins>
+			<!-- Eh preciso adicionar as regras do main no classpath do resource, 
+				se nao nao le! -->
+			<!-- ref.: http://stackoverflow.com/questions/1324767/maven-add-directory-to-classpath-while-executing-tests -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>${resources.plugin.version}</version>
+				<executions>
+					<execution>
+						<id>additional-resources</id>
+						<phase>process-test-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.testOutputDirectory}</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.basedir}/src/main/resources</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<!-- Previne o log dos testes durante o build do maven. -->
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
