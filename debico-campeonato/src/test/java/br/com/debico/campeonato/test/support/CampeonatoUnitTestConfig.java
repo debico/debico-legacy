@@ -4,11 +4,11 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.support.NoOpCacheManager;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Scope;
 
+import br.com.debico.campeonato.spring.CampeonatoConfig;
 import br.com.debico.test.spring.ServicesUnitTestConfig;
 
 /**
@@ -19,9 +19,7 @@ import br.com.debico.test.spring.ServicesUnitTestConfig;
  * @since 1.2.0
  */
 @Configuration
-@ComponentScan({ "br.com.debico.campeonato.dao.impl",
-		"br.com.debico.campeonato.impl", "br.com.debico.campeonato.brms.impl" })
-@ImportResource({ "classpath:/br/com/debico/campeonato/brms/spring/applicatonContext-brms.xml" })
+@Import({ CampeonatoConfig.class })
 public class CampeonatoUnitTestConfig extends ServicesUnitTestConfig {
 
 	public CampeonatoUnitTestConfig() {

@@ -5,13 +5,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
-@ContextConfiguration(classes = { ServicesUnitTestConfig.class })
 public abstract class AbstractUnitTest {
 
 	protected static final Logger LOGGER = LoggerFactory

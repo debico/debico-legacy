@@ -7,17 +7,17 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.debico.campeonato.test.support.AbstractCampeonatoUnitTest;
 import br.com.debico.model.PartidaChave;
 import br.com.debico.model.Placar;
 import br.com.debico.model.Time;
 import br.com.debico.model.campeonato.CampeonatoCopa;
 import br.com.debico.model.campeonato.ChaveUnica;
 import br.com.debico.model.campeonato.FaseEliminatoria;
-import br.com.debico.test.spring.AbstractUnitTest;
 
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
-public class TestCampeonatoDAO extends AbstractUnitTest {
+public class TestCampeonatoDAO extends AbstractCampeonatoUnitTest {
 
     @Inject
     private CampeonatoDAO campeonatoDAO;
