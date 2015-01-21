@@ -34,11 +34,6 @@ class CampeonatoPontosCorridosResultadosService extends AbstractResultadosServic
     private CampeonatoDAO campeonatoDAO;
     
     @Override
-    protected String getAgendaGroupCalculoPartida() {
-        return AGENDA_GROUP_PONTOS_CORRIDOS;
-    }
-    
-    @Override
     protected void doEfetuarCalculoPontosTimeRodada(final Rodada rodada, final List<PartidaRodada> partidas) {
     	getCalculoPartidasService().calcularPontuacaoTimes(partidas, AGENDA_GROUP_PONTOS_CORRIDOS);
     	//a partir da rodada devemos pegar o campeonato
