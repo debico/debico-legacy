@@ -40,9 +40,9 @@
 
 	<!-- http://maven.apache.org/scm/git.html -->
 	<scm>
-		<url>https://bitbucket.org/ricardozanini/bolao-campeao</url>
-		<connection>scm:git:ssh://git@bitbucket.org/ricardozanini/bolao-campeao.git</connection>
-		<developerConnection>scm:git:ssh://git@bitbucket.org/ricardozanini/bolao-campeao.git</developerConnection>
+		<url>https://bitbucket.org/ricardozanini/debico</url>
+		<connection>scm:git:ssh://git@bitbucket.org/ricardozanini/debico.git</connection>
+		<developerConnection>scm:git:ssh://git@bitbucket.org/ricardozanini/debico.git</developerConnection>
 	</scm>
 
 	<properties>
@@ -233,11 +233,6 @@
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-config</artifactId>
-				<version>${spring.security.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.security</groupId>
-				<artifactId>spring-security-web</artifactId>
 				<version>${spring.security.version}</version>
 			</dependency>
 			<dependency>

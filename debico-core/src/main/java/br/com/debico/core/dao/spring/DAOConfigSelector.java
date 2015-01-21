@@ -20,6 +20,9 @@ public class DAOConfigSelector implements ImportSelector {
 			return new String[] { DAOJPAEmbeddedConfig.class.getName() };
 		case JPA_STANDALONE:
 			return new String[] { DAOJPAStandaloneConfig.class.getName() };
+		case JPA_MOCK:
+			// não importar diretamente para não forçar o Mockito no classpath.
+			return new String[] { "br.com.debico.core.dao.spring.DAOJPAMockConfig" };
 		default:
 			throw new IllegalArgumentException();
 		}

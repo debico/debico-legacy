@@ -1,5 +1,6 @@
 package br.com.debico.campeonato.brms.impl;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import br.com.debico.campeonato.RodadaService;
 import br.com.debico.campeonato.brms.CalculoPartidasService;
 import br.com.debico.campeonato.brms.CalculoRankingTimesService;
 import br.com.debico.campeonato.brms.ResultadosService;
@@ -43,6 +45,9 @@ abstract class AbstractResultadosService<C extends Campeonato> implements Result
     @Inject
     private CalculoRankingTimesService calculoRankingTimesService;
     
+    @Inject
+    private RodadaService rodadaService;
+    
     public AbstractResultadosService() {
         
     }
@@ -54,15 +59,6 @@ abstract class AbstractResultadosService<C extends Campeonato> implements Result
     protected CalculoRankingTimesService getCalculoRankingTimesService() {
         return calculoRankingTimesService;
     }
-    
-    /**
-     * Nome da <code>agenda</code> utilizada pelo motor de regras para processar o resultado das partidas.
-     * <p/>
-     * Pontuação pode ser a quantidade de pontos de um time ao ganhar uma partida, o avanço de chave, etc.
-     * 
-     * @return
-     */
-    protected abstract String getAgendaGroupCalculoPartida();
 
     /**
      * Realiza o processamento da {@link Rodada} especificada.
@@ -99,6 +95,18 @@ abstract class AbstractResultadosService<C extends Campeonato> implements Result
         } else {
         	return Collections.emptyList();
         }
+    }
+    
+    @Override
+    public final List<PartidaRodada> processar(C campeonato) {
+    	List<PartidaRodada> partidas = new ArrayList<PartidaRodada>();
+    	List<Rodada> rodadas = rodadaService.selecionarRodadasNaoCalculadas(campeonato);
+    	
+    	for (Rodada rodada : rodadas) {
+			partidas.addAll(this.processar(campeonato, rodada));
+		}
+    	
+    	return partidas;
     }
     
     //hooks

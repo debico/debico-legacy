@@ -11,8 +11,8 @@
 
 	<properties>
 		<mock-javamail.version>1.9</mock-javamail.version>
-		<mockito.version>1.10.8</mockito.version>
 		<h2.version>1.4.181</h2.version>
+		<mockito.version>1.10.8</mockito.version>
 	</properties>
 	<dependencies>
 		<dependency>

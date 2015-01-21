@@ -7,6 +7,8 @@ import br.com.debico.model.campeonato.CampeonatoPontosCorridos;
 import br.com.debico.model.campeonato.PontuacaoTime;
 import br.com.debico.model.campeonato.Rodada;
 
+// TODO: rever essa interface com uso de Generic Parameter.
+
 /**
  * Realizações de casos de uso para campeonatos de pontos corridos.
  * <p/>
