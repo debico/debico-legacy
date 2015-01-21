@@ -13,10 +13,6 @@ public enum TipoDAOConfig {
     /**
      * Configuração com JPA em um servidor de aplicação sem JNDI ou aplicações desktop
      */
-    JPA_STANDALONE,
-    /**
-     * Banco de dados apenas para inglês ver.
-     */
-    JPA_MOCK;
+    JPA_STANDALONE;
 
 }

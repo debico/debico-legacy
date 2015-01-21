@@ -1,4 +1,4 @@
-package br.com.debico.campeonato.spring;
+package br.com.debico.campeonato.test.support;
 
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.cache.CacheManager;
@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Scope;
 
 import br.com.debico.campeonato.spring.CampeonatoConfig;
-import br.com.debico.campeonato.test.support.CampeonatoTestFactory;
 import br.com.debico.test.spring.ServicesUnitTestConfig;
 
 /**

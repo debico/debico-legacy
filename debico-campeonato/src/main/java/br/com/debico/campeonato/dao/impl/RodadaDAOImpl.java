@@ -43,7 +43,7 @@ class RodadaDAOImpl extends AbstractJPADAO<Rodada, Integer> implements RodadaDAO
     
     public List<Rodada> selecionarRodadas(final Campeonato campeonato) {
     	return getEntityManager()
-    			.createQuery("SELECT NEW br.com.debico.model.campeonato.Rodada(r.id, r.nome, r.ordem) FROM Rodada r WHERE r.ranking.fase.campeonato = :c ORDER BY r.ordem", Rodada.class)
+    			.createQuery("SELECT NEW com.omniweb.bolao.model.campeonato.Rodada(r.id, r.nome, r.ordem) FROM Rodada r WHERE r.ranking.fase.campeonato = :c ORDER BY r.ordem", Rodada.class)
     			.setParameter("c", campeonato)
     			.getResultList();	
     }
@@ -59,7 +59,7 @@ class RodadaDAOImpl extends AbstractJPADAO<Rodada, Integer> implements RodadaDAO
     
     public List<Rodada> selecionarRodadasNaoCalculadas(Campeonato campeonato) {
     	return getEntityManager()
-    			.createQuery("SELECT DISTINCT NEW br.com.debico.model.campeonato.Rodada(r.id) FROM Rodada r, PartidaRodada p WHERE p.rodada = r AND r.ranking.fase.campeonato = :c AND p.placar IS NOT NULL AND p.status = br.com.debico.model.StatusPartida.ND", Rodada.class)
+    			.createQuery("SELECT DISTINCT NEW com.omniweb.bolao.model.campeonato.Rodada(r.id) FROM Rodada r, Partida p WHERE r.ranking.fase.campeonato = :c AND p.placar IS NOT NULL AND p.status = com.omniweb.bolao.model.StatusPartida.ND", Rodada.class)
     			.setParameter("c", campeonato)
     			.getResultList();
     }

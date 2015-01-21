@@ -265,8 +265,9 @@ public class PontuacaoTime implements Serializable, Comparable<PontuacaoTime> {
 		StringBuilder stringBuilder = new StringBuilder();
 		Formatter formatter = new Formatter(stringBuilder);
 
-		String template = "\n %-15s %1s(S) %1s(Pos) %-1s(P) %-1s(J) %-1s(V) %-1s(E) %-1s(D) %-1s(GP) %-1s(GC) %-1s(SG) %-1.2f(A) %-1s(Elite) %-1s(Inf)"; // a
-
+		String template = "\n %-15s %1s(S) %1s(O) %-1s(P) %-1s(J) %-1s(V) %-1s(E) %-1s(D) %-1s(GP) %-1s(GC) %-1s(SG) %-1.2f(A) %-1s(Elite) %-1s(Inf)"; // a
+		// rough
+		// guess!
 		formatter.format(template, this.time, this.statusPosicao, this.posicao,
 				this.pontos, this.jogos, this.vitorias, this.empates,
 				this.derrotas, this.golsPro, this.golsContra, this.saldoGols,
