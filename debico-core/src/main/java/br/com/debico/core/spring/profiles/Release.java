@@ -8,12 +8,13 @@ import java.lang.annotation.Target;
 import org.springframework.context.annotation.Profile;
 
 /**
- * Profile para ser utilizado em ambientes Release, normalmente em produção, homologação ou qualquer outro ambiente com uma infra-estrutura definida.
+ * Profile para ser utilizado em ambientes Release, normalmente em produção,
+ * homologação ou qualquer outro ambiente com uma infra-estrutura definida.
  * 
  * @author Ricardo Zanini (ricardozanini@gmail.com)
  * @since 1.2.0
  */
-@Target(ElementType.TYPE)
+@Target({ ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @Profile("release")
 public @interface Release {

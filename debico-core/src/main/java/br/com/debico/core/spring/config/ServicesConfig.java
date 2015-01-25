@@ -8,7 +8,6 @@ import org.springframework.context.annotation.PropertySource;
 
 import br.com.debico.core.helpers.CacheKeys;
 
-
 /**
  * Classe de configuração das APIs de serviço da aplicação.
  * 
@@ -18,12 +17,11 @@ import br.com.debico.core.helpers.CacheKeys;
 @Configuration
 @PropertySource("classpath:/br/com/debico/core/debico.properties")
 public class ServicesConfig extends AbstractServiceConfig {
-        
-    @Override
-    @Bean
-    public CacheManager cacheManager() {
-        return new GuavaCacheManager(CacheKeys.recuperarTodas());
-    }
 
+	@Override
+	@Bean
+	public CacheManager cacheManager() {
+		return new GuavaCacheManager(CacheKeys.recuperarTodas());
+	}
 
 }

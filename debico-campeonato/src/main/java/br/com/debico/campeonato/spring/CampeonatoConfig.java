@@ -18,8 +18,8 @@ import org.springframework.context.annotation.ImportResource;
  * 
  */
 @Configuration
-@ComponentScan({ "br.com.debico.campeonato.dao.impl",
-		"br.com.debico.campeonato.impl", "br.com.debico.campeonato.brms.impl" })
+@ComponentScan({ "br.com.debico.campeonato.dao",
+		"br.com.debico.campeonato.services", "br.com.debico.campeonato.brms" })
 @ImportResource({ "classpath:/br/com/debico/campeonato/brms/spring/applicatonContext-brms.xml" })
 public class CampeonatoConfig {
 

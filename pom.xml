@@ -62,6 +62,7 @@
 		<javax.servlet.version>3.0.1</javax.servlet.version>
 		<javax.inject.version>1</javax.inject.version>
 		<javax.annotation.version>1.2</javax.annotation.version>
+		<javax.mail.version>1.4.7</javax.mail.version>
 
 		<!-- One Library to rule them all -->
 		<spring.version>4.0.5.RELEASE</spring.version>
@@ -291,6 +292,12 @@
 				<groupId>javax.servlet</groupId>
 				<artifactId>javax.servlet-api</artifactId>
 				<version>${javax.servlet.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>javax.mail</groupId>
+				<artifactId>mail</artifactId>
+				<version>${javax.mail.version}</version>
 				<scope>provided</scope>
 			</dependency>
 

@@ -5,9 +5,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+@ActiveProfiles("dev")
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
 public abstract class AbstractUnitTest {

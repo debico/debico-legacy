@@ -1,8 +1,6 @@
 package br.com.debico.campeonato.test.support;
 
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.support.NoOpCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -24,17 +22,6 @@ public class CampeonatoUnitTestConfig extends ServicesUnitTestConfig {
 
 	public CampeonatoUnitTestConfig() {
 
-	}
-
-	/**
-	 * Não implementar o cache em testes de unidade para não comprometer a
-	 * adição e remoção de elementos, a não ser que implementado corretamente o
-	 * 
-	 * @CacheEvict.
-	 */
-	@Override
-	public CacheManager cacheManager() {
-		return new NoOpCacheManager();
 	}
 
 	@Bean

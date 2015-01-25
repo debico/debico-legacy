@@ -9,7 +9,6 @@
 	<artifactId>debico-notify</artifactId>
 
 	<properties>
-		<javax.mail.version>1.4.7</javax.mail.version>
 		<velocity.version>1.7</velocity.version>
 		<oro.version>2.0.8</oro.version>
 	</properties>
@@ -26,8 +25,6 @@
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
-			<version>${javax.mail.version}</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.velocity</groupId>
