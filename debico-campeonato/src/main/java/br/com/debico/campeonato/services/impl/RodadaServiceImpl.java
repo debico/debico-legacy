@@ -1,4 +1,4 @@
-package br.com.debico.campeonato.impl;
+package br.com.debico.campeonato.services.impl;
 
 import java.util.List;
 
@@ -9,9 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.debico.campeonato.RodadaService;
 import br.com.debico.campeonato.dao.CampeonatoDAO;
 import br.com.debico.campeonato.dao.RodadaDAO;
+import br.com.debico.campeonato.services.RodadaService;
 import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.model.campeonato.Rodada;
 

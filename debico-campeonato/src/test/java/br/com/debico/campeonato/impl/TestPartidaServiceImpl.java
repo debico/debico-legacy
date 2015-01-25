@@ -8,9 +8,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.debico.campeonato.CampeonatoPontosCorridosService;
-import br.com.debico.campeonato.PartidaService;
 import br.com.debico.campeonato.dao.PartidaDAO;
+import br.com.debico.campeonato.services.CampeonatoPontosCorridosService;
+import br.com.debico.campeonato.services.PartidaService;
 import br.com.debico.campeonato.test.support.AbstractCampeonatoUnitTest;
 import br.com.debico.core.DebicoException;
 import br.com.debico.model.Partida;

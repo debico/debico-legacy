@@ -1,4 +1,4 @@
-package br.com.debico.campeonato.impl;
+package br.com.debico.campeonato.services.impl;
 
 import java.util.Collections;
 import java.util.List;
@@ -10,12 +10,12 @@ import javax.inject.Named;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.debico.campeonato.CampeonatoPontosCorridosService;
 import br.com.debico.campeonato.dao.FaseDAO;
 import br.com.debico.campeonato.dao.PartidaDAO;
 import br.com.debico.campeonato.dao.PontuacaoTimeDAO;
 import br.com.debico.campeonato.dao.RankingDAO;
 import br.com.debico.campeonato.dao.RodadaDAO;
+import br.com.debico.campeonato.services.CampeonatoPontosCorridosService;
 import br.com.debico.core.helpers.CacheKeys;
 import br.com.debico.model.PartidaRodada;
 import br.com.debico.model.Time;

@@ -1,4 +1,4 @@
-package br.com.debico.campeonato.impl;
+package br.com.debico.campeonato.services.impl;
 
 import java.util.List;
 
@@ -7,8 +7,8 @@ import javax.inject.Named;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.debico.campeonato.TimeService;
 import br.com.debico.campeonato.dao.TimeDAO;
+import br.com.debico.campeonato.services.TimeService;
 import br.com.debico.model.Time;
 
 import static com.google.common.base.Preconditions.checkArgument;

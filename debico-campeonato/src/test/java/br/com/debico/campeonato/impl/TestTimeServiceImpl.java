@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.debico.campeonato.TimeService;
+import br.com.debico.campeonato.services.TimeService;
 import br.com.debico.campeonato.test.support.AbstractCampeonatoUnitTest;
 import br.com.debico.model.Time;
 import static org.junit.Assert.assertFalse;

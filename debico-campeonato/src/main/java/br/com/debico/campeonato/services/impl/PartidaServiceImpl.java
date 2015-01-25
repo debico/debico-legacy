@@ -1,4 +1,4 @@
-package br.com.debico.campeonato.impl;
+package br.com.debico.campeonato.services.impl;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.debico.campeonato.PartidaService;
 import br.com.debico.campeonato.dao.PartidaDAO;
+import br.com.debico.campeonato.services.PartidaService;
 import br.com.debico.core.helpers.CacheKeys;
 import br.com.debico.model.Partida;
 import br.com.debico.model.Placar;

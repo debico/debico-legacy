@@ -10,7 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.debico.campeonato.CampeonatoService;
+import br.com.debico.campeonato.services.CampeonatoService;
 import br.com.debico.campeonato.spring.CampeonatoUnitTestConfig;
 import br.com.debico.model.campeonato.CampeonatoPontosCorridos;
 import br.com.debico.test.spring.AbstractUnitTest;

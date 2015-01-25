@@ -11,9 +11,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.debico.campeonato.CampeonatoPontosCorridosService;
-import br.com.debico.campeonato.RodadaService;
 import br.com.debico.campeonato.brms.ResultadosService;
+import br.com.debico.campeonato.services.CampeonatoPontosCorridosService;
+import br.com.debico.campeonato.services.RodadaService;
 import br.com.debico.campeonato.test.support.AbstractCampeonatoUnitTest;
 import br.com.debico.model.PartidaRodada;
 import br.com.debico.model.campeonato.CampeonatoPontosCorridos;

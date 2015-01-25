@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.bolao.AlertaPalpiteService;
-import br.com.debico.campeonato.CampeonatoService;
+import br.com.debico.campeonato.services.CampeonatoService;
 import br.com.debico.model.Apostador;
 import br.com.debico.model.campeonato.CampeonatoImpl;
 import br.com.debico.notify.EmailNotificacaoService;

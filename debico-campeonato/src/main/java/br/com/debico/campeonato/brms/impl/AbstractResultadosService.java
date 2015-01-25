@@ -9,10 +9,10 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.debico.campeonato.RodadaService;
 import br.com.debico.campeonato.brms.CalculoPartidasService;
 import br.com.debico.campeonato.brms.CalculoRankingTimesService;
 import br.com.debico.campeonato.brms.ResultadosService;
+import br.com.debico.campeonato.services.RodadaService;
 import br.com.debico.model.PartidaChave;
 import br.com.debico.model.PartidaRodada;
 import br.com.debico.model.campeonato.Campeonato;

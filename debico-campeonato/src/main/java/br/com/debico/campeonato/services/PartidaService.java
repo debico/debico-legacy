@@ -1,4 +1,4 @@
-package br.com.debico.campeonato;
+package br.com.debico.campeonato.services;
 
 import br.com.debico.model.Partida;
 import br.com.debico.model.Placar;

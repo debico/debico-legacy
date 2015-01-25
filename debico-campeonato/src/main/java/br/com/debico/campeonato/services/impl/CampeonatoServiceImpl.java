@@ -1,4 +1,4 @@
-package br.com.debico.campeonato.impl;
+package br.com.debico.campeonato.services.impl;
 
 import java.util.List;
 
@@ -10,8 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.debico.campeonato.CampeonatoService;
 import br.com.debico.campeonato.dao.CampeonatoDAO;
+import br.com.debico.campeonato.services.CampeonatoService;
 import br.com.debico.core.helpers.CacheKeys;
 import br.com.debico.model.campeonato.CampeonatoImpl;
 
