@@ -2,28 +2,35 @@ package br.com.debico.core.brms.impl;
 
 import java.util.Collection;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import org.kie.api.KieBase;
 import org.kie.api.runtime.KieSession;
 import org.kie.internal.command.CommandFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.core.brms.BRMSExecutor;
 
-@Named
 @Transactional(readOnly = false, propagation = Propagation.MANDATORY)
-public class DroolsBRMSExecutor implements BRMSExecutor {
+public class DroolsBRMSExecutor implements BRMSExecutor, InitializingBean {
 
 	protected static final Logger LOGGER = LoggerFactory
 			.getLogger(DroolsBRMSExecutor.class);
 
-	@Inject
 	protected KieBase kieBase;
+	
+	public void setKieBase(final KieBase kieBase) {
+		this.kieBase = kieBase;
+	}
+	
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		if(kieBase == null) {
+			throw new IllegalStateException("Eh necessario definir o bean KieBase antes de utilizar um BRMSExecutor.");
+		}
+	}
 
 	@SuppressWarnings("unchecked")
 	public int processar(final String agenda, final Collection<?>... fatos) {

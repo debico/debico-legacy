@@ -1,4 +1,4 @@
-package br.com.debico.bolao.services;
+package br.com.debico.bolao.services.impl;
 
 import javax.inject.Inject;
 
@@ -10,6 +10,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.bolao.ApostadorJaInscritoException;
+import br.com.debico.bolao.services.ApostadorPontuacaoService;
 import br.com.debico.bolao.services.impl.ApostadorPontuacaoServiceImpl;
 import br.com.debico.bolao.test.support.AbstractBolaoUnitTest;
 import br.com.debico.model.Apostador;

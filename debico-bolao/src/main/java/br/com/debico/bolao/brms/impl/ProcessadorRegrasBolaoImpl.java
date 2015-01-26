@@ -18,8 +18,8 @@ import br.com.debico.bolao.brms.ProcessadorRegrasBolaoFeedback;
 import br.com.debico.bolao.brms.ProcessadorRegrasBolaoLog;
 import br.com.debico.bolao.dao.ProcessadorRegrasBolaoLogDAO;
 import br.com.debico.campeonato.brms.ResultadosService;
-import br.com.debico.campeonato.dao.RodadaDAO;
 import br.com.debico.campeonato.services.CampeonatoService;
+import br.com.debico.campeonato.services.RodadaService;
 import br.com.debico.core.helpers.CacheKeys;
 import br.com.debico.model.PartidaRodada;
 import br.com.debico.model.campeonato.Campeonato;
@@ -45,7 +45,7 @@ class ProcessadorRegrasBolaoImpl implements ProcessadorRegrasBolaoFeedback {
 	private CampeonatoService campeonatoService;
 
 	@Inject
-	private RodadaDAO rodadaDAO;
+	private RodadaService rodadaService;
 	
 	@Inject
 	private ProcessadorRegrasBolaoLogDAO logDAO;
@@ -96,9 +96,8 @@ class ProcessadorRegrasBolaoImpl implements ProcessadorRegrasBolaoFeedback {
 	}
 	
 	protected void processarResultadosPontosCorridos(final CampeonatoPontosCorridos campeonatoPontosCorridos) {
-		// TODO: melhorar essa query. recuperar rodadas nao calculadas que contenham partidas com placar.
 		final List<Rodada> rodadas = 
-				rodadaDAO.selecionarRodadasNaoCalculadas(campeonatoPontosCorridos);
+				rodadaService.selecionarRodadasNaoCalculadas(campeonatoPontosCorridos);
 		LOGGER.debug(
 				"[processarResultadosPontosCorridos] Recuperadas as rodadas {} do campeonato {}. Pronto para delegar o processamento.",
 				rodadas, campeonatoPontosCorridos);

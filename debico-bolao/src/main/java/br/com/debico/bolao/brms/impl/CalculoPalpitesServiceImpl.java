@@ -34,6 +34,7 @@ class CalculoPalpitesServiceImpl implements CalculoPalpitesService {
     protected ApostadorPontuacaoDAO apostadorPontuacaoDAO;
 
     @Inject
+    @Named("bolaoBrmsExecutor")
     protected BRMSExecutor brmsExecutor;
 
     public void computarPalpites(final Campeonato campeonato, final List<? extends Partida> partidas) {

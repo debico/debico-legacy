@@ -1,8 +1,16 @@
 package br.com.debico.campeonato.spring;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import org.kie.api.KieBase;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
+
+import br.com.debico.core.brms.BRMSExecutor;
+import br.com.debico.core.brms.impl.DroolsBRMSExecutor;
 
 /**
  * Configuração da Factory do Spring que deve ser importada por camadas que
@@ -23,8 +31,21 @@ import org.springframework.context.annotation.ImportResource;
 @ImportResource({ "classpath:/br/com/debico/campeonato/brms/spring/applicatonContext-brms.xml" })
 public class CampeonatoConfig {
 
+	@Inject
+	@Named("campeonatoKBase")
+	protected KieBase kieBase;
+
 	public CampeonatoConfig() {
 
+	}
+	
+	@Bean
+	@Named("campeonatoBrmsExecutor")
+	public BRMSExecutor brmsExecutor() {
+		DroolsBRMSExecutor brmsExecutor = new DroolsBRMSExecutor();
+		brmsExecutor.setKieBase(kieBase);
+
+		return brmsExecutor;
 	}
 
 }
