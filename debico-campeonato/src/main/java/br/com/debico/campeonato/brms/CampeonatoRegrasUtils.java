@@ -2,7 +2,7 @@ package br.com.debico.campeonato.brms;
 
 import br.com.debico.model.Partida;
 import br.com.debico.model.StatusPartida;
-import br.com.debico.model.campeonato.CampeonatoParametrizacao;
+import br.com.debico.model.campeonato.ParametrizacaoCampeonato;
 import br.com.debico.model.campeonato.PontuacaoTime;
 import br.com.debico.model.campeonato.StatusClassificacao;
 import br.com.debico.model.campeonato.StatusPosicao;
@@ -85,7 +85,7 @@ public final class CampeonatoRegrasUtils {
 	 * @return
 	 */
 	public static StatusClassificacao calculaStatusClassificacao(
-			final CampeonatoParametrizacao param, final int novaPosicao) {
+			final ParametrizacaoCampeonato param, final int novaPosicao) {
 		// campeões / classificados
 		if (novaPosicao <= param.getPosicaoLimiteElite()) {
 			return new StatusClassificacao(true, false);

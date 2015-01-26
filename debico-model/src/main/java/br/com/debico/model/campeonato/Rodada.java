@@ -1,8 +1,5 @@
 package br.com.debico.model.campeonato;
 
-import static com.google.common.base.Objects.equal;
-import static com.google.common.base.Objects.toStringHelper;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -21,6 +18,9 @@ import javax.persistence.TemporalType;
 
 import com.google.common.base.Objects;
 
+import static com.google.common.base.Objects.equal;
+import static com.google.common.base.Objects.toStringHelper;
+
 @Entity
 @Table(name = "tb_rodada")
 public class Rodada implements Serializable, Comparable<Rodada> {
@@ -28,6 +28,8 @@ public class Rodada implements Serializable, Comparable<Rodada> {
 	private static final long serialVersionUID = 4821429131125814443L;
 	
 	public static final String NOME_RODADA_FORMAT = "Rodada %s";
+	
+	private static final String NOME_DEFAULT = "Rodada \u00danica";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -88,6 +90,13 @@ public class Rodada implements Serializable, Comparable<Rodada> {
 	
 	public static Rodada novaRodadaNumerada(final int ordinal) {
 	    return new Rodada(String.format(NOME_RODADA_FORMAT, ordinal), ordinal);
+	}
+	
+	public static Rodada novaRodadaUnica(Ranking ranking) {
+		Rodada rodada = new Rodada(1, NOME_DEFAULT);
+		rodada.setRanking(ranking);
+		
+		return rodada;
 	}
 	
 	public int getId() {

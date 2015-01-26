@@ -71,7 +71,7 @@ public class CampeonatoImpl implements Campeonato, Serializable {
 	
 	@OneToOne(fetch = FetchType.LAZY, optional = true, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="campeonato")
 	@JoinColumn(name="ID_CAMPEONATO", nullable = true)
-	private CampeonatoParametrizacao parametrizacao;
+	private ParametrizacaoCampeonato parametrizacao;
 
 	public CampeonatoImpl() {
 		this.times = new HashSet<Time>();
@@ -127,7 +127,7 @@ public class CampeonatoImpl implements Campeonato, Serializable {
 		return tipo;
 	}
 	
-	public CampeonatoParametrizacao getParametrizacao() {
+	public ParametrizacaoCampeonato getParametrizacao() {
 		return this.parametrizacao;
 	}
 	
@@ -165,7 +165,7 @@ public class CampeonatoImpl implements Campeonato, Serializable {
 		this.imagemCapa = imagemCapa;
 	}
 	
-	public void setParametrizacao(CampeonatoParametrizacao parametrizacao) {
+	public void setParametrizacao(ParametrizacaoCampeonato parametrizacao) {
 		this.parametrizacao = parametrizacao;
 	}
 

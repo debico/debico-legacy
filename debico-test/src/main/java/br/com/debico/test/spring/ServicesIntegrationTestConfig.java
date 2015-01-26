@@ -21,7 +21,6 @@ import br.com.debico.core.spring.profiles.Dev;
 @Configuration
 @EnableDAO(type = TipoDAOConfig.JPA_EMBEDDED_DATABASE)
 public class ServicesIntegrationTestConfig extends AbstractServiceConfig {
-
 	
 	@Override
 	@Bean

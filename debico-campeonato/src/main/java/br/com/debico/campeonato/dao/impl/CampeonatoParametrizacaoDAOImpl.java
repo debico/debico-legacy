@@ -7,16 +7,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.campeonato.dao.CampeonatoParametrizacaoDAO;
 import br.com.debico.core.dao.jpa.AbstractJPADAO;
-import br.com.debico.model.campeonato.CampeonatoParametrizacao;
+import br.com.debico.model.campeonato.ParametrizacaoCampeonato;
 
 @Named
 @Transactional(propagation = Propagation.MANDATORY)
 class CampeonatoParametrizacaoDAOImpl extends
-		AbstractJPADAO<CampeonatoParametrizacao, Integer> implements
+		AbstractJPADAO<ParametrizacaoCampeonato, Integer> implements
 		CampeonatoParametrizacaoDAO {
 
 	public CampeonatoParametrizacaoDAOImpl() {
-		super(CampeonatoParametrizacao.class);
+		super(ParametrizacaoCampeonato.class);
 	}
 
 }

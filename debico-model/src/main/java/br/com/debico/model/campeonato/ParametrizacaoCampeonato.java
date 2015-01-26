@@ -17,7 +17,7 @@ import static com.google.common.base.Objects.toStringHelper;
 
 @Entity
 @Table(name = "tb_campeonato_param")
-public class CampeonatoParametrizacao implements Serializable {
+public class ParametrizacaoCampeonato implements Serializable {
 
 	private static final long serialVersionUID = 8974054005868047552L;
 
@@ -35,7 +35,7 @@ public class CampeonatoParametrizacao implements Serializable {
 	@PrimaryKeyJoinColumn
 	private CampeonatoImpl campeonato;
 
-	public CampeonatoParametrizacao() {
+	public ParametrizacaoCampeonato() {
 
 	}
 
@@ -113,7 +113,7 @@ public class CampeonatoParametrizacao implements Serializable {
 			return false;
 		}
 
-		CampeonatoParametrizacao that = (CampeonatoParametrizacao) obj;
+		ParametrizacaoCampeonato that = (ParametrizacaoCampeonato) obj;
 
 		return equal(this.idCampeonato, that.getIdCampeonato());
 	}

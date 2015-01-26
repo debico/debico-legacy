@@ -20,7 +20,7 @@
 package br.com.debico.campeonato.brms.rules 
 
 import br.com.debico.model.campeonato.PontuacaoTime
-import br.com.debico.model.campeonato.CampeonatoParametrizacao
+import br.com.debico.model.campeonato.ParametrizacaoCampeonato
 import java.util.ArrayList
 
 import function br.com.debico.campeonato.brms.CampeonatoRegrasUtils.calculaStatusPosicao;
@@ -30,7 +30,7 @@ rule "Define posicao ranking"
 	agenda-group "calcula_posicao_times"
 	salience 1
 when
-	$param : CampeonatoParametrizacao( )
+	$param : ParametrizacaoCampeonato( )
 	$ranking : PontuacaoTime( )
 	// existe alguem com menos pontos?
 	not PontuacaoTime (	pontos < $ranking.pontos )

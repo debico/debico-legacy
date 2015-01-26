@@ -70,6 +70,6 @@ public interface Campeonato {
      * 
      * @return
      */
-    CampeonatoParametrizacao getParametrizacao();
+    ParametrizacaoCampeonato getParametrizacao();
     
 }

@@ -1,19 +1,22 @@
 package br.com.debico.model.campeonato;
 
-import static com.google.common.base.Objects.toStringHelper;
-import static com.google.common.base.Preconditions.checkArgument;
-
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 import com.google.common.base.Objects;
 
+import static com.google.common.base.Objects.toStringHelper;
+
+import static com.google.common.base.Preconditions.checkArgument;
+
 @Entity
 @DiscriminatorValue(Ranking.RANKING_GRUPO)
 public class Grupo extends Ranking implements Comparable<Grupo> {
 
 	private static final long serialVersionUID = 6351437481076599225L;
+	
+	private static final String NOME_DEFAULT = "Grupo \u00danico";
 
 	@Column(name = "DC_RANKING", nullable = true, length = 255)
 	private String nome;
@@ -24,6 +27,14 @@ public class Grupo extends Ranking implements Comparable<Grupo> {
 	
 	public Grupo(final FaseGrupos fase){
 	    super(fase);
+	}
+	
+	public static Grupo novoGrupoUnico(final FaseUnica fase) {
+		Grupo grupo = new Grupo();
+		grupo.setFase(fase);
+		grupo.setNome(NOME_DEFAULT);
+		
+		return grupo;
 	}
 
 	public String getNome() {

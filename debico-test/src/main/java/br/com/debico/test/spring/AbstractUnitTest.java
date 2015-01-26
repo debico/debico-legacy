@@ -1,6 +1,8 @@
 package br.com.debico.test.spring;
 
+import org.junit.After;
 import org.junit.BeforeClass;
+import org.jvnet.mock_javamail.Mailbox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.Advised;
@@ -24,6 +26,12 @@ public abstract class AbstractUnitTest {
 	@BeforeClass
 	public static void initialize() {
 		System.setProperty("spring.profiles.active", "dev");
+	}
+	
+	@After
+	public void tearDown() {
+		LOGGER.debug("Limpando a caixa de mensagens.");
+		Mailbox.clearAll();
 	}
 
 	/**

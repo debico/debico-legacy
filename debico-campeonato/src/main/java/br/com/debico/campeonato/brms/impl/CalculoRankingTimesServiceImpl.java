@@ -17,7 +17,7 @@ import br.com.debico.campeonato.dao.PontuacaoTimeDAO;
 import br.com.debico.core.brms.BRMSExecutor;
 import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.model.campeonato.CampeonatoImpl;
-import br.com.debico.model.campeonato.CampeonatoParametrizacao;
+import br.com.debico.model.campeonato.ParametrizacaoCampeonato;
 import br.com.debico.model.campeonato.PontuacaoTime;
 
 @Named
@@ -54,7 +54,7 @@ class CalculoRankingTimesServiceImpl implements CalculoRankingTimesService  {
         
         // apesar de nao ser uma coleção de parâmetros, foi feito dessa forma por causa da assinatura do método do BRMS.
         // tá na hora de refatorar, né?
-        List<CampeonatoParametrizacao> param = Collections.singletonList(campeonato.getParametrizacao());
+        List<ParametrizacaoCampeonato> param = Collections.singletonList(campeonato.getParametrizacao());
         
         LOGGER.debug("[calcularPosicaoGeral] '{}' itens de pontuacao selecionados.", ranking.size());
         LOGGER.debug("[calcularPosicaoGeral] Parametrizacao definida: {}", param);

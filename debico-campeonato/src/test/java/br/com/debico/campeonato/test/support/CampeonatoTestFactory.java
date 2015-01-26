@@ -17,7 +17,7 @@ import br.com.debico.model.PartidaRodada;
 import br.com.debico.model.Placar;
 import br.com.debico.model.Time;
 import br.com.debico.model.campeonato.CampeonatoImpl;
-import br.com.debico.model.campeonato.CampeonatoParametrizacao;
+import br.com.debico.model.campeonato.ParametrizacaoCampeonato;
 import br.com.debico.model.campeonato.CampeonatoPontosCorridos;
 import br.com.debico.model.campeonato.FaseGrupos;
 import br.com.debico.model.campeonato.Grupo;
@@ -59,8 +59,6 @@ public class CampeonatoTestFactory {
 
     public FaseGrupos FASE_UNICA;
 
-  //  public Apostador ADRIANO, ZAPA, ZANINI;
-
     public PartidaRodada PARTIDA1, PARTIDA2, PARTIDA3;
 
     public Date AMANHA;
@@ -69,26 +67,11 @@ public class CampeonatoTestFactory {
 
     }
 
-    /*
-     * Partidas:
-     * 
-     * partida1 = new PartidaRodada(BRASIL, ARGENTINA, new Placar(2, 0));
-     * partida2 = new PartidaRodada(EUA, HOLANDA, new Placar(1, 3)); 
-     * partida3 = new PartidaRodada(NIGERIA, ITALIA, new Placar(1, 1));
-     * 
-     * Resultados esperados a partir dos palpites abaixo:
-     * 
-     * Apostador{Zaparoli} 6(P) 1(A) 0(V) 0(E) 1(G) 1(R) 
-     * Apostador{Adriano}  6(P) 0(A) 2(V) 0(E) 2(G) 1(R) 
-     * Apostador{Zanini}   3(P) 0(A) 0(V) 1(E) 1(G) 2(R)
-     */
     /**
      * Cria um campeonato com uma fase e um grupo.
      * <p/>
      * Objetos definidos: {@link #COPA_GRUPO_UNICO}, {@link #RODADA_UNICA},
      * {@link #GRUPO_UNICO}, {@link #FASE_UNICA}.
-     * <p/>
-     * Apostadores: {@link #ZANINI}, {@link #ZAPA}, {@link #ADRIANO}
      * <p/>
      * Partidas: {@link #PARTIDA1}, {@link #PARTIDA2}, {@link #PARTIDA3}
      * 
@@ -115,7 +98,7 @@ public class CampeonatoTestFactory {
         COPA_GRUPO_UNICO.addTime(EUA);
         COPA_GRUPO_UNICO.addTime(HOLANDA);
         
-        CampeonatoParametrizacao param = new CampeonatoParametrizacao();
+        ParametrizacaoCampeonato param = new ParametrizacaoCampeonato();
         param.setPosicaoLimiteElite(2);
         param.setPosicaoLimiteInferior(5);
         
@@ -150,21 +133,6 @@ public class CampeonatoTestFactory {
                 NIGERIA));
         pontuacaoTimeDAO
                 .inserirPontuacao(new PontuacaoTime(GRUPO_UNICO, ITALIA));
-
-//        ZANINI = new Apostador("Zanini", new Usuario("zanini@bolao.com.br"));
-//        ZAPA = new Apostador("Zaparoli", new Usuario("zapa@bolao.com.br"));
-//        ADRIANO = new Apostador("Adriano", new Usuario("adriano@bolao.com.br"));
-//
-//        // apostadores
-//        apostadorDAO.inserir(ZANINI);
-//        apostadorDAO.inserir(ZAPA);
-//        apostadorDAO.inserir(ADRIANO);
-//
-//        // inscricao
-//        apostadorService
-//                .inscreverApostadorCampeonato(ADRIANO, COPA_GRUPO_UNICO);
-//        apostadorService.inscreverApostadorCampeonato(ZANINI, COPA_GRUPO_UNICO);
-//        apostadorService.inscreverApostadorCampeonato(ZAPA, COPA_GRUPO_UNICO);
 
         // partidas
         PARTIDA1 = new PartidaRodada(BRASIL, ARGENTINA, new Placar(2, 0));

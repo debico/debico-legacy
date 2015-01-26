@@ -1,9 +1,9 @@
 package br.com.debico.campeonato.dao;
 
-import br.com.debico.model.campeonato.CampeonatoParametrizacao;
+import br.com.debico.model.campeonato.ParametrizacaoCampeonato;
 
 public interface CampeonatoParametrizacaoDAO {
 
-	CampeonatoParametrizacao selecionarPorId(Integer idCampeonato);
+	ParametrizacaoCampeonato selecionarPorId(Integer idCampeonato);
 	
 }

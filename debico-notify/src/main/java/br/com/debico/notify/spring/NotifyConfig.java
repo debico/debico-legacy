@@ -42,6 +42,10 @@ public class NotifyConfig {
 
 	}
 	
+	/**
+     * @see <a href="http://ollivander.franzoni.eu/2011/08/30/mock-javamail-primer/">Mock Javamail Primer</a>
+     * @return
+     */
 	@Bean
 	@Dev
 	public JavaMailSender mailSender() {
