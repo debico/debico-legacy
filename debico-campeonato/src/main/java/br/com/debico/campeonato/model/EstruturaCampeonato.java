@@ -3,9 +3,11 @@ package br.com.debico.campeonato.model;
 import java.util.Collections;
 import java.util.List;
 
-import br.com.debico.model.PartidaBase;
-import br.com.debico.model.campeonato.Campeonato;
+import br.com.debico.model.Partida;
+import br.com.debico.model.campeonato.CampeonatoImpl;
 import br.com.debico.model.campeonato.Fase;
+import br.com.debico.model.campeonato.FaseImpl;
+import br.com.debico.model.campeonato.PontuacaoTime;
 import br.com.debico.model.campeonato.Ranking;
 import br.com.debico.model.campeonato.Rodada;
 
@@ -16,7 +18,7 @@ import br.com.debico.model.campeonato.Rodada;
  * <p/>
  * Sequência de persistência:
  * <ol>
- * <li>{@link Campeonato}</li>
+ * <li>{@link CampeonatoImpl}</li>
  * <li>{@link Fase}</li>
  * <li>{@link Ranking}</li>
  * <li>{@link Rodada}</li>
@@ -27,29 +29,31 @@ import br.com.debico.model.campeonato.Rodada;
  */
 public final class EstruturaCampeonato {
 
-	private final Campeonato campeonato;
+	private final CampeonatoImpl campeonato;
 
-	private List<? extends Fase> fases;
+	private List<? extends FaseImpl> fases;
 
 	private List<? extends Ranking> rankings;
 
 	private List<Rodada> rodadas;
 
-	private List<? extends PartidaBase> partidas;
+	private List<? extends Partida> partidas;
+	
+	private List<PontuacaoTime> pontuacao;
 
-	public EstruturaCampeonato(final Campeonato campeonato) {
+	public EstruturaCampeonato(final CampeonatoImpl campeonato) {
 		this.campeonato = campeonato;
 	}
 
-	public Campeonato getCampeonato() {
+	public CampeonatoImpl getCampeonato() {
 		return campeonato;
 	}
 
-	public List<? extends Fase> getFases() {
+	public List<? extends FaseImpl> getFases() {
 		return Collections.unmodifiableList(fases);
 	}
 
-	public void setFases(List<? extends Fase> fases) {
+	public void setFases(List<? extends FaseImpl> fases) {
 		this.fases = Collections.unmodifiableList(fases);
 	}
 
@@ -69,12 +73,20 @@ public final class EstruturaCampeonato {
 		this.rodadas = Collections.unmodifiableList(rodadas);
 	}
 
-	public List<? extends PartidaBase> getPartidas() {
+	public List<? extends Partida> getPartidas() {
 		return Collections.unmodifiableList(partidas);
 	}
 
-	public void setPartidas(List<? extends PartidaBase> partidas) {
+	public void setPartidas(List<? extends Partida> partidas) {
 		this.partidas = Collections.unmodifiableList(partidas);
+	}
+	
+	public List<PontuacaoTime> getPontuacao() {
+		return Collections.unmodifiableList(pontuacao);
+	}
+	
+	public void setPontuacao(List<PontuacaoTime> pontuacao) {
+		this.pontuacao = Collections.unmodifiableList(pontuacao);
 	}
 
 }

@@ -16,6 +16,7 @@ import br.com.debico.model.campeonato.FaseGrupos;
 import br.com.debico.model.campeonato.FaseUnica;
 import br.com.debico.model.campeonato.Grupo;
 import br.com.debico.model.campeonato.ParametrizacaoCampeonato;
+import br.com.debico.model.campeonato.PontuacaoTime;
 import br.com.debico.model.campeonato.Rodada;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -93,6 +94,7 @@ public final class CampeonatoFactory {
 		estruturaCampeonato.setRankings(Collections.singletonList(grupo));
 		estruturaCampeonato.setRodadas(Collections.singletonList(rodada));
 
+		List<PontuacaoTime> pontuacao = new ArrayList<PontuacaoTime>();
 		List<PartidaRodada> partidas = new ArrayList<PartidaRodada>();
 		PartidaRodada partida = null;
 		int proximo = 0;
@@ -105,9 +107,11 @@ public final class CampeonatoFactory {
 			partida.setFase(faseUnica);
 			partida.setRodada(rodada);
 
+			pontuacao.add(new PontuacaoTime(grupo, times.get(i)));
 			partidas.add(partida);
 		}
 		
+		estruturaCampeonato.setPontuacao(pontuacao);
 		estruturaCampeonato.setPartidas(partidas);
 
 		return estruturaCampeonato;

@@ -22,8 +22,6 @@ public class AbstractBolaoUnitTest extends AbstractUnitTest {
 
 	}
 
-	private static final int CAMPEONATO_ID = 1;
-
 	protected CampeonatoPontosCorridos CAMPEONATO;
 
 	@Inject
@@ -32,7 +30,6 @@ public class AbstractBolaoUnitTest extends AbstractUnitTest {
 
 	@Before
 	public void setUp() throws Exception {
-		CAMPEONATO = (CampeonatoPontosCorridos) campeonatoService
-				.selecionarCampeonato(CAMPEONATO_ID);
+		
 	}
 }
