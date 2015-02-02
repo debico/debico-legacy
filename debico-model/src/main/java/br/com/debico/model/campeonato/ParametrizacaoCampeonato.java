@@ -30,13 +30,30 @@ public class ParametrizacaoCampeonato implements Serializable {
 
 	@Column(name = "NU_POS_LIM_ELITE")
 	private int posicaoLimiteElite;
-	
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@PrimaryKeyJoinColumn
 	private CampeonatoImpl campeonato;
 
 	public ParametrizacaoCampeonato() {
 
+	}
+
+	/**
+	 * Cria uma nova estrutura de parametrização onde o primeiro colocado é o
+	 * campeão e o último, o "rebaixado".
+	 * 
+	 * @param idCampeonato
+	 * @return
+	 */
+	public static ParametrizacaoCampeonato parametrizacaoPrimeiroUltimo(
+			final int idCampeonato) {
+		ParametrizacaoCampeonato parametrizacaoCampeonato = new ParametrizacaoCampeonato();
+		parametrizacaoCampeonato.setPosicaoLimiteElite(1);
+		parametrizacaoCampeonato.setPosicaoLimiteInferior(1);
+		parametrizacaoCampeonato.setIdCampeonato(idCampeonato);
+
+		return parametrizacaoCampeonato;
 	}
 
 	public int getIdCampeonato() {
@@ -52,7 +69,9 @@ public class ParametrizacaoCampeonato implements Serializable {
 	 * Série? Pode ser utilizado para determinar o que vai ser feito com times
 	 * nessas condições nas classes de {@link Ranking}: FaseUnica, Grupos, etc.
 	 * <p/>
-	 * Ex: 17. Nesse caso a partir da posicao 17 até o final, são considerados inferiores.
+	 * Ex: 17. Nesse caso a partir da posicao 17 até o final, são considerados
+	 * inferiores.
+	 * 
 	 * @return
 	 */
 	public final int getPosicaoLimiteInferior() {
@@ -85,9 +104,9 @@ public class ParametrizacaoCampeonato implements Serializable {
 	public final int getPosicaoLimiteElite() {
 		return posicaoLimiteElite;
 	}
-	
+
 	/**
-	 * @see #getPosicaoLimiteElite() 
+	 * @see #getPosicaoLimiteElite()
 	 * @param posicaoLimiteElite
 	 */
 	public final void setPosicaoLimiteElite(int posicaoLimiteElite) {

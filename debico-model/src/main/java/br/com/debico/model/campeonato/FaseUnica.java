@@ -24,5 +24,12 @@ public class FaseUnica extends FaseImpl {
 	    return new FaseUnica(NOME_DEFAULT);
 	}
 	
+	public static FaseUnica novaFaseUnica(CampeonatoImpl campeonato) {
+	    FaseUnica fase = novaFaseUnica();
+	    fase.setCampeonato(campeonato);
+	    
+	    return fase;
+	}
+	
 
 }

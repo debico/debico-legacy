@@ -1,9 +1,14 @@
 package br.com.debico.campeonato.services;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import org.joda.time.DateTime;
+
+import br.com.debico.campeonato.model.EstruturaCampeonato;
 import br.com.debico.model.PartidaRodada;
+import br.com.debico.model.Placar;
 import br.com.debico.model.Time;
 import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.model.campeonato.CampeonatoPontosCorridos;
@@ -55,55 +60,57 @@ public final class CampeonatoFactory {
 	 * último seria "rebaixado".
 	 * <p/>
 	 * Pelo menos dois times são necessários.
+	 * <p />
+	 * Todos os jogos acontecem a partir de amanhã e um por dia.
 	 * 
 	 * @param times
 	 * @return
 	 */
-	public static CampeonatoPontosCorridos quadrangularSimples(
+	public static EstruturaCampeonato quadrangularSimples(
 			final String nomeCampeonato, final List<Time> times) {
 		checkNotNull(emptyToNull(nomeCampeonato));
 		checkNotNull(times);
 		checkArgument(times.size() >= 2);
 
 		// parametrizacao
-		ParametrizacaoCampeonato param = new ParametrizacaoCampeonato();
-		param.setPosicaoLimiteElite(1);
-		param.setPosicaoLimiteInferior(1);
+		ParametrizacaoCampeonato param = ParametrizacaoCampeonato
+				.parametrizacaoPrimeiroUltimo(0);
 
 		CampeonatoPontosCorridos campeonato = new CampeonatoPontosCorridos(
 				nomeCampeonato);
 		campeonato.setAtivo(true);
 		campeonato.setFinalizado(false);
-		campeonato.addTime(times);
 		campeonato.setParametrizacao(param);
+		campeonato.addTime(times);
+		
+		EstruturaCampeonato estruturaCampeonato = new EstruturaCampeonato(campeonato);
 
-		FaseUnica faseUnica = FaseUnica.novaFaseUnica();
-		faseUnica.setCampeonato(campeonato);
-
+		FaseUnica faseUnica = FaseUnica.novaFaseUnica(campeonato);
 		Grupo grupo = Grupo.novoGrupoUnico(faseUnica);
-
 		Rodada rodada = Rodada.novaRodadaUnica(grupo);
+		
+		estruturaCampeonato.setFases(Collections.singletonList(faseUnica));
+		estruturaCampeonato.setRankings(Collections.singletonList(grupo));
+		estruturaCampeonato.setRodadas(Collections.singletonList(rodada));
 
 		List<PartidaRodada> partidas = new ArrayList<PartidaRodada>();
+		PartidaRodada partida = null;
+		int proximo = 0;
 
-		for (Time timeA : times) {
-			for (Time timeB : times) {
-				if (!timeA.equals(timeB)) {
-					for (PartidaRodada partida : partidas) {
-						if (!(partida.getMandante().equals(timeA) && partida
-								.getVisitante().equals(timeB))
-								|| !(partida.getMandante().equals(timeB) && partida
-										.getVisitante().equals(timeA))) {
-							partidas.add(new PartidaRodada(timeA, timeB));
-						}
-					}
+		for (int i = 0; i < times.size(); i++) {
+			proximo = (i == times.size() - 1 ? 0 : i + 1);
+			partida = new PartidaRodada(times.get(i), times.get(proximo),
+					new Placar());
+			partida.setDataHoraPartida(new DateTime().plusDays(i + 1).toDate());
+			partida.setFase(faseUnica);
+			partida.setRodada(rodada);
 
-					break;
-				}
-			}
+			partidas.add(partida);
 		}
+		
+		estruturaCampeonato.setPartidas(partidas);
 
-		return campeonato;
+		return estruturaCampeonato;
 	}
 
 }
