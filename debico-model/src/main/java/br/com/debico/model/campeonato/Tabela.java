@@ -1,9 +1,9 @@
 package br.com.debico.model.campeonato;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+
+import static com.google.common.base.Preconditions.checkArgument;
 
 @Entity
 @DiscriminatorValue(Ranking.RANKING_TABELA)
@@ -17,6 +17,10 @@ public class Tabela extends Ranking {
     
     public Tabela(final FaseUnica fase) {
         super(fase);
+    }
+    
+    public static Tabela novaTabelaUnica(final FaseUnica fase) {
+    	return new Tabela(fase);
     }
     
     @Override

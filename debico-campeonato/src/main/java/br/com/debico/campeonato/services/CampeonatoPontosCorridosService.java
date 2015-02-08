@@ -3,7 +3,6 @@ package br.com.debico.campeonato.services;
 import java.util.List;
 
 import br.com.debico.model.PartidaRodada;
-import br.com.debico.model.Time;
 import br.com.debico.model.campeonato.CampeonatoPontosCorridos;
 import br.com.debico.model.campeonato.PontuacaoTime;
 import br.com.debico.model.campeonato.Rodada;
@@ -54,14 +53,6 @@ public interface CampeonatoPontosCorridosService extends CampeonatoService {
 	 */
 	void definirFaseUnica(CampeonatoPontosCorridos campeonatoPontosCorridos);
 
-	/**
-	 * Cria e persiste um campeonato de acordo com
-	 * {@link CampeonatoFactory#quadrangularSimples(String, List)}
-	 * 
-	 * @return
-	 */
-	CampeonatoPontosCorridos criarQuadrangularSimples(String nomeCampeonato,
-			List<Time> times);
 
 	/**
 	 * Recupera a pontuação de cada time para montar a TABELA do campeonato.

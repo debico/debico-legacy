@@ -15,10 +15,8 @@ import br.com.debico.campeonato.dao.PartidaDAO;
 import br.com.debico.campeonato.dao.PontuacaoTimeDAO;
 import br.com.debico.campeonato.dao.RankingDAO;
 import br.com.debico.campeonato.dao.RodadaDAO;
-import br.com.debico.campeonato.model.EstruturaCampeonato;
-import br.com.debico.campeonato.services.CampeonatoFactory;
+import br.com.debico.campeonato.factories.EstruturaCampeonatoFactory;
 import br.com.debico.campeonato.services.CampeonatoPontosCorridosService;
-import br.com.debico.campeonato.services.EstruturaCampeonatoService;
 import br.com.debico.core.helpers.CacheKeys;
 import br.com.debico.model.PartidaRodada;
 import br.com.debico.model.Time;
@@ -52,9 +50,6 @@ class CampeonatoPontosCorridosServiceImpl extends CampeonatoServiceImpl
 
 	@Inject
 	private PartidaDAO partidaDAO;
-
-	@Inject
-	private EstruturaCampeonatoService estruturaCampeonatoService;
 
 	public Rodada selecionarRodadaAtual(
 			CampeonatoPontosCorridos campeonatoPontosCorridos) {
@@ -122,18 +117,8 @@ class CampeonatoPontosCorridosServiceImpl extends CampeonatoServiceImpl
 		return ranking;
 	}
 
-	@Override
-	public CampeonatoPontosCorridos criarQuadrangularSimples(
-			String nomeCampeonato, List<Time> times) {
-		final EstruturaCampeonato estrutura = CampeonatoFactory.quadrangularSimples(nomeCampeonato, times);
-		
-		estruturaCampeonatoService.inserirNovaEstrutura(estrutura);
-		
-		return (CampeonatoPontosCorridos) estrutura.getCampeonato();
-	}
-
 	/**
-	 * @deprecated mover para {@link CampeonatoFactory}
+	 * @deprecated TODO mover para {@link EstruturaCampeonatoFactory}
 	 */
 	public void definirFaseUnica(
 			CampeonatoPontosCorridos campeonatoPontosCorridos) {

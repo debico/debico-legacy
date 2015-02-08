@@ -3,7 +3,7 @@ package br.com.debico.bolao.dao;
 import java.util.Date;
 import java.util.List;
 
-import br.com.debico.bolao.brms.ProcessadorRegrasBolaoLog;
+import br.com.debico.bolao.brms.model.ProcessadorRegrasBolaoLog;
 
 public interface ProcessadorRegrasBolaoLogDAO {
 

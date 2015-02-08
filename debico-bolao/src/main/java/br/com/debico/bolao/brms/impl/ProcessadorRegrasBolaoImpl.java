@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.bolao.brms.CalculoPalpitesService;
 import br.com.debico.bolao.brms.ProcessadorRegrasBolaoFeedback;
-import br.com.debico.bolao.brms.ProcessadorRegrasBolaoLog;
+import br.com.debico.bolao.brms.model.ProcessadorRegrasBolaoLog;
 import br.com.debico.bolao.dao.ProcessadorRegrasBolaoLogDAO;
 import br.com.debico.campeonato.brms.ResultadosService;
 import br.com.debico.campeonato.services.CampeonatoService;

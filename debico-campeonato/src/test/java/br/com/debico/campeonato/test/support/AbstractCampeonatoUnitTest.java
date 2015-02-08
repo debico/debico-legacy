@@ -10,6 +10,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.debico.campeonato.factories.EstruturaCampeonatoFactory;
+import br.com.debico.campeonato.factories.EstruturaCampeonatoProvider;
 import br.com.debico.campeonato.services.CampeonatoService;
 import br.com.debico.campeonato.spring.CampeonatoConfig;
 import br.com.debico.model.campeonato.CampeonatoPontosCorridos;
@@ -18,7 +20,8 @@ import br.com.debico.test.spring.ServicesUnitTestConfig;
 
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
-@ContextConfiguration(classes = { ServicesUnitTestConfig.class, CampeonatoConfig.class })
+@ContextConfiguration(classes = { ServicesUnitTestConfig.class,
+		CampeonatoConfig.class })
 public abstract class AbstractCampeonatoUnitTest extends AbstractUnitTest {
 
 	protected static final Logger LOGGER = LoggerFactory
@@ -33,8 +36,14 @@ public abstract class AbstractCampeonatoUnitTest extends AbstractUnitTest {
 	@Named("campeonatoServiceImpl")
 	protected CampeonatoService campeonatoService;
 
-	public AbstractCampeonatoUnitTest() {
+	private EstruturaCampeonatoProvider provider;
 
+	public AbstractCampeonatoUnitTest() {
+		provider = new EstruturaCampeonatoProvider();
+	}
+
+	protected EstruturaCampeonatoFactory getDefaultFactory() {
+		return provider.getDefaultFactory();
 	}
 
 	@Before

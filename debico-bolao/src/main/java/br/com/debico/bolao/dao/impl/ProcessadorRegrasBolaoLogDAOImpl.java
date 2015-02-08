@@ -8,7 +8,7 @@ import javax.inject.Named;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.debico.bolao.brms.ProcessadorRegrasBolaoLog;
+import br.com.debico.bolao.brms.model.ProcessadorRegrasBolaoLog;
 import br.com.debico.bolao.dao.ProcessadorRegrasBolaoLogDAO;
 import br.com.debico.core.dao.jpa.AbstractJPADAO;
 

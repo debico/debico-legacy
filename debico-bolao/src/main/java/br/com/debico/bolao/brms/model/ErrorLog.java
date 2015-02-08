@@ -1,4 +1,4 @@
-package br.com.debico.bolao.brms;
+package br.com.debico.bolao.brms.model;
 
 import java.io.PrintWriter;
 import java.io.Serializable;

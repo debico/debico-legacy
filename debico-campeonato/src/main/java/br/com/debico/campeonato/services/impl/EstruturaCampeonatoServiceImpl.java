@@ -91,6 +91,7 @@ class EstruturaCampeonatoServiceImpl implements EstruturaCampeonatoService {
 		for (Partida partida : partidas) {
 			partidaDAO.inserir(partida);
 		}
+
 	}
 
 }

@@ -32,6 +32,9 @@ import br.com.debico.social.spring.SocialConfig;
 @ComponentScan({ "br.com.debico.bolao.services", "br.com.debico.bolao.dao",
 		"br.com.debico.bolao.brms" })
 public class BolaoConfig {
+	
+	@Inject
+	protected CampeonatoConfig campeonatoConfig;
 
 	@Inject
 	@Named("bolaoKBase")

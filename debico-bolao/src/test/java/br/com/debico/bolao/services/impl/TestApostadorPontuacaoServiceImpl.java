@@ -11,10 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.bolao.ApostadorJaInscritoException;
 import br.com.debico.bolao.services.ApostadorPontuacaoService;
-import br.com.debico.bolao.services.impl.ApostadorPontuacaoServiceImpl;
 import br.com.debico.bolao.test.support.AbstractBolaoUnitTest;
 import br.com.debico.model.Apostador;
 import br.com.debico.model.Usuario;
+import br.com.debico.model.campeonato.CampeonatoImpl;
 import br.com.debico.social.CadastroApostadorException;
 import br.com.debico.social.services.UsuarioService;
 
@@ -39,13 +39,15 @@ public class TestApostadorPontuacaoServiceImpl extends AbstractBolaoUnitTest {
     
     @Test(expected = ApostadorJaInscritoException.class)
     public void testInscreverApostadorCampeonato() throws CadastroApostadorException, ApostadorJaInscritoException {
+    	final CampeonatoImpl campeonato = campeonatoService.selecionarCampeonato(1);
+    	
     	Apostador apostador = new Apostador("Peter Parker", new Usuario("bruce.banner@shield.com", "IAmHulk456"));
         usuarioService.cadastrarApostadorUsuario(apostador, "IAmHulk456");
 
-        apostadorService.inscreverApostadorCampeonato(apostador, CAMPEONATO);
+        apostadorService.inscreverApostadorCampeonato(apostador, campeonato);
 
         // de novo! \o/
-        apostadorService.inscreverApostadorCampeonato(apostador, CAMPEONATO);
+        apostadorService.inscreverApostadorCampeonato(apostador, campeonato);
     }
 
 }

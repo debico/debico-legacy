@@ -93,7 +93,7 @@ public class Rodada implements Serializable, Comparable<Rodada> {
 	}
 	
 	public static Rodada novaRodadaUnica(Ranking ranking) {
-		Rodada rodada = new Rodada(1, NOME_DEFAULT);
+		Rodada rodada = new Rodada(NOME_DEFAULT, 1);
 		rodada.setRanking(ranking);
 		
 		return rodada;
