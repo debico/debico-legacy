@@ -11,5 +11,5 @@
 		<kie:kbase name="bolaoKBase" packages="br.com.debico.bolao.brms.rules"></kie:kbase>
 	</kie:kmodule>
 
-	<bean id="kiePostProcessor" class="org.kie.spring.KModuleBeanFactoryPostProcessor" />
+	<bean id="kiePostProcessor" class="org.kie.spring.annotations.KModuleAnnotationPostProcessor" />
 </beans>

@@ -35,6 +35,12 @@ public class BolaoConfig {
 	
 	@Inject
 	protected CampeonatoConfig campeonatoConfig;
+	
+	@Inject
+	protected SocialConfig socialConfig;
+	
+	@Inject
+	protected NotifyConfig notifyConfig;
 
 	@Inject
 	@Named("bolaoKBase")
