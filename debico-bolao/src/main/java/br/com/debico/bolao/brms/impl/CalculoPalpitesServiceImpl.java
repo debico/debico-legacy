@@ -23,7 +23,8 @@ import br.com.debico.model.campeonato.Campeonato;
 @Transactional(readOnly = false, propagation = Propagation.MANDATORY)
 class CalculoPalpitesServiceImpl implements CalculoPalpitesService {
 
-    protected static final Logger LOGGER = LoggerFactory.getLogger(CalculoPalpitesServiceImpl.class);
+    protected static final Logger LOGGER = LoggerFactory
+            .getLogger(CalculoPalpitesServiceImpl.class);
 
     protected static final String AGENDA_GROUP = "resultado_palpite";
 
@@ -37,17 +38,22 @@ class CalculoPalpitesServiceImpl implements CalculoPalpitesService {
     @Named("bolaoBrmsExecutor")
     protected BRMSExecutor brmsExecutor;
 
-    public void computarPalpites(final Campeonato campeonato, final List<? extends Partida> partidas) {
+    public void computarPalpites(final Campeonato campeonato,
+            final List<? extends Partida> partidas) {
         LOGGER.debug("[computarPalpites] Selecionando os palpites.");
         List<Palpite> palpites = palpiteDAO.selecionarTodos(partidas);
-        LOGGER.debug("[computarPalpites] '{}' palpites selecionados.", palpites.size());
+        LOGGER.debug("[computarPalpites] '{}' palpites selecionados.",
+                palpites.size());
 
         LOGGER.debug("[computarPalpites] Selecionando os apostadores.");
-        List<ApostadorPontuacao> apostadores = apostadorPontuacaoDAO.selecionarApostadores(campeonato);
-        LOGGER.debug("[computarPalpites] '{}' Apostadores selecionados.", apostadores.size());
+        List<ApostadorPontuacao> apostadores = apostadorPontuacaoDAO
+                .selecionarApostadores(campeonato);
+        LOGGER.debug("[computarPalpites] '{}' Apostadores selecionados.",
+                apostadores.size());
 
-        if(!palpites.isEmpty()) {
-        	brmsExecutor.processar(AGENDA_GROUP, palpites, partidas, apostadores);
+        if (!palpites.isEmpty()) {
+            brmsExecutor.processar(AGENDA_GROUP, palpites, partidas,
+                    apostadores);
         }
     }
 

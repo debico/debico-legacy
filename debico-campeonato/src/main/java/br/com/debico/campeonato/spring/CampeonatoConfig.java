@@ -1,13 +1,13 @@
 package br.com.debico.campeonato.spring;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import org.kie.api.KieBase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import br.com.debico.core.brms.BRMSExecutor;
 import br.com.debico.core.brms.impl.DroolsBRMSExecutor;
@@ -27,25 +27,29 @@ import br.com.debico.core.brms.impl.DroolsBRMSExecutor;
  */
 @Configuration
 @ComponentScan({ "br.com.debico.campeonato.dao",
-		"br.com.debico.campeonato.services", "br.com.debico.campeonato.brms" })
-@ImportResource({ "classpath:/br/com/debico/campeonato/brms/spring/applicatonContext-brms.xml" })
+        "br.com.debico.campeonato.services", "br.com.debico.campeonato.brms" })
 public class CampeonatoConfig {
 
-	@Inject
-	@Named("campeonatoKBase")
-	protected KieBase kieBase;
+    private static final Logger LOGGER = LoggerFactory
+            .getLogger(CampeonatoConfig.class);
 
-	public CampeonatoConfig() {
+    public CampeonatoConfig() {
 
-	}
-	
-	@Bean
-	@Named("campeonatoBrmsExecutor")
-	public BRMSExecutor brmsExecutor() {
-		DroolsBRMSExecutor brmsExecutor = new DroolsBRMSExecutor();
-		brmsExecutor.setKieBase(kieBase);
+    }
 
-		return brmsExecutor;
-	}
+    @SuppressWarnings("resource")
+    @Bean(name="campeonatoBrmsExecutor")
+    public BRMSExecutor campeonatoBrmsExecutor() {
+        LOGGER.debug("********* INICIO DA CONFIGURACAO DO KIE *********");
+        ConfigurableApplicationContext kieAppContext = new ClassPathXmlApplicationContext(
+                "/br/com/debico/campeonato/brms/spring/applicationContext-brms.xml");
+        kieAppContext.registerShutdownHook();
+
+        DroolsBRMSExecutor brmsExecutor = new DroolsBRMSExecutor();
+        brmsExecutor.setKieBase(kieAppContext.getBean(KieBase.class));
+        LOGGER.debug("********* FIM DA CONFIGURACAO DO KIE *********");
+        
+        return brmsExecutor;
+    }
 
 }

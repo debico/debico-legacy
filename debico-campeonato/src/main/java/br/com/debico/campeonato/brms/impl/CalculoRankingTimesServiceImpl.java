@@ -29,6 +29,7 @@ class CalculoRankingTimesServiceImpl implements CalculoRankingTimesService  {
     protected static final String AGENDA_GROUP_STATUS_PARTIDA = "calcula_posicao_times";
 
     @Inject
+    @Named("campeonatoBrmsExecutor")
     private BRMSExecutor brmsExecutor;
     
     @Inject

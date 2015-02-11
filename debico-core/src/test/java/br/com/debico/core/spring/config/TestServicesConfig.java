@@ -1,19 +1,17 @@
 package br.com.debico.core.spring.config;
 
+import static org.junit.Assert.assertNotNull;
+
 import javax.inject.Inject;
-import javax.sql.DataSource;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.cache.CacheManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.assertNotNull;
-
-@Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { ServicesConfig.class })
 public class TestServicesConfig {
@@ -23,7 +21,7 @@ public class TestServicesConfig {
 
 	@BeforeClass
 	public static void before() {
-		System.setProperty("spring.profiles.active", "release");
+
 	}
 
 	/**
@@ -32,7 +30,7 @@ public class TestServicesConfig {
 	@Test
 	public void test() {
 		assertNotNull(applicationContext);
-		assertNotNull(applicationContext.getBean(DataSource.class));
+		assertNotNull(applicationContext.getBean(CacheManager.class));
 	}
 
 }

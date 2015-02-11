@@ -1,32 +1,38 @@
 package br.com.debico.social.dao;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import javax.inject.Inject;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.model.Usuario;
+import br.com.debico.social.spring.SocialConfig;
 import br.com.debico.test.spring.AbstractUnitTest;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import br.com.debico.test.spring.ServicesUnitTestConfig;
 
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = { SocialConfig.class,
+        ServicesUnitTestConfig.class })
 public class TestUsuarioDAO extends AbstractUnitTest {
 
-	@Inject
-	private UsuarioDAO usuarioDAO;
+    @Inject
+    private UsuarioDAO usuarioDAO;
 
-	@Test
-	public void testInserir() {
-		Usuario apostador = new Usuario("bruce@avengers.com");
-		usuarioDAO.inserir(apostador);
+    @Test
+    public void testInserir() {
+        Usuario apostador = new Usuario("bruce@avengers.com");
+        usuarioDAO.inserir(apostador);
 
-		Usuario bruce = usuarioDAO.selecionarPorEmail("bruce@avengers.com");
-		assertNotNull(bruce);
-		assertTrue(bruce.getId() > 0);
-	}
+        Usuario bruce = usuarioDAO.selecionarPorEmail("bruce@avengers.com");
+        assertNotNull(bruce);
+        assertTrue(bruce.getId() > 0);
+    }
 
 }

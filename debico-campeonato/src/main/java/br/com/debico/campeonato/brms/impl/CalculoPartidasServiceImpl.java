@@ -33,6 +33,7 @@ class CalculoPartidasServiceImpl implements CalculoPartidasService {
     protected static final String AGENDA_GROUP_STATUS_PARTIDA = "calcula_resultado";
 
     @Inject
+    @Named("campeonatoBrmsExecutor")
     private BRMSExecutor brmsExecutor;
 
     @Inject

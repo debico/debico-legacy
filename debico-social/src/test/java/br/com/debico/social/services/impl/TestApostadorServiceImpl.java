@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +21,9 @@ import br.com.debico.social.services.ApostadorService;
 import br.com.debico.social.services.UsuarioService;
 import br.com.debico.social.services.impl.ApostadorServiceImpl;
 import br.com.debico.social.services.impl.UsuarioServiceImpl;
+import br.com.debico.social.spring.SocialConfig;
 import br.com.debico.test.spring.AbstractUnitTest;
+import br.com.debico.test.spring.ServicesUnitTestConfig;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -30,6 +33,8 @@ import static org.junit.Assert.assertTrue;
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
 @RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = { SocialConfig.class,
+        ServicesUnitTestConfig.class })
 public class TestApostadorServiceImpl extends AbstractUnitTest {
 
     @Inject
