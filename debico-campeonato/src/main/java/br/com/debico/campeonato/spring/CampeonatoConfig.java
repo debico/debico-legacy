@@ -1,13 +1,11 @@
 package br.com.debico.campeonato.spring;
 
-import org.kie.api.KieBase;
+import org.kie.api.KieServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import br.com.debico.core.brms.BRMSExecutor;
 import br.com.debico.core.brms.impl.DroolsBRMSExecutor;
@@ -37,18 +35,16 @@ public class CampeonatoConfig {
 
     }
 
-    @SuppressWarnings("resource")
-    @Bean(name="campeonatoBrmsExecutor")
+    @Bean(name = "campeonatoBrmsExecutor")
     public BRMSExecutor campeonatoBrmsExecutor() {
         LOGGER.debug("********* INICIO DA CONFIGURACAO DO KIE *********");
-        ConfigurableApplicationContext kieAppContext = new ClassPathXmlApplicationContext(
-                "/br/com/debico/campeonato/brms/spring/applicationContext-brms.xml");
-        kieAppContext.registerShutdownHook();
-
+        // feito dessa forma em virtude da integração ruim com o Spring
+        KieServices kieServices = KieServices.Factory.get();
         DroolsBRMSExecutor brmsExecutor = new DroolsBRMSExecutor();
-        brmsExecutor.setKieBase(kieAppContext.getBean(KieBase.class));
+        brmsExecutor.setKieBase(kieServices.getKieClasspathContainer()
+                .getKieBase("campeonatoKBase"));
         LOGGER.debug("********* FIM DA CONFIGURACAO DO KIE *********");
-        
+
         return brmsExecutor;
     }
 

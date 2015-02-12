@@ -309,7 +309,7 @@
 		<plugins>
 			<!-- Eh preciso adicionar as regras do main no classpath do resource, 
 				se nao nao le! -->
-			<!-- ref.: http://stackoverflow.com/questions/1324767/maven-add-directory-to-classpath-while-executing-tests -->
+			<!-- ref.: http://stackoverflow.com/questions/1324767/maven-add-directory-to-classpath-while-executing-tests
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
@@ -332,6 +332,7 @@
 					</execution>
 				</executions>
 			</plugin>
+			-->
 			<!-- Previne o log dos testes durante o build do maven. -->
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>

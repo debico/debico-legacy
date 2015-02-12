@@ -2,15 +2,13 @@ package br.com.debico.bolao.spring;
 
 import javax.inject.Inject;
 
-import org.kie.api.KieBase;
+import org.kie.api.KieServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import br.com.debico.campeonato.spring.CampeonatoConfig;
 import br.com.debico.core.brms.BRMSExecutor;
@@ -50,16 +48,16 @@ public class BolaoConfig {
 
     }
 
-    @SuppressWarnings("resource")
-    @Bean(name="bolaoBrmsExecutor")
+    @Bean(name = "bolaoBrmsExecutor")
     public BRMSExecutor bolaoBrmsExecutor() {
         LOGGER.debug("********* INICIO DA CONFIGURACAO DO KIE *********");
-        ConfigurableApplicationContext kieAppContext = new ClassPathXmlApplicationContext(
-                "/br/com/debico/bolao/brms/spring/applicationContext-brms.xml");
-        kieAppContext.registerShutdownHook();
+        
+        KieServices kieServices = KieServices.Factory.get();
 
         DroolsBRMSExecutor brmsExecutor = new DroolsBRMSExecutor();
-        brmsExecutor.setKieBase(kieAppContext.getBean(KieBase.class));
+        brmsExecutor.setKieBase(kieServices.getKieClasspathContainer()
+                .getKieBase("bolaoKBase"));
+        
         LOGGER.debug("********* FIM DA CONFIGURACAO DO KIE *********");
 
         return brmsExecutor;
