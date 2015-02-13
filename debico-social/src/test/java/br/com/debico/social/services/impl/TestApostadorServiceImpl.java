@@ -1,5 +1,11 @@
 package br.com.debico.social.services.impl;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import javax.inject.Inject;
 
 import org.junit.Before;
@@ -19,22 +25,13 @@ import br.com.debico.model.Usuario;
 import br.com.debico.social.CadastroApostadorException;
 import br.com.debico.social.services.ApostadorService;
 import br.com.debico.social.services.UsuarioService;
-import br.com.debico.social.services.impl.ApostadorServiceImpl;
-import br.com.debico.social.services.impl.UsuarioServiceImpl;
 import br.com.debico.social.spring.SocialConfig;
 import br.com.debico.test.spring.AbstractUnitTest;
-import br.com.debico.test.spring.ServicesUnitTestConfig;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { SocialConfig.class,
-        ServicesUnitTestConfig.class })
+@ContextConfiguration(classes = { SocialConfig.class })
 public class TestApostadorServiceImpl extends AbstractUnitTest {
 
     @Inject

@@ -1,19 +1,20 @@
 package br.com.debico.test.spring;
 
 import org.junit.After;
-import org.junit.BeforeClass;
 import org.jvnet.mock_javamail.Mailbox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 @ActiveProfiles("dev")
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
+@ContextConfiguration(classes = {ServicesUnitTestConfig.class})
 public abstract class AbstractUnitTest {
 
     protected static final Logger LOGGER = LoggerFactory
@@ -21,11 +22,6 @@ public abstract class AbstractUnitTest {
 
     public AbstractUnitTest() {
 
-    }
-
-    @BeforeClass
-    public static void initialize() {
-        System.setProperty("spring.profiles.active", "dev");
     }
 
     @After

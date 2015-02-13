@@ -30,7 +30,7 @@ import br.com.debico.core.spring.profiles.Release;
  */
 @Configuration
 @ComponentScan({ "br.com.debico.notify.services", "br.com.debico.notify.dao" })
-public class NotifyConfig {
+public class NotifyConfig extends ServicesConfig {
 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ServicesConfig.class);

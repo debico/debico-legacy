@@ -30,7 +30,7 @@ import br.com.debico.social.spring.SocialConfig;
 @Import({ CampeonatoConfig.class, SocialConfig.class, NotifyConfig.class })
 @ComponentScan({ "br.com.debico.bolao.services", "br.com.debico.bolao.dao",
         "br.com.debico.bolao.brms" })
-public class BolaoConfig {
+public class BolaoConfig extends ServicesConfig {
 
     private static final Logger LOGGER = LoggerFactory
             .getLogger(BolaoConfig.class);

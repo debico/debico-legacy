@@ -16,12 +16,10 @@ import br.com.debico.campeonato.model.EstruturaCampeonato;
 import br.com.debico.campeonato.services.CampeonatoService;
 import br.com.debico.model.Time;
 import br.com.debico.test.spring.AbstractUnitTest;
-import br.com.debico.test.spring.ServicesUnitTestConfig;
 
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
-@ContextConfiguration(classes = { BolaoConfig.class,
-		ServicesUnitTestConfig.class })
+@ContextConfiguration(classes = { BolaoConfig.class })
 public class AbstractBolaoUnitTest extends AbstractUnitTest {
 
 	private final EstruturaCampeonatoProvider provider;

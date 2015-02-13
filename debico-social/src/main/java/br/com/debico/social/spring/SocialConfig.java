@@ -16,7 +16,7 @@ import br.com.debico.core.spring.config.ServicesConfig;
  */
 @Configuration
 @ComponentScan({ "br.com.debico.social.dao", "br.com.debico.social.services" })
-public class SocialConfig {
+public class SocialConfig extends ServicesConfig {
 
 	public SocialConfig() {
 

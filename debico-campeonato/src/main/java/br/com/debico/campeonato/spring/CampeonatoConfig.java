@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 import br.com.debico.core.brms.BRMSExecutor;
 import br.com.debico.core.brms.impl.DroolsBRMSExecutor;
+import br.com.debico.core.spring.config.ServicesConfig;
 
 /**
  * Configuração da Factory do Spring que deve ser importada por camadas que
@@ -26,7 +27,7 @@ import br.com.debico.core.brms.impl.DroolsBRMSExecutor;
 @Configuration
 @ComponentScan({ "br.com.debico.campeonato.dao",
         "br.com.debico.campeonato.services", "br.com.debico.campeonato.brms" })
-public class CampeonatoConfig {
+public class CampeonatoConfig extends ServicesConfig {
 
     private static final Logger LOGGER = LoggerFactory
             .getLogger(CampeonatoConfig.class);
