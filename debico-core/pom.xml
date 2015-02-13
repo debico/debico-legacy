@@ -7,7 +7,7 @@
 		<version>2.0.0</version>
 	</parent>
 	<artifactId>debico-core</artifactId>
-	<name>debico-core</name>
+	<name>Debico Core</name>
 	<description>Núcleo da aplicação: oferece serviços básicos e interfaces para manipulação do banco de dados.</description>
 	<properties>
 		<bonecp.version>0.8.0.RELEASE</bonecp.version>

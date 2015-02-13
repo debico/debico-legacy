@@ -5,7 +5,7 @@
 	<artifactId>debico</artifactId>
 	<version>2.0.0</version>
 	<packaging>pom</packaging>
-	<name>debico</name>
+	<name>Debico</name>
 	<description>Mais que um bolão entre os amigos.</description>
 
 	<organization>
@@ -307,32 +307,6 @@
 
 	<build>
 		<plugins>
-			<!-- Eh preciso adicionar as regras do main no classpath do resource, 
-				se nao nao le! -->
-			<!-- ref.: http://stackoverflow.com/questions/1324767/maven-add-directory-to-classpath-while-executing-tests
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>${resources.plugin.version}</version>
-				<executions>
-					<execution>
-						<id>additional-resources</id>
-						<phase>process-test-resources</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.testOutputDirectory}</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${project.basedir}/src/main/resources</directory>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			-->
 			<!-- Previne o log dos testes durante o build do maven. -->
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
@@ -354,7 +328,7 @@
 						<logback.debug>false</logback.debug>
 						<log.sys.level>OFF</log.sys.level>
 						<log.root.level>OFF</log.root.level>
-						<com.omniweb.bolao.hibernate.show_sql>false</com.omniweb.bolao.hibernate.show_sql>
+						<br.com.debico.hibernate.show_sql>false</br.com.debico.hibernate.show_sql>
 					</systemPropertyVariables>
 					<excludes>
 						<!-- testes de integracao nao -->

@@ -22,4 +22,5 @@
 			<artifactId>spring-test</artifactId>
 		</dependency>
 	</dependencies>
+	<name>Debico Campeonato</name>
 </project>

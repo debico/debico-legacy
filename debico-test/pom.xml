@@ -51,4 +51,5 @@
             <scope>compile</scope>
         </dependency>
 	</dependencies>
+	<name>Debico Test</name>
 </project>

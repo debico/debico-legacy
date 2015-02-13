@@ -18,4 +18,6 @@
 			<artifactId>debico-test</artifactId>
 		</dependency>
 	</dependencies>
+	<name>Debico Social</name>
+	<description>Implementação da Rede Social e Integrações com redes sociais externas.</description>
 </project>

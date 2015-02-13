@@ -38,4 +38,6 @@
 			<version>${oro.version}</version>
 		</dependency>
 	</dependencies>
+	<name>Debico Notify</name>
+	<description>Serviços de envio de notificações (email, popup, push, etc.)</description>
 </project>

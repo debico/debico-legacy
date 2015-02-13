@@ -26,4 +26,5 @@
 			<artifactId>debico-notify</artifactId>
 		</dependency>
 	</dependencies>
+	<name>Debico Bolão</name>
 </project>
