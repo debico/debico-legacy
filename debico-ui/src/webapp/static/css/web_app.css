@@ -1,0 +1,255 @@
+/* -------------------------------------------------------------- */
+/* Creditos */
+/* -------------------------------------------------------------- */
+.creditos a {
+	color: #fff;
+	text-decoration: underline;
+}
+
+/* -------------------------------------------------------------- */
+/* Util */
+/* -------------------------------------------------------------- */
+#throbber {
+	background-image: url("fbloader.gif");
+	display: none;
+	width: 16px;
+	height: 11px;
+	background-repeat: no-repeat;
+}
+
+#loader {
+	background-image: url("fbloader.gif");
+	width: 16px;
+	height: 11px;
+	background-repeat: no-repeat;
+	display: inline;
+}
+
+#alert-loading {
+	
+}
+
+.ok {
+	color: green;
+}
+
+.error {
+	color: red;
+}
+
+/* -------------------------------------------------------------- */
+/* Ranking */
+/* -------------------------------------------------------------- */
+#ranking_apostadores {
+	width: 100%;
+}
+
+td.item-ranking, td.item-ranking-me, td.item-ranking-top, td.item-ranking-red  {
+	border-left: solid 0.25em;
+}
+
+td.item-ranking {
+	border-left-color: rgb(244, 244, 244);
+}
+
+td.item-ranking-me {
+	border-left-color: #008CBA;
+}
+
+td.item-ranking-top {
+	border-left-color: #A9DA88;
+}
+
+td.item-ranking-red {
+	border-left-color: #D24858;
+}
+
+tr.item-ranking-me {
+	background-color: #DAEDFB !important;
+}
+
+tr.item-ranking-top {
+	background-color: #E9FFE1 !important;
+}
+
+tr.item-ranking-red {
+	background-color: #FFD3D3 !important;
+} 
+
+/* -------------------------------------------------------------- */
+/* Tabela Campeonato PC */
+/* -------------------------------------------------------------- */
+#tabela_pc {
+	width: 100%
+}
+
+#tabela_pc tbody td {
+	font-size: 0.6em;
+}
+
+#tabela_pc tbody td.time {
+	font-size: 0.8em;
+	font-weight: normal;
+}
+
+#tabela_pc thead th {
+	font-size: 0.6em;
+}
+
+#tabela_pc thead th.destaque {
+	font-size: 0.8em;
+}
+
+#tabela_rodada tbody td {
+	font-size: 0.8em;
+}
+
+#tabela_rodada thead th {
+	font-size: 0.8em;
+}
+
+/* -------------------------------------------------------------- */
+/* Rodada Widget */
+/* -------------------------------------------------------------- */
+.rodada-header-nome {
+	padding-top: 3px;
+}
+
+.rodada-header {
+	padding-bottom: 15px;
+}
+
+.arrows {
+	font-size: 1.5em;
+	vertical-align: middle;
+}
+
+li.item-partida {
+	border-top: solid 1px #ddd;
+	padding-top: 12px;
+	padding-bottom: 5px;
+}
+
+div.placar {
+	padding: 0px;
+	display: inline;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.rodadas {
+	list-style: none;
+	color: gray;
+	margin: 0px 20px 0px 20px;
+	padding: 0px;
+}
+
+.data-hora-partida, .local-partida {
+	font-size: 0.6em;
+	text-align: center;
+	color: gray;
+}
+
+.placar-pontuacao, .placar-pontuacao-x, .placar-pontuacao-small {
+	display: inline;
+	text-align: center;
+	vertical-align: middle;
+	position: relative;
+	width: auto;
+}
+
+p.placar-pontuacao-small {
+	font-size: 0.85em;
+	color: gray;
+}
+
+.placar-pontuacao-destaque {
+	font-weight: bold;
+}
+
+.placar-pontuacao {
+	font-size: 1.4em;
+}
+
+.placar-pontuacao-x {
+	font-size: 0.6em;
+}
+
+.nome-mandante, .nome-visitante {
+	font-size: 1em;
+	font-weight: bold;
+	color: silver;
+}
+
+.escudo-mandante, .escudo-visitante {
+	display: inline;
+	width: 30px;
+	height: 30px;
+}
+
+input[type="text"].placar-input {
+	margin: 0px;
+	padding: 0px;
+	height: 1.5rem;
+	width: 1.2rem;
+	display: inline;
+	text-align: center;
+}
+
+/* -------------------------------------------------------------- */
+/* Palpites */
+/* -------------------------------------------------------------- */
+/*
+#palpites {
+	display: none;
+}*/
+
+/* -------------------------------------------------------------- */
+/* jQuery UI */
+/* -------------------------------------------------------------- */
+.ui-autocomplete-loading {
+	background: white url('fbloader.gif') right center no-repeat !important;
+}
+
+/* -------------------------------------------------------------- */
+/* jQuery Validator */
+/* -------------------------------------------------------------- */
+label.error {
+	display: block;
+	padding: 0.375rem 0.5625rem 0.5625rem;
+	margin-top: -1px;
+	margin-bottom: 1rem;
+	font-size: 0.75rem;
+	font-weight: normal;
+	font-style: italic;
+	background: #f04124;
+	color: #fff;
+}
+
+/* -------------------------------------------------------------- */
+/* Rickshaw Graph */
+/* paleta: http://www.colourlovers.com/palette/2565938/Farm_Days  */
+/* -------------------------------------------------------------- */
+#y_axis {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	width: 40px;
+}
+
+#x_axis {
+	position: relative;
+	left: 40px;
+	height: 40px;
+}
+
+#chart {
+	display: inline-block;
+	position: relative;
+	left: 40px;
+	background-color: #F9F9F9;
+}
+
+#chart_container {
+	position: relative;
+}

@@ -1,0 +1,32 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/headTag :: headTag">
+</head>
+<body>
+	<nav th:replace="fragments/header :: barra_navegacao"></nav>
+	<div class="panel clearfix">
+		<div class="row">
+			<div class="large-12 columns" th:if="${sucesso}">
+				<h3>Sucesso!</h3>
+				<hr />
+				<p th:text="${mensagem}"></p>
+				<p>
+					Voc&ecirc; deve ser redirecionado em at&eacute; 5 segundos. Se ainda n&atilde;o foi, <a id="redirecionarHome" th:href="@{/}">clique aqui</a> para retornar &agrave; p&aacute;gina inicial.
+				</p>
+			</div>
+		</div>
+	</div>
+	<div th:replace="fragments/footer :: footer-copy"></div>
+	<div th:replace="fragments/footer :: footer-scripts"></div>
+	<script type="text/javascript" th:inline="javascript">
+		function redirectToHome() {
+			window.location = /*[[@{/}]]*/;
+		}
+		
+		$(document).ready(function (){
+			window.setTimeout(redirectToHome, 5000);
+		});
+	</script>
+</body>
+</html>

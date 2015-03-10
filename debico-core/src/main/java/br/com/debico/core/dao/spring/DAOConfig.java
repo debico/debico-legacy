@@ -4,7 +4,6 @@ import javax.inject.Inject;
 import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -24,7 +23,6 @@ import org.springframework.transaction.PlatformTransactionManager;
  * @author r_fernandes
  * @since 1.0.0-RC1
  */
-@Configuration
 public abstract class DAOConfig {
     
     @Inject

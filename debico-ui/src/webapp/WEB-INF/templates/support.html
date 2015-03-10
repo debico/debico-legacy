@@ -1,0 +1,23 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/headTag :: headTag">
+</head>
+<body>
+    <nav th:replace="fragments/header :: barra_navegacao"></nav>
+    <div class="panel clearfix">
+        <div class="row">
+            <div class="large-12 columns" th:if="${sessionExpired}">
+                <h3 th:text="#{support.sessionExpired.html.title}"></h3>
+                <hr />
+                <p>
+                    <span th:text="#{support.sessionExpired.html.msg}"></span>
+                    <a th:href="@{/login}" th:text="#{support.sessionExpired.html.urlMsg}"></a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div th:replace="fragments/footer :: footer-copy"></div>
+    <div th:replace="fragments/footer :: footer-scripts"></div>
+</body>
+</html>

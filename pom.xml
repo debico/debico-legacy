@@ -21,6 +21,7 @@
 		<module>debico-test</module>
 		<module>debico-social</module>
 		<module>debico-notify</module>
+		<module>debico-ui</module>
 	</modules>
 
 	<developers>
@@ -153,6 +154,11 @@
 				<artifactId>debico-campeonato</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+                <groupId>br.com.debico</groupId>
+                <artifactId>debico-bolao</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 			<dependency>
 				<groupId>br.com.debico</groupId>
 				<artifactId>debico-social</artifactId>

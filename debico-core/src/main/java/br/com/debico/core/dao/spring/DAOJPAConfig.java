@@ -3,7 +3,6 @@ package br.com.debico.core.dao.spring;
 import java.util.Properties;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.orm.jpa.AbstractEntityManagerFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -28,7 +27,6 @@ import org.springframework.transaction.PlatformTransactionManager;
  * 
  * @see DAOConfig
  */
-@Configuration
 public abstract class DAOJPAConfig extends DAOConfig {
     
     private Properties hibernateProperties; 

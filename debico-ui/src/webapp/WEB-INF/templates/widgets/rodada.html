@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head></head>
+<body>
+	<!-- ============================================================================ -->
+	<!-- necessário definir no modelo da view as variáveis rodada e campeonato já definidas. -->
+	<!-- administração para referência: https://github.com/thymeleaf/thymeleaf-extras-springsecurity3 -->
+	<!-- ============================================================================ -->
+	<div th:fragment="rodada">
+		<div id="rodada_table" class="large-4 columns" data-equalizer-watch="">
+			<div class="rodada-header row">
+				<div class="arrows large-2 small-2 column">
+					<a href="#" data-bind="click : carregarRodadaAnterior"><i
+						class="fi-arrow-left"></i></a>
+				</div>
+				<div class="rodada-header-nome large-8 small-8 column text-center">
+					<a href="#" id="rodadaBtn" data-dropdown="rodadas-nav"
+						aria-controls="rodadas-nav" aria-expanded="false"
+						data-bind="text: rodadaNome"></a>
+				</div>
+				<div class="arrows large-2 small-2 column">
+					<a href="#" data-bind="click : carregarProximaRodada"><i
+						class="fi-arrow-right"></i></a>
+				</div>
+			</div>
+			<div class="row" id="tabela_partidas">
+				<ul class="rodadas" data-bind="foreach: partidas">
+					<li class="item-partida">
+						<div class="row">
+							<div class="placar large-5 small-5 column">
+								<span class="nome-mandante" data-bind="text: mandante.alias"></span>
+								<div class="escudo-mandante">
+									<img data-bind="attr:{src: mandante.brasaoFigura}" />
+								</div>
+							</div>
+							<div class="placar large-2 small-2 column">
+								<span sec:authorize="!hasRole('ROLE_ADMIN')"
+									class="placar-pontuacao"
+									data-bind="text: placar.golsMandante, visible: hasPlacar"></span>
+								<input sec:authorize="hasRole('ROLE_ADMIN')"
+									class="placar-input" type="text" pattern="[0-9]*"
+									data-bind="value: placar.golsMandante, attr:{readonly: computadaCampeonato}" />
+								<span sec:authorize="!hasRole('ROLE_ADMIN')">x</span> <input
+									sec:authorize="hasRole('ROLE_ADMIN')" class="placar-input"
+									type="text" pattern="[0-9]*"
+									data-bind="value: placar.golsVisitante, attr:{readonly: computadaCampeonato}" />
+								<span sec:authorize="!hasRole('ROLE_ADMIN')"
+									class="placar-pontuacao"
+									data-bind="text: placar.golsVisitante, visible: hasPlacar"></span>
+							</div>
+							<div class="placar large-5 small-5 column">
+								<div class="escudo-visitante">
+									<img data-bind="attr:{src: visitante.brasaoFigura}" />
+								</div>
+								<span class="nome-visitante" data-bind="text: visitante.alias"></span>
+							</div>
+						</div>
+						<div class="row">
+							<div class="text-center large-12 small-12 column">
+								<span class="data-hora-partida"
+									data-bind="text: dataHoraPartida"></span> <span
+									class="local-partida" data-bind="text: local"></span>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<ul id="rodadas-nav" class="f-dropdown small-block-grid-6" data-dropdown-content=""
+			aria-hidden="true" tabindex="-1" data-bind="foreach: rodadas">
+			<li data-bind="text: ordem" class="rodada-nav-item"></li>
+		</ul>
+
+		<script type="text/javascript" th:inline="javascript">
+			/*<![CDATA[*/
+			var RODADA_INICIAL = /*[[${rodada.id}]]*/0;
+			var RODADA_ORDEM_INICIAL = /*[[${rodada.ordem}]]*/0;
+			/*]]>*/
+		</script>
+		<script type="text/javascript" th:src="@{/static/js/partidas_rodada_list_view_model.js}"></script>
+		<script type="text/javascript" th:src="@{/static/js/partidas_rodada_edit_view_model.js}"></script>
+		<script type="text/javascript" th:src="@{/static/js/rodadas_nav.js}"></script>
+		<script type="text/javascript" th:src="@{/static/js/widgets/widgets.rodada.js}"></script>
+	</div>
+</body>
+</html>

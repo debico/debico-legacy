@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import br.com.debico.core.spring.profiles.Release;
+
 import com.jolbox.bonecp.BoneCPDataSource;
 
 /**
@@ -13,9 +15,10 @@ import com.jolbox.bonecp.BoneCPDataSource;
  * @author ricardozanini
  *
  */
+@Release
 @Configuration
 @EnableTransactionManagement
-@PropertySource("classpath:/br/com/debico/core/debico.properties")
+@PropertySource("classpath:/br/com/debico/core/debico-standalone.properties")
 public class DAOJPAStandaloneConfig extends DAOJPAConfig {
 
 	/**

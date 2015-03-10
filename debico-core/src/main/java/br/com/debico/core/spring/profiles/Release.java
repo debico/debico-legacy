@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Profile;
  * @author Ricardo Zanini (ricardozanini@gmail.com)
  * @since 1.2.0
  */
-@Target({ ElementType.TYPE, ElementType.METHOD })
+@Target({ ElementType.TYPE, ElementType.METHOD, ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 @Profile("release")
 public @interface Release {

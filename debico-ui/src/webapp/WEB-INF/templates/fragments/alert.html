@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head></head>
+<body>
+	<div id="errorAlert" th:if="${error}" class="row" th:fragment="error">
+		<div class="large-12 columns">
+			<div class="alert-box alert" th:text="${errorMsg}"></div>
+		</div>
+	</div>
+</body>
+</html>

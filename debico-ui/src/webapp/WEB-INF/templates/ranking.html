@@ -1,0 +1,103 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/headTag :: headTag">
+</head>
+<body>
+	<nav class="top-bar" data-topbar=""
+		th:replace="fragments/header :: barra_navegacao"></nav>
+
+	<div th:replace="modal/regras :: modal"></div>
+
+	<div class="panel">
+		<div class="row">
+			<div class="large-12 columns">
+				<div class="row">
+					<div class="large-12 columns">
+						<br />
+						<h2>
+							<span th:text="${campeonato.nome}"></span> <small>Ranking</small>
+						</h2>
+						<hr />
+						<p>
+							D&uacute;vidas? Leia as <a href="#" data-reveal-id="regras">regras</a>.
+						</p>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="large-12 columns">
+						<table id="ranking_apostadores">
+							<thead>
+								<tr>
+									<th colspan="2" class="destaque">Classifica&ccedil;&atilde;o</th>
+									<th class="text-center has-tip tip-top" data-tooltip=""
+										data-options="disable_for_touch:true"
+										title="Quantidade de pontos acumulados">Pontos</th>
+									<th class="text-center has-tip tip-top" data-tooltip=""
+										data-options="disable_for_touch:true"
+										title="Acertou o placar na cabe&ccedil;a!">Placar</th>
+									<th class="text-center has-tip tip-top" data-tooltip=""
+										data-options="disable_for_touch:true"
+										title="Quantidade de vit&oacute;rias">Vencedor</th>
+									<th class="text-center has-tip tip-top" data-tooltip=""
+										data-options="disable_for_touch:true"
+										title="Quantidade de empates">Empate</th>
+									<th class="text-center has-tip tip-top" data-tooltip=""
+										data-options="disable_for_touch:true"
+										title="Quantidades de gols do placar">Gols</th>
+									<th class="text-center has-tip tip-top" data-tooltip=""
+										data-options="disable_for_touch:true"
+										title="Quantidade de palpites errados (nem gols certos..)">Errados</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="p,iterStat : ${ranking}"
+									th:class="${p.apostador.id == #authentication.principal.idApostador ? 'item-ranking-me' : iterStat.count le 4 ? 'item-ranking-top' : iterStat.size - 4 lt iterStat.count ? 'item-ranking-red' : 'item-ranking'}">
+									<td class="time"
+										th:classappend="${p.apostador.id == #authentication.principal.idApostador ? 'item-ranking-me' : iterStat.count le 4 ? 'item-ranking-top' : iterStat.size - 4 lt iterStat.count ? 'item-ranking-red' : 'item-ranking'}"
+										th:text="${iterStat.count}"></td>
+									<td class="time" th:text="${p.apostador.nome}"></td>
+									<td class="text-center" th:text="${p.pontosTotal}"></td>
+									<td class="text-center" th:text="${p.placar}"></td>
+									<td class="text-center" th:text="${p.vencedor}"></td>
+									<td class="text-center" th:text="${p.empates}"></td>
+									<td class="text-center" th:text="${p.gols}"></td>
+									<td class="text-center" th:text="${p.errados}"></td>
+								</tr>
+							</tbody>
+						</table>
+
+					</div>
+				</div>
+				<div class="row">
+					<div class="large-12 columns">
+						<hr />
+						<h4>Meu Desempenho por Rodada</h4>
+						<br />
+						<div data-alert="" class="alert-box info radius"
+							id="alert-loading">
+							Opa! Carregando o seu desempenho...
+							<div id="loader" class="right"></div>
+						</div>
+						<div data-alert="" class="alert-box warn radius"
+							id="alert-semdados" style="display: none;">Parece que
+							voc&ecirc; ainda n&atilde;o possui palpites computados.</div>
+						<div id="chart_container" class="panel hide">
+							<div id="y_axis"></div>
+							<div id="chart"></div>
+							<div id="x_axis"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:replace="fragments/footer :: footer-copy"></div>
+	<div th:replace="fragments/footer :: footer-scripts"></div>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.13/d3.min.js"></script>
+	<script
+		src="//cdnjs.cloudflare.com/ajax/libs/rickshaw/1.4.6/rickshaw.min.js"></script>
+	<script th:src="@{/static/js/pages/ranking.js}"></script>
+</body>
+</html>

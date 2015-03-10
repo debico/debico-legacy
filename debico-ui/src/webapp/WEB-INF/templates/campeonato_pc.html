@@ -1,0 +1,74 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/headTag :: headTag">
+</head>
+<body>
+	<nav class="top-bar" data-topbar=""
+		th:replace="fragments/header :: barra_navegacao"></nav>
+	<div class="panel">
+		<div class="row">
+			<div class="large-12 columns">
+				<div class="row">
+					<div class="large-12 columns">
+						<br />
+						<h2>
+							<span th:text="${campeonato.nome}"></span> <small>Tabela</small>
+						</h2>
+						<hr />
+					</div>
+				</div>
+				<div class="row" data-equalizer="">
+					<div class="large-8 columns" data-equalizer-watch="">
+						<table id="tabela_pc" role="grid">
+							<thead>
+								<tr>
+									<th colspan="2" class="destaque">Classifica&ccedil;&atilde;o</th>
+									<th class="text-center has-tip tip-top" data-tooltip=""
+										data-options="disable_for_touch:true" title="Pontos">P</th>
+									<th class="text-center has-tip tip-top" data-tooltip=""
+										data-options="disable_for_touch:true" title="Jogos">J</th>
+									<th class="text-center has-tip tip-top" data-tooltip=""
+										data-options="disable_for_touch:true" title="Vit&oacute;rias">V</th>
+									<th class="text-center has-tip tip-top" data-tooltip=""
+										data-options="disable_for_touch:true" title="Empates">E</th>
+									<th class="text-center has-tip tip-top" data-tooltip=""
+										data-options="disable_for_touch:true" title="Derrotas">D</th>
+									<th class="text-center has-tip tip-top" data-tooltip=""
+										data-options="disable_for_touch:true" title="Gols Pr&oacute;">GP</th>
+									<th class="text-center has-tip tip-top" data-tooltip=""
+										data-options="disable_for_touch:true" title="Gols Contra">GC</th>
+									<th class="text-center has-tip tip-top" data-tooltip=""
+										data-options="disable_for_touch:true" title="Saldo de Gols">SG</th>
+									<th class="text-center has-tip tip-top" data-tooltip=""
+										data-options="disable_for_touch:true" title="Aproveitamento">%</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="p : ${ranking}" th:class="${p.statusClassificacao.elite ? 'item-ranking-top' : p.statusClassificacao.inferior ? 'item-ranking-red' : ''}">
+									<td class="time" th:text="${p.posicao}" th:classappend="${p.statusClassificacao.elite ? 'item-ranking-top' : p.statusClassificacao.inferior ? 'item-ranking-red' : 'item-ranking'}"></td>
+									<td class="time" th:text="${p.time.nome}"></td>
+									<td class="text-center" th:text="${p.pontos}"></td>
+									<td class="text-center" th:text="${p.jogos}"></td>
+									<td class="text-center" th:text="${p.vitorias}"></td>
+									<td class="text-center" th:text="${p.empates}"></td>
+									<td class="text-center" th:text="${p.derrotas}"></td>
+									<td class="text-center" th:text="${p.golsPro}"></td>
+									<td class="text-center" th:text="${p.golsContra}"></td>
+									<td class="text-center" th:text="${p.saldoGols}"></td>
+									<!-- http://www.thymeleaf.org/apidocs/thymeleaf/2.0.15/org/thymeleaf/expression/Numbers.html -->
+									<td class="text-center"
+										th:text="${#numbers.formatDecimal(p.aproveitamento, 1, 'POINT', 1, 'POINT')}"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div th:replace="widgets/rodada :: rodada"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:replace="fragments/footer :: footer-copy"></div>
+	<div th:replace="fragments/footer :: footer-scripts"></div>
+</body>
+</html>

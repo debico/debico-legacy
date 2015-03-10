@@ -1,0 +1,129 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/headTag :: headTag">
+</head>
+<body>
+	<nav class="top-bar" data-topbar=""
+		th:replace="fragments/header :: barra_navegacao"></nav>
+
+	<div th:replace="modal/regras :: modal"></div>
+
+	<div class="panel">
+		<div class="row">
+			<div class="large-12 columns" sec:authorize="!hasRole('ROLE_ADMIN')">
+				<div class="row">
+					<div class="large-12 columns">
+						<br />
+						<h2>
+							<span th:text="${campeonato.nome}"></span> <small>Palpites</small>
+						</h2>
+						<hr />
+					</div>
+				</div>
+				<h3>Como funciona?</h3>
+				<p>
+					&Eacute; s&oacute; preencher o placar. Na d&uacute;vida, leia as <a
+						href="#" data-reveal-id="regras">regras</a>. :D
+				</p>
+
+				<div data-alert="" class="alert-box info radius" id="alert-loading">
+					Opa! Carregando os palpites...
+					<div id="loader" class="right"></div>
+				</div>
+
+				<div class="text-center hide" id="palpites">
+					<div class="rodada-header large-12">
+						<div class="large-12 clearfix">
+							<div class="arrows large-2 small-2 column">
+								<a href="#" data-bind="click : carregarRodadaAnterior"><i
+									class="fi-arrow-left"></i></a>
+							</div>
+							<div
+								class="rodada-header-nome large-8 small-8 column text-center">
+								<a href="#" data-bind="text: rodadaNome"></a>
+								<p><span data-bind="text: pontosTotal">0</span> <span th:text="#{palpites_pc.pontos}"></span></p>
+							</div>
+							<div class="arrows large-2 small-2 column">
+								<a href="#" data-bind="click : carregarProximaRodada"><i
+									class="fi-arrow-right"></i></a>
+							</div>
+						</div>
+					</div>
+					<div class="large-12">
+
+						<div class="large-12 text-center" id="partidasPalpite">
+							<ul class="rodadas" data-bind="foreach: partidas">
+								<li class="item-partida">
+									<div class="row">
+										<div class="placar large-5 small-5 column">
+											<span class="nome-mandante" data-bind="text: mandante.nome"></span>
+											<div class="escudo-mandante">
+												<img data-bind="attr:{src: mandante.brasaoFigura}" />
+											</div>
+										</div>
+										<div class="placar large-2 small-2 column">
+											<input class="placar-input" type="text" pattern="[0-9]*"
+												data-bind="value: palpite.placar.golsMandante, attr:{readonly: computadaCampeonato}"
+												maxlength="2" min="0" max="99"/>
+											<span>x</span> <input class="placar-input" type="text"
+												pattern="[0-9]*"
+												data-bind="value: palpite.placar.golsVisitante, attr:{readonly: computadaCampeonato}"
+												maxlength="2" min="0" max="99" />
+											<i class="fi-check ok"
+												data-bind="visible: palpite.placar.isValido()"></i>
+										</div>
+										<div class="placar large-5 small-5 column">
+											<div class="escudo-visitante">
+												<img data-bind="attr:{src: visitante.brasaoFigura}" />
+											</div>
+											<span class="nome-visitante" data-bind="text: visitante.nome"></span>
+										</div>
+									</div>
+									<div class="row" data-bind="visible: hasPlacarProcessado()">
+										<div class="text-center large-12 small-12 column">
+											<div>
+												<p class="placar-pontuacao-small">
+													<span th:text="#{palpites_pc.placar}"></span> <span
+														class="placar-pontuacao-destaque"
+														data-bind="text: placar.formatar()"></span>
+												</p>
+												<p class="placar-pontuacao-small">
+													<span th:text="#{palpites_pc.pontuacao}"></span> <span
+														class="placar-pontuacao-destaque"
+														data-bind="text: palpite.pontos"></span> <span
+														th:text="#{palpites_pc.pontos}"></span>
+												</p>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="text-center large-12 small-12 column">
+											<span class="data-hora-partida"
+												data-bind="text: dataHoraPartida"></span> <span
+												class="local-partida" data-bind="text: local"></span>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:replace="fragments/footer :: footer-copy"></div>
+	<div th:replace="fragments/footer :: footer-scripts"></div>
+
+	<script type="text/javascript" th:inline="javascript">
+		/*<![CDATA[*/
+		var RODADA_INICIAL = /*[[${rodada.id}]]*/0;
+		var RODADA_ORDEM_INICIAL = /*[[${rodada.ordem}]]*/0;
+		/*]]>*/
+	</script>
+	<script type="text/javascript"	th:src="@{/static/js/partidas_rodada_list_view_model.js}"></script>
+	<script type="text/javascript"	th:src="@{/static/js/partidas_palpite_list_view_model.js}"></script>
+	<script type="text/javascript"	th:src="@{/static/js/pages/palpites_pc.js}"></script>
+</body>
+</html>

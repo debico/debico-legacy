@@ -3,8 +3,6 @@ package br.com.debico.test.spring;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
-import br.com.debico.core.dao.spring.EnableDAO;
-import br.com.debico.core.dao.spring.TipoDAOConfig;
 import br.com.debico.core.spring.profiles.Dev;
 
 /**
@@ -17,7 +15,6 @@ import br.com.debico.core.spring.profiles.Dev;
 @Dev
 @Configuration
 @PropertySource({ "/debico-test.properties", "/debico-embedded.properties" })
-@EnableDAO(type = TipoDAOConfig.JPA_EMBEDDED_DATABASE)
 public class ServicesUnitTestConfig {
 
 }

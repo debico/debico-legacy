@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.6" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true">  
+  <class id="1" language="java" name="com.omniweb.bolao.model.campeonato.Tabela" project="bolao-campeao" 
+    file="/bolao-campeao/src/main/java/com/omniweb/bolao/model/campeonato/Tabela.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="62" width="131" x="186" y="1051"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <interface id="2" language="java" name="com.omniweb.bolao.model.campeonato.Campeonato" project="bolao-campeao" 
+    file="/bolao-campeao/src/main/java/com/omniweb/bolao/model/campeonato/Campeonato.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="80" width="161" x="268" y="1453"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </interface>  
+  <class id="3" language="java" name="com.omniweb.bolao.model.campeonato.Ranking" project="bolao-campeao" 
+    file="/bolao-campeao/src/main/java/com/omniweb/bolao/model/campeonato/Ranking.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="116" width="152" x="382" y="895"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="com.omniweb.bolao.model.campeonato.FaseImpl" project="bolao-campeao" 
+    file="/bolao-campeao/src/main/java/com/omniweb/bolao/model/campeonato/FaseImpl.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="170" width="196" x="528" y="1051"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <enumeration id="5" language="java" name="com.omniweb.bolao.model.campeonato.TipoFase" project="bolao-campeao" 
+    file="/bolao-campeao/src/main/java/com/omniweb/bolao/model/campeonato/TipoFase.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="98" width="119" x="528" y="1261"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </enumeration>  
+  <class id="6" language="java" name="com.omniweb.bolao.model.campeonato.CampeonatoPontosCorridos" 
+    project="bolao-campeao" 
+    file="/bolao-campeao/src/main/java/com/omniweb/bolao/model/campeonato/CampeonatoPontosCorridos.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="62" width="185" x="43" y="1453"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="com.omniweb.bolao.model.campeonato.Grupo" project="bolao-campeao" 
+    file="/bolao-campeao/src/main/java/com/omniweb/bolao/model/campeonato/Grupo.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="80" width="131" x="357" y="1051"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <interface id="8" language="java" name="com.omniweb.bolao.model.campeonato.Fase" project="bolao-campeao" 
+    file="/bolao-campeao/src/main/java/com/omniweb/bolao/model/campeonato/Fase.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="44" width="103" x="385" y="1261"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </interface>  
+  <class id="9" language="java" name="com.omniweb.bolao.model.campeonato.PontuacaoTime" project="bolao-campeao" 
+    file="/bolao-campeao/src/main/java/com/omniweb/bolao/model/campeonato/PontuacaoTime.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="260" width="138" x="382" y="595"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="com.omniweb.bolao.model.campeonato.CampeonatoCopa" project="bolao-campeao" 
+    file="/bolao-campeao/src/main/java/com/omniweb/bolao/model/campeonato/CampeonatoCopa.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="62" width="131" x="469" y="1453"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="com.omniweb.bolao.model.campeonato.FaseGrupos" project="bolao-campeao" 
+    file="/bolao-campeao/src/main/java/com/omniweb/bolao/model/campeonato/FaseGrupos.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="62" width="131" x="43" y="1261"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="com.omniweb.bolao.model.campeonato.FaseUnica" project="bolao-campeao" 
+    file="/bolao-campeao/src/main/java/com/omniweb/bolao/model/campeonato/FaseUnica.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="80" width="138" x="687" y="1261"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="com.omniweb.bolao.model.campeonato.Rodada" project="bolao-campeao" 
+    file="/bolao-campeao/src/main/java/com/omniweb/bolao/model/campeonato/Rodada.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="116" width="187" x="560" y="595"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="com.omniweb.bolao.model.campeonato.Chave" project="bolao-campeao" 
+    file="/bolao-campeao/src/main/java/com/omniweb/bolao/model/campeonato/Chave.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="152" width="186" x="820" y="37"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="com.omniweb.bolao.model.campeonato.CampeonatoImpl" project="bolao-campeao" 
+    file="/bolao-campeao/src/main/java/com/omniweb/bolao/model/campeonato/CampeonatoImpl.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="152" width="131" x="214" y="1261"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="16" language="java" name="com.omniweb.bolao.model.campeonato.ChaveUnica" project="bolao-campeao" 
+    file="/bolao-campeao/src/main/java/com/omniweb/bolao/model/campeonato/ChaveUnica.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="62" width="131" x="702" y="229"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="17" language="java" name="com.omniweb.bolao.model.campeonato.FaseEliminatoria" project="bolao-campeao" 
+    file="/bolao-campeao/src/main/java/com/omniweb/bolao/model/campeonato/FaseEliminatoria.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="62" width="131" x="865" y="1261"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="com.omniweb.bolao.model.Partida" project="bolao-campeao" 
+    file="/bolao-campeao/src/main/java/com/omniweb/bolao/model/Partida.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="224" width="183" x="631" y="331"/>    
+    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
+      visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <association id="19">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="20" name="campeonato"/>      
+      <multiplicity id="21" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="22">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="8"/>  
+  </realization>  
+  <association id="23">    
+    <bendpoint x="863" y="229"/>    
+    <bendpoint x="863" y="331"/>    
+    <bendpoint x="863" y="595"/>    
+    <bendpoint x="863" y="895"/>    
+    <bendpoint x="863" y="1051"/>    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="24" name="fase"/>      
+      <multiplicity id="25" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="17" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="26">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="2"/>  
+  </realization>  
+  <association id="27">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="28" name="fase"/>      
+      <multiplicity id="29" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="30">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <generalization id="31">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="14"/>  
+  </generalization>  
+  <generalization id="32">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <association id="33">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="34" name="ranking"/>      
+      <multiplicity id="35" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="36">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="37" name="proximaFase"/>      
+      <multiplicity id="38" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="17" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="39">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <generalization id="40">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="15"/>  
+  </generalization>  
+  <generalization id="41">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <generalization id="42">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <association id="43">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="44" name="ranking"/>      
+      <multiplicity id="45" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="46">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="15"/>  
+  </generalization>  
+  <classifier-display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" 
+    accessors="true" visibility="false">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="false" package="false" protected="false" private="false" static="false"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

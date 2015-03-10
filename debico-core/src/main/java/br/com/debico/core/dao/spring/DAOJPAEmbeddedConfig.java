@@ -10,6 +10,9 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import br.com.debico.core.spring.profiles.Dev;
+
+@Dev
 @Configuration
 @PropertySource(value = "classpath:/debico-embedded.properties", ignoreResourceNotFound = true)
 @EnableTransactionManagement

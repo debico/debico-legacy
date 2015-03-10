@@ -1,5 +1,8 @@
 package br.com.debico.model;
 
+import static com.google.common.base.Objects.equal;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.io.Serializable;
 
 import javax.persistence.CascadeType;
@@ -10,10 +13,6 @@ import javax.persistence.MappedSuperclass;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Objects.ToStringHelper;
-
-import static com.google.common.base.Objects.equal;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 @MappedSuperclass
 public abstract class PalpiteBase implements Serializable {
@@ -31,6 +30,16 @@ public abstract class PalpiteBase implements Serializable {
 
     @Column(name = "IN_COMPUTADO", nullable = false)
     private boolean computado;
+    
+    /**
+     * Cria uma nova instância com base em {@link PalpiteLite}. Não define {@link Apostador} e {@link Partida}.
+     * O próprio cliente deve ser responsável por definir essas propriedades com base em serviços.
+     *  
+     * @param palpiteLite
+     */
+    public PalpiteBase(final PalpiteLite palpiteLite) {
+        this.placar = palpiteLite.getPlacar();
+    }
     
     public PalpiteBase(final Apostador apostador, final Placar placar) {
         this();

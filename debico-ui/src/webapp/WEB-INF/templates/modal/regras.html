@@ -1,0 +1,119 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/headTag :: headTag">
+</head>
+<body>
+	<!-- Ok I have fixed it. The modal needs to be above the reveal modal link for some reason. -->
+	<div id="regras" class="reveal-modal" data-reveal=""
+		th:fragment="modal">
+		<a class="close-reveal-modal">&#215;</a>
+		<h4 th:text="#{regras.titulo}"></h4>
+		<br />
+
+		<div class="row">
+			<div class="large-12 columns">
+				<br />
+				<p>Acompanhe a tabelinha para entender as regras de
+					pontua&ccedil;&atilde;o:</p>
+				<table>
+					<thead>
+						<tr>
+							<td>Palpite</td>
+							<td>Pontua&ccedil;&atilde;o</td>
+							<td>Descri&ccedil;&atilde;o</td>
+							<td>Exemplo</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Na cabe&ccedil;a</td>
+							<td>5 pontos</td>
+							<td>Acertou o placar exato.</td>
+							<td>O jogo foi 2x0 e voc&ecirc; palpitou 2x0</td>
+						</tr>
+						<tr>
+							<td>Vencedor</td>
+							<td>2 pontos</td>
+							<td>Acertou o vencedor.</td>
+							<td>O jogo foi 2x0 e voc&ecirc; palpitou 3x1.</td>
+						</tr>
+						<tr>
+							<td>Empate</td>
+							<td>2 pontos</td>
+							<td>Acertou o empate.</td>
+							<td>O jogo foi 1x1 e voc&ecirc; palpitou 2x2.</td>
+						</tr>
+						<tr>
+							<td>B&ocirc;nus</td>
+							<td>+1 ponto</td>
+							<td>Acertou o n&uacute;mero de gols no placar. Os pontos
+								s&atilde;o cumulativos.</td>
+							<td>O jogo foi 1x1 e voc&ecirc; marcou 2x1. O jogo foi 2x0 e
+								voc&ecirc; marcou 1x0.</td>
+						</tr>
+					</tbody>
+				</table>
+				<h4>Mais alguns exemplos:</h4>
+				<br />
+				<ol>
+					<li>O jogo foi 3x0, palpitei 2x0. <strong>Resultado:</strong>
+						3 pontos. 2 pelo time vitorioso, 1 pelo n&uacute;mero de gols do
+						time visitante.
+					</li>
+					<li>O jogo foi 1x1, palpitei 0x1. <strong>Resultado:</strong>
+						1 ponto. Acertei o n&uacute;mero de gols do time visitante, mas
+						errei o resultado.
+					</li>
+				</ol>
+				<h4>Algumas oberva&ccedil;&otilde;es importantes:</h4>
+				<br />
+				<ol>
+					<li>Os palpites podem ser realizados at&eacute; uma hora antes
+						da partida.</li>
+					<li>No caso de defini&ccedil;&atilde;o da partida nos
+						p&ecirc;naltis, o placar considerado &eacute; o do final da
+						partida, ou seja, o empate.</li>
+					<li>No caso de defini&ccedil;&atilde;o da partida na
+						prorroga&ccedil;&atilde;o, o placar considerado &eacute; o do
+						final da prorroga&ccedil;&atilde;o e n&atilde;o o empate ocorrido
+						nos 90 minutos.</li>
+					<li>O sistema calcula os resultados das partidas e dos
+						palpites durante as madrugadas, portanto os resultados s&oacute;
+						poder&atilde;o ser vistos na manh&atilde; seguinte.</li>
+				</ol>
+				<h4>Crit&eacute;rios de desempate, na ordem:</h4>
+				<br />
+				<ol>
+					<li>Quantidade de placar na cabe&ccedil;a.</li>
+					<li>Quantidade de empates.</li>
+					<li>Quantidade de vit&oacute;rias.</li>
+					<li>Quantidade de gols.</li>
+					<li>Menor quantidade de palpites errados.</li>
+					<li>Se mesmo assim empatar, vai ter que ser no palitinho (na
+						pr&aacute;tica o sistema ordena por ordem alfab&eacute;tica).</li>
+				</ol>
+				<h4>Dicas para se organizar com os amigos:</h4>
+				<br />
+				<ol>
+					<li>Defina uma prenda ou pr&ecirc;mio. As pessoas ficam mais
+						motivadas quando alguma coisa est&aacute; em jogo.</li>
+					<li>Premie pelo menos os tr&ecirc;s primeiros para manter a
+						briga legal at&eacute; o final do campeonato.</li>
+					<li>Se quiser apimentar um pouquinho mais, puna os
+						&uacute;ltimos colocados. Dobrar a aposta &eacute; uma boa.</li>
+					<li>Divirta-se! A vida &eacute; curta. :)</li>
+				</ol>
+				<hr />
+				<p>
+					Caso ainda tenha d&uacute;vidas, <a href="#"
+						data-reveal-id="contato">entre em contato!</a>
+				</p>
+			</div>
+		</div>
+
+
+	</div>
+</body>
+</html>

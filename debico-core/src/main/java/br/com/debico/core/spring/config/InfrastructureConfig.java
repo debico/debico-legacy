@@ -9,12 +9,12 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.guava.GuavaCacheManager;
 import org.springframework.cache.support.NoOpCacheManager;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 
 import br.com.debico.core.dao.spring.DAOConfig;
-import br.com.debico.core.dao.spring.EnableDAO;
 import br.com.debico.core.helpers.CacheKeys;
 import br.com.debico.core.spring.profiles.Dev;
 import br.com.debico.core.spring.profiles.Release;
@@ -26,6 +26,7 @@ import br.com.debico.core.spring.profiles.Release;
  *
  */
 @EnableCaching
+@ComponentScan(basePackages = { "br.com.debico.core.dao.spring" })
 public final class InfrastructureConfig {
 
     /**
@@ -34,11 +35,6 @@ public final class InfrastructureConfig {
     @Inject
     protected Environment environment;
 
-    /**
-     * Configuração da DAO.
-     * 
-     * @see EnableDAO
-     */
     @Inject
     protected DAOConfig daoConfig;
 

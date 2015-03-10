@@ -1,5 +1,7 @@
 package br.com.debico.model;
 
+import static com.google.common.base.Objects.equal;
+
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -16,8 +18,6 @@ import javax.persistence.TemporalType;
 import org.joda.time.DateTime;
 
 import com.google.common.base.Objects;
-
-import static com.google.common.base.Objects.equal;
 
 @Entity
 @Table(name = "tb_palpite")
@@ -51,6 +51,17 @@ public class Palpite extends PalpiteBase {
         this.partida = partida;
         this.pontos = 0;
     	this.dataHoraPalpite = new Date();
+    }
+    
+    /**
+     * @see PalpiteBase#PalpiteBase(PalpiteLite)
+     * @param palpiteLite
+     */
+    public Palpite(final PalpiteLite palpiteLite) {
+        super(palpiteLite);
+        this.id = palpiteLite.getId();
+        this.pontos = 0;
+        this.dataHoraPalpite = new Date();
     }
     
     public Palpite() {
