@@ -60,7 +60,18 @@ Fora isso, não há muito o que fazer aqui. A própria aplicação gerencia o ba
 
 Algumas propriedades da aplicação devem ser configuradas no ambiente. A não ser que você queira manter no MySQL com um usuário e senha padrão. Não, você não quer isso! Observe a tabela:
 
-
+| Propriedade | Tipo | Padrão | Descrição
+----------------- | ----- | --------- | ------------
+| `br.com.debico.hibernate.dialect` | String | `org.hibernate.dialect.MySQLDialect` | Dialeto do Hibernate do banco de dados utilizado pela aplicação. Caso precise alterar o banco, não esqueça dessa propriedade!
+| `br.com.debico.hibernate.show_sql` | Boolean | true | O Hibernate deve mostrar o *output* dos comandos executados no banco na console de log?
+| `br.com.debico.db.url` | String | jdbc\:mysql\://127.0.0.1:3306/bolao_campeao | URL de conexão com o banco de dados
+| `br.com.debico.db.user` | String | user_bolao | Nome do usuário do banco de dados.
+| `br.com.debico.db.password` | String | user_bolao | Senha do usuário do banco de dados.
+| `br.com.debico.db.driver` | String | `com.mysql.jdbc.Driver` | Nome do driver JDBC do banco de dados. Caso altere o tipo do banco, não esquecer de adicionar o *driver* no *classpath* do servidor de aplicação.
+| `br.com.debico.db.initialsize` | Integer | 5 | Tamanho do *pool* inicial de conexão do banco de dados.
+| `br.com.debico.db.validation_query` | String | SELECT 1 | *Query* para realizar a validação da conexão com o banco de dados.
+| `br.com.debico.jndi.mail.session` | String | mail/Session/Debico | Nome do JNDI da sessão de e-mail do servidor de aplicação.
+| `br.com.debico.admin.email` | String | ricardozanini@gmail.com | E-mail do administrador do sistema. Aquele cara que vai receber as reclamações do formulário de contato. :)
 
 As propriedades carregas por padrão você encontra [neste arquivo](https://bitbucket.org/ricardozanini/debico/src/dac4cf90c9fca497822c480758bead31052538c8/debico-core/src/main/resources/br/com/debico/core/debico-standalone.properties?at=master). Porém, sugiro sempre configurá-las no ambiente do servidor escolhido.
 
@@ -70,7 +81,7 @@ Utilizo a Amazon Web Services para realizar o envio de e-mails. Abaixo, as confi
 
 ### Logging ###
 
-O serviço de log utilizado pela aplicação é o SLF4J com implementação do Logback. É esperado que as bibliotecas do SLF4J estejam no *classpath* do servidor de aplicação. Para saber como configurar o Tomcat para utilizar o SLF4J como padrão, leia [este artigo](http://adfinmunich.blogspot.com.br/2012/03/how-to-configure-tomcat-to-use-slf4j.html) e [este aqui também](http://stackoverflow.com/questions/8012595/tomcat-logging-with-slf4j-and-log4j).
+O serviço de log utilizado pela aplicação é o SLF4J com implementação do Logback. É esperado que as bibliotecas do SLF4J estejam no *classpath* do servidor de aplicação. Para saber como configurar o Tomcat para utilizar o SLF4J como padrão, leia [este artigo](http://adfinmunich.blogspot.com.br/2012/03/how-to-configure-tomcat-to-use-slf4j.html) e [este aqui também](http://stackoverflow.com/questions/8012595/tomcat-logging-with-slf4j-and-log4j). 
 
 ### Copyright ###
 
