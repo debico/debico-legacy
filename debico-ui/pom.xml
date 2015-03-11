@@ -15,9 +15,34 @@
 		<thymeleaf.version>2.1.3.RELEASE</thymeleaf.version>
 		<thymeleaf.extras.version>2.1.1.RELEASE</thymeleaf.extras.version>
 		<jcabi.version>1.0.4</jcabi.version>
-		<jetty.version>9.2.3.v20140905</jetty.version>
-		<selenium.version>2.43.1</selenium.version>
+		<jetty.version>9.2.9.v20150224</jetty.version>
+		<selenium.version>2.45.0</selenium.version>
+		<war-plugin.version>2.6</war-plugin.version>
 	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>${war-plugin.version}</version>
+				<configuration>
+					<warName>app</warName>
+					<archiveClasses>false</archiveClasses>
+					<archive>
+						<manifestEntries>
+                            <App-Version>${project.version}</App-Version>
+                            <Build-Date>${buildNumber}</Build-Date>
+                            <Version-News>refactor!</Version-News>
+						</manifestEntries>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 	<profiles>
 		<profile>
@@ -40,7 +65,7 @@
 						<configuration>
 							<argLine>${argLine} -XX:PermSize=128M -XX:MaxPermSize=256M</argLine>
 							<additionalClasspathElements>
-								<additionalClasspathElement>${basedir}/etc/jetty</additionalClasspathElement>
+								<additionalClasspathElement>${basedir}/src/test/resources/jetty</additionalClasspathElement>
 							</additionalClasspathElements>
 							<systemPropertyVariables>
 								<log.sys.level>WARN</log.sys.level>
@@ -73,6 +98,12 @@
 						<artifactId>jetty-maven-plugin</artifactId>
 						<version>${jetty.version}</version>
 						<dependencies>
+							<dependency>
+								<groupId>br.com.debico</groupId>
+								<artifactId>debico-test</artifactId>
+								<version>${project.version}</version>
+								<scope>runtime</scope>
+							</dependency>
 							<dependency>
 								<groupId>javax.mail</groupId>
 								<artifactId>mail</artifactId>
@@ -130,8 +161,8 @@
 								</goals>
 								<configuration>
 									<waitForChild>false</waitForChild>
-									<jettyXml>etc/jetty/jetty.xml,etc/jetty/jetty-env.xml</jettyXml>
-									<systemPropertiesFile>etc/jetty/env.properties</systemPropertiesFile>
+									<jettyXml>debico-ui/src/test/resources/jetty/jetty.xml,debico-ui/src/test/resources/jetty/jetty-env.xml</jettyXml>
+									<systemPropertiesFile>${basedir}/src/test/resources/jetty/env.properties</systemPropertiesFile>
 									<daemon>true</daemon>
 									<useTestScope>true</useTestScope>
 								</configuration>
@@ -211,6 +242,13 @@
 			<groupId>com.jcabi</groupId>
 			<artifactId>jcabi-manifests</artifactId>
 			<version>${jcabi.version}</version>
+		</dependency>
+		<!-- bug com o selenium, temos que incluir manualmente ref.: http://stackoverflow.com/questions/13840989/eclipse-java-lang-noclassdeffounderror-org-w3c-dom-elementtraversal -->
+		<dependency>
+			<groupId>xml-apis</groupId>
+			<artifactId>xml-apis</artifactId>
+			<version>1.4.01</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>

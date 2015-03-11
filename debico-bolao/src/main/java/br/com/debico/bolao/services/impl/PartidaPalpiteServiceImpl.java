@@ -7,6 +7,9 @@ import static com.google.common.base.Strings.emptyToNull;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
+
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.bolao.dao.PartidaPalpiteViewDAO;
 import br.com.debico.bolao.model.PartidaRodadaPalpiteView;
@@ -14,6 +17,8 @@ import br.com.debico.bolao.services.PartidaPalpiteService;
 import br.com.debico.model.Apostador;
 import br.com.debico.social.services.ApostadorService;
 
+@Named
+@Transactional(readOnly=true)
 class PartidaPalpiteServiceImpl implements PartidaPalpiteService {
 
     @Inject

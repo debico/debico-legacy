@@ -26,7 +26,9 @@ public class IntegrationTestSupport {
 	}
     
     protected String buildURL(final String path) {
-        return String.format("http://localhost:%s%s", jettyProperties.getProperty("jetty.port"), path);
+        final String url = String.format("http://localhost:%s%s", jettyProperties.getProperty("jetty.port"), path);
+        LOGGER.info("Path construido: {}", url);
+        return url;
     }
     
     protected WebDriver buildDriver(final String path) {

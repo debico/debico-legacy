@@ -60,7 +60,7 @@
 	<Ref refid="RequestLog">
 		<Set name="requestLog">
 			<New id="requestLogImpl" class="ch.qos.logback.access.jetty.RequestLogImpl">
-				<Set name="fileName">etc/jetty/logback-access.xml</Set>
+				<Set name="fileName">debico-ui/src/test/resources/jetty/logback-access.xml</Set>
 			</New>
 		</Set>
 	</Ref>

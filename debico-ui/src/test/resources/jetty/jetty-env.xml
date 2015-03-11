@@ -21,13 +21,12 @@
         <Arg type="java.lang.String">create-drop</Arg>
         <Arg type="boolean">true</Arg>
     </New>
-    <!--  
+    
     <New id="br.com.debico.db.sql.scripts" class="org.eclipse.jetty.plus.jndi.EnvEntry">
         <Arg>br.com.debico.db.sql.scripts</Arg>
         <Arg type="java.lang.String">/sql/db-objects.sql,/load/integration_tests_load_data.sql</Arg>
         <Arg type="boolean">true</Arg>
     </New>
-    -->
     
     <New id="spring.profiles.active" class="org.eclipse.jetty.plus.jndi.EnvEntry">
         <Arg>spring.profiles.active</Arg>
