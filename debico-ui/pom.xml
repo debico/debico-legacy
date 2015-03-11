@@ -160,6 +160,7 @@
 									<goal>start</goal>
 								</goals>
 								<configuration>
+								    <jvmArgs>${argLine}</jvmArgs>
 									<waitForChild>false</waitForChild>
 									<jettyXml>debico-ui/src/test/resources/jetty/jetty.xml,debico-ui/src/test/resources/jetty/jetty-env.xml</jettyXml>
 									<systemPropertiesFile>${basedir}/src/test/resources/jetty/env.properties</systemPropertiesFile>

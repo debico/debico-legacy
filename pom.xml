@@ -156,10 +156,10 @@
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-                <groupId>br.com.debico</groupId>
-                <artifactId>debico-bolao</artifactId>
-                <version>${project.version}</version>
-            </dependency>
+				<groupId>br.com.debico</groupId>
+				<artifactId>debico-bolao</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>br.com.debico</groupId>
 				<artifactId>debico-social</artifactId>
@@ -311,6 +311,15 @@
 
 		</dependencies>
 	</dependencyManagement>
+	
+	<profiles>
+	   <profile>
+	       <id>it</id>
+	       <properties>
+	           <skip.unit.tests>true</skip.unit.tests>
+	       </properties>
+	   </profile>
+	</profiles>
 
 	<build>
 		<plugins>
@@ -328,6 +337,7 @@
 					</execution>
 				</executions>
 				<configuration>
+					<skipTests>${skip.unit.tests}</skipTests>
 					<argLine>${argLine} -Xms521m -Xmx1024m</argLine>
 					<forkCount>1</forkCount>
 					<reuseForks>true</reuseForks>
@@ -384,6 +394,7 @@
 							<excludes>
 								<exclude>org.drools.compiler.lang.DRL6Lexer</exclude>
 							</excludes>
+							<propertyName>argLine</propertyName>
 						</configuration>
 					</execution>
 					<execution>
