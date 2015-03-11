@@ -68,7 +68,12 @@ As propriedades carregas por padrão você encontra [neste arquivo](https://bitb
 
 Utilizo a Amazon Web Services para realizar o envio de e-mails. Abaixo, as configurações padrão para a configuração do SMTP.
 
-# Copyright #
+### Logging ###
 
+O serviço de log utilizado pela aplicação é o SLF4J com implementação do Logback. É esperado que as bibliotecas do SLF4J estejam no *classpath* do servidor de aplicação. Para saber como configurar o Tomcat para utilizar o SLF4J como padrão, leia [este artigo](http://adfinmunich.blogspot.com.br/2012/03/how-to-configure-tomcat-to-use-slf4j.html) e [este aqui também](http://stackoverflow.com/questions/8012595/tomcat-logging-with-slf4j-and-log4j).
+
+### Copyright ###
+
+2015
 Ricardo Zanini Fernandes
 ricardozanini@gmail.com
