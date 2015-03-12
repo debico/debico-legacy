@@ -99,5 +99,5 @@ CREATE VIEW vi_partida_rodada as
 		
 DELETE FROM tb_msg_template;
 -- http://native2ascii.net/
-INSERT INTO tb_msg_template (TP_TEMPLATE, ID_TEMPLATE, DC_CLASSPATH, DC_LINK_ACESSO, TP_NOTIFICACAO, NM_ASSUNTO, NM_REMETENTE, DC_EMAIL_REMETENTE) VALUES ('E', NULL, 'com/omniweb/bolao/email/templates/alerta_palpite.vm', 'http://www.debico.com.br/app/campeonatos/%s/%s/palpites', 1, 'Camarada, não se esqueça de palpitar!', 'De Bico', 'noreply@debico.com.br');
-INSERT INTO tb_msg_template (TP_TEMPLATE, ID_TEMPLATE, DC_CLASSPATH, DC_LINK_ACESSO, TP_NOTIFICACAO, NM_ASSUNTO, NM_REMETENTE, DC_EMAIL_REMETENTE) VALUES ('E', NULL, 'com/omniweb/bolao/email/templates/contato.vm', null, 2, 'Contato do site Debico.com.br', 'De Bico', 'noreply@debico.com.br'); 
+INSERT INTO tb_msg_template (TP_TEMPLATE, ID_TEMPLATE, DC_CLASSPATH, DC_LINK_ACESSO, TP_NOTIFICACAO, NM_ASSUNTO, NM_REMETENTE, DC_EMAIL_REMETENTE) VALUES ('E', NULL, 'br/com/debico/notify/email/templates/alerta_palpite.vm', 'http://www.debico.com.br/app/campeonatos/%s/%s/palpites', 1, 'Camarada, não se esqueça de palpitar!', 'De Bico', 'noreply@debico.com.br');
+INSERT INTO tb_msg_template (TP_TEMPLATE, ID_TEMPLATE, DC_CLASSPATH, DC_LINK_ACESSO, TP_NOTIFICACAO, NM_ASSUNTO, NM_REMETENTE, DC_EMAIL_REMETENTE) VALUES ('E', NULL, 'br/com/debico/notify/email/templates/contato.vm', null, 2, 'Contato do site Debico.com.br', 'De Bico', 'noreply@debico.com.br'); 

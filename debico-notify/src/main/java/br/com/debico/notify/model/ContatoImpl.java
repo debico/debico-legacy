@@ -4,13 +4,13 @@ import java.io.UnsupportedEncodingException;
 
 import javax.mail.internet.InternetAddress;
 
+import br.com.debico.model.Apostador;
+
 import com.google.common.base.Objects;
 
 import static com.google.common.base.Objects.equal;
-
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-
 import static com.google.common.base.Strings.emptyToNull;
 
 /**
@@ -29,6 +29,10 @@ public class ContatoImpl implements Contato {
 
 	public ContatoImpl() {
 
+	}
+	
+	public ContatoImpl(final Apostador apostador) {
+	    this(apostador.getEmail(), apostador.getNome());
 	}
 
 	public ContatoImpl(final String email) {

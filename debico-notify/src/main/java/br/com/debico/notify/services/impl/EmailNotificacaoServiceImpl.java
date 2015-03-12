@@ -20,6 +20,7 @@ import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import br.com.debico.model.Apostador;
 import br.com.debico.notify.model.Contato;
+import br.com.debico.notify.model.ContatoImpl;
 import br.com.debico.notify.model.EmailTemplate;
 import br.com.debico.notify.services.EmailNotificacaoService;
 
@@ -49,7 +50,7 @@ class EmailNotificacaoServiceImpl implements EmailNotificacaoService {
 	public void enviarNotificacao(Apostador apostador, EmailTemplate template, Map<String, Object> contexto) {
 		contexto.put("apostador", apostador);
 
-		this.enviarNotificacao((Contato) apostador, template, contexto);
+		this.enviarNotificacao(new ContatoImpl(apostador), template, contexto);
 	}
 
 	public void enviarNotificacao(Contato destinatario, EmailTemplate template, Map<String, Object> contexto) {

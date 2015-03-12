@@ -22,22 +22,28 @@ import br.com.debico.test.spring.AbstractUnitTest;
 @ContextConfiguration(classes = { BolaoConfig.class })
 public class AbstractBolaoUnitTest extends AbstractUnitTest {
 
-	private final EstruturaCampeonatoProvider provider;
-	
-	public AbstractBolaoUnitTest() {
-		provider = new EstruturaCampeonatoProvider();
-	}
-	
-	protected EstruturaCampeonato novaEstruturaCampeonato(List<Time> times) {
-		return provider.getDefaultFactory().criarCampeonato("Campeonato do Teste Unidade", times);
-	}
+    private final EstruturaCampeonatoProvider provider;
 
-	@Inject
-	@Named("campeonatoServiceImpl")
-	protected CampeonatoService campeonatoService;
+    protected static final String EMAIL_PRIMEIRO_RANKING = "abacafrehley@gmail.com";
+    protected static final String EMAIL_ULTIMO_RANKING = "fhbernardo@yahoo.com.br";
+    protected static final String EMAIL_SEM_OPCAO_NOTIFICACAO = "sergio.tondin@gps-pamcary.com.br";
+    protected static final int CAMPEONATO_ID = 1;
 
-	@Before
-	public void setUp() throws Exception {
+    public AbstractBolaoUnitTest() {
+        provider = new EstruturaCampeonatoProvider();
+    }
 
-	}
+    protected EstruturaCampeonato novaEstruturaCampeonato(List<Time> times) {
+        return provider.getDefaultFactory().criarCampeonato(
+                "Campeonato do Teste Unidade", times);
+    }
+
+    @Inject
+    @Named("campeonatoServiceImpl")
+    protected CampeonatoService campeonatoService;
+
+    @Before
+    public void setUp() throws Exception {
+
+    }
 }
