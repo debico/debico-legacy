@@ -18,6 +18,7 @@
 		<jetty.version>9.2.9.v20150224</jetty.version>
 		<selenium.version>2.45.0</selenium.version>
 		<war-plugin.version>2.6</war-plugin.version>
+		<swagger-springmvc.version>1.0.0</swagger-springmvc.version>
 	</properties>
 
 	<build>
@@ -30,9 +31,9 @@
 					<archiveClasses>false</archiveClasses>
 					<archive>
 						<manifestEntries>
-                            <App-Version>${project.version}</App-Version>
-                            <Build-Date>${buildNumber}</Build-Date>
-                            <Version-News>refactor!</Version-News>
+							<App-Version>${project.version}</App-Version>
+							<Build-Date>${buildNumber}</Build-Date>
+							<Version-News>refactor!</Version-News>
 						</manifestEntries>
 						<manifest>
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
@@ -160,7 +161,7 @@
 									<goal>start</goal>
 								</goals>
 								<configuration>
-								    <jvmArgs>${argLine}</jvmArgs>
+									<jvmArgs>${argLine}</jvmArgs>
 									<waitForChild>false</waitForChild>
 									<jettyXml>debico-ui/src/test/resources/jetty/jetty.xml,debico-ui/src/test/resources/jetty/jetty-env.xml</jettyXml>
 									<systemPropertiesFile>${basedir}/src/test/resources/jetty/env.properties</systemPropertiesFile>
@@ -244,6 +245,13 @@
 			<artifactId>jcabi-manifests</artifactId>
 			<version>${jcabi.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.mangofactory</groupId>
+			<artifactId>swagger-springmvc</artifactId>
+			<version>${swagger-springmvc.version}</version>
+		</dependency>
+
 		<!-- bug com o selenium, temos que incluir manualmente ref.: http://stackoverflow.com/questions/13840989/eclipse-java-lang-noclassdeffounderror-org-w3c-dom-elementtraversal -->
 		<dependency>
 			<groupId>xml-apis</groupId>

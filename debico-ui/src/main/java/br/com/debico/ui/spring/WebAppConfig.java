@@ -47,7 +47,7 @@ import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
  *      Spring Security integration basics</a>
  */
 @Configuration
-@Import({SecurityConfig.class, BolaoConfig.class})
+@Import({SecurityConfig.class, BolaoConfig.class, SwaggerConfig.class})
 @EnableWebMvc
 @ComponentScan(basePackages = {"br.com.debico.ui.controllers", "br.com.debico.ui.handlers"})
 @PropertySources({
@@ -64,6 +64,9 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
     @Inject
     protected SecurityConfig securityConfig;
 
+    @Inject
+    protected SwaggerConfig swaggerConfig;
+    
 	/**
 	 * @see <a
 	 *      href="http://stackoverflow.com/questions/21708339/avoid-jackson-serialization-on-non-fetched-lazy-objects/21760361#21760361">Avoid
