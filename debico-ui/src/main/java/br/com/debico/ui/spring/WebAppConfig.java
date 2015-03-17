@@ -17,6 +17,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -47,174 +48,189 @@ import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
  *      Spring Security integration basics</a>
  */
 @Configuration
-@Import({SecurityConfig.class, BolaoConfig.class, SwaggerConfig.class})
+@Import({ SecurityConfig.class, BolaoConfig.class, SwaggerConfig.class })
 @EnableWebMvc
-@ComponentScan(basePackages = {"br.com.debico.ui.controllers", "br.com.debico.ui.handlers"})
-@PropertySources({
-	@PropertySource("classpath:/META-INF/debico-ui.properties"),
-})
+@ComponentScan(basePackages = { "br.com.debico.ui.controllers",
+        "br.com.debico.ui.handlers" })
+@PropertySources({ @PropertySource("classpath:/META-INF/debico-ui.properties"), })
 public class WebAppConfig extends WebMvcConfigurerAdapter {
-	
+
     @Inject
     protected Environment environment;
-    
+
     @Inject
     protected BolaoConfig serviceConfig;
-    
+
     @Inject
     protected SecurityConfig securityConfig;
 
     @Inject
     protected SwaggerConfig swaggerConfig;
+
+    /**
+     * @see <a
+     *      href="http://stackoverflow.com/questions/21708339/avoid-jackson-serialization-on-non-fetched-lazy-objects/21760361#21760361">Avoid
+     *      Jackson serialization on non fetched lazy objects</a>
+     * @return
+     */
+    public MappingJackson2HttpMessageConverter jacksonMessageConverter() {
+        MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new Hibernate4Module());
+
+        messageConverter.setObjectMapper(mapper);
+        messageConverter.setPrettyPrint(Boolean.valueOf(environment
+                .getProperty("br.com.debico.ui.web.json.prettyPrint")));
+        return messageConverter;
+    }
+
+    @Override
+    public void configureMessageConverters(
+            List<HttpMessageConverter<?>> converters) {
+        converters.add(this.jacksonMessageConverter());
+        super.configureMessageConverters(converters);
+    }
+
+    @Bean
+    public ServletContextTemplateResolver templateResolver() {
+        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver();
+        templateResolver.setPrefix("/WEB-INF/templates/");
+        templateResolver.setSuffix(".html");
+        templateResolver.setTemplateMode("HTML5");
+        templateResolver.setCacheable(false);
+
+        return templateResolver;
+    }
+
+    /**
+     * @see <a
+     *      href="https://github.com/thymeleaf/thymeleaf-extras-springsecurity3">Thymeleaf
+     *      - Spring Security 3 integration module</a>
+     * @param templateResolver
+     * @return
+     */
+    @Bean
+    public SpringTemplateEngine templateEngine(
+            final ServletContextTemplateResolver templateResolver) {
+        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+        templateEngine.setTemplateResolver(templateResolver);
+        templateEngine.addDialect(new SpringSecurityDialect());
+
+        return templateEngine;
+    }
+
+    @Bean
+    public ViewResolver viewResolver(final SpringTemplateEngine templateEngine) {
+        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
+        viewResolver.setTemplateEngine(templateEngine);
+        viewResolver.setOrder(1);
+
+        return viewResolver;
+    }
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        // registry.addViewController("/support/");
+        super.addViewControllers(registry);
+    }
+
+    /**
+     * @see <a
+     *      href="http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#headers">Security
+     *      HTTP Response Headers</a>
+     */
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/robots.txt").addResourceLocations("/")
+                .setCachePeriod(DateTimeConstants.SECONDS_PER_WEEK);
+
+        registry.addResourceHandler("/static/css/**")
+                .addResourceLocations("/static/css/")
+                .setCachePeriod(DateTimeConstants.SECONDS_PER_WEEK);
+
+        registry.addResourceHandler("/static/js/**")
+                .addResourceLocations("/static/js/")
+                .setCachePeriod(DateTimeConstants.SECONDS_PER_DAY);
+
+        registry.addResourceHandler("/static/images/**")
+                .addResourceLocations("/static/images/")
+                .setCachePeriod(
+                        DateTimeConstants.SECONDS_PER_DAY
+                                * Constants.DAYS_PER_MONTH); // um mês
+
+        // swagger
+        this.swaggerConfig.addResourceHandlers(registry);
+    }
     
-	/**
-	 * @see <a
-	 *      href="http://stackoverflow.com/questions/21708339/avoid-jackson-serialization-on-non-fetched-lazy-objects/21760361#21760361">Avoid
-	 *      Jackson serialization on non fetched lazy objects</a>
-	 * @return
-	 */
-	public MappingJackson2HttpMessageConverter jacksonMessageConverter() {
-		MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.registerModule(new Hibernate4Module());
-		
-		messageConverter.setObjectMapper(mapper);
-		messageConverter.setPrettyPrint(Boolean.valueOf(environment.getProperty("br.com.debico.ui.web.json.prettyPrint")));
-		return messageConverter;
-	}
+    @Override
+    public void configureDefaultServletHandling(
+            DefaultServletHandlerConfigurer configurer) {
+        this.swaggerConfig.configureDefaultServletHandling(configurer);
+    }
 
-	@Override
-	public void configureMessageConverters(
-			List<HttpMessageConverter<?>> converters) {
-		converters.add(this.jacksonMessageConverter());
-		super.configureMessageConverters(converters);
-	}
+    @Bean
+    public MenuInterceptor menuInterceptor() {
+        return new MenuInterceptor();
+    }
 
-	@Bean
-	public ServletContextTemplateResolver templateResolver() {
-		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver();
-		templateResolver.setPrefix("/WEB-INF/templates/");
-		templateResolver.setSuffix(".html");
-		templateResolver.setTemplateMode("HTML5");
-		templateResolver.setCacheable(false);
+    @Bean
+    public FooterInterceptor footerInterceptor() {
+        return new FooterInterceptor();
+    }
 
-		return templateResolver;
-	}
+    @Bean
+    public TitleInterceptor titleInterceptor() {
+        return new TitleInterceptor();
+    }
 
-	/**
-	 * @see <a
-	 *      href="https://github.com/thymeleaf/thymeleaf-extras-springsecurity3">Thymeleaf
-	 *      - Spring Security 3 integration module</a>
-	 * @param templateResolver
-	 * @return
-	 */
-	@Bean
-	public SpringTemplateEngine templateEngine(
-			final ServletContextTemplateResolver templateResolver) {
-		SpringTemplateEngine templateEngine = new SpringTemplateEngine();
-		templateEngine.setTemplateResolver(templateResolver);
-		templateEngine.addDialect(new SpringSecurityDialect());
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(this.menuInterceptor()).addPathPatterns("/**")
+                .excludePathPatterns("/public/**")
+                .excludePathPatterns("/api/**")
+                .excludePathPatterns("/contato/**")
+                .excludePathPatterns("/login/**");
 
-		return templateEngine;
-	}
+        registry.addInterceptor(this.footerInterceptor())
+                .addPathPatterns("/**").excludePathPatterns("/api/**");
 
-	@Bean
-	public ViewResolver viewResolver(final SpringTemplateEngine templateEngine) {
-		ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
-		viewResolver.setTemplateEngine(templateEngine);
-		viewResolver.setOrder(1);
+        registry.addInterceptor(this.titleInterceptor()).addPathPatterns("/**")
+                .excludePathPatterns("/api/**");
+    }
 
-		return viewResolver;
-	}
-	
-	@Override
-	public void addViewControllers(ViewControllerRegistry registry) {
-	    //registry.addViewController("/support/");
-		super.addViewControllers(registry);
-	}
+    /**
+     * @see <a
+     *      href="http://www.mkyong.com/spring-mvc/spring-mvc-internationalization-example/">Spring
+     *      MVC Internationalization Example</a>
+     * @see <a
+     *      href="http://www.mkyong.com/spring/spring-how-to-access-messagesource-in-bean-messagesourceaware/">Spring
+     *      – How To Access MessageSource In Bean (MessageSourceAware)</a>
+     * @param parentMessageSource
+     * @return
+     */
+    @Bean
+    public MessageSource messageSource(MessageSource parentMessageSource) {
+        ResourceBundleMessageSource resourceBundleMessageSource = new ResourceBundleMessageSource();
 
-	/**
-	 * @see <a href="http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#headers">Security HTTP Response Headers</a>
-	 */
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/robots.txt")
-				.addResourceLocations("/")
-				.setCachePeriod(DateTimeConstants.SECONDS_PER_WEEK);
-	    
-	     registry.addResourceHandler("/static/css/**")
-                  .addResourceLocations("/static/css/")
-                  .setCachePeriod(DateTimeConstants.SECONDS_PER_WEEK);
-	     
-	     registry.addResourceHandler("/static/js/**")
-                 .addResourceLocations("/static/js/")
-                 .setCachePeriod(DateTimeConstants.SECONDS_PER_DAY);
+        resourceBundleMessageSource.setParentMessageSource(parentMessageSource);
+        resourceBundleMessageSource.setBasename("messages");
+        resourceBundleMessageSource.setAlwaysUseMessageFormat(false);
 
-	     registry.addResourceHandler("/static/images/**")
-                 .addResourceLocations("/static/images/")
-                 .setCachePeriod(DateTimeConstants.SECONDS_PER_DAY * Constants.DAYS_PER_MONTH); //um mês
-	     
-	}
+        return resourceBundleMessageSource;
+    }
 
-	@Bean
-	public MenuInterceptor menuInterceptor() {
-		return new MenuInterceptor();
-	}
-	
-	@Bean
-	public FooterInterceptor footerInterceptor() {
-		return new FooterInterceptor();
-	}
-	
-	@Bean
-	public TitleInterceptor titleInterceptor() {
-		return new TitleInterceptor();
-	}
+    @Bean(name = "viewOptions")
+    public ViewOptions viewOptions() {
+        final ViewOptions viewOptions = new ViewOptions();
 
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(this.menuInterceptor())
-				.addPathPatterns("/**")
-				.excludePathPatterns("/public/**")
-				.excludePathPatterns("/api/**")
-				.excludePathPatterns("/contato/**")
-				.excludePathPatterns("/login/**");
-		
-		registry.addInterceptor(this.footerInterceptor())
-				.addPathPatterns("/**")
-				.excludePathPatterns("/api/**");
-		
-		registry.addInterceptor(this.titleInterceptor())
-				.addPathPatterns("/**")
-				.excludePathPatterns("/api/**");
-	}
-	
-	/**
-	 * @see <a href="http://www.mkyong.com/spring-mvc/spring-mvc-internationalization-example/">Spring MVC Internationalization Example</a>
-	 * @see <a href="http://www.mkyong.com/spring/spring-how-to-access-messagesource-in-bean-messagesourceaware/">Spring – How To Access MessageSource In Bean (MessageSourceAware)</a>
-	 * @param parentMessageSource
-	 * @return
-	 */
-	@Bean
-	public MessageSource messageSource(MessageSource parentMessageSource) {
-		ResourceBundleMessageSource resourceBundleMessageSource = new ResourceBundleMessageSource();
-		
-		resourceBundleMessageSource.setParentMessageSource(parentMessageSource);
-		resourceBundleMessageSource.setBasename("messages");
-		resourceBundleMessageSource.setAlwaysUseMessageFormat(false);
-		
-		return resourceBundleMessageSource;
-	}
-	
-	@Bean(name="viewOptions")
-	public ViewOptions viewOptions() {
-		final ViewOptions viewOptions = new ViewOptions();
-		
-		viewOptions.setEnableGa(Boolean.valueOf(environment.getProperty("br.com.debico.ui.web.ga")));
-		viewOptions.setGaWebPropertyId(environment.getProperty("br.com.debico.ui.web.ga.id"));
-		viewOptions.setGaLocalhost(Boolean.valueOf(environment.getProperty("br.com.debico.ui.web.ga.localhost")));
-		
-		return viewOptions;
-	}
-	
+        viewOptions.setEnableGa(Boolean.valueOf(environment
+                .getProperty("br.com.debico.ui.web.ga")));
+        viewOptions.setGaWebPropertyId(environment
+                .getProperty("br.com.debico.ui.web.ga.id"));
+        viewOptions.setGaLocalhost(Boolean.valueOf(environment
+                .getProperty("br.com.debico.ui.web.ga.localhost")));
+
+        return viewOptions;
+    }
+
 }

@@ -19,51 +19,58 @@ import br.com.debico.bolao.services.PartidaPalpiteService;
 import br.com.debico.campeonato.services.CampeonatoService;
 import br.com.debico.core.DebicoException;
 import br.com.debico.model.PalpiteLite;
-import br.com.debico.ui.annotations.WidgetController;
+
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
 
 @Controller
-@WidgetController
+@Api(value = "palpite", description = "Realiza as funcionalidades relacionadas com os Palpites do Bolão.")
 public class PalpiteWidgetController {
-    
+
     @Inject
     @Named("campeonatoServiceImpl")
     private CampeonatoService campeonatoService;
 
     @Inject
     private PalpiteService palpiteService;
-    
+
     @Inject
     private PartidaPalpiteService partidaPalpiteService;
 
     public PalpiteWidgetController() {
 
     }
-    
-    @RequestMapping(method = RequestMethod.GET, value="/widgets/palpite/{permalink}/rodada/{id}")
+
+    @ApiOperation("Consulta os Palpites por Rodada")
+    @RequestMapping(method = RequestMethod.GET, value = "/widgets/palpite/{permalink}/rodada/{id}")
     public @ResponseBody List<PartidaRodadaPalpiteView> palpitesRodada(
-            @PathVariable("permalink") final String permalink, 
-            @PathVariable("id") final int idRodada,
-            final Principal principal) {
-        return partidaPalpiteService.recuperarPalpitesRodada(idRodada, principal.getName());
+            @PathVariable("permalink") final String permalink,
+            @PathVariable("id") final int idRodada, final Principal principal) {
+        return partidaPalpiteService.recuperarPalpitesRodada(idRodada,
+                principal.getName());
     }
 
+    @ApiOperation("Consulta os Palpites por sequencial da Rodada")
     @RequestMapping(method = RequestMethod.GET, value = "/widgets/palpite/{permalink}/rodada/seq/{ordinal}")
     public @ResponseBody List<PartidaRodadaPalpiteView> palpitesRodadaOrdinal(
-            @PathVariable(value="permalink") final String permalink, 
-            @PathVariable(value="ordinal") final int ordem,
+            @PathVariable(value = "permalink") final String permalink,
+            @PathVariable(value = "ordinal") final int ordem,
             final Principal principal) {
-        
-        return partidaPalpiteService.recuperarPalpitesRodadaPorOrdinal(permalink, ordem, principal.getName());
+
+        return partidaPalpiteService.recuperarPalpitesRodadaPorOrdinal(
+                permalink, ordem, principal.getName());
     }
-    
+
+    @ApiOperation("Realiza um palpite")
     @RequestMapping(method = RequestMethod.POST, value = "/widgets/palpite/{permalink}")
     public @ResponseBody PalpiteLite palpitar(
-            @PathVariable(value="permalink") final String permalink, 
-            @RequestBody final PalpiteLite palpiteIO,
-            final Principal principal) throws DebicoException {
-        
+            @PathVariable(value = "permalink") final String permalink,
+            @RequestBody final PalpiteLite palpiteIO, final Principal principal)
+            throws DebicoException {
+
         palpiteIO.setApostadorEmail(principal.getName());
-        return palpiteService.palpitar(palpiteIO, campeonatoService.selecionarCampeonato(permalink));
+        return palpiteService.palpitar(palpiteIO,
+                campeonatoService.selecionarCampeonato(permalink));
     }
 
 }

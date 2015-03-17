@@ -1,5 +1,8 @@
 package br.com.debico.notify.spring;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.emptyToNull;
+
 import java.util.Properties;
 
 import javax.inject.Inject;
@@ -66,12 +69,15 @@ public class NotifyConfig extends ServicesConfig {
 	@Bean
 	@Release
 	public Session session() {
-		JndiTemplate jndiTemplate = new JndiTemplate();
+	    final String sessionJndi = environment.getProperty("br.com.debico.jndi.mail.session");
+		final JndiTemplate jndiTemplate = new JndiTemplate();
 		Session session = null;
 
+		checkNotNull(emptyToNull(sessionJndi), "Propriedade 'br.com.debico.jndi.mail.session' nao encontrada no classpath.");
+		
 		try {
 			session = jndiTemplate.lookup(
-					environment.getProperty("br.com.debico.jndi.mail.session"),
+			        sessionJndi,
 					Session.class);
 		} catch (NamingException e) {
 			LOGGER.error("[session] Erro ao obter a sessao de email.", e);

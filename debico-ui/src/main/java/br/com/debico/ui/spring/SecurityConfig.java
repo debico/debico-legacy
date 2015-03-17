@@ -84,7 +84,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/public/**").anonymous()
 				.antMatchers("/campeonatos/**/palpite/**").access("!hasRole('ROLE_ADMIN') and isAuthenticated()")
 				.antMatchers("/campeonatos/**/palpites/**").access("!hasRole('ROLE_ADMIN') and isAuthenticated()")
-				.antMatchers("/api/**").access("hasRole('ROLE_ADMIN')")
+				.antMatchers("/api*/**").access("hasRole('ROLE_ADMIN')")
 				.anyRequest().authenticated()
 				.and()
 				.logout()

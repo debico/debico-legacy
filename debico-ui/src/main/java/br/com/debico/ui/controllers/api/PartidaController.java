@@ -12,17 +12,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import br.com.debico.campeonato.services.PartidaService;
 import br.com.debico.model.Partida;
 import br.com.debico.model.Placar;
-import br.com.debico.ui.annotations.APIController;
+
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
 
 @Controller
-@APIController
+@Api(value = "partida", description = "API para tratar de UCs relacionados com o recurso único de partida.")
 public class PartidaController {
 
     @Inject
     private PartidaService partidaService;
 
+    @ApiOperation(value = "Salvar Placar", notes = "Atualiza um placar já registrado de uma partida específica.")
     @RequestMapping(value = "/api/partida/{id}/placar/", method = RequestMethod.PUT)
-    public @ResponseBody Partida salvarPlacar(@PathVariable final int id, @RequestBody final Placar placar) {
+    public @ResponseBody Partida salvarPlacar(@PathVariable final int id,
+            @RequestBody final Placar placar) {
         return partidaService.salvarPlacar(id, placar);
     }
 

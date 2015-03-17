@@ -19,6 +19,7 @@ import java.lang.annotation.Target;
  * @author Ricardo Zanini (ricardozanini@gmail.com)
  * @since 1.2.0
  * @see WidgetController
+ * @deprecated Agora utilizamos a anotação do Swagger para evitar redundância.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

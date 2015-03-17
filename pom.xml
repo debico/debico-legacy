@@ -46,6 +46,18 @@
 		<developerConnection>scm:git:ssh://git@bitbucket.org/ricardozanini/debico.git</developerConnection>
 	</scm>
 
+	<repositories>
+	   <!-- 
+	       Necessário pelo Swagger
+	       ref.: https://github.com/adrianbk/swagger-springmvc-demo/tree/master/swagger-ui
+	    -->
+		<repository>
+			<id>oss-jfrog-artifactory</id>
+			<name>oss-jfrog-artifactory-releases</name>
+			<url>http://oss.jfrog.org/artifactory/oss-release-local</url>
+		</repository>
+	</repositories>
+
 	<properties>
 		<!-- Project -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -311,14 +323,14 @@
 
 		</dependencies>
 	</dependencyManagement>
-	
+
 	<profiles>
-	   <profile>
-	       <id>it</id>
-	       <properties>
-	           <skip.unit.tests>false</skip.unit.tests>
-	       </properties>
-	   </profile>
+		<profile>
+			<id>it</id>
+			<properties>
+				<skip.unit.tests>false</skip.unit.tests>
+			</properties>
+		</profile>
 	</profiles>
 
 	<build>

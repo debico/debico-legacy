@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import br.com.debico.core.DebicoException;
-import br.com.debico.ui.annotations.APIController;
-import br.com.debico.ui.annotations.WidgetController;
 
-@ControllerAdvice(annotations = { WidgetController.class, APIController.class })
+import com.wordnik.swagger.annotations.Api;
+
+@ControllerAdvice(annotations = { Api.class })
 public class RestExceptionHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RestExceptionHandler.class);
