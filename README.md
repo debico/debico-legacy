@@ -70,7 +70,7 @@ Algumas propriedades da aplicação devem ser configuradas no ambiente. A não s
 | `br.com.debico.db.driver` | String | `com.mysql.jdbc.Driver` | Nome do driver JDBC do banco de dados. Caso altere o tipo do banco, não esquecer de adicionar o *driver* no *classpath* do servidor de aplicação.
 | `br.com.debico.db.initialsize` | Integer | 5 | Tamanho do *pool* inicial de conexão do banco de dados.
 | `br.com.debico.db.validation_query` | String | SELECT 1 | *Query* para realizar a validação da conexão com o banco de dados.
-| `br.com.debico.jndi.mail.session` | String | mail/Session/Debico | Nome do JNDI da sessão de e-mail do servidor de aplicação.
+| `br.com.debico.jndi.mail.session` | String | java\:comp/env/mail/Session/Debico | Nome do JNDI da sessão de e-mail do servidor de aplicação.
 | `br.com.debico.admin.email` | String | ricardozanini@gmail.com | E-mail do administrador do sistema. Aquele cara que vai receber as reclamações do formulário de contato. :)
 
 As propriedades carregas por padrão você encontra [neste arquivo](https://bitbucket.org/ricardozanini/debico/src/dac4cf90c9fca497822c480758bead31052538c8/debico-core/src/main/resources/br/com/debico/core/debico-standalone.properties?at=master). Porém, sugiro sempre configurá-las no ambiente do servidor escolhido.
