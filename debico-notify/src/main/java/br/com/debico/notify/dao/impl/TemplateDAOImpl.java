@@ -9,15 +9,15 @@ import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.debico.core.dao.jpa.AbstractJPADAO;
 import br.com.debico.notify.dao.TemplateDAO;
 import br.com.debico.notify.model.EmailTemplate;
 import br.com.debico.notify.model.Template;
 import br.com.debico.notify.model.TipoNotificacao;
+import br.com.tecnobiz.spring.config.dao.AbstractJPADao;
 
 @Named
 @Transactional(propagation = Propagation.MANDATORY)
-class TemplateDAOImpl extends AbstractJPADAO<Template, Integer> implements TemplateDAO {
+class TemplateDAOImpl extends AbstractJPADao<Template, Integer> implements TemplateDAO {
     
     public TemplateDAOImpl() {
         super(Template.class);

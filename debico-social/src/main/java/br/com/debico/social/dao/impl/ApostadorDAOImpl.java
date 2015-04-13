@@ -17,7 +17,6 @@ import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.debico.core.dao.jpa.AbstractJPADAO;
 import br.com.debico.model.Apostador;
 import br.com.debico.model.ApostadorOpcoes_;
 import br.com.debico.model.ApostadorPontuacao;
@@ -28,10 +27,11 @@ import br.com.debico.model.Usuario;
 import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.model.campeonato.FaseImpl;
 import br.com.debico.social.dao.ApostadorDAO;
+import br.com.tecnobiz.spring.config.dao.AbstractJPADao;
 
 @Named
 @Transactional(propagation = Propagation.MANDATORY)
-class ApostadorDAOImpl extends AbstractJPADAO<Apostador, Integer> implements ApostadorDAO {
+class ApostadorDAOImpl extends AbstractJPADao<Apostador, Integer> implements ApostadorDAO {
     
     public ApostadorDAOImpl() {
         super(Apostador.class);
@@ -100,5 +100,5 @@ class ApostadorDAOImpl extends AbstractJPADAO<Apostador, Integer> implements Apo
     			.createQuery(query)
     			.getResultList();
     }
-    
+
 }

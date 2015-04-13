@@ -130,17 +130,17 @@ class CampeonatoPontosCorridosServiceImpl extends CampeonatoServiceImpl
 
 		final FaseUnica faseUnica = FaseUnica.novaFaseUnica();
 		faseUnica.setCampeonato(campeonatoPontosCorridos);
-		faseDAO.inserir(faseUnica);
+		faseDAO.create(faseUnica);
 
 		final Tabela tabela = new Tabela(faseUnica);
-		rankingDAO.inserir(tabela);
+		rankingDAO.create(tabela);
 
 		Rodada rodadaUnica = null;
 
 		for (int i = 1; i <= QUANTIDADE_RODADAS_PADRAO; i++) {
 			Rodada rodada = Rodada.novaRodadaNumerada(i);
 			rodada.setRanking(tabela);
-			rodadaDAO.inserir(rodada);
+			rodadaDAO.create(rodada);
 
 			if (i == 1) {
 				rodadaUnica = rodada;
@@ -150,7 +150,7 @@ class CampeonatoPontosCorridosServiceImpl extends CampeonatoServiceImpl
 		final Set<Time> times = campeonatoPontosCorridos.getTimes();
 
 		for (Time timeA : times) {
-			pontuacaoTimeDAO.inserirPontuacao(new PontuacaoTime(tabela, timeA));
+			pontuacaoTimeDAO.create(new PontuacaoTime(tabela, timeA));
 			// todos contra todos.
 			for (Time timeB : times) {
 				if (!timeA.equals(timeB)) {
@@ -159,7 +159,7 @@ class CampeonatoPontosCorridosServiceImpl extends CampeonatoServiceImpl
 					partidaRodada.setRodada(rodadaUnica);
 					partidaRodada.setFase(faseUnica);
 
-					partidaDAO.inserir(partidaRodada);
+					partidaDAO.create(partidaRodada);
 				}
 			}
 		}

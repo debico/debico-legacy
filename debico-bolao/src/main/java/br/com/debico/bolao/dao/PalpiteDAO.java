@@ -5,15 +5,10 @@ import java.util.List;
 import br.com.debico.model.Apostador;
 import br.com.debico.model.Palpite;
 import br.com.debico.model.Partida;
+import br.com.tecnobiz.spring.config.dao.Dao;
 
 
-public interface PalpiteDAO {
-    
-    void inserir(Palpite palpite);
-    
-    Palpite atualizar(Palpite palpite);
-    
-    List<Palpite> selecionarTodos();
+public interface PalpiteDAO extends Dao<Palpite, Integer> {
     
     /**
      * Recupera todos os palpites de determinadas partidas.

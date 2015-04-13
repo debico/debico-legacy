@@ -6,13 +6,13 @@ import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.debico.core.dao.jpa.AbstractJPADAO;
 import br.com.debico.model.Usuario;
 import br.com.debico.social.dao.UsuarioDAO;
+import br.com.tecnobiz.spring.config.dao.AbstractJPADao;
 
 @Named
 @Transactional(propagation = Propagation.MANDATORY)
-class UsuarioDAOImpl extends AbstractJPADAO<Usuario, Integer> implements
+class UsuarioDAOImpl extends AbstractJPADao<Usuario, Integer> implements
 		UsuarioDAO {
 
 	public UsuarioDAOImpl() {
@@ -27,5 +27,4 @@ class UsuarioDAOImpl extends AbstractJPADAO<Usuario, Integer> implements
 				.getResultList());
 
 	}
-
 }

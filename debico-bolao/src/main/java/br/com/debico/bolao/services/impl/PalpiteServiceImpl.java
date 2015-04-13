@@ -1,7 +1,5 @@
 package br.com.debico.bolao.services.impl;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -22,6 +20,8 @@ import br.com.debico.model.Palpite;
 import br.com.debico.model.PalpiteLite;
 import br.com.debico.model.campeonato.CampeonatoImpl;
 import br.com.debico.social.services.ApostadorService;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 @Named
 @Transactional(readOnly = false)
@@ -51,7 +51,7 @@ class PalpiteServiceImpl implements PalpiteService {
 
         Palpite palpite = new Palpite(palpiteLite);
         palpite.setApostador(apostadorService.selecionarApostadorPorEmail(palpiteLite.getApostadorEmail()));
-        palpite.setPartida(partidaDAO.selecionarPorId(palpiteLite.getIdPartida()));
+        palpite.setPartida(partidaDAO.findById(palpiteLite.getIdPartida()));
 
         this.palpitar(palpite, campeonato);
         
@@ -70,9 +70,9 @@ class PalpiteServiceImpl implements PalpiteService {
                 palpite.getApostador(), campeonato);
 
         if (palpite.getId() == 0) {
-            palpiteDAO.inserir(palpite);
+            palpiteDAO.create(palpite);
         } else {
-            palpiteDAO.atualizar(palpite);
+            palpiteDAO.update(palpite);
         }
 
         LOGGER.debug("[palpitar] Palpite realizado: {}", palpite);

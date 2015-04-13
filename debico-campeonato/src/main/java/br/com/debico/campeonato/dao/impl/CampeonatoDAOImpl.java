@@ -9,22 +9,18 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.campeonato.dao.CampeonatoDAO;
-import br.com.debico.core.dao.jpa.AbstractJPADAO;
 import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.model.campeonato.CampeonatoImpl;
 import br.com.debico.model.campeonato.Rodada;
+import br.com.tecnobiz.spring.config.dao.AbstractJPADao;
 
 @Named
 @Transactional(propagation = Propagation.MANDATORY)
-class CampeonatoDAOImpl extends AbstractJPADAO<CampeonatoImpl, Integer>
+class CampeonatoDAOImpl extends AbstractJPADao<CampeonatoImpl, Integer>
 		implements CampeonatoDAO {
 
 	public CampeonatoDAOImpl() {
 		super(CampeonatoImpl.class);
-	}
-
-	public void inserir(CampeonatoImpl campeonato) {
-		super.inserir(campeonato);
 	}
 	
 	public List<CampeonatoImpl> selecionarCampeonatosAtivosNaoFinalizados() {
@@ -32,11 +28,7 @@ class CampeonatoDAOImpl extends AbstractJPADAO<CampeonatoImpl, Integer>
 	            .createQuery("SELECT c FROM CampeonatoImpl c WHERE c.ativo = true AND c.finalizado = false", CampeonatoImpl.class)
 	            .getResultList();
 	}
-	
-	@SuppressWarnings("unchecked")
-    public <T extends Campeonato> T selecionar(final int id) {
-	    return (T) super.selecionarPorId(id);
-	}
+
 	
 	@SuppressWarnings("unchecked")
 	public <T extends Campeonato> T selecionarPorPermalink(final String permalink) {

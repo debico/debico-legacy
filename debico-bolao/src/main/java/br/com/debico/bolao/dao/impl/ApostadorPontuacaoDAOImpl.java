@@ -8,20 +8,24 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.bolao.dao.ApostadorPontuacaoDAO;
-import br.com.debico.core.dao.jpa.AbstractJPADAO;
 import br.com.debico.model.Apostador;
 import br.com.debico.model.ApostadorPontuacao;
 import br.com.debico.model.campeonato.Campeonato;
+import br.com.tecnobiz.spring.config.dao.AbstractJPADao;
 
 @Named
 @Transactional(propagation = Propagation.MANDATORY)
 class ApostadorPontuacaoDAOImpl extends
-		AbstractJPADAO<ApostadorPontuacao, Apostador> implements
+		AbstractJPADao<ApostadorPontuacao, Apostador> implements
 		ApostadorPontuacaoDAO {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ApostadorPontuacaoDAOImpl.class);
 
 	public ApostadorPontuacaoDAOImpl() {
 		super(ApostadorPontuacao.class);
@@ -36,11 +40,6 @@ class ApostadorPontuacaoDAOImpl extends
 		query.select(pontuacao).where(cb.equal(pontuacao.get("campeonato"), campeonato));
 		
 		return getEntityManager().createQuery(query).getResultList();
-	}
-
-	@Override
-	public void inserir(ApostadorPontuacao e) {
-		super.inserir(e);
 	}
 
 	public ApostadorPontuacao selecionarApostador(Apostador apostador,

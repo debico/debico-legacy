@@ -53,7 +53,7 @@ class ApostadorServiceImpl implements ApostadorService {
         }
 
         final Apostador apostadorBase = 
-                apostadorDAO.selecionarPorId(apostador.getId());
+                apostadorDAO.findById(apostador.getId());
 
         // atualiza os dados..
         apostadorBase.setNome(apostador.getNome());

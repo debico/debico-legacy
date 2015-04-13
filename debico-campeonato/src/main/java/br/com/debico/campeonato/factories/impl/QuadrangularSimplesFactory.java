@@ -69,10 +69,8 @@ public class QuadrangularSimplesFactory implements EstruturaCampeonatoFactory {
 		ParametrizacaoCampeonato param = ParametrizacaoCampeonato
 				.parametrizacaoPrimeiroUltimo(0);
 
-		CampeonatoPontosCorridos campeonato = new CampeonatoPontosCorridos(
-				nomeCampeonato);
-		campeonato.setAtivo(true);
-		campeonato.setFinalizado(false);
+		CampeonatoPontosCorridos campeonato = CampeonatoFactorySupport
+				.newCampeonatoPonstosCorridos(nomeCampeonato);
 		campeonato.setParametrizacao(param);
 		campeonato.addTime(times);
 

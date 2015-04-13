@@ -11,8 +11,6 @@ CREATE TABLE persistent_logins (
     PRIMARY KEY (series)
 );
 
-DROP VIEW vi_partida_rodada_palpite;
-
 -- criacao da view.
 CREATE VIEW vi_partida_rodada_palpite AS 
     SELECT 
@@ -55,8 +53,6 @@ CREATE VIEW vi_partida_rodada_palpite AS
     WHERE
         P.TP_PARTIDA = 'R';
 
-DROP VIEW vi_partida_rodada;
-
 CREATE VIEW vi_partida_rodada as
 	SELECT 
 		P.ID_PARTIDA,
@@ -95,9 +91,3 @@ CREATE VIEW vi_partida_rodada as
         tb_campeonato as C ON (F.ID_CAMPEONATO = C.ID_CAMPEONATO) 
 	WHERE
 		P.TP_PARTIDA = 'R';
-		
-		
-DELETE FROM tb_msg_template;
--- http://native2ascii.net/
-INSERT INTO tb_msg_template (TP_TEMPLATE, ID_TEMPLATE, DC_CLASSPATH, DC_LINK_ACESSO, TP_NOTIFICACAO, NM_ASSUNTO, NM_REMETENTE, DC_EMAIL_REMETENTE) VALUES ('E', NULL, 'br/com/debico/notify/email/templates/alerta_palpite.vm', 'http://www.debico.com.br/app/campeonatos/%s/%s/palpites', 1, 'Camarada, não se esqueça de palpitar!', 'De Bico', 'noreply@debico.com.br');
-INSERT INTO tb_msg_template (TP_TEMPLATE, ID_TEMPLATE, DC_CLASSPATH, DC_LINK_ACESSO, TP_NOTIFICACAO, NM_ASSUNTO, NM_REMETENTE, DC_EMAIL_REMETENTE) VALUES ('E', NULL, 'br/com/debico/notify/email/templates/contato.vm', null, 2, 'Contato do site Debico.com.br', 'De Bico', 'noreply@debico.com.br'); 

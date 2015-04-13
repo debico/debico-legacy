@@ -52,7 +52,7 @@ class EstruturaCampeonatoServiceImpl implements EstruturaCampeonatoService {
 	public Campeonato inserirNovaEstrutura(
 			EstruturaCampeonato estruturaCampeonato) {
 
-		campeonatoDAO.inserir(estruturaCampeonato.getCampeonato());
+		campeonatoDAO.create(estruturaCampeonato.getCampeonato());
 
 		this.inserirFase(estruturaCampeonato.getFases());
 		this.inserirRanking(estruturaCampeonato.getRankings());
@@ -65,31 +65,31 @@ class EstruturaCampeonatoServiceImpl implements EstruturaCampeonatoService {
 
 	private void inserirFase(final List<? extends FaseImpl> fases) {
 		for (FaseImpl fase : fases) {
-			faseDAO.inserir(fase);
+			faseDAO.create(fase);
 		}
 	}
 
 	private void inserirRodada(final List<? extends Rodada> rodadas) {
 		for (Rodada rodada : rodadas) {
-			rodadaDAO.inserir(rodada);
+			rodadaDAO.create(rodada);
 		}
 	}
 
 	private void inserirRanking(final List<? extends Ranking> rankings) {
 		for (Ranking ranking : rankings) {
-			rankingDAO.inserir(ranking);
+			rankingDAO.create(ranking);
 		}
 	}
 
 	private void inserirPontuacaoTime(final List<PontuacaoTime> pontuacoes) {
 		for (PontuacaoTime pontuacaoTime : pontuacoes) {
-			pontuacaoTimeDAO.inserirPontuacao(pontuacaoTime);
+			pontuacaoTimeDAO.create(pontuacaoTime);
 		}
 	}
 
 	private void inserirPartidas(final List<? extends Partida> partidas) {
 		for (Partida partida : partidas) {
-			partidaDAO.inserir(partida);
+			partidaDAO.create(partida);
 		}
 
 	}

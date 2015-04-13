@@ -11,44 +11,44 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-@ActiveProfiles("dev")
+@ActiveProfiles({ "dev", "embedded-jpa" })
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
-@ContextConfiguration(classes = {ServicesUnitTestConfig.class})
+@ContextConfiguration(classes = { ServicesUnitTestConfig.class })
 public abstract class AbstractUnitTest {
 
-    protected static final Logger LOGGER = LoggerFactory
-            .getLogger(AbstractUnitTest.class);
+	protected static final Logger LOGGER = LoggerFactory
+			.getLogger(AbstractUnitTest.class);
 
-    public AbstractUnitTest() {
+	public AbstractUnitTest() {
 
-    }
+	}
 
-    @After
-    public void tearDown() {
-        LOGGER.debug("Limpando a caixa de mensagens.");
-        Mailbox.clearAll();
-    }
+	@After
+	public void tearDown() {
+		LOGGER.debug("Limpando a caixa de mensagens.");
+		Mailbox.clearAll();
+	}
 
-    /**
-     * 
-     * @param proxy
-     * @param targetClass
-     * @return
-     * @throws Exception
-     * @see <a
-     *      href="http://www.techper.net/2009/06/05/how-to-acess-target-object-behind-a-spring-proxy/">How
-     *      To Acess Target Object Behind a Spring Proxy</a>
-     */
-    @SuppressWarnings({ "unchecked" })
-    protected final <T> T getTargetObject(Object proxy, Class<T> targetClass)
-            throws Exception {
-        if (AopUtils.isJdkDynamicProxy(proxy)) {
-            return (T) ((Advised) proxy).getTargetSource().getTarget();
-        } else {
-            return (T) proxy; // expected to be cglib proxy then, which is
-                              // simply a specialized class
-        }
-    }
+	/**
+	 * 
+	 * @param proxy
+	 * @param targetClass
+	 * @return
+	 * @throws Exception
+	 * @see <a
+	 *      href="http://www.techper.net/2009/06/05/how-to-acess-target-object-behind-a-spring-proxy/">How
+	 *      To Acess Target Object Behind a Spring Proxy</a>
+	 */
+	@SuppressWarnings({ "unchecked" })
+	protected final <T> T getTargetObject(Object proxy, Class<T> targetClass)
+			throws Exception {
+		if (AopUtils.isJdkDynamicProxy(proxy)) {
+			return (T) ((Advised) proxy).getTargetSource().getTarget();
+		} else {
+			return (T) proxy; // expected to be cglib proxy then, which is
+								// simply a specialized class
+		}
+	}
 
 }

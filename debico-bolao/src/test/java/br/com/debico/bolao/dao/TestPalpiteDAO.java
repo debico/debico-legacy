@@ -1,8 +1,5 @@
 package br.com.debico.bolao.dao;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.List;
 
 import javax.inject.Inject;
@@ -26,6 +23,8 @@ import br.com.debico.model.Usuario;
 import br.com.debico.model.campeonato.CampeonatoCopa;
 import br.com.debico.model.campeonato.FaseEliminatoria;
 import br.com.debico.social.dao.ApostadorDAO;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -53,35 +52,35 @@ public class TestPalpiteDAO extends AbstractBolaoUnitTest {
     public void testInserir() {
         Apostador apostador = new Apostador("Peter Parker", new Usuario(
                 "peter@oscorp.com"));
-        apostadorDAO.inserir(apostador);
+        apostadorDAO.create(apostador);
 
         Time mandante = new Time("Brasil");
         Time visitante = new Time("Croacia");
 
-        timeDAO.inserir(mandante);
-        timeDAO.inserir(visitante);
+        timeDAO.create(mandante);
+        timeDAO.create(visitante);
 
         CampeonatoCopa libertadores = new CampeonatoCopa();
         libertadores.addTime(visitante);
         libertadores.addTime(mandante);
 
-        campeonatoDAO.inserir(libertadores);
+        campeonatoDAO.create(libertadores);
 
         FaseEliminatoria eliminatoria = new FaseEliminatoria();
         eliminatoria.setCampeonato(libertadores);
-        faseDAO.inserir(eliminatoria);
+        faseDAO.create(eliminatoria);
 
         PartidaChave partida = new PartidaChave(mandante, visitante,
                 new Placar(2, 0));
         partida.setFase(eliminatoria);
 
-        partidaDAO.inserir(partida);
+        partidaDAO.create(partida);
 
         Palpite palpite = new Palpite(apostador, partida, new Placar(2, 1));
 
-        palpiteDAO.inserir(palpite);
+        palpiteDAO.create(palpite);
 
-        List<Palpite> palpites = palpiteDAO.selecionarTodos();
+        List<Palpite> palpites = palpiteDAO.findAll();
 
         assertNotNull(palpites);
         assertTrue(palpites.size() > 0);

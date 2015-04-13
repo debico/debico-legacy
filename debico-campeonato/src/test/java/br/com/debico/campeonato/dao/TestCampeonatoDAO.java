@@ -36,20 +36,20 @@ public class TestCampeonatoDAO extends AbstractCampeonatoUnitTest {
         Time timeA = Time.TIME_A;
         Time timeB = Time.TIME_B;
         
-        timeDAO.inserir(timeA);
-        timeDAO.inserir(timeB);
+        timeDAO.create(timeA);
+        timeDAO.create(timeB);
           
         CampeonatoCopa campeonatoCopa = new CampeonatoCopa();
         campeonatoCopa.setNome("Copa do Mundo do Brasil 2014");
         campeonatoCopa.addTime(timeA);
         campeonatoCopa.addTime(timeB);
         
-        campeonatoDAO.inserir(campeonatoCopa);
+        campeonatoDAO.create(campeonatoCopa);
 
         FaseEliminatoria faseFinal = new FaseEliminatoria();
         faseFinal.setCampeonato(campeonatoCopa);
         
-        faseDAO.inserir(faseFinal);
+        faseDAO.create(faseFinal);
 
         PartidaChave partida = new PartidaChave(timeA, timeB, new Placar(2, 0));
         
@@ -59,7 +59,7 @@ public class TestCampeonatoDAO extends AbstractCampeonatoUnitTest {
         
         partida.setChave(chave);
         
-        chaveDAO.inserir(chave);
+        chaveDAO.create(chave);
 
         LOGGER.debug("Campeonato Inserido: {}", campeonatoCopa);
 

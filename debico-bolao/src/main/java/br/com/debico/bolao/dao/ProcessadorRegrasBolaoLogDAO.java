@@ -4,11 +4,11 @@ import java.util.Date;
 import java.util.List;
 
 import br.com.debico.bolao.brms.model.ProcessadorRegrasBolaoLog;
+import br.com.tecnobiz.spring.config.dao.Dao;
 
-public interface ProcessadorRegrasBolaoLogDAO {
+public interface ProcessadorRegrasBolaoLogDAO extends
+		Dao<ProcessadorRegrasBolaoLog, Long> {
 
-	void inserir(final ProcessadorRegrasBolaoLog log);
-	
 	List<ProcessadorRegrasBolaoLog> recuperarLogs(final Date dataLog);
-	
+
 }

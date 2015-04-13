@@ -8,15 +8,10 @@ import br.com.debico.model.PartidaRodada;
 import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.model.campeonato.Chave;
 import br.com.debico.model.campeonato.Rodada;
+import br.com.tecnobiz.spring.config.dao.Dao;
 
 
-public interface PartidaDAO {
-    
-    void inserir(Partida partida);
-    
-    Partida atualizar(Partida partida);
-    
-    Partida selecionarPorId(int id);
+public interface PartidaDAO extends Dao<Partida, Integer> {
         
     /**
      * Recupera todas as partidas ainda não definidas e que estão com placar.

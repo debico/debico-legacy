@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 import br.com.debico.core.spring.profiles.Dev;
+import br.com.tecnobiz.spring.config.dao.profiles.EmbeddedJPA;
 
 /**
  * Configuração da camada de serviços para ser utilizada em ambientes de testes
@@ -12,9 +13,10 @@ import br.com.debico.core.spring.profiles.Dev;
  * @author Ricardo Zanini (ricardozanini@gmail.com)
  * @since 1.2.0
  */
+@EmbeddedJPA
 @Dev
 @Configuration
-@PropertySource({ "/debico-test.properties", "/debico-embedded.properties" })
+@PropertySource({ "/META-INF/debico-test.properties" })
 public class ServicesUnitTestConfig {
 
 }

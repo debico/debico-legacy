@@ -381,6 +381,7 @@
 					</execution>
 				</executions>
 				<configuration>
+					<getRevisionOnlyOnce>true</getRevisionOnlyOnce>
 					<doCheck>false</doCheck>
 					<doUpdate>true</doUpdate>
 					<shortRevisionLength>5</shortRevisionLength>

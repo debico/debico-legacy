@@ -8,26 +8,16 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.campeonato.dao.TimeDAO;
-import br.com.debico.core.dao.jpa.AbstractJPADAO;
 import br.com.debico.model.Time;
+import br.com.tecnobiz.spring.config.dao.AbstractJPADao;
 
 
 @Named
 @Transactional(propagation=Propagation.MANDATORY)
-class TimeDAOImpl extends AbstractJPADAO<Time, Integer> implements TimeDAO {
+class TimeDAOImpl extends AbstractJPADao<Time, Integer> implements TimeDAO {
 
     public TimeDAOImpl() {
         super(Time.class);
-    }
-    
-    @Override
-    public void inserir(Time time) {
-        super.inserir(time);
-    }
-    
-    @Override
-    public List<Time> selecionarTodos() {
-    	return super.selecionarTodos();
     }
     
     /**

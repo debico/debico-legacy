@@ -42,7 +42,7 @@ public class TestCampeonatoPontosCorridosServiceImpl extends AbstractCampeonatoU
 			brasileirao.addTime(new Time("Time" + i));
 		}
 
-		campeonatoDAO.inserir(brasileirao);
+		campeonatoDAO.create(brasileirao);
 
 		campeonatoPontosCorridosService.definirFaseUnica(brasileirao);
 

@@ -50,7 +50,7 @@ public class ApostadorPontuacaoServiceImpl implements ApostadorPontuacaoService 
 		if (apostadorPontuacaoDAO.selecionarApostador(apostador, campeonato) == null) {
 			ApostadorPontuacao apostadorPontuacao = new ApostadorPontuacao(
 					apostador, campeonato);
-			apostadorPontuacaoDAO.inserir(apostadorPontuacao);
+			apostadorPontuacaoDAO.create(apostadorPontuacao);
 			LOGGER.debug(
 					"[inscreverApostadorCampeonato] Apostador {} inscrito no campeonato {} com sucesso!",
 					apostador, campeonato);

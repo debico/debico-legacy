@@ -89,8 +89,8 @@ class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 	        this.confirirPoliticaSenha(usuario.getSenha());
 	        this.criptografarSenha(usuario);
 	        
-	        usuarioDAO.inserir(usuario);
-	        apostadorDAO.inserir(apostador);
+	        usuarioDAO.create(usuario);
+	        apostadorDAO.create(apostador);
 	        
 	        //TODO: enviar email de confirmação.
 	        LOGGER.debug("[cadastrarApostadorUsuario] Apostador '{}' cadastrado com sucesso!", usuario);
@@ -116,7 +116,7 @@ class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 	    Usuario usuario = apostador.getUsuario();
 		usuario.setUltimoLogin(new Date());
 
-		usuarioDAO.atualizar(usuario);
+		usuarioDAO.update(usuario);
 
 		LOGGER.debug("[loadUserByUsername] Apostador com o usuario '{}' carregado.", usuario);
 		return this.construirUsuario(apostador);

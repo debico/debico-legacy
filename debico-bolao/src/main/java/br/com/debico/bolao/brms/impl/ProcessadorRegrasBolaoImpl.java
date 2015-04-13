@@ -108,14 +108,14 @@ class ProcessadorRegrasBolaoImpl implements ProcessadorRegrasBolaoFeedback {
 				
 				if(!partidas.isEmpty()) {
 					calculoPalpitesService.computarPalpites(campeonatoPontosCorridos, partidas);
-					logDAO.inserir(new ProcessadorRegrasBolaoLog(campeonatoPontosCorridos, rodada));
+					logDAO.create(new ProcessadorRegrasBolaoLog(campeonatoPontosCorridos, rodada));
 					LOGGER.debug("[processarResultadosPontosCorridos] Rodada {} do campeonato {} processada com sucesso.", 
 							rodada, 
 							campeonatoPontosCorridos);
 				}
 			} catch (Exception ex) {
 				LOGGER.error("Ops! Ocorreu um erro durante o processamento", ex);
-				logDAO.inserir(new ProcessadorRegrasBolaoLog(campeonatoPontosCorridos, rodada, ex));
+				logDAO.create(new ProcessadorRegrasBolaoLog(campeonatoPontosCorridos, rodada, ex));
 			}
 			
 		}

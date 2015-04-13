@@ -33,10 +33,10 @@ class PartidaServiceImpl implements PartidaService {
         
         LOGGER.debug("[salvarPlacar] Tentando salvar o placar {} da partida {}", idPartida, placar);
         
-        Partida partida = partidaDAO.selecionarPorId(idPartida);
+        Partida partida = partidaDAO.findById(idPartida);
         partida.setPlacar(placar);
         
-        return partidaDAO.atualizar(partida);
+        return partidaDAO.update(partida);
     }
 
 }

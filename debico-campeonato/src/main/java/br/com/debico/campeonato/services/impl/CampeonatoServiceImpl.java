@@ -53,7 +53,7 @@ class CampeonatoServiceImpl implements CampeonatoService {
 	    LOGGER.debug("[selecionarCampeonato] Tentando recuperar o campeonato pelo id {}", id);
 	    
 	    checkArgument(id > 0);
-	    return campeonatoDAO.selecionar(id);
+	    return campeonatoDAO.findById(id);
 	}
 
 }

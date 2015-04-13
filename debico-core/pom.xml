@@ -15,9 +15,15 @@
 		<slugfy.version>2.1.2</slugfy.version>
 		<jasypt.version>1.9.2</jasypt.version>
 		<drools.version>6.1.0.Final</drools.version>
+		<spring.config.dao.version>1.0.0</spring.config.dao.version>
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>br.com.tecnobiz</groupId>
+			<artifactId>spring-config-dao</artifactId>
+			<version>${spring.config.dao.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>br.com.debico</groupId>
 			<artifactId>debico-model</artifactId>
@@ -86,10 +92,10 @@
 			<version>${slugfy.version}</version>
 		</dependency>
 		<dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
 
 
 		<dependency>

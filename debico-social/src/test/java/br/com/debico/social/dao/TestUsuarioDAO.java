@@ -1,8 +1,5 @@
 package br.com.debico.social.dao;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import javax.inject.Inject;
 
 import org.junit.Test;
@@ -15,6 +12,8 @@ import br.com.debico.model.Usuario;
 import br.com.debico.social.spring.SocialConfig;
 import br.com.debico.test.spring.AbstractUnitTest;
 import br.com.debico.test.spring.ServicesUnitTestConfig;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -28,7 +27,7 @@ public class TestUsuarioDAO extends AbstractUnitTest {
     @Test
     public void testInserir() {
         Usuario apostador = new Usuario("bruce@avengers.com");
-        usuarioDAO.inserir(apostador);
+        usuarioDAO.create(apostador);
 
         Usuario bruce = usuarioDAO.selecionarPorEmail("bruce@avengers.com");
         assertNotNull(bruce);

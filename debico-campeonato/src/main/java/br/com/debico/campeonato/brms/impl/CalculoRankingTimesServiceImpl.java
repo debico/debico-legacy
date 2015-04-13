@@ -50,7 +50,7 @@ class CalculoRankingTimesServiceImpl implements CalculoRankingTimesService  {
         List<PontuacaoTime> ranking = pontuacaoTimeDAO.selecionarPontuacaoCampeonato(campeonato);
         
         if(campeonato.getParametrizacao() == null) {
-        	((CampeonatoImpl)campeonato).setParametrizacao((campeonatoParametrizacaoDAO.selecionarPorId(campeonato.getId())));
+        	((CampeonatoImpl)campeonato).setParametrizacao((campeonatoParametrizacaoDAO.findById(campeonato.getId())));
         } 
         
         // apesar de nao ser uma coleção de parâmetros, foi feito dessa forma por causa da assinatura do método do BRMS.

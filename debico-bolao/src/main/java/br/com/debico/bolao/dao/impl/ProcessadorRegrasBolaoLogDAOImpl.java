@@ -10,12 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.bolao.brms.model.ProcessadorRegrasBolaoLog;
 import br.com.debico.bolao.dao.ProcessadorRegrasBolaoLogDAO;
-import br.com.debico.core.dao.jpa.AbstractJPADAO;
+import br.com.tecnobiz.spring.config.dao.AbstractJPADao;
 
 @Named
 @Transactional(propagation = Propagation.MANDATORY)
 class ProcessadorRegrasBolaoLogDAOImpl extends
-		AbstractJPADAO<ProcessadorRegrasBolaoLog, Long> implements
+		AbstractJPADao<ProcessadorRegrasBolaoLog, Long> implements
 		ProcessadorRegrasBolaoLogDAO {
 
 	public ProcessadorRegrasBolaoLogDAOImpl() {

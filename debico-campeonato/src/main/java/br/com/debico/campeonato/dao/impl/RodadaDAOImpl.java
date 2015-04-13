@@ -10,24 +10,16 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.campeonato.dao.RodadaDAO;
-import br.com.debico.core.dao.jpa.AbstractJPADAO;
 import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.model.campeonato.Rodada;
+import br.com.tecnobiz.spring.config.dao.AbstractJPADao;
 
 @Named
 @Transactional(propagation = Propagation.MANDATORY)
-class RodadaDAOImpl extends AbstractJPADAO<Rodada, Integer> implements RodadaDAO {
+class RodadaDAOImpl extends AbstractJPADao<Rodada, Integer> implements RodadaDAO {
 
     public RodadaDAOImpl() {
         super(Rodada.class);
-    }
-    
-    public void inserir(Rodada rodada) {
-        super.inserir(rodada);
-    }
-    
-    public Rodada selecionarPorId(int id) {
-    	return super.selecionarPorId(id);
     }
 
     public Rodada selecionarRodadaAtual(final Campeonato campeonato) {

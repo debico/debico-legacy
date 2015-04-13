@@ -5,19 +5,14 @@ import java.util.List;
 import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.model.campeonato.CampeonatoImpl;
 import br.com.debico.model.campeonato.Rodada;
+import br.com.tecnobiz.spring.config.dao.Dao;
 
-public interface CampeonatoDAO {
+public interface CampeonatoDAO extends Dao<CampeonatoImpl, Integer> {
 
-	void inserir(final CampeonatoImpl campeonato);
-	
 	List<CampeonatoImpl> selecionarCampeonatosAtivosNaoFinalizados();
-	
-	<T extends Campeonato> T selecionar(int id);
-	
+
 	<T extends Campeonato> T selecionarPorPermalink(String permalink);
-	
-	void excluir(CampeonatoImpl campeonato);
-	
+
 	<T extends Campeonato> T selecionarPorRodada(Rodada rodada);
-	
+
 }

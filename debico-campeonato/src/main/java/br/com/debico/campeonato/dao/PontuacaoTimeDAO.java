@@ -6,8 +6,9 @@ import java.util.List;
 import br.com.debico.model.Time;
 import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.model.campeonato.PontuacaoTime;
+import br.com.tecnobiz.spring.config.dao.Dao;
 
-public interface PontuacaoTimeDAO {
+public interface PontuacaoTimeDAO extends Dao<PontuacaoTime, Integer> {
     
     /**
      * Seleciona uma lista de pontuação de acordo com os times desejados.
@@ -16,13 +17,6 @@ public interface PontuacaoTimeDAO {
      * @return
      */
     List<PontuacaoTime> selecionarPontuacaoTimes(Collection<Time> times);
-    
-    /**
-     * Insere um item no Ranking do Campeonato em questão
-     * 
-     * @param pontuacaoTime
-     */
-    void inserirPontuacao(PontuacaoTime pontuacaoTime);
     
     /**
      * Busca a pontuação de determinado campeonato, contanto que possua alguma fase que tenha pontuação.

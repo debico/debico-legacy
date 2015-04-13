@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.campeonato.dao.PartidaDAO;
-import br.com.debico.core.dao.jpa.AbstractJPADAO;
 import br.com.debico.model.Partida;
 import br.com.debico.model.PartidaChave;
 import br.com.debico.model.PartidaRodada;
@@ -17,29 +16,16 @@ import br.com.debico.model.StatusPartida;
 import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.model.campeonato.Chave;
 import br.com.debico.model.campeonato.Rodada;
+import br.com.tecnobiz.spring.config.dao.AbstractJPADao;
 
 @Named
 @Transactional(propagation = Propagation.MANDATORY)
-class PartidaDAOImpl extends AbstractJPADAO<Partida, Integer> implements PartidaDAO {
+class PartidaDAOImpl extends AbstractJPADao<Partida, Integer> implements PartidaDAO {
 	
 	protected final static String ORDER_BY_PARTIDA = "ORDER BY p.dataHoraPartida, p.mandante.alias";
 
     public PartidaDAOImpl() {
         super(Partida.class);
-    }
-
-    @Override
-    public void inserir(Partida partida) {
-        super.inserir(partida);
-    }
-
-    @Override
-    public Partida atualizar(Partida e) {
-        return super.atualizar(e);
-    }
-    
-    public Partida selecionarPorId(int id) {
-        return super.selecionarPorId(id);
     }
 
     public List<PartidaRodada> selecionarPartidasNaoDefinidasComPlacar(final Rodada rodada) {

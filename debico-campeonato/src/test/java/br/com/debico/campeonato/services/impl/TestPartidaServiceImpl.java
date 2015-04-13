@@ -46,7 +46,7 @@ public class TestPartidaServiceImpl extends AbstractCampeonatoUnitTest {
 		partida.setFase(rodada.getRanking().getFase());
 		partida.setRodada(rodada);
 		
-		partidaDAO.inserir(partida);
+		partidaDAO.create(partida);
 		
 		Partida partidaSalva = partidaService.salvarPlacar(partida.getId(), new Placar(7, 1));
 		assertNotNull(partidaSalva);
