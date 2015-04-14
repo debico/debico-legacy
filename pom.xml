@@ -47,10 +47,7 @@
 	</scm>
 
 	<repositories>
-	   <!-- 
-	       Necessário pelo Swagger
-	       ref.: https://github.com/adrianbk/swagger-springmvc-demo/tree/master/swagger-ui
-	    -->
+		<!-- Necessário pelo Swagger ref.: https://github.com/adrianbk/swagger-springmvc-demo/tree/master/swagger-ui -->
 		<repository>
 			<id>oss-jfrog-artifactory</id>
 			<name>oss-jfrog-artifactory-releases</name>
@@ -328,7 +325,7 @@
 		<profile>
 			<id>it</id>
 			<properties>
-				<skip.unit.tests>false</skip.unit.tests>
+				<skip.unit.tests>true</skip.unit.tests>
 			</properties>
 		</profile>
 	</profiles>
@@ -349,10 +346,10 @@
 					</execution>
 				</executions>
 				<configuration>
-					<skipTests>${skip.unit.tests}</skipTests>
 					<argLine>${argLine} -Xms521m -Xmx1024m</argLine>
 					<forkCount>1</forkCount>
 					<reuseForks>true</reuseForks>
+					<skipTests>${skip.unit.tests}</skipTests>
 					<systemPropertyVariables>
 						<logback.debug>false</logback.debug>
 						<log.sys.level>OFF</log.sys.level>

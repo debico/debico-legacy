@@ -2,35 +2,10 @@
 <!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://jetty.mortbay.org/configure.dtd">
 
 <Configure class="org.eclipse.jetty.webapp.WebAppContext">
-
-	<!-- Add an EnvEntry only valid for this webapp -->
-	<New id="br.com.debico.hibernate.dialect" class="org.eclipse.jetty.plus.jndi.EnvEntry">
-		<Arg>br.com.debico.hibernate.dialect</Arg>
-		<Arg type="java.lang.String">org.hibernate.dialect.H2Dialect</Arg>
-		<Arg type="boolean">true</Arg>
-	</New>
-	
-	<New id="br.com.debico.hibernate.show_sql" class="org.eclipse.jetty.plus.jndi.EnvEntry">
-        <Arg>br.com.debico.hibernate.show_sql</Arg>
-        <Arg type="java.lang.Boolean">false</Arg>
-        <Arg type="boolean">true</Arg>
-    </New>
-    
-    <New id="br.com.debico.hibernate.hbm2ddl.auto" class="org.eclipse.jetty.plus.jndi.EnvEntry">
-        <Arg>br.com.debico.hibernate.hbm2ddl.auto</Arg>
-        <Arg type="java.lang.String">create-drop</Arg>
-        <Arg type="boolean">true</Arg>
-    </New>
-    
-    <New id="br.com.debico.db.sql.scripts" class="org.eclipse.jetty.plus.jndi.EnvEntry">
-        <Arg>br.com.debico.db.sql.scripts</Arg>
-        <Arg type="java.lang.String">/sql/db-objects.sql,/load/integration_tests_load_data.sql</Arg>
-        <Arg type="boolean">true</Arg>
-    </New>
     
     <New id="spring.profiles.active" class="org.eclipse.jetty.plus.jndi.EnvEntry">
         <Arg>spring.profiles.active</Arg>
-        <Arg type="java.lang.String">dev</Arg>
+        <Arg type="java.lang.String">dev,embedded-jpa</Arg>
         <Arg type="boolean">true</Arg>
     </New>
     

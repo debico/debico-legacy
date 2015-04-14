@@ -25,12 +25,14 @@ Caso opte por utilizar o Tomcat, segue abaixo um arquivo de referência para a c
     <!-- Default set of monitored resources -->
     <WatchedResource>WEB-INF/web.xml</WatchedResource>
 
-    <Environment name="br.com.debico.db.url" value="jdbc:mysql://127.0.0.1:3306/bolao_campeao" type="java.lang.String" override="false"/>
-    <Environment name="br.com.debico.db.user" value="user_bolao" type="java.lang.String" override="false"/>
-    <Environment name="br.com.debico.db.password" value="user_bolao" type="java.lang.String" override="false"/>
-    <Environment name="br.com.debico.db.driver" value="com.mysql.jdbc.Driver" type="java.lang.String" override="false"/>
-    <Environment name="br.com.debico.hibernate.show_sql" value="false" type="java.lang.String" override="false"/>
-    <Environment name="spring.profiles.active" value="release" type="java.lang.String" override="false"/>
+    <Environment name="spring.config.dao.db.url" value="jdbc:mysql://127.0.0.1:3306/bolao_campeao" type="java.lang.String" override="false"/>
+    <Environment name="spring.config.dao.db.user" value="user_bolao" type="java.lang.String" override="false"/>
+    <Environment name="spring.config.dao.db.password" value="user_bolao" type="java.lang.String" override="false"/>
+    <Environment name="spring.config.dao.db.driver" value="com.mysql.jdbc.Driver" type="java.lang.String" override="false"/>
+    <Environment name="spring.profiles.active" value="release,standalone-jpa" type="java.lang.String" override="false"/>
+    <Environment name="hibernate.show_sql" value="false" type="java.lang.String" override="false"/>
+    <Environment name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" type="java.lang.String" override="false"/>
+    <Environment name="hibernate.hbm2ddl.auto" value="validate" type="java.lang.String" override="false"/>
 
     <!-- http://stackoverflow.com/questions/8593303/could-not-connect-to-smtp-host-email-smtp-us-east-1-amazonaws-com-port-465-r -->
     <!-- http://docs.aws.amazon.com/ses/latest/DeveloperGuide/smtp-response-codes.html -->
@@ -62,18 +64,16 @@ Algumas propriedades da aplicação devem ser configuradas no ambiente. A não s
 
 | Propriedade | Tipo | Padrão | Descrição
 ----------------- | ----- | --------- | ------------
-| `br.com.debico.hibernate.dialect` | String | `org.hibernate.dialect.MySQLDialect` | Dialeto do Hibernate do banco de dados utilizado pela aplicação. Caso precise alterar o banco, não esqueça dessa propriedade!
-| `br.com.debico.hibernate.show_sql` | Boolean | true | O Hibernate deve mostrar o *output* dos comandos executados no banco na console de log?
-| `br.com.debico.db.url` | String | jdbc\:mysql\://127.0.0.1:3306/bolao_campeao | URL de conexão com o banco de dados
-| `br.com.debico.db.user` | String | user_bolao | Nome do usuário do banco de dados.
-| `br.com.debico.db.password` | String | user_bolao | Senha do usuário do banco de dados.
-| `br.com.debico.db.driver` | String | `com.mysql.jdbc.Driver` | Nome do driver JDBC do banco de dados. Caso altere o tipo do banco, não esquecer de adicionar o *driver* no *classpath* do servidor de aplicação.
-| `br.com.debico.db.initialsize` | Integer | 5 | Tamanho do *pool* inicial de conexão do banco de dados.
-| `br.com.debico.db.validation_query` | String | SELECT 1 | *Query* para realizar a validação da conexão com o banco de dados.
+| `spring.config.dao.db.url` | String | jdbc\:mysql\://127.0.0.1:3306/bolao_campeao | URL de conexão com o banco de dados
+| `spring.config.dao.db.user` | String | user_bolao | Nome do usuário do banco de dados.
+| `spring.config.dao.db.password` | String | user_bolao | Senha do usuário do banco de dados.
+| `spring.config.dao.db.driver` | String | `com.mysql.jdbc.Driver` | Nome do driver JDBC do banco de dados. Caso altere o tipo do banco, não esquecer de adicionar o *driver* no *classpath* do servidor de aplicação.
+| `spring.config.dao.db.max.conn` | Integer | 5 | Tamanho do *pool* inicial de conexão do banco de dados.
+| `spring.config.dao.db.validation_query` | String | SELECT 1 | *Query* para realizar a validação da conexão com o banco de dados.
 | `br.com.debico.jndi.mail.session` | String | java\:comp/env/mail/Session/Debico | Nome do JNDI da sessão de e-mail do servidor de aplicação.
 | `br.com.debico.admin.email` | String | ricardozanini@gmail.com | E-mail do administrador do sistema. Aquele cara que vai receber as reclamações do formulário de contato. :)
 
-As propriedades carregas por padrão você encontra [neste arquivo](https://bitbucket.org/ricardozanini/debico/src/dac4cf90c9fca497822c480758bead31052538c8/debico-core/src/main/resources/br/com/debico/core/debico-standalone.properties?at=master). Porém, sugiro sempre configurá-las no ambiente do servidor escolhido.
+Qualquer propriedade do hibernate pode ser carregada no ambiente. Apenas adicione-as no seu classpath e tenha certeza de que a aplicação esteja lendo antes de carregar o ambiente.
 
 ### Configuração do envio de E-mail ###
 
