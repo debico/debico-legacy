@@ -91,3 +91,4 @@ CREATE VIEW vi_partida_rodada as
         tb_campeonato as C ON (F.ID_CAMPEONATO = C.ID_CAMPEONATO) 
 	WHERE
 		P.TP_PARTIDA = 'R';
+		

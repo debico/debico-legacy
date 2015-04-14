@@ -357,7 +357,7 @@
 						<logback.debug>false</logback.debug>
 						<log.sys.level>OFF</log.sys.level>
 						<log.root.level>OFF</log.root.level>
-						<br.com.debico.hibernate.show_sql>false</br.com.debico.hibernate.show_sql>
+						<hibernate.show_sql>false</hibernate.show_sql>
 					</systemPropertyVariables>
 					<excludes>
 						<!-- testes de integracao nao -->
