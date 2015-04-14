@@ -33,4 +33,7 @@ public interface ApostadorService {
 	 */
 	Apostador selecionarPerfilApostadorPorEmail(String email);
 
+	Apostador selecionarApostadorPorId(int id);
+	
+	Apostador selecionarApostadorPorIdUsuario(int idUsuario);
 }

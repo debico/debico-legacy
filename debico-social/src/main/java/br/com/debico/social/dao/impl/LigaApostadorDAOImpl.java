@@ -23,5 +23,5 @@ class LigaApostadorDAOImpl extends AbstractJPADao<LigaApostador, LigaApostador> 
 	public void init() {
 
 	}
-
+	
 }

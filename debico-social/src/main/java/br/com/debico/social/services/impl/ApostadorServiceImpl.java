@@ -69,6 +69,11 @@ class ApostadorServiceImpl implements ApostadorService {
             apostadorBase.getOpcoes().setTimeCoracao(null);
         }
     }
+    
+    @Override
+    public Apostador selecionarApostadorPorIdUsuario(int idUsuario) {
+    	return apostadorDAO.selecionarPorIdUsuario(idUsuario);
+    }
 
     public Apostador selecionarPerfilApostadorPorEmail(String email) {
         LOGGER.debug(
@@ -82,6 +87,12 @@ class ApostadorServiceImpl implements ApostadorService {
         checkNotNull(emptyToNull(email), "O email deve ser informado");
 
         return apostadorDAO.selecionarPorEmail(email);
+    }
+    
+    @Override
+    public Apostador selecionarApostadorPorId(int id) {
+    	checkArgument(id > 0, "Informe o Id do Apostador");
+    	return apostadorDAO.findById(id);
     }
 
 }

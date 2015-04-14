@@ -25,6 +25,8 @@ import br.com.debico.model.Usuario;
 import br.com.debico.social.CadastroApostadorException;
 import br.com.debico.social.services.ApostadorService;
 import br.com.debico.social.services.UsuarioService;
+import br.com.debico.social.services.impl.ApostadorServiceImpl;
+import br.com.debico.social.services.impl.UsuarioServiceImpl;
 import br.com.debico.social.spring.SocialConfig;
 import br.com.debico.test.spring.AbstractUnitTest;
 

@@ -37,6 +37,19 @@ class ApostadorDAOImpl extends AbstractJPADao<Apostador, Integer> implements Apo
         super(Apostador.class);
     }
     
+    @Override
+    public Apostador selecionarPorIdUsuario(int idUsuario) {
+    	final CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+        final CriteriaQuery<Apostador> query = cb.createQuery(Apostador.class);
+        final Root<Apostador> apostador = query.from(Apostador.class);
+        @SuppressWarnings("unchecked")
+		final Join<Apostador, Usuario> usuario = (Join<Apostador, Usuario>)apostador.fetch(Apostador_.usuario, JoinType.INNER);
+                
+        query.select(apostador).where(cb.equal(usuario.get("id"), idUsuario));
+        
+        return DataAccessUtils.singleResult(getEntityManager().createQuery(query).getResultList());
+    }
+    
     public Apostador selecionarPorEmail(String email) {
     	return DataAccessUtils.singleResult(getEntityManager()
     			.createQuery("SELECT a FROM Apostador a WHERE usuario.email = :email", Apostador.class)

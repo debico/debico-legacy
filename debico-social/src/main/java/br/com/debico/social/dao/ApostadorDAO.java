@@ -10,6 +10,8 @@ import br.com.tecnobiz.spring.config.dao.Dao;
 public interface ApostadorDAO extends Dao<Apostador, Integer> {
 
 	Apostador selecionarPorEmail(String email);
+	
+	Apostador selecionarPorIdUsuario(int idUsuario);
 
 	/**
 	 * Recupera todas as informações do {@link Apostador} por meio de FETCH
