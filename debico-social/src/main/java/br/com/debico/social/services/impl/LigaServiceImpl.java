@@ -8,13 +8,13 @@ import javax.inject.Named;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.debico.core.helpers.WebUtils;
 import br.com.debico.model.Apostador;
 import br.com.debico.social.CadastroLigaException;
-import br.com.debico.social.dao.LigaApostadorDAO;
 import br.com.debico.social.dao.LigaDAO;
 import br.com.debico.social.model.Liga;
-import br.com.debico.social.model.LigaApostador;
 import br.com.debico.social.services.ApostadorService;
+import br.com.debico.social.services.LigaApostadorService;
 import br.com.debico.social.services.LigaService;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -30,20 +30,13 @@ class LigaServiceImpl implements LigaService {
 	private LigaDAO ligaDAO;
 
 	@Inject
-	private LigaApostadorDAO ligaApostadorDAO;
+	private LigaApostadorService ligaApostadorService;
 
 	@Inject
 	private ApostadorService apostadorService;
 
 	public LigaServiceImpl() {
 
-	}
-
-	@Override
-	public List<Apostador> consultarApostadores(long idLiga) {
-		checkArgument(idLiga > 0, "Informe a liga");
-
-		return ligaDAO.selecionarApostadores(idLiga);
 	}
 
 	@Override
@@ -59,141 +52,69 @@ class LigaServiceImpl implements LigaService {
 
 		return ligaDAO.selecionarPorApostador(apostador.getId());
 	}
+	
+	@Override
+	public Liga recuperarLiga(long idLiga) {
+		checkArgument(idLiga > 0);
+		return ligaDAO.findById(idLiga);
+	}
 
 	@Override
 	public Liga cadastrarNovaLiga(String nome, String emailAdmin)
 			throws CadastroLigaException {
 
 		checkNotNull(emptyToNull(nome));
-		checkNotNull(emptyToNull(emailAdmin));
 
-		Apostador apostador = apostadorService
-				.selecionarApostadorPorEmail(emailAdmin);
-
-		if (apostador == null) {
-			throw new CadastroLigaException(String.format(
-					"Apostador com o email '%s' nao foi encontrador",
-					emailAdmin));
-		}
+		final Apostador apostador = this.recuperarApostador(emailAdmin);
 
 		final Liga liga = new Liga(nome);
 		liga.setAdministrador(apostador);
 
 		ligaDAO.create(liga);
-		this.inscreverApostador(liga, apostador);
+		ligaApostadorService.inscreverApostador(liga, apostador);
 
 		// enviar email.
 
 		return liga;
 	}
 
-	private boolean inscreverApostador(final LigaApostador ligaApostador) {
-		checkNotNull(ligaApostador);
-		ligaApostadorDAO.create(ligaApostador);
-		// regras de negocio aqui
-
-		return true;
-	}
-
-	public boolean inscreverApostador(final Liga liga, final Apostador apostador) {
-		checkNotNull(liga, "A referencia de liga eh obrigatoria");
-		checkNotNull(apostador, "a referencia de apostador eh obrigatoria");
-
-		this.validarLigaApostador(liga.getId(), apostador.getId());
-
-		return this.inscreverApostador(new LigaApostador(liga, apostador));
-	}
-
 	@Override
-	public boolean inscreverApostador(long idLiga, int idUsuarioApostador) {
-		this.validarLigaApostador(idLiga, idUsuarioApostador);
+	public Liga atualizarLiga(long idLiga, String nome, String emailAdmin)
+			throws CadastroLigaException {
+		checkNotNull(emptyToNull(nome));
 
-		return this.inscreverApostador(this.recuperarAssociacaoLigaApostador(
-				idLiga, idUsuarioApostador));
-	}
-
-	@Override
-	public boolean inscreverApostador(Liga liga, int idUsuarioApostador) {
-		return this.inscreverApostador(liga,
-				apostadorService.selecionarApostadorPorIdUsuario(idUsuarioApostador));
-	}
-
-	@Override
-	public boolean inscreverApostador(Liga liga,
-			List<Integer> idsUsuarioApostador) {
-
-		for (Integer idUsuario : idsUsuarioApostador) {
-			this.inscreverApostador(liga, idUsuario);
-		}
-
-		return true;
-	}
-	
-	@Override
-	public boolean inscreverApostador(long idLiga,
-			List<Integer> idsUsuarioApostador) {
-		return this.inscreverApostador(ligaDAO.findById(idLiga),
-				idsUsuarioApostador);
-	}
-
-	private boolean removerApostador(final LigaApostador ligaApostador) {
-		checkNotNull(ligaApostador);
-		ligaApostadorDAO.remove(ligaApostador);
-
-		return true;
-	}
-
-	@Override
-	public boolean removerApostador(long idLiga, int idUsuarioApostador) {
-		this.validarLigaApostador(idLiga, idUsuarioApostador);
-
-		return this.removerApostador(this.recuperarAssociacaoLigaApostador(
-				idLiga, idUsuarioApostador));
-	}
-
-
-	@Override
-	public boolean removerApostador(Liga liga, Apostador apostador) {
-		checkNotNull(liga, "A referencia de liga eh obrigatoria");
-		checkNotNull(apostador, "a referencia de apostador eh obrigatoria");
-
-		return this.removerApostador(ligaApostadorDAO.findById(new LigaApostador(liga, apostador)));
-	}
-
-	@Override
-	public boolean removerApostador(Liga liga, int idUsuarioApostador) {
-		return this.removerApostador(liga, apostadorService.selecionarApostadorPorIdUsuario(idUsuarioApostador));
-	}
-
-	@Override
-	public boolean removerApostador(Liga liga, List<Integer> idsUsuarioApostador) {
-		for (Integer idUsuario : idsUsuarioApostador) {
-			this.removerApostador(liga, idUsuario);
+		final Apostador apostador = this.recuperarApostador(emailAdmin);
+		final Liga liga = ligaDAO.findById(idLiga);
+		
+		if(liga.getAdministrador().equals(apostador)) {
+			liga.setNome(nome);
+			liga.setPermalink(WebUtils.toPermalink(nome));
+			
+			ligaDAO.update(liga);
+			
+			return liga;
 		}
 		
-		return true;
+		throw new CadastroLigaException("Adm nao pertence liga", "liga.err.atualiza.adm");
 	}
 	
-	@Override
-	public boolean removerApostador(long idLiga,
-			List<Integer> idsUsuarioApostador) {
-		return this.removerApostador(ligaDAO.findById(idLiga), idsUsuarioApostador);
-	}
 
-	private LigaApostador recuperarAssociacaoLigaApostador(final long idLiga,
-			final int idUsuarioApostador) {
-		final Liga liga = ligaDAO.findById(idLiga);
+	private Apostador recuperarApostador(final String email)
+			throws CadastroLigaException {
+		checkNotNull(emptyToNull(email),
+				"O email do administrador da liga nao pode ser nulo");
+
 		final Apostador apostador = apostadorService
-				.selecionarApostadorPorIdUsuario(idUsuarioApostador);
+				.selecionarApostadorPorEmail(email);
 
-		return ligaApostadorDAO.findById(new LigaApostador(liga, apostador));
+		if (apostador == null) {
+			throw new CadastroLigaException("Apostador nao encontrado", "liga.err.cad.adm.not_found");
+		}
+
+		return apostador;
 	}
 
-	private void validarLigaApostador(final long idLiga,
-			final int idUsuarioApostador) {
-		checkArgument(idLiga > 0, "O Id da liga deve ser informado");
-		checkArgument(idUsuarioApostador > 0,
-				"O Id do apostador deve ser informado");
-	}
+
+	
 
 }

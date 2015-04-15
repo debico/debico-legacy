@@ -12,16 +12,17 @@ public class CadastroLigaException extends DebicoException {
 
 	private static final long serialVersionUID = -1333930546489264610L;
 
-	public CadastroLigaException(String message, Throwable inner) {
-		super(message, inner);
+	public CadastroLigaException(String message, String messageCode) {
+		super(message, messageCode);
 	}
 
-	public CadastroLigaException(String message) {
-		super(message);
+	public CadastroLigaException(String message, Throwable inner,
+			String messageCode) {
+		super(message, inner, messageCode);
 	}
 
-	public CadastroLigaException(Throwable inner) {
-		super(inner);
+	public CadastroLigaException(Throwable inner, String messageCode) {
+		super(inner, messageCode);
 	}
 
 }

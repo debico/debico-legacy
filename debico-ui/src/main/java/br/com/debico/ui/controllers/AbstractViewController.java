@@ -8,25 +8,27 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
 import org.springframework.web.servlet.ModelAndView;
 
+import br.com.debico.core.DebicoException;
+
 public abstract class AbstractViewController implements MessageSourceAware {
 
 	private MessageSource messageSource;
-	
+
 	private ModelAndView modelAndView;
-	
+
 	public static final String MENSAGEM_VIEW_NAME = "mensagem";
-	
+
 	@PostConstruct
 	public void init() {
 		this.modelAndView = new ModelAndView(getViewName());
 	}
-	
+
 	protected abstract String getViewName();
-	
+
 	public ModelAndView getModelAndView() {
 		return modelAndView;
 	}
-	
+
 	public void setMessageSource(MessageSource messageSource) {
 		this.messageSource = messageSource;
 	}
@@ -36,20 +38,26 @@ public abstract class AbstractViewController implements MessageSourceAware {
 				Locale.getDefault());
 	}
 
+	public String getMessage(final DebicoException e) {
+		return this.messageSource.getMessage(e.getMessageCode(), null,
+				Locale.getDefault());
+	}
+
 	public String getMessage(final String messageCode, Object... args) {
 		return this.messageSource.getMessage(messageCode, args,
 				Locale.getDefault());
 	}
 
 	/**
-	 * Quando a aplicação mantém o estado da página, se faz necessário limpar os dados de erro.
+	 * Quando a aplicação mantém o estado da página, se faz necessário limpar os
+	 * dados de erro.
 	 */
 	public void clearError() {
-	    modelAndView.addObject("error", false);
-        modelAndView.addObject("errorMsg", "");
-        modelAndView.setViewName(getViewName());
+		modelAndView.addObject("error", false);
+		modelAndView.addObject("errorMsg", "");
+		modelAndView.setViewName(getViewName());
 	}
-	
+
 	public void setError(final String errorMessageCode) {
 		modelAndView.addObject("error", true);
 		modelAndView.addObject("errorMsg", getMessage(errorMessageCode));
@@ -58,7 +66,14 @@ public abstract class AbstractViewController implements MessageSourceAware {
 
 	public void setError(final Throwable e) {
 		modelAndView.addObject("error", true);
-		modelAndView.addObject("errorMsg", e.getLocalizedMessage());
+
+		if (e instanceof DebicoException
+				&& ((DebicoException) e).hasMessageCode()) {
+			modelAndView.addObject("errorMsg", getMessage((DebicoException) e));
+		} else {
+			modelAndView.addObject("errorMsg", e.getLocalizedMessage());
+		}
+
 		modelAndView.setViewName(getViewName());
 	}
 
@@ -67,9 +82,13 @@ public abstract class AbstractViewController implements MessageSourceAware {
 		modelAndView.addObject("mensagem", getMessage(messageCode));
 		modelAndView.addObject("sucesso", true);
 	}
-	
+
 	public void resetViewName() {
 		modelAndView.setViewName(getViewName());
+	}
+
+	protected void addObject(final String key, final Object model) {
+		modelAndView.addObject(key, model);
 	}
 
 }
