@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -47,7 +48,7 @@ public final class Liga implements Serializable, Comparable<Liga> {
 	@Column(name = "DC_PERMALINK", nullable = false, unique = true, length = 1000)
 	private String permalink;
 
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name = "ID_APOSTADOR_ADMIN", nullable = false)
 	private Apostador administrador;
 

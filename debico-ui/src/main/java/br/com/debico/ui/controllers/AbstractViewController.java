@@ -9,6 +9,7 @@ import org.springframework.context.MessageSourceAware;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.debico.core.DebicoException;
+import br.com.debico.ui.utils.MessageSourceUtils;
 
 public abstract class AbstractViewController implements MessageSourceAware {
 
@@ -38,11 +39,6 @@ public abstract class AbstractViewController implements MessageSourceAware {
 				Locale.getDefault());
 	}
 
-	public String getMessage(final DebicoException e) {
-		return this.messageSource.getMessage(e.getMessageCode(), null,
-				Locale.getDefault());
-	}
-
 	public String getMessage(final String messageCode, Object... args) {
 		return this.messageSource.getMessage(messageCode, args,
 				Locale.getDefault());
@@ -66,13 +62,14 @@ public abstract class AbstractViewController implements MessageSourceAware {
 
 	public void setError(final Throwable e) {
 		modelAndView.addObject("error", true);
+		modelAndView.addObject("errorMsg", e.getLocalizedMessage());
+		modelAndView.setViewName(getViewName());
+	}
 
-		if (e instanceof DebicoException
-				&& ((DebicoException) e).hasMessageCode()) {
-			modelAndView.addObject("errorMsg", getMessage((DebicoException) e));
-		} else {
-			modelAndView.addObject("errorMsg", e.getLocalizedMessage());
-		}
+	public void setError(final DebicoException e) {
+		modelAndView.addObject("error", true);
+		modelAndView.addObject("errorMsg",
+				MessageSourceUtils.getMessageFromEx(e, messageSource));
 
 		modelAndView.setViewName(getViewName());
 	}

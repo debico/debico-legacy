@@ -14,7 +14,7 @@ public interface LigaDAO extends Dao<Liga, Long> {
 	 * 
 	 * @return lista de ligas nos quais o apostador está relacionado
 	 */
-	List<Liga> selecionarPorApostador(final int idUsuarioApostador);
+	List<Liga> selecionarPorUsuario(final int idUsuario);
 	
 	/**
 	 * Seleciona todos os apostadores de determinada liga.

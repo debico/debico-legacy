@@ -1,5 +1,7 @@
 package br.com.debico.ui.handlers;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -39,4 +41,22 @@ public class HttpExceptionHandler {
 	    
 	    return modelAndView;
 	}	
+	
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	@ExceptionHandler({ RuntimeException.class })
+	public ModelAndView hadleRuntimeException(
+			HttpServletRequest req, Exception ex) {
+		// TODO: enviar email.
+		
+		LOGGER.error(
+				"[hadleRuntimeException] erro de RUNTIME: '{}'",
+				ex.getMessage(), ex);
+
+		final ModelAndView modelAndView = new ModelAndView("support");
+		modelAndView.addObject("errorMsg", ex.getLocalizedMessage());
+		modelAndView.addObject("error", true);
+		modelAndView.addObject("errorUrl", req.getRequestURL().toString());
+		
+		return modelAndView;
+	}
 }

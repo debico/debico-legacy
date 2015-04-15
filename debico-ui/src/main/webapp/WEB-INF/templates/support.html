@@ -15,9 +15,16 @@
                     <a th:href="@{/login}" th:text="#{support.sessionExpired.html.urlMsg}"></a>
                 </p>
             </div>
+            
+            <div class="large-12 columns" th:if="${error}">
+                <h3 th:text="#{support.error.html.title}"></h3>
+                <hr />
+                <p>
+                    <a th:href="${errorUrl}" th:text="#{support.error.html.urlMsg}"></a>
+                </p>
+            </div>
         </div>
     </div>
-    <div th:replace="fragments/footer :: footer-copy"></div>
     <div th:replace="fragments/footer :: footer-scripts"></div>
 </body>
 </html>

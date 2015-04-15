@@ -28,7 +28,7 @@ import br.com.tecnobiz.spring.config.dao.base.ProfileBasedDaoConfig;
  */
 @EnableCaching
 @Import(ProfileBasedDaoConfig.class)
-@PropertySource(value = "/META-INF/debico.properties", ignoreResourceNotFound = true)
+@PropertySource(value = "classpath:META-INF/debico.properties", ignoreResourceNotFound = false)
 public final class InfrastructureConfig {
 
 	/**

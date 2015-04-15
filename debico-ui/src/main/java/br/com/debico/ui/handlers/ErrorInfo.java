@@ -1,11 +1,11 @@
 package br.com.debico.ui.handlers;
 
-import static com.google.common.base.Objects.equal;
-import static com.google.common.base.Objects.toStringHelper;
-
 import java.io.Serializable;
 
 import com.google.common.base.Objects;
+
+import static com.google.common.base.Objects.equal;
+import static com.google.common.base.Objects.toStringHelper;
 
 /**
  * Estrutura de dados para armazenar as informações de Erro retornadas pelas API
@@ -21,7 +21,7 @@ public final class ErrorInfo implements Serializable {
     public final String url;
     public final String ex;
     public String exClass;
-
+    
     public ErrorInfo(final String url, final Exception ex) {
         this.url = url;
         this.ex = ex.getLocalizedMessage();
@@ -44,6 +44,10 @@ public final class ErrorInfo implements Serializable {
     public String getExClass() {
         return exClass;
     }
+    
+    public void setExClass(String exClass) {
+		this.exClass = exClass;
+	}
 
     @Override
     public int hashCode() {

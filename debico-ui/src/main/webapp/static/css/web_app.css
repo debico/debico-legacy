@@ -37,6 +37,45 @@
 	color: red;
 }
 
+/* Para células com botões de ação */
+td.action {
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+	white-space: nowrap;
+}
+
+td.action:before {
+	content: '';
+	display: inline-block;
+	height: 100%;
+	vertical-align: middle;
+}
+
+td.action div {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.inline-list-action {
+	list-style: outside none none;
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+	display: inline;
+}
+
+.inline-list-action li {
+	display: inline;
+	padding: 0.25em;
+}
+
+/* -------------------------------------------------------------- */
+/* liga */
+/* -------------------------------------------------------------- */
+#minhas_ligas {
+	width: 100%;
+}
 /* -------------------------------------------------------------- */
 /* Ranking */
 /* -------------------------------------------------------------- */
@@ -44,7 +83,8 @@
 	width: 100%;
 }
 
-td.item-ranking, td.item-ranking-me, td.item-ranking-top, td.item-ranking-red  {
+td.item-ranking, td.item-ranking-me, td.item-ranking-top, td.item-ranking-red
+	{
 	border-left: solid 0.25em;
 }
 
@@ -74,7 +114,7 @@ tr.item-ranking-top {
 
 tr.item-ranking-red {
 	background-color: #FFD3D3 !important;
-} 
+}
 
 /* -------------------------------------------------------------- */
 /* Tabela Campeonato PC */

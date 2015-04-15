@@ -28,7 +28,7 @@
 <!-- Sempre escolher a opcao "sem tema" -->
 <link rel="stylesheet" th:href="@{/static/css/jquery-ui.min.css}" />
 <link rel="stylesheet" th:href="@{/static/css/foundation-icons.css}" />
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.3.3/css/foundation.min.css" />
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.1/css/foundation.min.css" />
 
 <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.2/owl.carousel.min.css" />
 <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.2/owl.theme.min.css" />
@@ -37,7 +37,7 @@
 <link type="text/css" rel="stylesheet" th:href="@{/static/css/de_bico.css}" />
 
 <!-- necessario para todos os APIs -->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
 <script type="text/javascript" th:inline="javascript">
 	/*<![CDATA[*/
@@ -50,6 +50,7 @@
 			partidas : /*[[@{|/widgets/partidas/${campeonato==null ? 0 : campeonato.permalink}|}]]*/'/widgets/partidas/pc/{permalink}',
 			rodadas : /*[[@{|/widgets/rodada/rodadas/?campeonato=${campeonato==null ? 0 : campeonato.permalink}|}]]*/'/widgets/rodada/rodadas?campeonato={permalink}',
 			buscatime : /*[[@{/widgets/time/busca}]]*/'/widgets/time/busca',
+			liga : /*[[@{/widgets/liga}]]*/'/widgets/liga',
 			desempenho : /*[[@{|/widgets/desempenho/apostador_rodada/?campeonato=${campeonato==null ? 0 : campeonato.permalink}|}]]*/'/widgets/desempenho/apostador_rodada/?campeonato='	
 		},
 		api : {

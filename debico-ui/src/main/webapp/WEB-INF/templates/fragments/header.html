@@ -19,6 +19,7 @@
 
 		<section sec:authorize="isAuthenticated()" class="top-bar-section">
 			<ul class="right">
+				<li><a th:href="@{/minhas-ligas}"><i class="fi-torsos-all"></i>&nbsp;Minhas Ligas</a></li>
 				<li class="has-dropdown">
 				    <a href="#"><i class="fi-trophy"></i>&nbsp;Campeonatos</a>
 				    <ul class="dropdown">
@@ -26,7 +27,7 @@
 				            <a href="#" th:text="${c.nome}"></a>
 				            <ul class="dropdown">
 				                <li><a th:href="@{|/campeonatos/${#strings.toLowerCase(c.tipo)}/${c.permalink}|}"><i class="fi-results"></i>&nbsp;Tabela</a></li>
-				                <li><a th:href="@{|/ranking/${c.permalink}|}"><i class="fi-graph-trend"></i>&nbsp;Ranking</a></li>
+				                <li><a th:href="@{|/ranking/${c.permalink}|}"><i class="fi-graph-trend"></i>&nbsp;Ranking Geral</a></li>
 				                <li sec:authorize="!hasRole('ROLE_ADMIN')"><a th:href="@{|/campeonatos/${#strings.toLowerCase(c.tipo)}/${c.permalink}/palpites|}"><i class="fi-comments"></i>&nbsp;Palpitar</a></li>
 				            </ul>
 				        </li>

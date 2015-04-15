@@ -74,9 +74,10 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
      * @return
      */
     public MappingJackson2HttpMessageConverter jacksonMessageConverter() {
-        MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new Hibernate4Module());
+        final MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
+        final ObjectMapper mapper = new ObjectMapper();
+        final Hibernate4Module module = new Hibernate4Module();
+        mapper.registerModule(module);
 
         messageConverter.setObjectMapper(mapper);
         messageConverter.setPrettyPrint(Boolean.valueOf(environment

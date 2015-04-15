@@ -1,17 +1,13 @@
 package br.com.debico.ui.controllers.internal;
 
-import java.security.Principal;
-
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import br.com.debico.social.CadastroLigaException;
 import br.com.debico.social.services.LigaService;
 import br.com.debico.ui.controllers.AbstractViewController;
 
@@ -30,53 +26,25 @@ public class LigaController extends AbstractViewController {
 		return "liga";
 	}
 
-	@RequestMapping(value = "/liga")
-	public ModelAndView minhasLigas(final Principal principal) {
-		resetViewName();
-
-		this.addObject("minhas-ligas",
-				ligaService.consultarLiga(principal.getName()));
-
-		return this.getModelAndView();
-	}
-
-	@RequestMapping(value = "/liga", method = RequestMethod.POST)
-	public ModelAndView cadastrar(@RequestBody final String nomeLiga,
-			final Principal principal) {
-		try {
-			ligaService.cadastrarNovaLiga(nomeLiga, principal.getName());
-
-			this.redirecionarSucesso("liga.cadastro.sucesso");
-		} catch (CadastroLigaException e) {
-			this.setError(e);
-		}
-
-		return this.getModelAndView();
-	}
-
-	@RequestMapping(value = "/liga/{id}")
-	public ModelAndView recuperarLiga(@PathVariable("id") final long id) {
+	
+	// na verdade nao precisamos do permalink, ele é necessário apenas para
+	// deixar o link bonitinho. :D
+	@RequestMapping(value = "/liga/{id}/{permalink}", method = RequestMethod.GET)
+	public ModelAndView liga(@PathVariable("id") long id,
+			@PathVariable("permalink") String permalink) {
 		resetViewName();
 
 		this.addObject("liga", ligaService.recuperarLiga(id));
 
-		return this.getModelAndView();
-	}
-
-	// na verdade seria um PATCH, mas faremos assim porque forms no HTML nao aceitam outra coisa se nao POST ou GET
-	@RequestMapping(value = "/liga/{id}", method = RequestMethod.POST)
-	public ModelAndView atualizar(@PathVariable("id") final long id,
-			@RequestBody final String nomeLiga, Principal principal) {
-
-		try {
-			ligaService.atualizarLiga(id, nomeLiga, principal.getName());
-
-			this.redirecionarSucesso("liga.atualizacao.sucesso");
-		} catch (CadastroLigaException e) {
-			this.setError(e);
-		}
+		// adicionar outros objetos pré-renderizados aqui.
+		// este link será responsável pelo painel da liga com o mural,
+		// resultados, etc.
+		
+		// restringir o acesso a usuários que pertencem à liga.
 
 		return this.getModelAndView();
 	}
+
+	
 
 }

@@ -6,6 +6,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.core.helpers.WebUtils;
@@ -26,6 +28,9 @@ import static com.google.common.base.Strings.emptyToNull;
 @Transactional(readOnly = false)
 class LigaServiceImpl implements LigaService {
 
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(LigaServiceImpl.class);
+
 	@Inject
 	private LigaDAO ligaDAO;
 
@@ -41,6 +46,10 @@ class LigaServiceImpl implements LigaService {
 
 	@Override
 	public List<Liga> consultarLiga(String emailUsuario) {
+		LOGGER.debug(
+				"[consultarLiga] Tentando efetuar a consulta das ligas do usuario {}",
+				emailUsuario);
+
 		checkNotNull(emptyToNull(emailUsuario));
 
 		final Apostador apostador = apostadorService
@@ -50,9 +59,9 @@ class LigaServiceImpl implements LigaService {
 			return Collections.emptyList();
 		}
 
-		return ligaDAO.selecionarPorApostador(apostador.getId());
+		return ligaDAO.selecionarPorUsuario(apostador.getUsuario().getId());
 	}
-	
+
 	@Override
 	public Liga recuperarLiga(long idLiga) {
 		checkArgument(idLiga > 0);
@@ -85,19 +94,19 @@ class LigaServiceImpl implements LigaService {
 
 		final Apostador apostador = this.recuperarApostador(emailAdmin);
 		final Liga liga = ligaDAO.findById(idLiga);
-		
-		if(liga.getAdministrador().equals(apostador)) {
+
+		if (liga.getAdministrador().equals(apostador)) {
 			liga.setNome(nome);
 			liga.setPermalink(WebUtils.toPermalink(nome));
-			
+
 			ligaDAO.update(liga);
-			
+
 			return liga;
 		}
-		
-		throw new CadastroLigaException("Adm nao pertence liga", "liga.err.atualiza.adm");
+
+		throw new CadastroLigaException("Adm nao pertence liga",
+				"liga.err.atualiza.adm");
 	}
-	
 
 	private Apostador recuperarApostador(final String email)
 			throws CadastroLigaException {
@@ -105,16 +114,14 @@ class LigaServiceImpl implements LigaService {
 				"O email do administrador da liga nao pode ser nulo");
 
 		final Apostador apostador = apostadorService
-				.selecionarApostadorPorEmail(email);
+				.selecionarPerfilApostadorPorEmail(email);
 
 		if (apostador == null) {
-			throw new CadastroLigaException("Apostador nao encontrado", "liga.err.cad.adm.not_found");
+			throw new CadastroLigaException("Apostador nao encontrado",
+					"liga.err.cad.adm.not_found");
 		}
 
 		return apostador;
 	}
-
-
-	
 
 }

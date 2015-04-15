@@ -32,20 +32,11 @@ public class LigaDAOImpl extends AbstractJPADao<Liga, Long> implements LigaDAO {
 	}
 
 	@Override
-	public List<Liga> selecionarPorApostador(int idUsuarioApostador) {
-		final CriteriaBuilder cb = this.getEntityManager().getCriteriaBuilder();
-		final CriteriaQuery<Liga> query = cb.createQuery(Liga.class);
-		final Root<Liga> liga = query.from(Liga.class);
-
-		final Subquery<LigaApostador> subquery = query.subquery(LigaApostador.class);
-		final Root<LigaApostador> apostador = subquery.from(LigaApostador.class);
-		subquery.select(apostador).where(
-				cb.and(	cb.equal(apostador.get("apostador").get("id"), idUsuarioApostador),
-						cb.equal(apostador.get("liga").get("id"), liga.get("id"))));
-		
-		query.select(liga).where(cb.exists(subquery));
-
-		return getEntityManager().createQuery(query).getResultList();
+	public List<Liga> selecionarPorUsuario(int idUsuarioApostador) {
+		return getEntityManager()
+				.createQuery("SELECT L FROM Liga AS L WHERE EXISTS (SELECT A.liga.id FROM LigaApostador AS A WHERE A.liga.id = L.id AND A.apostador.usuario.id = :id)", Liga.class)
+				.setParameter("id", idUsuarioApostador)
+				.getResultList();
 	}
 
 	@Override

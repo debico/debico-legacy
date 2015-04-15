@@ -1,0 +1,90 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/headTag :: headTag">
+</head>
+<body>
+	<nav th:replace="fragments/header :: barra_navegacao"></nav>
+
+	<div th:replace="modal/editar_liga"></div>
+
+	<div class="panel clearfix">
+		<div class="row">
+			<div class="large-12 columns">
+				<div class="row">
+					<div class="large-12 columns">
+						<br />
+						<h2>
+							<span>Ligas</span> <small th:text="#{minhas-ligas.titulo}"></small>
+						</h2>
+						<hr />
+						<div th:replace="fragments/alert :: error"></div>
+						<p>
+							<strong>Ligas s&atilde;o grupos de camaradas!</strong> Nelas
+							voc&ecirc; pode restringir um bol&atilde;o s&oacute; para
+							voc&ecirc;s, bater papo no mural ou criar um campeonato
+							personalizado. Abaixo est&atilde;o as ligas que voc&ecirc; faz
+							parte. Caso seja um administrador, voc&ecirc; pode
+							edit&aacute;-las ou adicionar camaradas.
+						</p>
+						<p>
+							<input type="button" value="Criar uma Liga" class="button"
+								data-reveal-id="editar_liga" />
+						</p>
+						<div th:if="${#lists.isEmpty(minhasLigas)}" data-alert=""
+							class="alert-box warn radius" id="alert-semliga">Parece que
+							voc&ecirc; ainda n&atilde;o tem nenhuma liga! Crie uma clicando
+							no bot&atilde;o acima e adicione os seus camaradas.</div>
+						<div th:if="${not #lists.isEmpty(minhasLigas)}" class="row">
+							<div class="large-12 columns">
+								<table id="minhas_ligas">
+									<thead>
+										<tr>
+											<td>Nome</td>
+											<td>Administrador</td>
+											<td>&nbsp;</td>
+										</tr>
+									</thead>
+									<tbody id="minhas_ligas_content">
+										<tr th:each="liga : ${minhasLigas}">
+											<td>
+												<a th:href="@{|/liga/${liga.id}/${liga.permalink}|}" th:text="${liga.nome}"></a>
+											</td>
+											<td th:text="${liga.administrador.nome}" />
+											<td class="action">
+												<div>
+													<ul class="inline-list-action">
+														<li><a href="#" class="has-tip" data-tooltip=""
+															data-options="show_on:large" aria-haspopup="true"
+															title="Editar" th:onclick="|liga.recuperar(${liga.id})|"><i class="fi-pencil"></i></a></li>
+														<li><a href="#" class="adicionar_camaradas has-tip" data-tooltip=""
+															data-options="show_on:large" aria-haspopup="true"
+															title="Adicionar Camaradas"><i class="fi-torso"></i></a></li>
+														<!-- 
+														<li><a href="#" class="has-tip" data-tooltip=""
+															data-options="show_on:large" aria-haspopup="true"
+															title="Remover"><i class="fi-x"></i></a></li>
+															 -->
+													</ul>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:replace="fragments/footer :: footer-copy"></div>
+	<div th:replace="fragments/footer :: footer-scripts"></div>
+	<script type="text/javascript"
+		th:src="@{/static/js/widgets/widgets.liga.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/static/js/pages/minhas-ligas.js}"></script>
+
+</body>
+</html>
