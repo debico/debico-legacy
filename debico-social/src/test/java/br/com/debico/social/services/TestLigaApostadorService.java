@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.model.Apostador;
 import br.com.debico.social.CadastroLigaException;
+import br.com.debico.social.InscricaoLigaException;
 import br.com.debico.social.model.Liga;
 import br.com.debico.social.model.LigaApostadorLite;
 import br.com.debico.social.spring.SocialConfig;
@@ -36,9 +37,20 @@ public class TestLigaApostadorService extends AbstractUnitTest {
 	@Inject
 	private LigaService ligaService;
 
+	@Test(expected=InscricaoLigaException.class)
+	public void testInscreverApostador_Existente() throws CadastroLigaException {
+		final Liga liga = ligaService.cadastrarNovaLiga("Liga da Justiça",
+				TestConstants.EMAIL_CARGA);
+		assertTrue(ligaApostadorService
+				.inscreverApostador(new LigaApostadorLite(liga.getId(),
+						TestConstants.IDS_APOSTADORES[0])));
+		// denovo?
+		ligaApostadorService.inscreverApostador(new LigaApostadorLite(liga
+				.getId(), TestConstants.IDS_APOSTADORES[0]));
+	}
+
 	@Test
-	public void testInscreverApostador()
-			throws CadastroLigaException {
+	public void testInscreverApostador() throws CadastroLigaException {
 		// @formatter:off
 		final Liga liga = ligaService.cadastrarNovaLiga("Liga da Justiça", TestConstants.EMAIL_CARGA);
 		assertTrue(ligaApostadorService.inscreverApostador(new LigaApostadorLite(liga.getId(), TestConstants.IDS_APOSTADORES[0])));
@@ -53,8 +65,7 @@ public class TestLigaApostadorService extends AbstractUnitTest {
 	}
 
 	@Test
-	public void testRemoverApostador()
-			throws CadastroLigaException {
+	public void testRemoverApostador() throws CadastroLigaException {
 		// @formatter:off
 		Liga liga = ligaService.cadastrarNovaLiga("Liga da Justiça", TestConstants.EMAIL_CARGA);
 		ligaApostadorService.inscreverApostador(new LigaApostadorLite(liga.getId(), TestConstants.IDS_APOSTADORES[0]));

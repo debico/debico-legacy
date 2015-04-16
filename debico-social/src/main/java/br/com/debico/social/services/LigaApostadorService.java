@@ -3,6 +3,7 @@ package br.com.debico.social.services;
 import java.util.List;
 
 import br.com.debico.model.Apostador;
+import br.com.debico.social.InscricaoLigaException;
 import br.com.debico.social.model.Liga;
 import br.com.debico.social.model.LigaApostadorLite;
 
@@ -28,7 +29,7 @@ public interface LigaApostadorService {
 	 * @param ligaApostador instância da estrutura base
 	 * @return true se realizado com sucesso.
 	 */
-	boolean inscreverApostador(final LigaApostadorLite ligaApostador);
+	boolean inscreverApostador(final LigaApostadorLite ligaApostador) throws InscricaoLigaException;
 
 	/**
 	 * Atalho caso o código cliente tenha esses objetos "em mãos".
@@ -38,18 +39,18 @@ public interface LigaApostadorService {
 	 * @return true se realizado com sucesso.
 	 * @see #inscreverApostador(long, int)
 	 */
-	boolean inscreverApostador(final Liga liga, final Apostador apostador);
+	boolean inscreverApostador(final Liga liga, final Apostador apostador) throws InscricaoLigaException;
 
 	/**
 	 * Remove o apostador da liga.
 	 */
-	boolean removerApostador(final Liga liga, final Apostador apostador);
+	boolean removerApostador(final Liga liga, final Apostador apostador) throws InscricaoLigaException;
 	
 	/**
 	 * 
 	 * @see #removerApostador(Liga, Apostador)
 	 */
-	boolean removerApostador(final LigaApostadorLite ligaApostador);
+	boolean removerApostador(final LigaApostadorLite ligaApostador) throws InscricaoLigaException;
 	
 	
 

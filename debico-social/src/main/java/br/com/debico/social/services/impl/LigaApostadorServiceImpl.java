@@ -8,6 +8,7 @@ import javax.inject.Named;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.model.Apostador;
+import br.com.debico.social.InscricaoLigaException;
 import br.com.debico.social.dao.LigaApostadorDAO;
 import br.com.debico.social.dao.LigaDAO;
 import br.com.debico.social.model.Liga;
@@ -43,16 +44,22 @@ public class LigaApostadorServiceImpl implements LigaApostadorService {
 		return ligaDAO.selecionarApostadores(idLiga);
 	}
 
-	private boolean inscreverApostador(final LigaApostador ligaApostador) {
+	private boolean inscreverApostador(final LigaApostador ligaApostador) throws InscricaoLigaException {
 		checkNotNull(ligaApostador);
+		
+		final LigaApostador inscricaoExistente = ligaApostadorDAO.findById(ligaApostador);
+		
+		if(inscricaoExistente != null) {
+			throw new InscricaoLigaException("Apostador ja cadastrado", "liga.err.inscricao_existente");
+		}
+		
 		ligaApostadorDAO.create(ligaApostador);
-		// regras de negocio aqui
 
 		return true;
 	}
 
 	@Override
-	public boolean inscreverApostador(LigaApostadorLite ligaApostador) {
+	public boolean inscreverApostador(LigaApostadorLite ligaApostador) throws InscricaoLigaException {
 		checkNotNull(ligaApostador, "Estrutura de ligaApostador nula");
 		this.validarLigaApostador(ligaApostador.getIdLiga(),
 				ligaApostador.getIdApostador());
@@ -66,7 +73,7 @@ public class LigaApostadorServiceImpl implements LigaApostadorService {
 	}
 
 	@Override
-	public boolean inscreverApostador(final Liga liga, final Apostador apostador) {
+	public boolean inscreverApostador(final Liga liga, final Apostador apostador) throws InscricaoLigaException {
 		checkNotNull(liga, "A referencia de liga eh obrigatoria");
 		checkNotNull(apostador, "a referencia de apostador eh obrigatoria");
 
@@ -75,15 +82,22 @@ public class LigaApostadorServiceImpl implements LigaApostadorService {
 		return this.inscreverApostador(new LigaApostador(liga, apostador));
 	}
 
-	private boolean removerApostador(final LigaApostador ligaApostador) {
+	private boolean removerApostador(final LigaApostador ligaApostador) throws InscricaoLigaException {
 		checkNotNull(ligaApostador);
-		ligaApostadorDAO.remove(ligaApostador);
+		
+		final LigaApostador inscricaoExistente = ligaApostadorDAO.findById(ligaApostador);
+		
+		if(inscricaoExistente == null) {
+			throw new InscricaoLigaException("Erro ao excluir inscricao", "liga.err.inscricao_not_found");
+		}
+		
+		ligaApostadorDAO.remove(inscricaoExistente);
 
 		return true;
 	}
 
 	@Override
-	public boolean removerApostador(Liga liga, Apostador apostador) {
+	public boolean removerApostador(Liga liga, Apostador apostador) throws InscricaoLigaException {
 		checkNotNull(liga, "A referencia de liga eh obrigatoria");
 		checkNotNull(apostador, "a referencia de apostador eh obrigatoria");
 
@@ -92,30 +106,22 @@ public class LigaApostadorServiceImpl implements LigaApostadorService {
 	}
 
 	@Override
-	public boolean removerApostador(LigaApostadorLite ligaApostador) {
-		checkNotNull(ligaApostador, "Estrutura de ligaApostador nula");
-
+	public boolean removerApostador(LigaApostadorLite ligaApostadorLite) throws InscricaoLigaException  {
+		checkNotNull(ligaApostadorLite, "Estrutura de ligaApostador nula");
+		
 		// @formatter:off
 		return this.removerApostador(
 				this.recuperarAssociacaoLigaApostador(
-						ligaApostador.getIdLiga(), 
-						ligaApostador.getIdApostador()));
+						ligaApostadorLite.getIdLiga(), 
+						ligaApostadorLite.getIdApostador()));
 		// @formatter:on
 	}
 
 	private LigaApostador recuperarAssociacaoLigaApostador(final long idLiga,
 			final int idApostador) {
-		// @formatter:off
 		final Liga liga = ligaDAO.findById(idLiga);
 		final Apostador apostador = apostadorService.selecionarApostadorPorId(idApostador);
-		LigaApostador ligaApostador = ligaApostadorDAO.findById(new LigaApostador(liga, apostador));
-		// @formatter:on
-
-		if (ligaApostador == null) {
-			ligaApostador = new LigaApostador(liga, apostador);
-		}
-
-		return ligaApostador;
+		return new LigaApostador(liga, apostador);
 	}
 
 	private void validarLigaApostador(final long idLiga,

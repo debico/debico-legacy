@@ -45,6 +45,16 @@ public final class LigaApostador implements Serializable {
 		this.apostador = apostador;
 		this.liga = liga;
 	}
+	
+	public LigaApostador(final long liga, final int apostador) {
+		this.apostador = new Apostador(apostador);
+		this.liga = new Liga(liga);
+	}
+	
+	
+	public LigaApostador(final LigaApostadorLite ligaApostadorLite) {
+		this(ligaApostadorLite.getIdLiga(), ligaApostadorLite.getIdApostador());
+	}
 
 	public Apostador getApostador() {
 		return apostador;

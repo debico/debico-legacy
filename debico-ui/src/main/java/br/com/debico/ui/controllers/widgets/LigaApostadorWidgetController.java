@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import br.com.debico.social.InscricaoLigaException;
 import br.com.debico.social.model.LigaApostadorLite;
 import br.com.debico.social.services.LigaApostadorService;
 
@@ -26,7 +27,7 @@ public class LigaApostadorWidgetController {
 
 	@RequestMapping(value = "/widgets/liga_apostador", method = RequestMethod.POST)
 	public @ResponseBody boolean inscreverApostador(
-			@RequestBody LigaApostadorLite ligaApostador) {
+			@RequestBody LigaApostadorLite ligaApostador) throws InscricaoLigaException {
 		return ligaApostadorService.inscreverApostador(ligaApostador);
 	}
 

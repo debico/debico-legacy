@@ -76,6 +76,10 @@ public class Apostador implements Serializable, Comparable<Apostador> {
 		this(nome);
 		this.id = id;
 	}
+	
+	public Apostador(final int id) {
+		this.id = id;
+	}
 
 	// nao declarar as opcoes aqui. esperar o JPA popular o bean.
 	public Apostador() {

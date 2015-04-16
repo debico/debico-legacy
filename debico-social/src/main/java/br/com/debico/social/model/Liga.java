@@ -55,6 +55,11 @@ public final class Liga implements Serializable, Comparable<Liga> {
 	public Liga() {
 
 	}
+	
+	public Liga(final long id) {
+		this();
+		this.id = id;
+	}
 
 	public Liga(final String nome) {
 		this();
