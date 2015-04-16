@@ -31,6 +31,19 @@ class ApostadorPontuacaoDAOImpl extends
 		super(ApostadorPontuacao.class);
 	}
 
+	@Override
+	public List<ApostadorPontuacao> selecionarApostadoresPorLiga(
+			int idCampeonato, long idLiga) {
+		// @formatter:off
+		return getEntityManager()
+				.createQuery("SELECT A FROM ApostadorPontuacao AS A JOIN FETCH A.apostador, LigaApostador AS L WHERE A.apostador.id = L.apostador.id AND A.campeonato.id = :idCampeonato AND L.liga.id = :idLiga", 
+						ApostadorPontuacao.class)
+				.setParameter("idCampeonato", idCampeonato)
+				.setParameter("idLiga", idLiga)
+				.getResultList();
+		// @formatter:on
+	}
+	
 	// TODO: transformar em uma "native query" ou qualquer outra coisa para melhorar o desempenho e nao ter que dar select nos outros campos.
 	public List<ApostadorPontuacao> selecionarApostadores(Campeonato campeonato) {
 		final CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();

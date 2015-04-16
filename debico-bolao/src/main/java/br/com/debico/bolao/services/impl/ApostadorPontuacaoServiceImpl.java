@@ -75,6 +75,18 @@ public class ApostadorPontuacaoServiceImpl implements ApostadorPontuacaoService 
 		}
 	}
 
+	// TODO: cache
+	@Override
+	public List<ApostadorPontuacao> listarRankingPorLiga(int idCampeonato,
+			long idLiga) {
+		final List<ApostadorPontuacao> pontuacao =
+				apostadorPontuacaoDAO.selecionarApostadoresPorLiga(idCampeonato, idLiga);
+		
+		Collections.sort(pontuacao);
+		
+		return pontuacao;
+	}
+	
 	@Cacheable(value = CacheKeys.RANKING_APOSTADORES)
 	public List<ApostadorPontuacao> listarRanking(Campeonato campeonato) {
 		final List<ApostadorPontuacao> pontuacao = apostadorPontuacaoDAO

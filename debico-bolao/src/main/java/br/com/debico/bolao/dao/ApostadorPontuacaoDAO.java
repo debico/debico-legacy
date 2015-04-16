@@ -10,6 +10,15 @@ import br.com.tecnobiz.spring.config.dao.Dao;
 public interface ApostadorPontuacaoDAO extends Dao<ApostadorPontuacao, Apostador> {
     
     List<ApostadorPontuacao> selecionarApostadores(Campeonato campeonato);
+    
+    /**
+     * Retorna os apostadores de determinado campeonato, de determinada liga.
+     * 
+     * @param idCampeonato identificador do campeonato
+     * @param idLiga identificador da liga
+     * @return
+     */
+    List<ApostadorPontuacao> selecionarApostadoresPorLiga(int idCampeonato, long idLiga);
         
     ApostadorPontuacao selecionarApostador(Apostador apostador, Campeonato campeonato);
 

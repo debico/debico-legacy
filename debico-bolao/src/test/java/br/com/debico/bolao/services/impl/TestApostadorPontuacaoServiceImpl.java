@@ -1,8 +1,9 @@
 package br.com.debico.bolao.services.impl;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -13,29 +14,32 @@ import br.com.debico.bolao.ApostadorJaInscritoException;
 import br.com.debico.bolao.services.ApostadorPontuacaoService;
 import br.com.debico.bolao.test.support.AbstractBolaoUnitTest;
 import br.com.debico.model.Apostador;
+import br.com.debico.model.ApostadorPontuacao;
 import br.com.debico.model.Usuario;
 import br.com.debico.model.campeonato.CampeonatoImpl;
 import br.com.debico.social.CadastroApostadorException;
+import br.com.debico.social.CadastroLigaException;
+import br.com.debico.social.model.Liga;
+import br.com.debico.social.services.LigaService;
 import br.com.debico.social.services.UsuarioService;
+import br.com.debico.test.TestConstants;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestApostadorPontuacaoServiceImpl extends AbstractBolaoUnitTest {
-
-	// criar o campeonato fake por aqui.
 	
     @Inject
     private ApostadorPontuacaoService apostadorService;
     
     @Inject
     private UsuarioService usuarioService;
-
-    @Before
-    public void setUp() throws Exception {
-    	super.setUp();
-        apostadorService = getTargetObject(apostadorService, ApostadorPontuacaoServiceImpl.class);
-    }
+    
+    @Inject
+    private LigaService ligaService;
     
     @Test(expected = ApostadorJaInscritoException.class)
     public void testInscreverApostadorCampeonato() throws CadastroApostadorException, ApostadorJaInscritoException {
@@ -50,4 +54,20 @@ public class TestApostadorPontuacaoServiceImpl extends AbstractBolaoUnitTest {
         apostadorService.inscreverApostadorCampeonato(apostador, campeonato);
     }
 
+    @Test
+    public void testListarPorLiga_Vazia() {
+    	List<ApostadorPontuacao> ranking = apostadorService.listarRankingPorLiga(CAMPEONATO_ID, 1);
+    	assertNotNull(ranking);
+    	assertTrue(ranking.isEmpty()); //sem liga, sem pessoas.
+    }
+    
+    @Test
+    public void testListarPorLiga() throws CadastroLigaException {
+    	final Liga liga = ligaService.cadastrarNovaLiga("Liga da Justiça MODAFOCA", TestConstants.EMAIL_CARGA);
+    	List<ApostadorPontuacao> ranking = apostadorService.listarRankingPorLiga(CAMPEONATO_ID, liga.getId());
+    	assertNotNull(ranking);
+    	assertFalse(ranking.isEmpty()); // pelo menos eu \o/
+    	assertTrue(ranking.size() == 1);
+    }
+    
 }

@@ -17,6 +17,15 @@ import br.com.debico.model.campeonato.CampeonatoImpl;
 public interface ApostadorPontuacaoService {
 
 	List<ApostadorPontuacao> listarRanking(final Campeonato campeonato);
+	
+	/**
+	 * Lista o Ranking de acordo com os integrantes da liga.
+	 * 
+	 * @param idCampeonato
+	 * @param idLiga
+	 * @return
+	 */
+	List<ApostadorPontuacao> listarRankingPorLiga(final int idCampeonato, final long idLiga);
 
 	void inscreverApostadorCampeonato(final Apostador apostador,
 			final CampeonatoImpl campeonato)
