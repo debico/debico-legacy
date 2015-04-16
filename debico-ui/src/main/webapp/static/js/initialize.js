@@ -50,7 +50,9 @@ $(document).ready(function() {
 			sendException(error.ex, true);
 		} else if(request.status == 403){
 			error = {ex : "Opa! Sua sess\u00e3o expirou, por favor fa\u00e7a o login novamente."};
-		} else {
+		} else if(request.status == 404){ 
+			error = {ex : "Servi\u00e7o n\u00e3o encontrado. O que voc\u00ea est\u00e1 fazendo?"};
+		}else {
 			error = {ex : "Erro desconhecido."};
 			sendException("Erro desconhecido.", true);
 		}

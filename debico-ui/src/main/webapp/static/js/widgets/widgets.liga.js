@@ -1,3 +1,4 @@
+// adicionar junto com o modal editar_liga
 function LigaViewModel() {
 	var self = this;
 
@@ -9,6 +10,12 @@ function LigaViewModel() {
 	self.reloadWindow = function() {
 		$('#editar_liga_form').unblock();
 		location.reload(true);
+	}
+	
+	self.reset = function() {
+		self.id(0);
+		self.nome("");
+		$('#editar_liga').foundation('reveal', 'open');
 	}
 
 	self.salvar = function() {

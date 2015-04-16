@@ -40,7 +40,7 @@ public class TimeWidgetsController {
      * @return
      */
     @ApiOperation("Pesquisa um time pelo nome parcial")
-    @RequestMapping(value = "/widgets/time/busca", method = RequestMethod.GET)
+    @RequestMapping(value = "/widgets/time", method = RequestMethod.GET)
     public @ResponseBody List<Time> procurarPorNome(
             @RequestParam(required = true, value = "nome") String nomeParcial) {
         return timeService.procurarTimePorNome(nomeParcial);

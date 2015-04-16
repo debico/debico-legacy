@@ -49,9 +49,11 @@
 			palpite : /*[[@{|/widgets/palpite/${campeonato==null ? 0 : campeonato.permalink}|}]]*/,
 			partidas : /*[[@{|/widgets/partidas/${campeonato==null ? 0 : campeonato.permalink}|}]]*/'/widgets/partidas/pc/{permalink}',
 			rodadas : /*[[@{|/widgets/rodada/rodadas/?campeonato=${campeonato==null ? 0 : campeonato.permalink}|}]]*/'/widgets/rodada/rodadas?campeonato={permalink}',
-			buscatime : /*[[@{/widgets/time/busca}]]*/'/widgets/time/busca',
+			buscatime : /*[[@{/widgets/time}]]*/'/widgets/time',
+			apostadores : /*[[@{/widgets/apostadores}]]*/'/widgets/apostadores',
 			liga : /*[[@{/widgets/liga}]]*/'/widgets/liga',
-			desempenho : /*[[@{|/widgets/desempenho/apostador_rodada/?campeonato=${campeonato==null ? 0 : campeonato.permalink}|}]]*/'/widgets/desempenho/apostador_rodada/?campeonato='	
+			desempenho : /*[[@{|/widgets/desempenho/apostador_rodada/?campeonato=${campeonato==null ? 0 : campeonato.permalink}|}]]*/'/widgets/desempenho/apostador_rodada/?campeonato=',
+			liga_apostador : /*[[@{/widgets/liga_apostador}]]*/'widgets/liga_apostador',
 		},
 		api : {
 			partida : /*[[@{/api/partida/}]]*/'/api/partida/'

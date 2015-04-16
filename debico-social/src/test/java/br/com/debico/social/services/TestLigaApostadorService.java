@@ -15,12 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.debico.model.Apostador;
 import br.com.debico.social.CadastroLigaException;
 import br.com.debico.social.model.Liga;
+import br.com.debico.social.model.LigaApostadorLite;
 import br.com.debico.social.spring.SocialConfig;
 import br.com.debico.test.TestConstants;
 import br.com.debico.test.spring.AbstractUnitTest;
-
-import com.google.common.collect.Lists;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
@@ -31,42 +29,43 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { SocialConfig.class })
 public class TestLigaApostadorService extends AbstractUnitTest {
-	
+
 	@Inject
 	private LigaApostadorService ligaApostadorService;
-	
+
 	@Inject
 	private LigaService ligaService;
-	
+
 	@Test
-	public void testInscreverApostadorLongListOfInteger() throws CadastroLigaException {
+	public void testInscreverApostador()
+			throws CadastroLigaException {
 		// @formatter:off
 		final Liga liga = ligaService.cadastrarNovaLiga("Liga da Justiça", TestConstants.EMAIL_CARGA);
-		assertTrue(ligaApostadorService.inscreverApostador(liga, Lists.newArrayList(TestConstants.IDS_USUARIOS)));
+		assertTrue(ligaApostadorService.inscreverApostador(new LigaApostadorLite(liga.getId(), TestConstants.IDS_APOSTADORES[0])));
 		
 		List<Apostador> apostadores = ligaApostadorService.consultarApostadores(liga.getId());
 		// @formatter:on
-		
+
 		assertNotNull(apostadores);
 		assertFalse(apostadores.isEmpty());
-		assertThat(apostadores.size(), IsEqual.equalTo(4));
-		
+		assertThat(apostadores.size(), IsEqual.equalTo(2));
+
 	}
 
-
 	@Test
-	public void testRemoverApostadorLongListOfInteger() throws CadastroLigaException {
+	public void testRemoverApostador()
+			throws CadastroLigaException {
 		// @formatter:off
 		Liga liga = ligaService.cadastrarNovaLiga("Liga da Justiça", TestConstants.EMAIL_CARGA);
-		ligaApostadorService.inscreverApostador(liga, Lists.newArrayList(TestConstants.IDS_USUARIOS));
-		ligaApostadorService.removerApostador(liga, TestConstants.IDS_USUARIOS[0]);
+		ligaApostadorService.inscreverApostador(new LigaApostadorLite(liga.getId(), TestConstants.IDS_APOSTADORES[0]));
+		ligaApostadorService.removerApostador(new LigaApostadorLite(liga.getId(), TestConstants.IDS_APOSTADORES[0]));
 		
 		List<Apostador> apostadores = ligaApostadorService.consultarApostadores(liga.getId());
 		// @formatter:on
-		
+
 		assertNotNull(apostadores);
 		assertFalse(apostadores.isEmpty());
-		assertThat(apostadores.size(), IsEqual.equalTo(3));
+		assertThat(apostadores.size(), IsEqual.equalTo(1));
 	}
 
 }

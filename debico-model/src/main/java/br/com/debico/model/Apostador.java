@@ -16,6 +16,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.google.common.base.Objects;
 
 import static com.google.common.base.Objects.equal;
@@ -28,6 +30,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 
 @Entity
 @Table(name = "tb_apostador")
+@JsonInclude(Include.NON_EMPTY)
 public class Apostador implements Serializable, Comparable<Apostador> {
 
 	private static final long serialVersionUID = -4119500865102301069L;
@@ -69,6 +72,11 @@ public class Apostador implements Serializable, Comparable<Apostador> {
 		this.id = id;
 	}
 
+	public Apostador(final int id, final String nome) {
+		this(nome);
+		this.id = id;
+	}
+
 	// nao declarar as opcoes aqui. esperar o JPA popular o bean.
 	public Apostador() {
 		this.nome = "";
@@ -96,7 +104,7 @@ public class Apostador implements Serializable, Comparable<Apostador> {
 	}
 
 	public String getEmail() {
-		if (usuario.getEmail() != null) {
+		if (usuario != null && usuario.getEmail() != null) {
 			return usuario.getEmail();
 		} else {
 			return "";

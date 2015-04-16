@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.com.debico.model.Apostador;
 import br.com.debico.social.model.Liga;
+import br.com.debico.social.model.LigaApostadorLite;
 
 /**
  * Serviços relacionados à relação liga e apostador.
@@ -24,16 +25,10 @@ public interface LigaApostadorService {
 	/**
 	 * Inscreve o apostador na liga.
 	 * 
-	 * @param idLiga
-	 * @param idUsuarioApostador
+	 * @param ligaApostador instância da estrutura base
 	 * @return true se realizado com sucesso.
 	 */
-	boolean inscreverApostador(final long idLiga, final int idUsuarioApostador);
-
-	/**
-	 * @see #inscreverApostador(Liga, Apostador)
-	 */
-	boolean inscreverApostador(final Liga liga, final int idUsuarioApostador);
+	boolean inscreverApostador(final LigaApostadorLite ligaApostador);
 
 	/**
 	 * Atalho caso o código cliente tenha esses objetos "em mãos".
@@ -46,49 +41,17 @@ public interface LigaApostadorService {
 	boolean inscreverApostador(final Liga liga, final Apostador apostador);
 
 	/**
-	 * @see #inscreverApostador(long, int)
-	 */
-	boolean inscreverApostador(final long idLiga,
-			List<Integer> idsUsuarioApostador);
-
-	/**
-	 * @see #inscreverApostador(long, int)
-	 */
-	boolean inscreverApostador(final Liga liga,
-			List<Integer> idsUsuarioApostador);
-
-	/**
-	 * Remove o apostador da Liga.
-	 * 
-	 * @param idLiga
-	 * @param idUsuarioApostador
-	 * @return true se realizado com sucesso.
-	 */
-	boolean removerApostador(final long idLiga, final int idUsuarioApostador);
-
-	/**
-	 * 
-	 * @see #removerApostador(long, int)
+	 * Remove o apostador da liga.
 	 */
 	boolean removerApostador(final Liga liga, final Apostador apostador);
-
+	
 	/**
 	 * 
-	 * @see #removerApostador(long, int)
+	 * @see #removerApostador(Liga, Apostador)
 	 */
-	boolean removerApostador(final Liga liga, final int idUsuarioApostador);
+	boolean removerApostador(final LigaApostadorLite ligaApostador);
+	
+	
 
-	/**
-	 * 
-	 * @see #removerApostador(long, int)
-	 */
-	boolean removerApostador(final Liga liga, List<Integer> idsUsuarioApostador);
-
-	/**
-	 * 
-	 * @see #removerApostador(long, int)
-	 */
-	boolean removerApostador(final long idLiga,
-			List<Integer> idsUsuarioApostador);
 
 }

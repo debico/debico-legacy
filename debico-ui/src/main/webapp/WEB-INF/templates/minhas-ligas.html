@@ -8,6 +8,7 @@
 	<nav th:replace="fragments/header :: barra_navegacao"></nav>
 
 	<div th:replace="modal/editar_liga"></div>
+	<div th:replace="modal/adicionar_camaradas"></div>
 
 	<div class="panel clearfix">
 		<div class="row">
@@ -30,7 +31,7 @@
 						</p>
 						<p>
 							<input type="button" value="Criar uma Liga" class="button"
-								data-reveal-id="editar_liga" />
+								onclick="liga.reset();" />
 						</p>
 						<div th:if="${#lists.isEmpty(minhasLigas)}" data-alert=""
 							class="alert-box warn radius" id="alert-semliga">Parece que
@@ -48,19 +49,18 @@
 									</thead>
 									<tbody id="minhas_ligas_content">
 										<tr th:each="liga : ${minhasLigas}">
-											<td>
-												<a th:href="@{|/liga/${liga.id}/${liga.permalink}|}" th:text="${liga.nome}"></a>
-											</td>
+											<td><a th:href="@{|/liga/${liga.id}/${liga.permalink}|}"
+												th:text="${liga.nome}"></a></td>
 											<td th:text="${liga.administrador.nome}" />
 											<td class="action">
 												<div>
 													<ul class="inline-list-action">
-														<li><a href="#" class="has-tip" data-tooltip=""
-															data-options="show_on:large" aria-haspopup="true"
-															title="Editar" th:onclick="|liga.recuperar(${liga.id})|"><i class="fi-pencil"></i></a></li>
-														<li><a href="#" class="adicionar_camaradas has-tip" data-tooltip=""
-															data-options="show_on:large" aria-haspopup="true"
-															title="Adicionar Camaradas"><i class="fi-torso"></i></a></li>
+														<li><a href="#" title="Editar"
+															th:onclick="|liga.recuperar(${liga.id})|"><i
+																class="fi-pencil"></i></a></li>
+														<li><a href="#" title="Adicionar Camaradas"
+															th:onclick="|ligaApostador.carregarBuscador(${liga.id})|"><i
+																class="fi-torso"></i></a></li>
 														<!-- 
 														<li><a href="#" class="has-tip" data-tooltip=""
 															data-options="show_on:large" aria-haspopup="true"
@@ -82,7 +82,13 @@
 	<div th:replace="fragments/footer :: footer-copy"></div>
 	<div th:replace="fragments/footer :: footer-scripts"></div>
 	<script type="text/javascript"
+		th:src="@{/static/js/vendor/jquery-ui.min.js}"></script>
+	<script type="text/javascript"
 		th:src="@{/static/js/widgets/widgets.liga.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/static/js/widgets/widgets.buscaapostador.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/static/js/widgets/widgets.liga_apostador.js}"></script>
 	<script type="text/javascript"
 		th:src="@{/static/js/pages/minhas-ligas.js}"></script>
 

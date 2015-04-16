@@ -1,5 +1,7 @@
 package br.com.debico.social.services;
 
+import java.util.List;
+
 import br.com.debico.model.Apostador;
 import br.com.debico.social.CadastroApostadorException;
 
@@ -34,6 +36,15 @@ public interface ApostadorService {
 	Apostador selecionarPerfilApostadorPorEmail(String email);
 
 	Apostador selecionarApostadorPorId(int id);
-	
+
 	Apostador selecionarApostadorPorIdUsuario(int idUsuario);
+
+	/**
+	 * Efetua a pesquisa por apostadores cadastrados no banco de dados
+	 * utilizando o nome ou parte dele. Limita os resultados em 20 registros.
+	 * 
+	 * @param parteNome
+	 * @return lista dos apostadores encontrados.
+	 */
+	List<Apostador> pesquisarApostadoresPorParteNome(String nomeParcial);
 }

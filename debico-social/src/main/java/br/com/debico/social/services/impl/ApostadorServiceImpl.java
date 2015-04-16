@@ -1,5 +1,7 @@
 package br.com.debico.social.services.impl;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -38,6 +40,14 @@ class ApostadorServiceImpl implements ApostadorService {
     @Inject
     @Named("resourceBundleMessageSource")
     private MessageSource messageSource;
+    
+    @Override
+    public List<Apostador> pesquisarApostadoresPorParteNome(String nomeParcial) {
+    	 checkNotNull(emptyToNull(nomeParcial), "O nome do apostador nao pode ser em branco.");
+         checkArgument(nomeParcial.length() >= 3, "Informe ao menos 3 caracteres");
+         
+    	return apostadorDAO.procurarPorParteNome(nomeParcial);
+    }
 
     @Transactional(rollbackFor = CadastroApostadorException.class)
     public void atualizarApostador(final Apostador apostador)

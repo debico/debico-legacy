@@ -10,7 +10,7 @@ import br.com.tecnobiz.spring.config.dao.Dao;
 public interface ApostadorDAO extends Dao<Apostador, Integer> {
 
 	Apostador selecionarPorEmail(String email);
-	
+
 	Apostador selecionarPorIdUsuario(int idUsuario);
 
 	/**
@@ -37,4 +37,14 @@ public interface ApostadorDAO extends Dao<Apostador, Integer> {
 	 */
 	List<Apostador> selecionarApostadoresSemPalpite(Campeonato campeonato,
 			Date dataInicioPartida, Date dataFimPartida);
+
+	/**
+	 * Efetua a busca de apostadores por parte do nome limitando o número máximo
+	 * de itens retornados em 20.
+	 * 
+	 * @param parteNome
+	 * @return lista com a relação dos apostadores
+	 * @since 2.0.0
+	 */
+	List<Apostador> procurarPorParteNome(String parteNome);
 }

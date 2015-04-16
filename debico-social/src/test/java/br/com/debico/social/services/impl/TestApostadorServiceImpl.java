@@ -1,10 +1,6 @@
 package br.com.debico.social.services.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -25,10 +21,13 @@ import br.com.debico.model.Usuario;
 import br.com.debico.social.CadastroApostadorException;
 import br.com.debico.social.services.ApostadorService;
 import br.com.debico.social.services.UsuarioService;
-import br.com.debico.social.services.impl.ApostadorServiceImpl;
-import br.com.debico.social.services.impl.UsuarioServiceImpl;
 import br.com.debico.social.spring.SocialConfig;
 import br.com.debico.test.spring.AbstractUnitTest;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
@@ -36,122 +35,142 @@ import br.com.debico.test.spring.AbstractUnitTest;
 @ContextConfiguration(classes = { SocialConfig.class })
 public class TestApostadorServiceImpl extends AbstractUnitTest {
 
-    @Inject
-    private ApostadorService apostadorService;
-    
-    @Inject
-    private UsuarioService usuarioService;
-    
+	@Inject
+	private ApostadorService apostadorService;
+
+	@Inject
+	private UsuarioService usuarioService;
+
 	protected static final String EMAIL_PRIMEIRO_RANKING = "abacafrehley@gmail.com";
 	protected static final String EMAIL_ULTIMO_RANKING = "fhbernardo@yahoo.com.br";
 
-    @Before
-    public void setUp() throws Exception {
-        apostadorService = getTargetObject(apostadorService, ApostadorServiceImpl.class);
-    }
+	@Before
+	public void setUp() throws Exception {
+		apostadorService = getTargetObject(apostadorService,
+				ApostadorServiceImpl.class);
+	}
 
-    @Test
-    public void testAtualizarApostador() throws CadastroApostadorException {
-        Apostador apostador = apostadorService.selecionarPerfilApostadorPorEmail(EMAIL_PRIMEIRO_RANKING);
-        
-        apostador.setNome("Peter Parker");
-        apostador.getOpcoes().setLembretePalpites(false);
-        apostador.getOpcoes().setTimeCoracao(null);
-        
-        apostadorService.atualizarApostador(apostador);
-        
-        Apostador newApostador = apostadorService.selecionarPerfilApostadorPorEmail(EMAIL_PRIMEIRO_RANKING);
-        
-        assertEquals("Peter Parker", newApostador.getNome());
-        assertFalse(newApostador.getOpcoes().isLembretePalpites());
-        assertFalse(newApostador.possuiTimeCoracao());
-    }
-    
-    @Test
-    public void testAtualizarApostadorTimeCoracao() throws CadastroApostadorException {
-        Apostador apostador = apostadorService.selecionarPerfilApostadorPorEmail(EMAIL_PRIMEIRO_RANKING);
-        
-        apostador.setNome("Peter Parker");
-        apostador.getOpcoes().setLembretePalpites(false);
-        apostador.getOpcoes().setTimeCoracao(new Time(1, "Time"));
-        
-        apostadorService.atualizarApostador(apostador);
-        
-        Apostador newApostador = apostadorService.selecionarPerfilApostadorPorEmail(EMAIL_PRIMEIRO_RANKING);
-        
-        assertEquals("Peter Parker", newApostador.getNome());
-        assertFalse(newApostador.getOpcoes().isLembretePalpites());
-        assertTrue(newApostador.possuiTimeCoracao());
-        assertTrue(newApostador.getOpcoes().getTimeCoracao().getId() == 1);
-        
-    }
+	@Test
+	public void testPesquisarApostadorPorNome() {
+		List<Apostador> apostadores = apostadorService
+				.pesquisarApostadoresPorParteNome("Mar");
 
-    @Test
-    public void testLoadUserByUsername() throws CadastroApostadorException {
-        final String email = "peter.parker@oscorp.com";
-        Usuario usuario = new Usuario("peter.parker@oscorp.com");
-        usuario.setSenha("IhateOctopus666");
+		assertNotNull(apostadores);
+		assertFalse(apostadores.isEmpty());
+	}
 
-        Apostador apostador = new Apostador("Peter Parker", usuario);
+	@Test
+	public void testAtualizarApostador() throws CadastroApostadorException {
+		Apostador apostador = apostadorService
+				.selecionarPerfilApostadorPorEmail(EMAIL_PRIMEIRO_RANKING);
 
-        usuarioService.cadastrarApostadorUsuario(apostador, "IhateOctopus666");
+		apostador.setNome("Peter Parker");
+		apostador.getOpcoes().setLembretePalpites(false);
+		apostador.getOpcoes().setTimeCoracao(null);
 
-        UserDetails userDetails = ((UserDetailsService) usuarioService).loadUserByUsername(email);
+		apostadorService.atualizarApostador(apostador);
 
-        assertNotNull(userDetails);
-        assertEquals(email, userDetails.getUsername());
-        // esta criptografado.
-        assertTrue(userDetails.getPassword().length() == 64);
-    }
+		Apostador newApostador = apostadorService
+				.selecionarPerfilApostadorPorEmail(EMAIL_PRIMEIRO_RANKING);
 
-    @Test(expected=UsernameNotFoundException.class)
-    public void testLoadUserByUsername_NotExists() {
-        final String email = "peter.parker@oscorp.com";
+		assertEquals("Peter Parker", newApostador.getNome());
+		assertFalse(newApostador.getOpcoes().isLembretePalpites());
+		assertFalse(newApostador.possuiTimeCoracao());
+	}
 
-        ((UserDetailsService) usuarioService).loadUserByUsername(email);
-    }
+	@Test
+	public void testAtualizarApostadorTimeCoracao()
+			throws CadastroApostadorException {
+		Apostador apostador = apostadorService
+				.selecionarPerfilApostadorPorEmail(EMAIL_PRIMEIRO_RANKING);
 
-    @Test(expected = CadastroApostadorException.class)
-    public void testCadastrarApostador_existente() throws CadastroApostadorException {
-        Usuario usuario = new Usuario("peter.parker@oscorp.com");
-        usuario.setSenha("IhateOctopus666");
+		apostador.setNome("Peter Parker");
+		apostador.getOpcoes().setLembretePalpites(false);
+		apostador.getOpcoes().setTimeCoracao(new Time(1, "Time"));
 
-        Apostador apostador = new Apostador("Peter Parker", usuario);
+		apostadorService.atualizarApostador(apostador);
 
-        usuarioService.cadastrarApostadorUsuario(apostador, "IhateOctopus666");
+		Apostador newApostador = apostadorService
+				.selecionarPerfilApostadorPorEmail(EMAIL_PRIMEIRO_RANKING);
 
-        // denovo!
-        Apostador apostador2 = new Apostador("Peter Parker2", usuario);
+		assertEquals("Peter Parker", newApostador.getNome());
+		assertFalse(newApostador.getOpcoes().isLembretePalpites());
+		assertTrue(newApostador.possuiTimeCoracao());
+		assertTrue(newApostador.getOpcoes().getTimeCoracao().getId() == 1);
 
-        usuarioService.cadastrarApostadorUsuario(apostador2, "IhateOctopus666");
-    }
+	}
 
-    @Test
-    public void testConfirirPoliticaSenhaOK() throws Exception {
-        final String senhaForte = "pEterp4rker";
+	@Test
+	public void testLoadUserByUsername() throws CadastroApostadorException {
+		final String email = "peter.parker@oscorp.com";
+		Usuario usuario = new Usuario("peter.parker@oscorp.com");
+		usuario.setSenha("IhateOctopus666");
 
-        // OK
-        super.getTargetObject(usuarioService, UsuarioServiceImpl.class).confirirPoliticaSenha(senhaForte);
-    }
+		Apostador apostador = new Apostador("Peter Parker", usuario);
 
-    @Test(expected = CadastroApostadorException.class)
-    public void testConfirirPoliticaSenhaNOK() throws Exception {
-        final String senha = "peterparker";
+		usuarioService.cadastrarApostadorUsuario(apostador, "IhateOctopus666");
 
-        // Ops!
-        super.getTargetObject(usuarioService, UsuarioServiceImpl.class).confirirPoliticaSenha(senha);
-    }
+		UserDetails userDetails = ((UserDetailsService) usuarioService)
+				.loadUserByUsername(email);
 
-    @Test
-    public void testCriptografarSenha() throws Exception {
-        final String senha = "Ik1lloctopu5";
-        Usuario peterparker = new Usuario("peter.parker@oscorp.com");
-        peterparker.setSenha(senha);
+		assertNotNull(userDetails);
+		assertEquals(email, userDetails.getUsername());
+		// esta criptografado.
+		assertTrue(userDetails.getPassword().length() == 64);
+	}
 
-        LOGGER.debug("senha: {}", peterparker.getSenha());
-        super.getTargetObject(usuarioService, UsuarioServiceImpl.class).criptografarSenha(peterparker);
-        assertNotEquals(senha, peterparker.getSenha());
-        LOGGER.debug("senha criptografada: {}", peterparker.getSenha());
-    }
+	@Test(expected = UsernameNotFoundException.class)
+	public void testLoadUserByUsername_NotExists() {
+		final String email = "peter.parker@oscorp.com";
+
+		((UserDetailsService) usuarioService).loadUserByUsername(email);
+	}
+
+	@Test(expected = CadastroApostadorException.class)
+	public void testCadastrarApostador_existente()
+			throws CadastroApostadorException {
+		Usuario usuario = new Usuario("peter.parker@oscorp.com");
+		usuario.setSenha("IhateOctopus666");
+
+		Apostador apostador = new Apostador("Peter Parker", usuario);
+
+		usuarioService.cadastrarApostadorUsuario(apostador, "IhateOctopus666");
+
+		// denovo!
+		Apostador apostador2 = new Apostador("Peter Parker2", usuario);
+
+		usuarioService.cadastrarApostadorUsuario(apostador2, "IhateOctopus666");
+	}
+
+	@Test
+	public void testConfirirPoliticaSenhaOK() throws Exception {
+		final String senhaForte = "pEterp4rker";
+
+		// OK
+		super.getTargetObject(usuarioService, UsuarioServiceImpl.class)
+				.confirirPoliticaSenha(senhaForte);
+	}
+
+	@Test(expected = CadastroApostadorException.class)
+	public void testConfirirPoliticaSenhaNOK() throws Exception {
+		final String senha = "peterparker";
+
+		// Ops!
+		super.getTargetObject(usuarioService, UsuarioServiceImpl.class)
+				.confirirPoliticaSenha(senha);
+	}
+
+	@Test
+	public void testCriptografarSenha() throws Exception {
+		final String senha = "Ik1lloctopu5";
+		Usuario peterparker = new Usuario("peter.parker@oscorp.com");
+		peterparker.setSenha(senha);
+
+		LOGGER.debug("senha: {}", peterparker.getSenha());
+		super.getTargetObject(usuarioService, UsuarioServiceImpl.class)
+				.criptografarSenha(peterparker);
+		assertNotEquals(senha, peterparker.getSenha());
+		LOGGER.debug("senha criptografada: {}", peterparker.getSenha());
+	}
 
 }

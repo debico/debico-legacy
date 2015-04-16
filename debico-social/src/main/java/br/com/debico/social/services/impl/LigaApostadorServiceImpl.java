@@ -12,6 +12,7 @@ import br.com.debico.social.dao.LigaApostadorDAO;
 import br.com.debico.social.dao.LigaDAO;
 import br.com.debico.social.model.Liga;
 import br.com.debico.social.model.LigaApostador;
+import br.com.debico.social.model.LigaApostadorLite;
 import br.com.debico.social.services.ApostadorService;
 import br.com.debico.social.services.LigaApostadorService;
 
@@ -50,6 +51,21 @@ public class LigaApostadorServiceImpl implements LigaApostadorService {
 		return true;
 	}
 
+	@Override
+	public boolean inscreverApostador(LigaApostadorLite ligaApostador) {
+		checkNotNull(ligaApostador, "Estrutura de ligaApostador nula");
+		this.validarLigaApostador(ligaApostador.getIdLiga(),
+				ligaApostador.getIdApostador());
+
+		// @formatter:off
+		return this.inscreverApostador(
+				this.recuperarAssociacaoLigaApostador(
+						ligaApostador.getIdLiga(), 
+						ligaApostador.getIdApostador()));
+		// @formatter:on
+	}
+
+	@Override
 	public boolean inscreverApostador(final Liga liga, final Apostador apostador) {
 		checkNotNull(liga, "A referencia de liga eh obrigatoria");
 		checkNotNull(apostador, "a referencia de apostador eh obrigatoria");
@@ -59,51 +75,11 @@ public class LigaApostadorServiceImpl implements LigaApostadorService {
 		return this.inscreverApostador(new LigaApostador(liga, apostador));
 	}
 
-	@Override
-	public boolean inscreverApostador(long idLiga, int idUsuarioApostador) {
-		this.validarLigaApostador(idLiga, idUsuarioApostador);
-
-		return this.inscreverApostador(this.recuperarAssociacaoLigaApostador(
-				idLiga, idUsuarioApostador));
-	}
-
-	@Override
-	public boolean inscreverApostador(Liga liga, int idUsuarioApostador) {
-		return this.inscreverApostador(liga, apostadorService
-				.selecionarApostadorPorIdUsuario(idUsuarioApostador));
-	}
-
-	@Override
-	public boolean inscreverApostador(Liga liga,
-			List<Integer> idsUsuarioApostador) {
-
-		for (Integer idUsuario : idsUsuarioApostador) {
-			this.inscreverApostador(liga, idUsuario);
-		}
-
-		return true;
-	}
-
-	@Override
-	public boolean inscreverApostador(long idLiga,
-			List<Integer> idsUsuarioApostador) {
-		return this.inscreverApostador(ligaDAO.findById(idLiga),
-				idsUsuarioApostador);
-	}
-
 	private boolean removerApostador(final LigaApostador ligaApostador) {
 		checkNotNull(ligaApostador);
 		ligaApostadorDAO.remove(ligaApostador);
 
 		return true;
-	}
-
-	@Override
-	public boolean removerApostador(long idLiga, int idUsuarioApostador) {
-		this.validarLigaApostador(idLiga, idUsuarioApostador);
-
-		return this.removerApostador(this.recuperarAssociacaoLigaApostador(
-				idLiga, idUsuarioApostador));
 	}
 
 	@Override
@@ -116,34 +92,30 @@ public class LigaApostadorServiceImpl implements LigaApostadorService {
 	}
 
 	@Override
-	public boolean removerApostador(Liga liga, int idUsuarioApostador) {
-		return this.removerApostador(liga, apostadorService
-				.selecionarApostadorPorIdUsuario(idUsuarioApostador));
-	}
+	public boolean removerApostador(LigaApostadorLite ligaApostador) {
+		checkNotNull(ligaApostador, "Estrutura de ligaApostador nula");
 
-	@Override
-	public boolean removerApostador(Liga liga, List<Integer> idsUsuarioApostador) {
-		for (Integer idUsuario : idsUsuarioApostador) {
-			this.removerApostador(liga, idUsuario);
-		}
-
-		return true;
-	}
-
-	@Override
-	public boolean removerApostador(long idLiga,
-			List<Integer> idsUsuarioApostador) {
-		return this.removerApostador(ligaDAO.findById(idLiga),
-				idsUsuarioApostador);
+		// @formatter:off
+		return this.removerApostador(
+				this.recuperarAssociacaoLigaApostador(
+						ligaApostador.getIdLiga(), 
+						ligaApostador.getIdApostador()));
+		// @formatter:on
 	}
 
 	private LigaApostador recuperarAssociacaoLigaApostador(final long idLiga,
-			final int idUsuarioApostador) {
+			final int idApostador) {
+		// @formatter:off
 		final Liga liga = ligaDAO.findById(idLiga);
-		final Apostador apostador = apostadorService
-				.selecionarApostadorPorIdUsuario(idUsuarioApostador);
+		final Apostador apostador = apostadorService.selecionarApostadorPorId(idApostador);
+		LigaApostador ligaApostador = ligaApostadorDAO.findById(new LigaApostador(liga, apostador));
+		// @formatter:on
 
-		return ligaApostadorDAO.findById(new LigaApostador(liga, apostador));
+		if (ligaApostador == null) {
+			ligaApostador = new LigaApostador(liga, apostador);
+		}
+
+		return ligaApostador;
 	}
 
 	private void validarLigaApostador(final long idLiga,

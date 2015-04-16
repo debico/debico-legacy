@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head></head>
+<body>
+	<div id="add_camaradas" class="reveal-modal" data-reveal=""
+		th:fragment="add_camaradas">
+		<h4>Adicionar Camaradas</h4>
+		<p>Para adicionar um camarada na sua liga, pesquise o nome dele no
+			campo abaixo. Ele precisa estar cadastrado no site! Ainda n&atilde;o
+			est&aacute;? Manda um convite! ;)</p>
+		<form th:action="@{/minhas-ligas/}" method="post"
+			id="add_camaradas_form" >
+			<div class="row">
+				<br/>
+				<div class="large-12 columns">
+					<input type="text" id="buscaCamarada" name="buscaCamarada" required="required"
+						maxlength="500" th:title="#{input.nome.error}"
+						placeholder="Entre com o nome ou parte dele" />
+					<input type="hidden" id="idApostadorCamarada" name="idApostadorCamarada" />
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="large-12 columns">
+					<button type="submit" class="button" id="btnAddCamarada" name="btnAddCamarada">Adicionar!</button>
+				</div>
+			</div>
+		</form>
+		<a class="close-reveal-modal">&#215;</a>
+	</div>
+</body>
+</html>
