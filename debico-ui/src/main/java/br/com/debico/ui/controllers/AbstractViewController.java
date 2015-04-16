@@ -88,4 +88,13 @@ public abstract class AbstractViewController implements MessageSourceAware {
 		modelAndView.addObject(key, model);
 	}
 
+	/**
+	 * As vezes você quer modiciar o title da página just for fun. Coloque {0}
+	 * no messages.properties.
+	 * 
+	 * @param titleParam
+	 */
+	protected void addTitleParam(Object titleParam) {
+		this.addObject("title_param", titleParam);
+	}
 }

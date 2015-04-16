@@ -1,0 +1,28 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/headTag :: headTag">
+</head>
+<body>
+	<nav th:replace="fragments/header :: barra_navegacao"></nav>
+	<div class="panel clearfix">
+		<div class="row">
+			<div class="large-12 columns">
+				<div class="row">
+					<div class="large-12 columns">
+						<br />
+						<h2>
+							<span th:text="${liga.nome}"></span> <small th:text="#{liga.html.subtitle}"></small>
+						</h2>
+						<hr />
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:replace="fragments/footer :: footer-copy"></div>
+	<div th:replace="fragments/footer :: footer-scripts"></div>
+</body>
+</html>

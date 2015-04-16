@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import br.com.debico.social.model.Liga;
 import br.com.debico.social.services.LigaService;
 import br.com.debico.ui.controllers.AbstractViewController;
 
@@ -33,8 +34,9 @@ public class LigaController extends AbstractViewController {
 	public ModelAndView liga(@PathVariable("id") long id,
 			@PathVariable("permalink") String permalink) {
 		resetViewName();
-
-		this.addObject("liga", ligaService.recuperarLiga(id));
+		final Liga liga = ligaService.recuperarLiga(id);
+		this.addObject("liga", liga);
+		this.addTitleParam(liga.getNome());
 
 		// adicionar outros objetos pré-renderizados aqui.
 		// este link será responsável pelo painel da liga com o mural,

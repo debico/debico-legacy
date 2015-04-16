@@ -45,7 +45,7 @@ public class TitleInterceptor extends HandlerInterceptorAdapter implements
 		final String title = 
 				messageSource.getMessage(
 						String.format("%s%s", modelAndView.getViewName(), POSFIX_TITLE_CODE), 
-						null, 
+						new Object[] {modelAndView.getModel().get("title_param")}, 
 						Locale.getDefault());
 
 		return messageSource.getMessage("base.html.title", new Object[] { title }, Locale.getDefault());
