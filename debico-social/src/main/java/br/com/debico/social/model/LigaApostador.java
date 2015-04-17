@@ -7,9 +7,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import br.com.debico.model.Apostador;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.Objects;
 
 import static com.google.common.base.Objects.equal;
@@ -29,12 +31,12 @@ public final class LigaApostador implements Serializable {
 
 	@Id
 	@ManyToOne
-	@JoinColumn(name="ID_APOSTADOR", updatable = false)
+	@JoinColumn(name = "ID_APOSTADOR", updatable = false)
 	private Apostador apostador;
 
 	@Id
 	@ManyToOne
-	@JoinColumn(name="ID_LIGA", updatable = false)
+	@JoinColumn(name = "ID_LIGA", updatable = false)
 	private Liga liga;
 
 	public LigaApostador() {
@@ -45,13 +47,12 @@ public final class LigaApostador implements Serializable {
 		this.apostador = apostador;
 		this.liga = liga;
 	}
-	
+
 	public LigaApostador(final long liga, final int apostador) {
 		this.apostador = new Apostador(apostador);
 		this.liga = new Liga(liga);
 	}
-	
-	
+
 	public LigaApostador(final LigaApostadorLite ligaApostadorLite) {
 		this(ligaApostadorLite.getIdLiga(), ligaApostadorLite.getIdApostador());
 	}
@@ -70,6 +71,17 @@ public final class LigaApostador implements Serializable {
 
 	public void setLiga(Liga liga) {
 		this.liga = liga;
+	}
+
+	@Transient
+	@JsonIgnore
+	public boolean isAdmin() {
+		if (liga != null && apostador != null) {
+			return liga.getAdministrador() != null
+					&& liga.getAdministrador().equals(apostador);
+		}
+
+		return false;
 	}
 
 	@Override

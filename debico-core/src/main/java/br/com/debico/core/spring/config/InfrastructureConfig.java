@@ -34,6 +34,7 @@ import br.com.debico.core.helpers.CacheKeys;
 import br.com.debico.core.helpers.Roles;
 import br.com.debico.core.spring.profiles.Dev;
 import br.com.debico.core.spring.profiles.Release;
+import br.com.debico.core.spring.security.MockAclService;
 import br.com.tecnobiz.spring.config.dao.base.ProfileBasedDaoConfig;
 
 /**
@@ -101,6 +102,7 @@ public final class InfrastructureConfig {
 	 * @return
 	 */
 	@Bean
+	@Release
 	public EhCacheManagerFactoryBean ehCacheCacheManager() {
 		final EhCacheManagerFactoryBean cmfb = new EhCacheManagerFactoryBean();
 		cmfb.setConfigLocation(new ClassPathResource("ehcache.xml"));
@@ -131,6 +133,7 @@ public final class InfrastructureConfig {
 	// ===================================================================================================
 
 	// TODO: remover assim que implementar o cache padrao da aplicacao
+	@Release
 	@Bean
 	public EhCacheFactoryBean cacheFactoryBean(
 			net.sf.ehcache.CacheManager cacheManager) {
@@ -141,6 +144,7 @@ public final class InfrastructureConfig {
 		return cacheFactoryBean;
 	}
 
+	@Release
 	@Bean
 	public AclCache aclCache(EhCacheFactoryBean cacheFactoryBean) {
 		// @formatter:off
@@ -151,6 +155,7 @@ public final class InfrastructureConfig {
 		// @formatter:on
 	}
 
+	@Release
 	@Bean
 	public LookupStrategy lookupStrategy(AclCache aclCache) {
 		// @formatter:off
@@ -162,10 +167,22 @@ public final class InfrastructureConfig {
 		// @formatter:on
 	}
 
+	@Release
 	@Bean
 	public MutableAclService aclService(AclCache aclCache,
 			LookupStrategy lookupStrategy) {
-		return new JdbcMutableAclService(dataSource, lookupStrategy, aclCache);
+		final JdbcMutableAclService aclService = new JdbcMutableAclService(
+				dataSource, lookupStrategy, aclCache);
+		aclService.setClassIdentityQuery("select LAST_INSERT_ID()");
+		aclService.setSidIdentityQuery("select LAST_INSERT_ID()");
+
+		return aclService;
+	}
+
+	@Dev
+	@Bean
+	public MutableAclService aclServiceNop() {
+		return new MockAclService();
 	}
 
 }

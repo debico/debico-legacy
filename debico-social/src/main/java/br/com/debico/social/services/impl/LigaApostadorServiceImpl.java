@@ -7,6 +7,7 @@ import javax.inject.Named;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.debico.core.spring.security.GerenciadorPermissoesDominio;
 import br.com.debico.model.Apostador;
 import br.com.debico.social.InscricaoLigaException;
 import br.com.debico.social.dao.LigaApostadorDAO;
@@ -33,6 +34,10 @@ public class LigaApostadorServiceImpl implements LigaApostadorService {
 	@Inject
 	private ApostadorService apostadorService;
 
+	// seria interessante adicionar como aspecto
+	@Inject
+	private GerenciadorPermissoesDominio permissoesDominio;
+
 	public LigaApostadorServiceImpl() {
 
 	}
@@ -44,22 +49,27 @@ public class LigaApostadorServiceImpl implements LigaApostadorService {
 		return ligaDAO.selecionarApostadores(idLiga);
 	}
 
-	private boolean inscreverApostador(final LigaApostador ligaApostador) throws InscricaoLigaException {
+	private boolean inscreverApostador(final LigaApostador ligaApostador)
+			throws InscricaoLigaException {
 		checkNotNull(ligaApostador);
-		
-		final LigaApostador inscricaoExistente = ligaApostadorDAO.findById(ligaApostador);
-		
-		if(inscricaoExistente != null) {
-			throw new InscricaoLigaException("Apostador ja cadastrado", "liga.err.inscricao_existente");
-		}
-		
-		ligaApostadorDAO.create(ligaApostador);
 
+		final LigaApostador inscricaoExistente = ligaApostadorDAO
+				.findById(ligaApostador);
+
+		if (inscricaoExistente != null) {
+			throw new InscricaoLigaException("Apostador ja cadastrado",
+					"liga.err.inscricao_existente");
+		}
+
+		ligaApostadorDAO.create(ligaApostador);
+		permissoesDominio.adicionarPermissao(ligaApostador.getApostador().getEmail(), ligaApostador.getLiga(), ligaApostador.isAdmin());
+		
 		return true;
 	}
 
 	@Override
-	public boolean inscreverApostador(LigaApostadorLite ligaApostador) throws InscricaoLigaException {
+	public boolean inscreverApostador(LigaApostadorLite ligaApostador)
+			throws InscricaoLigaException {
 		checkNotNull(ligaApostador, "Estrutura de ligaApostador nula");
 		this.validarLigaApostador(ligaApostador.getIdLiga(),
 				ligaApostador.getIdApostador());
@@ -73,7 +83,8 @@ public class LigaApostadorServiceImpl implements LigaApostadorService {
 	}
 
 	@Override
-	public boolean inscreverApostador(final Liga liga, final Apostador apostador) throws InscricaoLigaException {
+	public boolean inscreverApostador(final Liga liga, final Apostador apostador)
+			throws InscricaoLigaException {
 		checkNotNull(liga, "A referencia de liga eh obrigatoria");
 		checkNotNull(apostador, "a referencia de apostador eh obrigatoria");
 
@@ -82,22 +93,27 @@ public class LigaApostadorServiceImpl implements LigaApostadorService {
 		return this.inscreverApostador(new LigaApostador(liga, apostador));
 	}
 
-	private boolean removerApostador(final LigaApostador ligaApostador) throws InscricaoLigaException {
+	private boolean removerApostador(final LigaApostador ligaApostador)
+			throws InscricaoLigaException {
 		checkNotNull(ligaApostador);
-		
-		final LigaApostador inscricaoExistente = ligaApostadorDAO.findById(ligaApostador);
-		
-		if(inscricaoExistente == null) {
-			throw new InscricaoLigaException("Erro ao excluir inscricao", "liga.err.inscricao_not_found");
+
+		final LigaApostador inscricaoExistente = ligaApostadorDAO
+				.findById(ligaApostador);
+
+		if (inscricaoExistente == null) {
+			throw new InscricaoLigaException("Erro ao excluir inscricao",
+					"liga.err.inscricao_not_found");
 		}
-		
+
 		ligaApostadorDAO.remove(inscricaoExistente);
+		permissoesDominio.removerPermissao(inscricaoExistente.getApostador().getEmail(), inscricaoExistente.getLiga());
 
 		return true;
 	}
 
 	@Override
-	public boolean removerApostador(Liga liga, Apostador apostador) throws InscricaoLigaException {
+	public boolean removerApostador(Liga liga, Apostador apostador)
+			throws InscricaoLigaException {
 		checkNotNull(liga, "A referencia de liga eh obrigatoria");
 		checkNotNull(apostador, "a referencia de apostador eh obrigatoria");
 
@@ -106,9 +122,10 @@ public class LigaApostadorServiceImpl implements LigaApostadorService {
 	}
 
 	@Override
-	public boolean removerApostador(LigaApostadorLite ligaApostadorLite) throws InscricaoLigaException  {
+	public boolean removerApostador(LigaApostadorLite ligaApostadorLite)
+			throws InscricaoLigaException {
 		checkNotNull(ligaApostadorLite, "Estrutura de ligaApostador nula");
-		
+
 		// @formatter:off
 		return this.removerApostador(
 				this.recuperarAssociacaoLigaApostador(
@@ -120,7 +137,8 @@ public class LigaApostadorServiceImpl implements LigaApostadorService {
 	private LigaApostador recuperarAssociacaoLigaApostador(final long idLiga,
 			final int idApostador) {
 		final Liga liga = ligaDAO.findById(idLiga);
-		final Apostador apostador = apostadorService.selecionarApostadorPorId(idApostador);
+		final Apostador apostador = apostadorService
+				.selecionarApostadorPorId(idApostador);
 		return new LigaApostador(liga, apostador);
 	}
 

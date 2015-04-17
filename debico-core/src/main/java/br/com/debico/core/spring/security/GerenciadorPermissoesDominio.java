@@ -21,16 +21,41 @@ public interface GerenciadorPermissoesDominio {
 	 * Adiciona a permissão de administrador ao login enviado ao objeto de
 	 * domínio em questão.
 	 * 
-	 * @param login dono do domínio
-	 * @param model referência do domínio
+	 * @param login
+	 *            dono do domínio
+	 * @param model
+	 *            referência do domínio
 	 */
-	void adicionarPermissaoAdministrador(final String login,
-			final BaseModel<?> model);
-	
+	void adicionarPermissaoAdministrador(String login, BaseModel<?> model);
+
 	/**
 	 * @see #adicionarPermissaoAdministrador(String, BaseModel)
 	 */
-	void adicionarPermissaoLeitura(final String login,
-			final BaseModel<?> model);
+	void adicionarPermissaoLeitura(String login, BaseModel<?> model);
+
+	/**
+	 * Concede a permissão ao usuário em determinado domínio
+	 * 
+	 * @param login
+	 * @param model
+	 * @param admin
+	 *            se false, concede apenas leitura.
+	 */
+	void adicionarPermissao(String login, BaseModel<?> model, boolean admin);
+
+	/**
+	 * Remove a permissão do usuário de determinado domínio.
+	 * 
+	 * @param login
+	 * @param model
+	 */
+	void removerPermissao(String login, BaseModel<?> model);
+
+	/**
+	 * Útil se o domínio em questão for removido da base de dados.
+	 * 
+	 * @param model
+	 */
+	void removerTodasPermissoes(BaseModel<?> model);
 
 }

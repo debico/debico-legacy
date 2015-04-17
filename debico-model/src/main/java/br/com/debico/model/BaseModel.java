@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author ricardozanini
  *
  */
-public interface BaseModel<I> extends Serializable {
+public interface BaseModel<I extends Serializable> extends Serializable {
 
 	I getId();
 	

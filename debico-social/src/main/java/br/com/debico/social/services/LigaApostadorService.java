@@ -26,10 +26,12 @@ public interface LigaApostadorService {
 	/**
 	 * Inscreve o apostador na liga.
 	 * 
-	 * @param ligaApostador instância da estrutura base
+	 * @param ligaApostador
+	 *            instância da estrutura base
 	 * @return true se realizado com sucesso.
 	 */
-	boolean inscreverApostador(final LigaApostadorLite ligaApostador) throws InscricaoLigaException;
+	boolean inscreverApostador(final LigaApostadorLite ligaApostador)
+			throws InscricaoLigaException;
 
 	/**
 	 * Atalho caso o código cliente tenha esses objetos "em mãos".
@@ -39,20 +41,20 @@ public interface LigaApostadorService {
 	 * @return true se realizado com sucesso.
 	 * @see #inscreverApostador(long, int)
 	 */
-	boolean inscreverApostador(final Liga liga, final Apostador apostador) throws InscricaoLigaException;
+	boolean inscreverApostador(final Liga liga, final Apostador apostador)
+			throws InscricaoLigaException;
 
 	/**
 	 * Remove o apostador da liga.
 	 */
-	boolean removerApostador(final Liga liga, final Apostador apostador) throws InscricaoLigaException;
-	
+	boolean removerApostador(final Liga liga, final Apostador apostador)
+			throws InscricaoLigaException;
+
 	/**
 	 * 
 	 * @see #removerApostador(Liga, Apostador)
 	 */
-	boolean removerApostador(final LigaApostadorLite ligaApostador) throws InscricaoLigaException;
-	
-	
-
+	boolean removerApostador(final LigaApostadorLite ligaApostador)
+			throws InscricaoLigaException;
 
 }
