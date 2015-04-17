@@ -12,6 +12,11 @@ public final class CacheKeys {
 	private CacheKeys() {
 
 	}
+	
+	/**
+	 * Configuração para o ACL
+	 */
+	public static final String ACL = "aclCache";
 
 	/**
 	 * Chave do cache dos Campeonatos.

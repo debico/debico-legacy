@@ -9,13 +9,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import br.com.debico.core.helpers.Roles;
 import br.com.debico.core.spring.config.ServicesConfig;
 
 /**
@@ -33,7 +34,7 @@ import br.com.debico.core.spring.config.ServicesConfig;
  * @see ServicesConfig
  */
 @Configuration
-@EnableWebMvcSecurity
+@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Inject
@@ -82,9 +83,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/sucesso/").permitAll()
 				.antMatchers("/support/").permitAll()
 				.antMatchers("/public/**").anonymous()
-				.antMatchers("/campeonatos/**/palpite/**").access("!hasRole('ROLE_ADMIN') and isAuthenticated()")
-				.antMatchers("/campeonatos/**/palpites/**").access("!hasRole('ROLE_ADMIN') and isAuthenticated()")
-				.antMatchers("/api*/**").access("hasRole('ROLE_ADMIN')")
+				.antMatchers("/campeonatos/**/palpite/**").access("!hasRole('" + Roles.ROLE_ADMIN + "') and isAuthenticated()")
+				.antMatchers("/campeonatos/**/palpites/**").access("!hasRole('" + Roles.ROLE_ADMIN + "') and isAuthenticated()")
+				.antMatchers("/api*/**").access("hasRole('" + Roles.ROLE_ADMIN + "')")
 				.anyRequest().authenticated()
 				.and()
 				.logout()

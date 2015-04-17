@@ -20,7 +20,9 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
  */
 public class ChartSeriesDataSerializer extends StdSerializer<Map<?, ?>> {
 
-    private static final String X_AXIS = "x";
+	private static final long serialVersionUID = -1310533958079057724L;
+	
+	private static final String X_AXIS = "x";
     private static final String Y_AXIS = "y";
     
     public ChartSeriesDataSerializer() {

@@ -14,6 +14,7 @@ import javax.persistence.Table;
 
 import br.com.debico.core.helpers.WebUtils;
 import br.com.debico.model.Apostador;
+import br.com.debico.model.BaseModel;
 
 import com.google.common.base.Objects;
 
@@ -30,7 +31,7 @@ import static com.google.common.base.Objects.toStringHelper;
  */
 @Entity
 @Table(name = "tb_liga")
-public final class Liga implements Serializable, Comparable<Liga> {
+public final class Liga implements BaseModel<Long>, Serializable, Comparable<Liga> {
 
 	private static final long serialVersionUID = 1877249715720845337L;
 
@@ -53,7 +54,8 @@ public final class Liga implements Serializable, Comparable<Liga> {
 	private Apostador administrador;
 
 	public Liga() {
-
+		// importante para nao aceitar nulos.
+		this.id = 0;
 	}
 	
 	public Liga(final long id) {
@@ -68,11 +70,11 @@ public final class Liga implements Serializable, Comparable<Liga> {
 		this.ativa = true;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

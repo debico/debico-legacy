@@ -79,10 +79,13 @@ public class ApostadorPontuacaoServiceImpl implements ApostadorPontuacaoService 
 	@Override
 	public List<ApostadorPontuacao> listarRankingPorLiga(int idCampeonato,
 			long idLiga) {
+		LOGGER.debug("[listarRankingPorLiga] Realizando a consulta do Ranking para a liga {}", idLiga);
 		final List<ApostadorPontuacao> pontuacao =
 				apostadorPontuacaoDAO.selecionarApostadoresPorLiga(idCampeonato, idLiga);
 		
 		Collections.sort(pontuacao);
+		
+		LOGGER.debug("[listarRankingPorLiga] Consulta da liga {} realizada com sucesso.", idLiga);
 		
 		return pontuacao;
 	}

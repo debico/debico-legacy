@@ -27,7 +27,7 @@ public class ApostadorPontuacao implements Serializable,
 	private static final long serialVersionUID = -1668188676088438225L;
 
 	@Id
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name = "ID_APOSTADOR", nullable = false, unique = false)
 	private Apostador apostador;
 

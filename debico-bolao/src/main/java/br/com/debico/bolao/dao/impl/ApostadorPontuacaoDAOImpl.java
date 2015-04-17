@@ -4,9 +4,6 @@ import java.util.List;
 
 import javax.inject.Named;
 import javax.persistence.NoResultException;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,15 +41,12 @@ class ApostadorPontuacaoDAOImpl extends
 		// @formatter:on
 	}
 	
-	// TODO: transformar em uma "native query" ou qualquer outra coisa para melhorar o desempenho e nao ter que dar select nos outros campos.
 	public List<ApostadorPontuacao> selecionarApostadores(Campeonato campeonato) {
-		final CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
-		final CriteriaQuery<ApostadorPontuacao> query = cb.createQuery(ApostadorPontuacao.class);
-		final Root<ApostadorPontuacao> pontuacao = query.from(ApostadorPontuacao.class);
-		
-		query.select(pontuacao).where(cb.equal(pontuacao.get("campeonato"), campeonato));
-		
-		return getEntityManager().createQuery(query).getResultList();
+		return getEntityManager()
+				.createQuery("SELECT A FROM ApostadorPontuacao AS A JOIN FETCH A.apostador WHERE A.campeonato = :campeonato", 
+				ApostadorPontuacao.class)
+		.setParameter("campeonato", campeonato)
+		.getResultList();
 	}
 
 	public ApostadorPontuacao selecionarApostador(Apostador apostador,
