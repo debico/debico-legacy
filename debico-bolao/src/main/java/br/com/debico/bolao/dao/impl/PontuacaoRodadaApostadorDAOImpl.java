@@ -33,8 +33,10 @@ class PontuacaoRodadaApostadorDAOImpl extends NamedParameterJdbcDaoSupport
     private static final String SQL_JOINS1 = "TB_APOSTADOR AS P ON (P.ID_APOSTADOR = C.ID_APOSTADOR) LEFT JOIN ";
     private static final String SQL_JOINS2 = "TB_PALPITE AS A ON (A.ID_APOSTADOR = C.ID_APOSTADOR) INNER JOIN ";
     private static final String SQL_JOINS3 = "TB_PARTIDA AS B ON (A.ID_PARTIDA = B.ID_PARTIDA) INNER JOIN ";
-    private static final String SQL_JOINS4 = "TB_RODADA AS D ON (B.ID_RODADA = D.ID_RODADA) ";
-    private static final String SQL_WHERE = "WHERE C.ID_CAMPEONATO = :id_campeonato ";
+    private static final String SQL_JOINS4 = "TB_RODADA AS D ON (B.ID_RODADA = D.ID_RODADA) INNER JOIN ";
+    private static final String SQL_JOINS5 = "TB_RANKING AS E ON (D.ID_RANKING = E.ID_RANKING) INNER JOIN ";
+    private static final String SQL_JOINS6 = "TB_FASE AS F ON (E.ID_FASE = F.ID_FASE) ";
+    private static final String SQL_WHERE = "WHERE F.ID_CAMPEONATO = :id_campeonato ";
     private static final String SQL_GROUP_ORDER = "GROUP BY P.ID_APOSTADOR, P.NM_APOSTADOR, D.NU_ORDEM ORDER BY A.ID_APOSTADOR, D.NU_ORDEM ";
     
     private static final String SQL_JOIN_TOP10 = "(SELECT ID_APOSTADOR, ID_CAMPEONATO, NU_PONTOS FROM TB_APOSTADOR_CAMPEONATO ORDER BY NU_PONTOS DESC LIMIT 10) AS C INNER JOIN ";
@@ -66,6 +68,8 @@ class PontuacaoRodadaApostadorDAOImpl extends NamedParameterJdbcDaoSupport
             .append(SQL_JOINS2)
             .append(SQL_JOINS3)
             .append(SQL_JOINS4)
+            .append(SQL_JOINS5)
+            .append(SQL_JOINS6)
             .append(SQL_WHERE)
             .append(SQL_GROUP_ORDER);
         
@@ -88,6 +92,8 @@ class PontuacaoRodadaApostadorDAOImpl extends NamedParameterJdbcDaoSupport
             .append(SQL_JOINS2)
             .append(SQL_JOINS3)
             .append(SQL_JOINS4)
+            .append(SQL_JOINS5)
+            .append(SQL_JOINS6)
             .append(SQL_WHERE)
             .append(SQL_GROUP_ORDER);
         

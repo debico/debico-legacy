@@ -8,8 +8,11 @@ import javax.inject.Named;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.debico.core.helpers.CacheKeys;
 import br.com.debico.core.helpers.WebUtils;
 import br.com.debico.model.Apostador;
 import br.com.debico.social.CadastroLigaException;
@@ -44,6 +47,7 @@ class LigaServiceImpl implements LigaService {
 
 	}
 
+	@Cacheable(value=CacheKeys.MINHAS_LIGAS)
 	@Override
 	public List<Liga> consultarLiga(String emailUsuario) {
 		LOGGER.debug(
@@ -68,6 +72,7 @@ class LigaServiceImpl implements LigaService {
 		return ligaDAO.findById(idLiga);
 	}
 
+	@CacheEvict(value=CacheKeys.MINHAS_LIGAS, key="#emailAdmin")
 	@Override
 	public Liga cadastrarNovaLiga(String nome, String emailAdmin)
 			throws CadastroLigaException {
@@ -87,6 +92,7 @@ class LigaServiceImpl implements LigaService {
 		return liga;
 	}
 
+	@CacheEvict(value=CacheKeys.MINHAS_LIGAS, key="#emailAdmin")
 	@Override
 	public Liga atualizarLiga(long idLiga, String nome, String emailAdmin)
 			throws CadastroLigaException {

@@ -51,6 +51,11 @@ public final class CacheKeys {
 	 * após o cálculo dos pontos.
 	 */
 	public static final String DESEMPENHO_IND_APOSTADOR = "desempenhoApostador";
+	
+	/**
+	 * Chave do cache das ligas do apostador. Expira quando uma nova liga desse admin é adicionada.
+	 */
+	public static final String MINHAS_LIGAS = "minhasLigas";
 
 	public static String[] recuperarTodas() {
 		return new String[] { CAMPEONATOS, CAMPEONATOS_ATIVOS, PARTIDAS_RODADA,

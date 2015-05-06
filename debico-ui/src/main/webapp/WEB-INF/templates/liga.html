@@ -13,10 +13,56 @@
 					<div class="large-12 columns">
 						<br />
 						<h2>
-							<span th:text="${liga.nome}"></span> <small th:text="#{liga.html.subtitle}"></small>
+							<span th:text="${liga.nome}"></span> <small
+								th:text="#{liga.html.subtitle}"></small>
 						</h2>
 						<hr />
-						
+						<p>
+							Bem vindo ao mural da liga <strong><span
+								th:text="${liga.nome}"></span></strong>. Veja abaixo os campeonatos que
+							voc&ecirc; pode palpitar para disputar junto com seus camaradas!
+						</p>
+						<hr />
+						<div th:if="${not #lists.isEmpty(campeonatos)}" class="row">
+							<div class="large-12 columns">
+								<table id="campeonatos_oficiais">
+									<thead>
+										<tr>
+											<td>Campeonato</td>
+											<td>Ranking da Liga</td>
+											<td>Palpitar</td>
+										</tr>
+									</thead>
+									<tbody id="campeonatos_oficiais_content">
+										<tr th:each="c : ${campeonatos}">
+											<td><a
+												th:href="@{|/campeonatos/${#strings.toLowerCase(c.tipo)}/${c.permalink}|}"
+												th:text="${c.nome}"></a></td>
+											<td class="action"><a
+												th:href="@{|/ranking/${c.permalink}/liga/${liga.id}|}"
+												title="Ranking da Liga"><i class="fi-graph-trend"></i> </a></td>
+											<td class="action"><a
+												sec:authorize="!hasRole('ROLE_ADMIN')"
+												th:href="@{|/campeonatos/${#strings.toLowerCase(c.tipo)}/${c.permalink}/palpites|}"><i
+													class="fi-comments"></i></a></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<hr />
+						<h4>Camaradas na Liga</h4>
+						<div th:if="${not #lists.isEmpty(camaradas)}" class="row">
+							<div class="large-12 columns">
+								<table id="camaradas">
+									<tbody>
+										<tr th:each="camarada : ${camaradas}">
+											<td th:text="${camarada.nome}"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -36,7 +36,7 @@ public class TestLigaApostadorService extends AbstractUnitTest {
 
 	@Inject
 	private LigaService ligaService;
-
+	
 	@Test(expected=InscricaoLigaException.class)
 	public void testInscreverApostador_Existente() throws CadastroLigaException {
 		final Liga liga = ligaService.cadastrarNovaLiga("Liga da Justiça",

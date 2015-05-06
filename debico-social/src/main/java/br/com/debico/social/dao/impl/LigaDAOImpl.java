@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.model.Apostador;
+import br.com.debico.model.Apostador_;
 import br.com.debico.social.dao.LigaDAO;
 import br.com.debico.social.model.Liga;
 import br.com.debico.social.model.LigaApostador;
@@ -39,6 +41,7 @@ public class LigaDAOImpl extends AbstractJPADao<Liga, Long> implements LigaDAO {
 				.getResultList();
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public List<Apostador> selecionarApostadores(long idLiga) {
 		final CriteriaBuilder cb = this.getEntityManager().getCriteriaBuilder();
@@ -47,11 +50,11 @@ public class LigaDAOImpl extends AbstractJPADao<Liga, Long> implements LigaDAO {
 
 		final Subquery<LigaApostador> subquery = query.subquery(LigaApostador.class);
 		final Root<LigaApostador> liga = subquery.from(LigaApostador.class);
-		subquery.select(liga).where(
+		subquery.select((Expression)liga.get("liga").get("id")).where(
 				cb.and(	cb.equal(liga.get("liga").get("id"), idLiga),
 						cb.equal(liga.get("apostador").get("id"), apostador.get("id"))));
 		
-		query.select(apostador).where(cb.exists(subquery));
+		query.select(apostador).where(cb.exists(subquery)).orderBy(cb.asc(apostador.get(Apostador_.nome)));
 
 		return getEntityManager().createQuery(query).getResultList();
 	}

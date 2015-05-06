@@ -1,6 +1,7 @@
 <!DOCTYPE html >
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments/headTag :: headTag">
 </head>
 <body>
@@ -16,20 +17,30 @@
 					<div class="large-12 columns">
 						<br />
 						<h2>
-							<span th:text="${campeonato.nome}"></span> 
-							<small th:if="${liga}">Ranking da Liga: <span th:remove="tag" th:text="${liga.nome}"></span></small>
-							<small th:unless="${liga}">Ranking Geral</small>
+							<span th:text="${campeonato.nome}"></span> <small th:if="${liga}">Ranking
+								da Liga: <span th:remove="tag" th:text="${liga.nome}"></span>
+							</small> <small th:unless="${liga}">Ranking Geral</small>
 						</h2>
 						<hr />
 						<p>
 							D&uacute;vidas? Leia as <a href="#" data-reveal-id="regras">regras</a>.
 						</p>
+
 					</div>
 				</div>
 
 				<div class="row">
 					<div class="large-12 columns">
-						<table id="ranking_apostadores">
+						<div th:if="${#lists.isEmpty(ranking)}" data-alert=""
+							class="alert-box info radius">
+							Opa! Ningu&eacute;m palpitou ainda no <strong><span
+								th:text="${campeonato.nome}"></span></strong>. <a
+								sec:authorize="!hasRole('ROLE_ADMIN')"
+								th:href="@{|/campeonatos/${#strings.toLowerCase(campeonato.tipo)}/${campeonato.permalink}/palpites|}">Corre
+								l&aacute;</a> e seja o primeiro!
+						</div>
+						<table id="ranking_apostadores"
+							th:if="not ${#lists.isEmpty(ranking)}">
 							<thead>
 								<tr>
 									<th colspan="2" class="destaque">Classifica&ccedil;&atilde;o</th>
@@ -82,7 +93,7 @@
 							Opa! Carregando o seu desempenho...
 							<div id="loader" class="right"></div>
 						</div>
-						<div data-alert="" class="alert-box warn radius"
+						<div data-alert="" class="alert-box info radius"
 							id="alert-semdados" style="display: none;">Parece que
 							voc&ecirc; ainda n&atilde;o possui palpites computados.</div>
 						<div id="chart_container" class="panel hide">

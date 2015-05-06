@@ -3,11 +3,12 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head></head>
-<body>   
-    <!-- Menu interno -->
+<body>
+	<!-- Menu interno -->
 	<!-- http://foundation.zurb.com/docs/components/topbar.html -->
 	<nav class="top-bar" data-topbar="" th:fragment="barra_navegacao">
-		<ul class="title-area" itemscope="" itemtype="https://schema.org/Brand">
+		<ul class="title-area" itemscope=""
+			itemtype="https://schema.org/Brand">
 			<li class="name">
 				<h1>
 					<a th:href="@{/}" itemprop="logo">De Bico</a>
@@ -19,29 +20,37 @@
 
 		<section sec:authorize="isAuthenticated()" class="top-bar-section">
 			<ul class="right">
-				<li><a th:href="@{/minhas-ligas}"><i class="fi-torsos-all"></i>&nbsp;Minhas Ligas</a></li>
-				<li class="has-dropdown">
-				    <a href="#"><i class="fi-trophy"></i>&nbsp;Campeonatos</a>
-				    <ul class="dropdown">
-				        <li class="has-dropdown" th:each="c : ${campeonatos}">
-				            <a href="#" th:text="${c.nome}"></a>
-				            <ul class="dropdown">
-				                <li><a th:href="@{|/campeonatos/${#strings.toLowerCase(c.tipo)}/${c.permalink}|}"><i class="fi-results"></i>&nbsp;Tabela</a></li>
-				                <li><a th:href="@{|/ranking/${c.permalink}|}"><i class="fi-graph-trend"></i>&nbsp;Ranking Geral</a></li>
-				                <li sec:authorize="!hasRole('ROLE_ADMIN')"><a th:href="@{|/campeonatos/${#strings.toLowerCase(c.tipo)}/${c.permalink}/palpites|}"><i class="fi-comments"></i>&nbsp;Palpitar</a></li>
-				            </ul>
-				        </li>
-				    </ul>
-				</li>
-				<li class="has-dropdown">
-					<a href="#"><i class="fi-torso"></i>&nbsp;<span sec:authentication="name"></span></a>
+				<li class="has-dropdown"><a th:href="@{/minhas-ligas}"><i
+						class="fi-torsos-all"></i>&nbsp;Minhas Ligas</a>
 					<ul class="dropdown">
-						<li><a id="perfilLink" th:href="@{/perfil}"><i class="fi-widget"></i>&nbsp;Configurar Perfil</a></li>
-					</ul>
-				</li>
+						<li th:each="l : ${ligas}"><a
+							th:href="@{|/liga/${l.id}/${l.permalink}|}" th:text="${l.nome}"></a>
+						</li>
+					</ul></li>
+				<li class="has-dropdown"><a href="#"><i class="fi-trophy"></i>&nbsp;Campeonatos</a>
+					<ul class="dropdown">
+						<li class="has-dropdown" th:each="c : ${campeonatos}"><a
+							href="#" th:text="${c.nome}"></a>
+							<ul class="dropdown">
+								<li><a
+									th:href="@{|/campeonatos/${#strings.toLowerCase(c.tipo)}/${c.permalink}|}"><i
+										class="fi-results"></i>&nbsp;Tabela</a></li>
+								<li><a th:href="@{|/ranking/${c.permalink}|}"><i
+										class="fi-graph-trend"></i>&nbsp;Ranking Geral</a></li>
+								<li sec:authorize="!hasRole('ROLE_ADMIN')"><a
+									th:href="@{|/campeonatos/${#strings.toLowerCase(c.tipo)}/${c.permalink}/palpites|}"><i
+										class="fi-comments"></i>&nbsp;Palpitar</a></li>
+							</ul></li>
+					</ul></li>
+				<li class="has-dropdown"><a href="#"><i class="fi-torso"></i>&nbsp;<span
+						sec:authentication="name"></span></a>
+					<ul class="dropdown">
+						<li><a id="perfilLink" th:href="@{/perfil}"><i
+								class="fi-widget"></i>&nbsp;Configurar Perfil</a></li>
+					</ul></li>
 				<li><a id="logoutLink" th:href="@{/logout}">Sair</a></li>
 			</ul>
 		</section>
 	</nav>
 </body>
-</html> 
+</html>

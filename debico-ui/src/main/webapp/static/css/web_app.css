@@ -43,6 +43,7 @@ td.action {
 	vertical-align: middle;
 	text-align: center;
 	white-space: nowrap;
+	font-size: 1.5em;
 }
 
 td.action:before {

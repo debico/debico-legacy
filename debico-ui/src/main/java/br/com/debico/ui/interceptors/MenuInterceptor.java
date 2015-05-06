@@ -9,6 +9,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import br.com.debico.campeonato.services.CampeonatoService;
+import br.com.debico.social.services.LigaService;
+import br.com.debico.ui.utils.AuthUtils;
 
 /**
  * Adiciona objetos de domínio em telas que precisam de menu.
@@ -30,7 +32,11 @@ public class MenuInterceptor extends HandlerInterceptorAdapter {
 	@Named("campeonatoServiceImpl")
 	private CampeonatoService campeonatoService;
 
+	@Inject
+	private LigaService ligaService;
+
 	public static final String CAMPEONATOS_MODEL_KEY = "campeonatos";
+	public static final String LIGAS_MODEL_KEY = "ligas";
 
 	@Override
 	public void postHandle(HttpServletRequest request,
@@ -40,6 +46,8 @@ public class MenuInterceptor extends HandlerInterceptorAdapter {
 		if (modelAndView != null) {
 			modelAndView.addObject(CAMPEONATOS_MODEL_KEY,
 					campeonatoService.selecionarCampeonatosAtivos());
+			modelAndView.addObject(LIGAS_MODEL_KEY,
+					ligaService.consultarLiga(AuthUtils.usuarioAutenticado()));
 		}
 	}
 
