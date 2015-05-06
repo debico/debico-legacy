@@ -11,11 +11,77 @@
 		maxEntriesLocalHeap="1000"
 		maxEntriesLocalDisk="10000" 
 		eternal="false" 
-		diskSpoolBufferSizeMB="20"
+		diskSpoolBufferSizeMB="10"
 		timeToIdleSeconds="300" timeToLiveSeconds="600"
 		memoryStoreEvictionPolicy="LFU" 
 		transactionalMode="off">
 		<persistence strategy="localTempSwap" />
 	</cache>
+	
+	<cache name="campeonatos" 
+        maxEntriesLocalHeap="10"
+        maxEntriesLocalDisk="20" 
+        eternal="false" 
+        diskSpoolBufferSizeMB="2"
+        timeToIdleSeconds="300" timeToLiveSeconds="600"
+        memoryStoreEvictionPolicy="LFU" 
+        transactionalMode="off">
+        <persistence strategy="localTempSwap" />
+    </cache>
+    
+    <cache name="campeonatosAtivos" 
+        maxEntriesLocalHeap="10"
+        maxEntriesLocalDisk="20" 
+        eternal="false" 
+        diskSpoolBufferSizeMB="2"
+        timeToIdleSeconds="300" timeToLiveSeconds="600"
+        memoryStoreEvictionPolicy="LFU" 
+        transactionalMode="off">
+        <persistence strategy="localTempSwap" />
+    </cache>
+    
+    <cache name="tabelaCampeonato" 
+        maxEntriesLocalHeap="1000"
+        maxEntriesLocalDisk="10000" 
+        eternal="false" 
+        diskSpoolBufferSizeMB="10"
+        timeToIdleSeconds="300" timeToLiveSeconds="600"
+        memoryStoreEvictionPolicy="LFU" 
+        transactionalMode="off">
+        <persistence strategy="localTempSwap" />
+    </cache>
+    
+    <cache name="rankingApostadores" 
+        maxEntriesLocalHeap="10"
+        maxEntriesLocalDisk="50" 
+        eternal="false" 
+        diskSpoolBufferSizeMB="10"
+        timeToIdleSeconds="300" timeToLiveSeconds="600"
+        memoryStoreEvictionPolicy="LFU" 
+        transactionalMode="off">
+        <persistence strategy="localTempSwap" />
+    </cache>
+    
+    <cache name="partidasRodada" 
+        maxEntriesLocalHeap="1000"
+        maxEntriesLocalDisk="10000" 
+        eternal="false" 
+        diskSpoolBufferSizeMB="10"
+        timeToIdleSeconds="300" timeToLiveSeconds="600"
+        memoryStoreEvictionPolicy="LFU" 
+        transactionalMode="off">
+        <persistence strategy="localTempSwap" />
+    </cache>
+    
+    <cache name="desempenhoApostador" 
+        maxEntriesLocalHeap="1000"
+        maxEntriesLocalDisk="10000" 
+        eternal="false" 
+        diskSpoolBufferSizeMB="10"
+        timeToIdleSeconds="300" timeToLiveSeconds="600"
+        memoryStoreEvictionPolicy="LFU" 
+        transactionalMode="off">
+        <persistence strategy="localTempSwap" />
+    </cache>
  
 </ehcache>
