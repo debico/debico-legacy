@@ -17,6 +17,7 @@ import br.com.debico.core.brms.BRMSExecutor;
 import br.com.debico.model.Partida;
 import br.com.debico.model.PartidaChave;
 import br.com.debico.model.PartidaRodada;
+import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.model.campeonato.Chave;
 import br.com.debico.model.campeonato.PontuacaoTime;
 import br.com.debico.model.campeonato.Rodada;
@@ -62,13 +63,13 @@ class CalculoPartidasServiceImpl implements CalculoPartidasService {
         throw new UnsupportedOperationException("Disponivel apenas quando implementado algum campeonato que necessite de calculo de chave");
     }
     
-    public void calcularPontuacaoTimes(List<? extends Partida> partidas, String agendaGroup) {
+    public void calcularPontuacaoTimes(Campeonato campeonato, List<? extends Partida> partidas, String agendaGroup) {
         checkNotNull(partidas);
         checkArgument(partidas.size() > 0, "Nao ha partidas para serem processadas");
         
         LOGGER.debug("[calcularPontuacaoTimes] Selecionando o ranking para os times das partidas selecionadas.");
         
-        List<PontuacaoTime> ranking = pontuacaoTimeDAO.selecionarPontuacaoTimes(ResultadosUtils.recuperarTimes(partidas));
+        List<PontuacaoTime> ranking = pontuacaoTimeDAO.selecionarPontuacaoTimes(ResultadosUtils.recuperarTimes(partidas), campeonato);
         
         LOGGER.debug("[calcularPontuacaoTimes] '{}' itens de pontuacao selecionados.", ranking.size());
         

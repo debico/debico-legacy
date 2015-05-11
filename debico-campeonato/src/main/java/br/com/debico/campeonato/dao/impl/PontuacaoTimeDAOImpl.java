@@ -22,10 +22,11 @@ class PontuacaoTimeDAOImpl extends AbstractJPADao<PontuacaoTime, Integer> implem
         super(PontuacaoTime.class);
     }
     
-    public List<PontuacaoTime> selecionarPontuacaoTimes(final Collection<Time> times) {
+    public List<PontuacaoTime> selecionarPontuacaoTimes(final Collection<Time> times, final Campeonato campeonato) {
         return getEntityManager()
-                .createQuery("SELECT pont FROM PontuacaoTime pont WHERE time in (:times)", PontuacaoTime.class)
+                .createQuery("SELECT pont FROM PontuacaoTime pont INNER JOIN pont.ranking r INNER JOIN r.fase f WHERE f.campeonato = :campeonato AND pont.time in (:times)", PontuacaoTime.class)
                 .setParameter("times", times)
+                .setParameter("campeonato", campeonato)
                 .getResultList();
     }
 

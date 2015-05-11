@@ -35,9 +35,10 @@ class CampeonatoPontosCorridosResultadosService extends AbstractResultadosServic
     
     @Override
     protected void doEfetuarCalculoPontosTimeRodada(final Rodada rodada, final List<PartidaRodada> partidas) {
-    	getCalculoPartidasService().calcularPontuacaoTimes(partidas, AGENDA_GROUP_PONTOS_CORRIDOS);
+    	final Campeonato campeonato = this.recuperarCampeonato(rodada);
+    	getCalculoPartidasService().calcularPontuacaoTimes(campeonato, partidas, AGENDA_GROUP_PONTOS_CORRIDOS);
     	//a partir da rodada devemos pegar o campeonato
-    	getCalculoRankingTimesService().calcularPosicaoGeral(this.recuperarCampeonato(rodada));
+    	getCalculoRankingTimesService().calcularPosicaoGeral(campeonato);
     }
     
     @Override

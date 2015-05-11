@@ -36,7 +36,7 @@ public class LigaDAOImpl extends AbstractJPADao<Liga, Long> implements LigaDAO {
 	@Override
 	public List<Liga> selecionarPorUsuario(int idUsuarioApostador) {
 		return getEntityManager()
-				.createQuery("SELECT L FROM Liga AS L WHERE EXISTS (SELECT A.liga.id FROM LigaApostador AS A WHERE A.liga.id = L.id AND A.apostador.usuario.id = :id)", Liga.class)
+				.createQuery("SELECT L FROM Liga AS L JOIN FETCH L.administrador WHERE EXISTS (SELECT A.liga.id FROM LigaApostador AS A WHERE A.liga.id = L.id AND A.apostador.usuario.id = :id)", Liga.class)
 				.setParameter("id", idUsuarioApostador)
 				.getResultList();
 	}

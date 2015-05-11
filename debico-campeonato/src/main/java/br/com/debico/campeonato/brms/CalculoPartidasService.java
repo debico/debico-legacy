@@ -6,6 +6,7 @@ import br.com.debico.model.Partida;
 import br.com.debico.model.PartidaChave;
 import br.com.debico.model.PartidaRodada;
 import br.com.debico.model.StatusPartida;
+import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.model.campeonato.Chave;
 import br.com.debico.model.campeonato.Rodada;
 
@@ -42,6 +43,6 @@ public interface CalculoPartidasService {
      * @param agendaGroup nome da <code>agenda</code> utilizada pelo motor para processar as regras de cálculo.
      * @see CalculoPartidasService#definirStatusPartidas()
      */
-    void calcularPontuacaoTimes(List<? extends Partida> partidas, String agendaGroup);
+    void calcularPontuacaoTimes(Campeonato campeonato, List<? extends Partida> partidas, String agendaGroup);
 
 }
