@@ -33,7 +33,7 @@
 						<manifestEntries>
 							<App-Version>${project.version}</App-Version>
 							<Build-Date>${buildNumber}</Build-Date>
-							<Version-News>refactor!</Version-News>
+							<Version-News>bugs :(</Version-News>
 						</manifestEntries>
 						<manifest>
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
