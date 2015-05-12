@@ -30,17 +30,18 @@ class PontuacaoRodadaApostadorDAOImpl extends NamedParameterJdbcDaoSupport
     private static final Logger LOGGER = LoggerFactory.getLogger(PontuacaoRodadaApostadorDAOImpl.class);
 
     private static final String SQL_FIELDS = "SELECT P.ID_APOSTADOR, P.NM_APOSTADOR, D.NU_ORDEM, SUM(A.NU_PONTOS) AS NU_PONTOS_TOTAL FROM ";
-    private static final String SQL_JOINS1 = "TB_APOSTADOR AS P ON (P.ID_APOSTADOR = C.ID_APOSTADOR) LEFT JOIN ";
-    private static final String SQL_JOINS2 = "TB_PALPITE AS A ON (A.ID_APOSTADOR = C.ID_APOSTADOR) INNER JOIN ";
+    private static final String SQL_JOINS1 = "TB_APOSTADOR AS P LEFT JOIN ";
+    private static final String SQL_JOINS1_TOP10 = "TB_APOSTADOR AS P ON (P.ID_APOSTADOR = C.ID_APOSTADOR) LEFT JOIN ";
+    private static final String SQL_JOINS2 = "TB_PALPITE AS A ON (A.ID_APOSTADOR = P.ID_APOSTADOR) INNER JOIN ";
     private static final String SQL_JOINS3 = "TB_PARTIDA AS B ON (A.ID_PARTIDA = B.ID_PARTIDA) INNER JOIN ";
     private static final String SQL_JOINS4 = "TB_RODADA AS D ON (B.ID_RODADA = D.ID_RODADA) INNER JOIN ";
     private static final String SQL_JOINS5 = "TB_RANKING AS E ON (D.ID_RANKING = E.ID_RANKING) INNER JOIN ";
     private static final String SQL_JOINS6 = "TB_FASE AS F ON (E.ID_FASE = F.ID_FASE) ";
-    private static final String SQL_WHERE = "WHERE F.ID_CAMPEONATO = :id_campeonato ";
+    private static final String SQL_WHERE1 = "WHERE F.ID_CAMPEONATO = :id_campeonato ";
+    private static final String SQL_WHERE2 = "AND P.ID_APOSTADOR = :id_apostador ";
     private static final String SQL_GROUP_ORDER = "GROUP BY P.ID_APOSTADOR, P.NM_APOSTADOR, D.NU_ORDEM ORDER BY A.ID_APOSTADOR, D.NU_ORDEM ";
     
     private static final String SQL_JOIN_TOP10 = "(SELECT ID_APOSTADOR, ID_CAMPEONATO, NU_PONTOS FROM TB_APOSTADOR_CAMPEONATO ORDER BY NU_PONTOS DESC LIMIT 10) AS C INNER JOIN ";
-    private static final String SQL_JOIN_SINGLE = "(SELECT ID_APOSTADOR, ID_CAMPEONATO, NU_PONTOS FROM TB_APOSTADOR_CAMPEONATO WHERE ID_APOSTADOR = :id_apostador) AS C INNER JOIN ";
     
     private static final int INITIAL_SB_CAPACITY = 580;
             
@@ -64,13 +65,13 @@ class PontuacaoRodadaApostadorDAOImpl extends NamedParameterJdbcDaoSupport
         final StringBuilder sb = new StringBuilder(INITIAL_SB_CAPACITY);
         sb.append(SQL_FIELDS)
             .append(SQL_JOIN_TOP10)
-            .append(SQL_JOINS1)
+            .append(SQL_JOINS1_TOP10)
             .append(SQL_JOINS2)
             .append(SQL_JOINS3)
             .append(SQL_JOINS4)
             .append(SQL_JOINS5)
             .append(SQL_JOINS6)
-            .append(SQL_WHERE)
+            .append(SQL_WHERE1)
             .append(SQL_GROUP_ORDER);
         
         LOGGER.debug("[recuperarTop10Apostadores] Realizando a query {} com os parametros {}", sb, params);
@@ -87,17 +88,17 @@ class PontuacaoRodadaApostadorDAOImpl extends NamedParameterJdbcDaoSupport
         
         final StringBuilder sb = new StringBuilder(INITIAL_SB_CAPACITY);
         sb.append(SQL_FIELDS)
-            .append(SQL_JOIN_SINGLE)
             .append(SQL_JOINS1)
             .append(SQL_JOINS2)
             .append(SQL_JOINS3)
             .append(SQL_JOINS4)
             .append(SQL_JOINS5)
             .append(SQL_JOINS6)
-            .append(SQL_WHERE)
+            .append(SQL_WHERE1)
+            .append(SQL_WHERE2)
             .append(SQL_GROUP_ORDER);
         
-        LOGGER.debug("[recuperarTop10Apostadores] Realizando a query {} com os parametros {}", sb, params);
+        LOGGER.debug("[recuperarPontuacaoApostador] Realizando a query {} com os parametros {}", sb, params);
             
         return getNamedParameterJdbcTemplate().query(sb.toString(), params, new PontuacaoRodadaApostadorMapper());
     }
