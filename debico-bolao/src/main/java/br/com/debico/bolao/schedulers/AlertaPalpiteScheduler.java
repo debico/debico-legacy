@@ -1,8 +1,5 @@
 package br.com.debico.bolao.schedulers;
 
-import java.util.Date;
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -12,18 +9,17 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.bolao.services.AlertaPalpiteService;
-import br.com.debico.model.Apostador;
 
 @Named
 @Transactional(readOnly = true)
-class AlertaPalpiteScheduler implements AlertaPalpiteService {
+class AlertaPalpiteScheduler {
 
     @Inject
     @Named("alertaPalpiteServiceImpl")
     private AlertaPalpiteService alertaPalpiteService;
 
     private static final Logger LOGGER = LoggerFactory
-	    .getLogger(AlertaPalpiteScheduler.class);
+            .getLogger(AlertaPalpiteScheduler.class);
 
     public AlertaPalpiteScheduler() {
 
@@ -43,15 +39,10 @@ class AlertaPalpiteScheduler implements AlertaPalpiteService {
      * @see Scheduled
      */
     @Scheduled(cron = "0 0 6 1/1 * ?")
-    public List<Apostador> enviarAlertasApostadoresSemPalpite() {
-	LOGGER.debug("[enviarAlertasApostadoresSemPalpite] Tentando enviar alertas aos apostadores.");
+    public void enviarAlertasApostadoresSemPalpite() {
+        LOGGER.debug("[enviarAlertasApostadoresSemPalpite] Tentando enviar alertas aos apostadores.");
 
-	return alertaPalpiteService.enviarAlertasApostadoresSemPalpite();
-    }
-
-    @Override
-    public List<Apostador> enviarAlertasApostadoresSemPalpite(Date dataPartida) {
-	throw new UnsupportedOperationException("Implementacao com o objetivo apenas de Scheduler. Usar AlertaPalpiteServiceImpl.");
+        alertaPalpiteService.enviarAlertasApostadoresSemPalpite();
     }
 
 }
