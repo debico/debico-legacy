@@ -88,7 +88,7 @@ class CampeonatoPontosCorridosServiceImpl extends CampeonatoServiceImpl
 		return partidaDAO.selecionarPartidasPorRodada(idRodada);
 	}
 
-	@Cacheable(CacheKeys.PARTIDAS_RODADA)
+	@Cacheable(value = CacheKeys.PARTIDAS_RODADA, key = "{#campeonatoPermalink, #ordinalRodada}")
 	public List<PartidaRodada> selecionarPartidasRodada(int ordinalRodada,
 			final String campeonatoPermalink) {
 		LOGGER.debug(
@@ -101,7 +101,7 @@ class CampeonatoPontosCorridosServiceImpl extends CampeonatoServiceImpl
 				campeonatoPermalink);
 	}
 
-	@Cacheable(CacheKeys.TABELA_CAMPEONATO)
+	@Cacheable(value = CacheKeys.TABELA_CAMPEONATO, key = "{#campeonatoPontosCorridos?.id}")
 	public List<PontuacaoTime> selecionarTabela(
 			CampeonatoPontosCorridos campeonatoPontosCorridos) {
 		LOGGER.debug(
