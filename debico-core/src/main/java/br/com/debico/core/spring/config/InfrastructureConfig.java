@@ -49,138 +49,138 @@ import br.com.tecnobiz.spring.config.dao.base.ProfileBasedDaoConfig;
 @PropertySource(value = "classpath:META-INF/debico.properties", ignoreResourceNotFound = false)
 public final class InfrastructureConfig {
 
-	/**
-	 * Bean para o trato do Ambiente.
-	 */
-	@Inject
-	protected Environment environment;
+    /**
+     * Bean para o trato do Ambiente.
+     */
+    @Inject
+    protected Environment environment;
 
-	@Inject
-	protected ProfileBasedDaoConfig daoConfig;
+    @Inject
+    protected ProfileBasedDaoConfig daoConfig;
 
-	@Inject
-	protected DataSource dataSource;
+    @Inject
+    protected DataSource dataSource;
 
-	public InfrastructureConfig() {
+    public InfrastructureConfig() {
 
-	}
+    }
 
-	/**
-	 * Cache Manager ativado quando no profile {@link Release}.
-	 * <p />
-	 * Gerenciador do Cache dos serviços da aplicação.
-	 * 
-	 * @see <a
-	 *      href="http://docs.spring.io/spring-framework/docs/current/spring-framework-reference/html/cache.html">Cache
-	 *      Abstraction</a>
-	 * @see <a
-	 *      href="http://www.mkyong.com/spring/spring-caching-and-ehcache-example/">Spring
-	 *      Caching and Ehcache example</a>
-	 * @return
-	 */
-	@Release
-	@Bean
-	public CacheManager cacheManagerImpl(net.sf.ehcache.CacheManager cacheManager) {
-		// return new GuavaCacheManager(CacheKeys.recuperarTodas());
-		return new EhCacheCacheManager(cacheManager);
-	}
+    /**
+     * Cache Manager ativado quando no profile {@link Release}.
+     * <p />
+     * Gerenciador do Cache dos serviços da aplicação.
+     * 
+     * @see <a
+     *      href="http://docs.spring.io/spring-framework/docs/current/spring-framework-reference/html/cache.html">Cache
+     *      Abstraction</a>
+     * @see <a
+     *      href="http://www.mkyong.com/spring/spring-caching-and-ehcache-example/">Spring
+     *      Caching and Ehcache example</a>
+     * @return
+     */
+    @Release
+    @Bean
+    public CacheManager cacheManagerImpl(
+	    net.sf.ehcache.CacheManager cacheManager) {
+	return new EhCacheCacheManager(cacheManager);
+    }
 
-	/**
-	 * Cache Manager ativado quando no profile {@link Dev}.
-	 * 
-	 * @return
-	 */
-	@Dev
-	@Bean
-	public CacheManager cacheManagerNoOp() {
-		return new NoOpCacheManager();
-	}
+    /**
+     * Cache Manager ativado quando no profile {@link Dev}.
+     * 
+     * @return
+     */
+    @Dev
+    @Bean
+    public CacheManager cacheManagerNoOp() {
+	return new NoOpCacheManager();
+    }
 
-	/**
-	 * EhCache CacheManager Factory
-	 * 
-	 * @return
-	 */
-	@Bean
-	@Release
-	public EhCacheManagerFactoryBean ehCacheCacheManager() {
-		final EhCacheManagerFactoryBean cmfb = new EhCacheManagerFactoryBean();
-		cmfb.setConfigLocation(new ClassPathResource("ehcache.xml"));
-		cmfb.setShared(true);
-		return cmfb;
-	}
+    /**
+     * EhCache CacheManager Factory
+     * 
+     * @return
+     */
+    @Bean
+    @Release
+    public EhCacheManagerFactoryBean ehCacheCacheManager() {
+	final EhCacheManagerFactoryBean cmfb = new EhCacheManagerFactoryBean();
+	cmfb.setConfigLocation(new ClassPathResource("ehcache.xml"));
+	cmfb.setShared(true);
+	return cmfb;
+    }
 
-	@Bean
-	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
-		return new PropertySourcesPlaceholderConfigurer();
-	}
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+	return new PropertySourcesPlaceholderConfigurer();
+    }
 
-	@Bean
-	public ReloadableResourceBundleMessageSource resourceBundleMessageSource() {
-		ReloadableResourceBundleMessageSource rbms = new ReloadableResourceBundleMessageSource();
-		rbms.setBasenames("classpath:/br/com/debico/core/i18n/exceptions");
-		rbms.setAlwaysUseMessageFormat(false);
+    @Bean
+    public ReloadableResourceBundleMessageSource resourceBundleMessageSource() {
+	ReloadableResourceBundleMessageSource rbms = new ReloadableResourceBundleMessageSource();
+	rbms.setBasenames("classpath:/br/com/debico/core/i18n/exceptions");
+	rbms.setAlwaysUseMessageFormat(false);
 
-		return rbms;
-	}
+	return rbms;
+    }
 
-	@Bean
-	public PasswordEncryptor passwordEncryptor() {
-		return new StrongPasswordEncryptor();
-	}
+    @Bean
+    public PasswordEncryptor passwordEncryptor() {
+	return new StrongPasswordEncryptor();
+    }
 
-	// ~ ACL
-	// ===================================================================================================
-	@Release
-	@Bean
-	public EhCacheFactoryBean cacheFactoryBean(
-			net.sf.ehcache.CacheManager cacheManager) {
-		EhCacheFactoryBean cacheFactoryBean = new EhCacheFactoryBean();
-		cacheFactoryBean.setCacheManager(cacheManager);
-		cacheFactoryBean.setCacheName(CacheKeys.ACL);
+    // ~ ACL
+    // ===================================================================================================
+    @Release
+    @Bean
+    public EhCacheFactoryBean cacheFactoryBean(
+	    net.sf.ehcache.CacheManager cacheManager) {
+	EhCacheFactoryBean cacheFactoryBean = new EhCacheFactoryBean();
+	cacheFactoryBean.setCacheManager(cacheManager);
+	cacheFactoryBean.setCacheName(CacheKeys.ACL);
 
-		return cacheFactoryBean;
-	}
+	return cacheFactoryBean;
+    }
 
-	@Release
-	@Bean
-	public AclCache aclCache(EhCacheFactoryBean cacheFactoryBean) {
-		// @formatter:off
+    @Release
+    @Bean
+    public AclCache aclCache(EhCacheFactoryBean cacheFactoryBean) {
+	// @formatter:off
 		return new EhCacheBasedAclCache(
 					cacheFactoryBean.getObject(),
 					new DefaultPermissionGrantingStrategy(new ConsoleAuditLogger()), 
 					new AclAuthorizationStrategyImpl(new SimpleGrantedAuthority(Roles.ROLE_ADMIN)));
 		// @formatter:on
-	}
+    }
 
-	@Release
-	@Bean
-	public LookupStrategy lookupStrategy(AclCache aclCache) {
-		// @formatter:off
+    @Release
+    @Bean
+    public LookupStrategy lookupStrategy(AclCache aclCache) {
+	// @formatter:off
 		return new BasicLookupStrategy(
 					dataSource, 
 					aclCache, 
 					new AclAuthorizationStrategyImpl(new SimpleGrantedAuthority(Roles.ROLE_ADMIN)), 
 					new ConsoleAuditLogger());
 		// @formatter:on
-	}
+    }
 
-	@Release
-	@Bean
-	public MutableAclService aclService(AclCache aclCache,
-			LookupStrategy lookupStrategy) {
-		final JdbcMutableAclService aclService = new JdbcMutableAclService(
-				dataSource, lookupStrategy, aclCache);
-		aclService.setClassIdentityQuery("select LAST_INSERT_ID()");
-		aclService.setSidIdentityQuery("select LAST_INSERT_ID()");
+    @Release
+    @Bean
+    public MutableAclService aclService(AclCache aclCache,
+	    LookupStrategy lookupStrategy) {
+	final JdbcMutableAclService aclService = new JdbcMutableAclService(
+		dataSource, lookupStrategy, aclCache);
+	aclService.setClassIdentityQuery("select LAST_INSERT_ID()");
+	aclService.setSidIdentityQuery("select LAST_INSERT_ID()");
 
-		return aclService;
-	}
+	return aclService;
+    }
 
-	@Dev
-	@Bean
-	public MutableAclService aclServiceNop() {
-		return new MockAclService();
-	}
+    @Dev
+    @Bean
+    public MutableAclService aclServiceNop() {
+	return new MockAclService();
+    }
 
 }

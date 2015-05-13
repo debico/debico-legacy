@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import br.com.debico.campeonato.spring.CampeonatoConfig;
 import br.com.debico.core.brms.BRMSExecutor;
@@ -26,14 +27,15 @@ import br.com.debico.social.spring.SocialConfig;
  * @author ricardozanini
  *
  */
+@EnableScheduling
 @Configuration
 @Import({ CampeonatoConfig.class, SocialConfig.class, NotifyConfig.class })
 @ComponentScan({ "br.com.debico.bolao.services", "br.com.debico.bolao.dao",
-        "br.com.debico.bolao.brms" })
+	"br.com.debico.bolao.brms", "br.com.debico.bolao.schedulers" })
 public class BolaoConfig extends ServicesConfig {
 
     private static final Logger LOGGER = LoggerFactory
-            .getLogger(BolaoConfig.class);
+	    .getLogger(BolaoConfig.class);
 
     @Inject
     protected CampeonatoConfig campeonatoConfig;
@@ -50,17 +52,17 @@ public class BolaoConfig extends ServicesConfig {
 
     @Bean(name = "bolaoBrmsExecutor")
     public BRMSExecutor bolaoBrmsExecutor() {
-        LOGGER.debug("********* INICIO DA CONFIGURACAO DO KIE *********");
-        
-        KieServices kieServices = KieServices.Factory.get();
+	LOGGER.debug("********* INICIO DA CONFIGURACAO DO KIE *********");
 
-        DroolsBRMSExecutor brmsExecutor = new DroolsBRMSExecutor();
-        brmsExecutor.setKieBase(kieServices.getKieClasspathContainer()
-                .getKieBase("bolaoKBase"));
-        
-        LOGGER.debug("********* FIM DA CONFIGURACAO DO KIE *********");
+	KieServices kieServices = KieServices.Factory.get();
 
-        return brmsExecutor;
+	DroolsBRMSExecutor brmsExecutor = new DroolsBRMSExecutor();
+	brmsExecutor.setKieBase(kieServices.getKieClasspathContainer()
+		.getKieBase("bolaoKBase"));
+
+	LOGGER.debug("********* FIM DA CONFIGURACAO DO KIE *********");
+
+	return brmsExecutor;
     }
 
 }
