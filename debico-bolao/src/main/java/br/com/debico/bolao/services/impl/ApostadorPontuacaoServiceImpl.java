@@ -27,77 +27,80 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Transactional(readOnly = true)
 public class ApostadorPontuacaoServiceImpl implements ApostadorPontuacaoService {
 
-	protected static final Logger LOGGER = LoggerFactory
-			.getLogger(ApostadorPontuacaoServiceImpl.class);
+    protected static final Logger LOGGER = LoggerFactory
+            .getLogger(ApostadorPontuacaoServiceImpl.class);
 
-	@Inject
-	private ApostadorPontuacaoDAO apostadorPontuacaoDAO;
+    @Inject
+    private ApostadorPontuacaoDAO apostadorPontuacaoDAO;
 
-	@Inject
-	@Named("resourceBundleMessageSource")
-	private MessageSource messageSource;
+    @Inject
+    @Named("resourceBundleMessageSource")
+    private MessageSource messageSource;
 
-	public ApostadorPontuacaoServiceImpl() {
+    public ApostadorPontuacaoServiceImpl() {
 
-	}
+    }
 
-	public void inscreverApostadorCampeonato(final Apostador apostador,
-			final CampeonatoImpl campeonato)
-			throws ApostadorJaInscritoException {
-		checkNotNull(apostador);
-		checkNotNull(campeonato);
+    public void inscreverApostadorCampeonato(final Apostador apostador,
+            final CampeonatoImpl campeonato)
+            throws ApostadorJaInscritoException {
+        checkNotNull(apostador);
+        checkNotNull(campeonato);
 
-		if (apostadorPontuacaoDAO.selecionarApostador(apostador, campeonato) == null) {
-			ApostadorPontuacao apostadorPontuacao = new ApostadorPontuacao(
-					apostador, campeonato);
-			apostadorPontuacaoDAO.create(apostadorPontuacao);
-			LOGGER.debug(
-					"[inscreverApostadorCampeonato] Apostador {} inscrito no campeonato {} com sucesso!",
-					apostador, campeonato);
-		} else {
-			throw new ApostadorJaInscritoException(messageSource, apostador,
-					campeonato);
-		}
-	}
+        if (apostadorPontuacaoDAO.selecionarApostador(apostador, campeonato) == null) {
+            ApostadorPontuacao apostadorPontuacao = new ApostadorPontuacao(
+                    apostador, campeonato);
+            apostadorPontuacaoDAO.create(apostadorPontuacao);
+            LOGGER.debug(
+                    "[inscreverApostadorCampeonato] Apostador {} inscrito no campeonato {} com sucesso!",
+                    apostador, campeonato);
+        } else {
+            throw new ApostadorJaInscritoException(messageSource, apostador,
+                    campeonato);
+        }
+    }
 
-	public void inscreverApostadorCampeonatoSileciosamente(Apostador apostador,
-			CampeonatoImpl campeonato) {
-		LOGGER.debug(
-				"[inscreverApostadorCampeonatoSileciosamente] Tentando inscrever o apostador {}.",
-				apostador);
+    public void inscreverApostadorCampeonatoSileciosamente(Apostador apostador,
+            CampeonatoImpl campeonato) {
+        LOGGER.debug(
+                "[inscreverApostadorCampeonatoSileciosamente] Tentando inscrever o apostador {}.",
+                apostador);
 
-		try {
-			this.inscreverApostadorCampeonato(apostador, campeonato);
-		} catch (ApostadorJaInscritoException e) {
-			LOGGER.trace(
-					"[inscreverApostadorCampeonatoSileciosamente] Apostador ja inscrito. Ignorando.",
-					e);
-		}
-	}
+        try {
+            this.inscreverApostadorCampeonato(apostador, campeonato);
+        } catch (ApostadorJaInscritoException e) {
+            LOGGER.trace(
+                    "[inscreverApostadorCampeonatoSileciosamente] Apostador ja inscrito. Ignorando.",
+                    e);
+        }
+    }
 
-	// TODO: cache
-	@Override
-	public List<ApostadorPontuacao> listarRankingPorLiga(int idCampeonato,
-			long idLiga) {
-		LOGGER.debug("[listarRankingPorLiga] Realizando a consulta do Ranking para a liga {}", idLiga);
-		final List<ApostadorPontuacao> pontuacao =
-				apostadorPontuacaoDAO.selecionarApostadoresPorLiga(idCampeonato, idLiga);
-		
-		Collections.sort(pontuacao);
-		
-		LOGGER.debug("[listarRankingPorLiga] Consulta da liga {} realizada com sucesso.", idLiga);
-		
-		return pontuacao;
-	}
-	
-	@Cacheable(value = CacheKeys.RANKING_APOSTADORES)
-	public List<ApostadorPontuacao> listarRanking(Campeonato campeonato) {
-		final List<ApostadorPontuacao> pontuacao = apostadorPontuacaoDAO
-				.selecionarApostadores(campeonato);
+    @Cacheable(value = CacheKeys.RANKING_APOSTADORES, key = "{#idCampeonato, #idLiga}")
+    public List<ApostadorPontuacao> listarRankingPorLiga(int idCampeonato,
+            long idLiga) {
+        LOGGER.debug(
+                "[listarRankingPorLiga] Realizando a consulta do Ranking para a liga {}",
+                idLiga);
+        final List<ApostadorPontuacao> pontuacao = apostadorPontuacaoDAO
+                .selecionarApostadoresPorLiga(idCampeonato, idLiga);
 
-		Collections.sort(pontuacao);
+        Collections.sort(pontuacao);
 
-		return pontuacao;
-	}
+        LOGGER.debug(
+                "[listarRankingPorLiga] Consulta da liga {} realizada com sucesso.",
+                idLiga);
+
+        return pontuacao;
+    }
+
+    @Cacheable(value = CacheKeys.RANKING_APOSTADORES)
+    public List<ApostadorPontuacao> listarRanking(Campeonato campeonato) {
+        final List<ApostadorPontuacao> pontuacao = apostadorPontuacaoDAO
+                .selecionarApostadores(campeonato);
+
+        Collections.sort(pontuacao);
+
+        return pontuacao;
+    }
 
 }
