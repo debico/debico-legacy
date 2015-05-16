@@ -34,10 +34,10 @@ public class Usuario implements Serializable, Comparable<Usuario> {
     @Column(name="ID_USUARIO")
 	private int id;
 	
-	@Column(name = "DC_EMAIL", length = 1024, unique = true, nullable = false)
+	@Column(name = "DC_EMAIL", length = 1024, unique = true, nullable = false, updatable = false)
 	private String email;
 	
-	@Column(name = "DC_SENHA", length = 64, nullable = false)
+	@Column(name = "DC_SENHA", length = 64, nullable = false, updatable = false)
 	private String senha;
 	
 	@Basic(fetch=FetchType.LAZY)
@@ -46,7 +46,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	private Date ultimoLogin;
 	
 	@Basic(fetch=FetchType.LAZY)
-	@Column(name = "DH_CADASTRO", nullable = false)
+	@Column(name = "DH_CADASTRO", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataCadastro;
 	

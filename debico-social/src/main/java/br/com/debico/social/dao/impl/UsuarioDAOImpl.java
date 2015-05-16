@@ -13,18 +13,36 @@ import br.com.tecnobiz.spring.config.dao.AbstractJPADao;
 @Named
 @Transactional(propagation = Propagation.MANDATORY)
 class UsuarioDAOImpl extends AbstractJPADao<Usuario, Integer> implements
-		UsuarioDAO {
+        UsuarioDAO {
 
-	public UsuarioDAOImpl() {
-		super(Usuario.class);
-	}
+    public UsuarioDAOImpl() {
+        super(Usuario.class);
+    }
 
-	public Usuario selecionarPorEmail(String email) {
-		return DataAccessUtils.singleResult(
-				getEntityManager()
-				.createQuery("SELECT a FROM Usuario a WHERE email = :email", Usuario.class)
-				.setParameter("email", email)
-				.getResultList());
+    public Usuario selecionarPorEmail(String email) {
+        return DataAccessUtils.singleResult(getEntityManager()
+                .createQuery("SELECT a FROM Usuario a WHERE email = :email",
+                        Usuario.class).setParameter("email", email)
+                .getResultList());
 
-	}
+    }
+
+    @Override
+    public void alterarSenha(String email, String novaSenha) {
+        getEntityManager()
+                .createQuery(
+                        "UPDATE Usuario SET senha = :senha WHERE email = :email")
+                .setParameter("email", email).setParameter("senha", novaSenha)
+                .executeUpdate();
+    }
+
+    @Override
+    public String recuperarSenhaAtual(String email) {
+        // @formatter:off
+        return getEntityManager()
+                .createQuery("SELECT a.senha FROM Usuario u WHERE email = :email", String.class)
+                .setParameter("email", email)
+                .getSingleResult();
+     // @formatter:on
+    }
 }

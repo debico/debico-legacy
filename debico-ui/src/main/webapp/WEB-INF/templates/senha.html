@@ -1,0 +1,71 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/headTag :: headTag">
+</head>
+<body>
+	<nav th:replace="fragments/header :: barra_navegacao"></nav>
+	<div class="panel clearfix">
+		<div class="row">
+			<div class="large-12 columns">
+				<div class="row">
+					<div class="large-12 columns">
+						<br />
+						<h2>
+							<span th:text="#{senha.titulo}"></span> <small
+								th:text="${apostador.nome}"></small>
+						</h2>
+						<hr />
+						<div th:replace="fragments/alert :: error"></div>
+						<form th:action="@{/senha/}" method="post" id="senha_form"
+							th:object="${passwordContext}">
+							<div class="row" th:if="${!tokenSenha}">
+								<div class="large-12 columns">
+									<label for="senhaAtual"><span
+										th:text="#{senha.label.senhaAtual}" th:remove="tag"></span> <input
+										th:field="*{senhaAtual}" type="password" id="senhaAtual"
+										name="senhaAtual" required="required" maxlength="128"
+										th:title="#{senha.input.senhaAtual.error}" /> </label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="large-12 columns">
+									<label for="novaSenha"><span
+										th:text="#{senha.label.novaSenha}" th:remove="tag"></span> <input
+										th:field="*{novaSenha}" type="password" id="novaSenha"
+										name="novaSenha" required="required" maxlength="128"
+										th:title="#{senha.input.novaSenha.error}" /> </label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="large-12 columns">
+									<label for="confirmacaoSenha"><span
+										th:text="#{senha.label.confirmacaoSenha}" th:remove="tag"></span>
+										<input th:field="*{confirmacaoSenha}" type="password"
+										id="confirmacaoSenha" name="confirmacaoSenha"
+										required="required" maxlength="128"
+										th:title="#{senha.input.confirmacaoSenha.error}" /> </label>
+								</div>
+							</div>
+							<hr />
+							<div class="row">
+								<div class="large-12 columns">
+									<button type="submit" id="senhaSubmit" class="button"
+										th:text="#{botao.atualizar}"></button>
+								</div>
+							</div>
+							<input type="hidden" th:field="*{idApostador}" id="idApostador"
+								name="idApostador" /> 
+							<input type="hidden"
+								th:field="*{tokenSenha}" id="tokenSenha" name="tokenSenha" />
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:replace="fragments/footer :: footer-copy"></div>
+	<div th:replace="fragments/footer :: footer-scripts"></div>
+</body>
+</html>
