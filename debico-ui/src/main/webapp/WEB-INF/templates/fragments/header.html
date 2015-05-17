@@ -20,12 +20,18 @@
 
 		<section sec:authorize="isAuthenticated()" class="top-bar-section">
 			<ul class="right">
-				<li class="has-dropdown"><a th:href="@{/minhas-ligas}"><i
-						class="fi-torsos-all"></i>&nbsp;Minhas Ligas</a>
+				<li class="has-dropdown"><a href="#"><i
+						class="fi-torsos-all"></i>&nbsp;Ligas</a>
 					<ul class="dropdown">
-						<li th:each="l : ${ligas}"><a
-							th:href="@{|/liga/${l.id}/${l.permalink}|}" th:text="${l.nome}"></a>
-						</li>
+						<li><a th:href="@{/ligas/administrar}"><i
+								class="fi-widget"></i>&nbsp;Administrar</a></li>
+						<li class="has-dropdown"><a href="#"><i
+								class="fi-heart"></i>&nbsp;Minhas Ligas</a>
+							<ul class="dropdown">
+								<li th:each="l : ${ligas}"><a
+									th:href="@{|/liga/${l.id}/${l.permalink}|}" th:text="${l.nome}"></a>
+								</li>
+							</ul></li>
 					</ul></li>
 				<li class="has-dropdown"><a href="#"><i class="fi-trophy"></i>&nbsp;Campeonatos</a>
 					<ul class="dropdown">

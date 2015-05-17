@@ -27,7 +27,7 @@ public class MinhasLigasController extends AbstractViewController {
 		return "minhas-ligas";
 	}
 
-	@RequestMapping(value = "/minhas-ligas", method = RequestMethod.GET)
+	@RequestMapping(value = "/ligas/administrar", method = RequestMethod.GET)
 	public ModelAndView minhasLigas(final Principal principal) {
 		resetViewName();
 
