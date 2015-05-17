@@ -14,13 +14,14 @@
 						<br />
 						<h2>
 							<span th:text="#{senha.titulo}"></span> <small
-								th:text="${apostador.nome}"></small>
+								th:text="${#authentication.name}"
+								sec:authorize="isAuthenticated()"></small>
 						</h2>
 						<hr />
 						<div th:replace="fragments/alert :: error"></div>
 						<form th:action="@{/senha/}" method="post" id="senha_form"
 							th:object="${passwordContext}">
-							<div class="row" th:if="${!tokenSenha}">
+							<div class="row" sec:authorize="isAuthenticated()">
 								<div class="large-12 columns">
 									<label for="senhaAtual"><span
 										th:text="#{senha.label.senhaAtual}" th:remove="tag"></span> <input
@@ -35,7 +36,7 @@
 										th:text="#{senha.label.novaSenha}" th:remove="tag"></span> <input
 										th:field="*{novaSenha}" type="password" id="novaSenha"
 										name="novaSenha" required="required" maxlength="128"
-										th:title="#{senha.input.novaSenha.error}" /> </label>
+										th:title="#{cadastro.form.senha.err}" /> </label>
 								</div>
 							</div>
 							<div class="row">
@@ -45,7 +46,7 @@
 										<input th:field="*{confirmacaoSenha}" type="password"
 										id="confirmacaoSenha" name="confirmacaoSenha"
 										required="required" maxlength="128"
-										th:title="#{senha.input.confirmacaoSenha.error}" /> </label>
+										th:title="#{cadastro.form.confirma.err}" /> </label>
 								</div>
 							</div>
 							<hr />
@@ -55,10 +56,10 @@
 										th:text="#{botao.atualizar}"></button>
 								</div>
 							</div>
-							<input type="hidden" th:field="*{idApostador}" id="idApostador"
-								name="idApostador" /> 
-							<input type="hidden"
-								th:field="*{tokenSenha}" id="tokenSenha" name="tokenSenha" />
+							<input sec:authorize="isAuthenticated()" type="hidden"
+								th:field="*{emailUsuario}" id="emailUsuario" name="emailUsuario" />
+							<input type="hidden" th:field="*{tokenSenha}" id="tokenSenha"
+								name="tokenSenha" />
 						</form>
 					</div>
 				</div>
@@ -67,5 +68,6 @@
 	</div>
 	<div th:replace="fragments/footer :: footer-copy"></div>
 	<div th:replace="fragments/footer :: footer-scripts"></div>
+	<script th:src="@{/static/js/pages/senha.js}" type="text/javascript"></script>
 </body>
 </html>

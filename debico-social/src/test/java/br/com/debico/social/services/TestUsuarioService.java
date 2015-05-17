@@ -37,7 +37,7 @@ public class TestUsuarioService extends AbstractUnitTest {
     public void testAlterarSenhaAutenticado() throws CadastroApostadorException {
         final PasswordContext passwordContext = new PasswordContext();
         passwordContext.setEmailUsuario(TestConstants.EMAIL_CARGA);
-        passwordContext.setSenhaAtual("vedder24");
+        passwordContext.setSenhaAtual("vedder2468");
         passwordContext.setNovaSenha("P@ssw0rd");
         passwordContext.setConfirmacaoSenha("P@ssw0rd");
 
@@ -48,6 +48,26 @@ public class TestUsuarioService extends AbstractUnitTest {
         assertTrue(encryptor.checkPassword("P@ssw0rd", apostador.getUsuario().getSenha()));
     }
 
-    // TODO: mais casos de teste
+    @Test(expected=CadastroApostadorException.class)
+    public void testAlterarSenhaAutenticado_ConfirmacaoErrada() throws CadastroApostadorException {
+        final PasswordContext passwordContext = new PasswordContext();
+        passwordContext.setEmailUsuario(TestConstants.EMAIL_CARGA);
+        passwordContext.setSenhaAtual("vedder2468");
+        passwordContext.setNovaSenha("P@ssw0rd");
+        passwordContext.setConfirmacaoSenha("P@ssw0rd1");
+
+        usuarioService.alterarSenhaApostadorUsuario(passwordContext);
+    }
+
+    @Test(expected=CadastroApostadorException.class)
+    public void testAlterarSenhaAutenticado_SenhaAtualErrada() throws CadastroApostadorException {
+        final PasswordContext passwordContext = new PasswordContext();
+        passwordContext.setEmailUsuario(TestConstants.EMAIL_CARGA);
+        passwordContext.setSenhaAtual("vedder242");
+        passwordContext.setNovaSenha("P@ssw0rd");
+        passwordContext.setConfirmacaoSenha("P@ssw0rd");
+
+        usuarioService.alterarSenhaApostadorUsuario(passwordContext);
+    }
     
 }

@@ -162,7 +162,7 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         // swagger
         this.swaggerConfig.addResourceHandlers(registry);
     }
-    
+
     @Override
     public void configureDefaultServletHandling(
             DefaultServletHandlerConfigurer configurer) {
@@ -186,17 +186,22 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(this.menuInterceptor()).addPathPatterns("/**")
+        // @formatter:off
+        registry.addInterceptor(this.menuInterceptor())
+                .addPathPatterns("/**")
                 .excludePathPatterns("/public/**")
                 .excludePathPatterns("/api/**")
                 .excludePathPatterns("/contato/**")
                 .excludePathPatterns("/login/**");
 
         registry.addInterceptor(this.footerInterceptor())
-                .addPathPatterns("/**").excludePathPatterns("/api/**");
-
-        registry.addInterceptor(this.titleInterceptor()).addPathPatterns("/**")
+                .addPathPatterns("/**")
                 .excludePathPatterns("/api/**");
+
+        registry.addInterceptor(this.titleInterceptor())
+                .addPathPatterns("/**")
+                .excludePathPatterns("/api/**");
+        // @formatter:on
     }
 
     /**

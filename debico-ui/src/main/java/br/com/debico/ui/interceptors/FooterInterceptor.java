@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import com.google.common.base.Strings;
 import com.jcabi.manifests.Manifests;
 
 public class FooterInterceptor extends HandlerInterceptorAdapter  {
@@ -60,8 +59,8 @@ public class FooterInterceptor extends HandlerInterceptorAdapter  {
 		private String versionNews;
 		
 		public AppVersion() {
-			this.version = Strings.nullToEmpty(null);
-			this.buildNumber = Strings.nullToEmpty(null);
+			this.version = "";
+			this.buildNumber = "";
 		}
 		
 		public AppVersion(final String version, final String buildNumber) {

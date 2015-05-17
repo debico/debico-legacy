@@ -87,7 +87,7 @@ public final class PasswordContext implements Serializable {
     
     @JsonIgnore
     public boolean hasToken() {
-        return Strings.isNullOrEmpty(this.tokenSenha);
+        return !Strings.isNullOrEmpty(this.tokenSenha);
     }
 
     @Override

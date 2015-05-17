@@ -40,7 +40,7 @@ class UsuarioDAOImpl extends AbstractJPADao<Usuario, Integer> implements
     public String recuperarSenhaAtual(String email) {
         // @formatter:off
         return getEntityManager()
-                .createQuery("SELECT a.senha FROM Usuario u WHERE email = :email", String.class)
+                .createQuery("SELECT u.senha FROM Usuario u WHERE u.email = :email", String.class)
                 .setParameter("email", email)
                 .getSingleResult();
      // @formatter:on
