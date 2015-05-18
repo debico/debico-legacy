@@ -22,7 +22,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.core.MessagesCodes;
-import br.com.debico.core.spring.security.UserDetailsImpl;
+import br.com.debico.core.spring.security.ApostadorUserDetails;
 import br.com.debico.model.Apostador;
 import br.com.debico.model.ApostadorOpcoes;
 import br.com.debico.model.Usuario;
@@ -228,7 +228,7 @@ class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
      * @return
      */
     protected User construirUsuario(final Apostador apostador) {
-        final UserDetailsImpl user = new UserDetailsImpl(apostador.getUsuario()
+        final ApostadorUserDetails user = new ApostadorUserDetails(apostador.getUsuario()
                 .getEmail(), apostador.getUsuario().getSenha(),
                 this.construirPerfil(apostador.getUsuario()));
 

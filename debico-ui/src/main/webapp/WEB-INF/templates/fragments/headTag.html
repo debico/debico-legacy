@@ -64,6 +64,7 @@
 
 <!-- Google Analytics -->
 <script type="text/javascript" th:inline="javascript" th:if="${@viewOptions.enableGa == true}">
+    //<![CDATA[ 
 	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -73,21 +74,24 @@
 	
 	/*[+
 	if([[${#authorization.expression('isAuthenticated()')}]]) {
-		user =  {'userId' : '[[${#objects.nullSafe(authentication, 0)}]]'};
+		user =  {'userId' : '[[${#usuario.id}]]'};
 	}
 	+]*/
 	
 	/*[+
 	   
-	if([[${@viewOptions.gaLocalhost}]]) {
+	if([[${@viewOptions.gaLocalhost}]] && [[${#authorization.expression('isAuthenticated()')}]]) {
 		ga('create', [[${@viewOptions.gaWebPropertyId}]], user, {'cookieDomain': 'none'});  
-	} else {
+	} else if([[${#authorization.expression('isAuthenticated()')}]]) {
 		ga('create', [[${@viewOptions.gaWebPropertyId}]], user); 
+	} else {
+		ga('create', [[${@viewOptions.gaWebPropertyId}]]); 
 	}
     	
     +]*/
 		
 	ga('send', 'pageview');
+	 // ]]>
 </script>
 <!-- End Google Analytics -->
 </head>

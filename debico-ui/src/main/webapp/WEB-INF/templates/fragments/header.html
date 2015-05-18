@@ -25,7 +25,7 @@
 					<ul class="dropdown">
 						<li><a th:href="@{/ligas/administrar}"><i
 								class="fi-widget"></i>&nbsp;Administrar</a></li>
-						<li class="has-dropdown"><a href="#"><i
+						<li class="has-dropdown" th:if="${not #lists.isEmpty(ligas)}"><a href="#"><i
 								class="fi-heart"></i>&nbsp;Minhas Ligas</a>
 							<ul class="dropdown">
 								<li th:each="l : ${ligas}"><a
