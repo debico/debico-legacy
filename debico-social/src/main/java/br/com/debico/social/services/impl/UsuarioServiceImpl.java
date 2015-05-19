@@ -1,7 +1,11 @@
 package br.com.debico.social.services.impl;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.emptyToNull;
+
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.inject.Inject;
@@ -20,16 +24,17 @@ import br.com.debico.core.MessagesCodes;
 import br.com.debico.model.Apostador;
 import br.com.debico.model.ApostadorOpcoes;
 import br.com.debico.model.Usuario;
+import br.com.debico.notify.model.ContatoImpl;
+import br.com.debico.notify.model.TipoNotificacao;
+import br.com.debico.notify.services.EmailNotificacaoService;
+import br.com.debico.notify.services.TemplateContextoBuilder;
 import br.com.debico.social.CadastroApostadorException;
 import br.com.debico.social.UsuarioInexistenteException;
 import br.com.debico.social.dao.ApostadorDAO;
 import br.com.debico.social.dao.UsuarioDAO;
 import br.com.debico.social.model.PasswordContext;
+import br.com.debico.social.model.TokenLostPassword;
 import br.com.debico.social.services.UsuarioService;
-
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import static com.google.common.base.Strings.emptyToNull;
 
 /**
  * Além das funções do bolão, implementa as interfaces de acesso do
@@ -50,7 +55,7 @@ import static com.google.common.base.Strings.emptyToNull;
 class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 
     protected static final Logger LOGGER = LoggerFactory
-            .getLogger(UsuarioServiceImpl.class);
+	    .getLogger(UsuarioServiceImpl.class);
 
     @Inject
     private UsuarioDAO usuarioDAO;
@@ -62,6 +67,9 @@ class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
     private PasswordEncryptor passwordEncryptor;
 
     @Inject
+    private EmailNotificacaoService notificacaoService;
+
+    @Inject
     @Named("resourceBundleMessageSource")
     private MessageSource messageSource;
 
@@ -71,96 +79,127 @@ class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 
     @Transactional(rollbackFor = CadastroApostadorException.class)
     public void cadastrarApostadorUsuario(Apostador apostador,
-            String confirmacaoSenha) throws CadastroApostadorException {
-        LOGGER.debug(
-                "[cadastrarApostadorUsuario] Tentando realizar o cadastro do apostador '{}'.",
-                apostador);
-        checkNotNull(apostador, "Apostador nao pode ser nulo");
-        checkNotNull(emptyToNull(confirmacaoSenha),
-                "Confirmacao de senha em branco!");
+	    String confirmacaoSenha) throws CadastroApostadorException {
+	LOGGER.debug(
+		"[cadastrarApostadorUsuario] Tentando realizar o cadastro do apostador '{}'.",
+		apostador);
+	checkNotNull(apostador, "Apostador nao pode ser nulo");
+	checkNotNull(emptyToNull(confirmacaoSenha),
+		"Confirmacao de senha em branco!");
 
-        Usuario usuario = apostador.getUsuario();
+	Usuario usuario = apostador.getUsuario();
 
-        if (usuarioDAO.selecionarPorEmail(usuario.getEmail()) == null) {
-            // todas opções padrão.
-            apostador.setOpcoes(new ApostadorOpcoes());
+	if (usuarioDAO.selecionarPorEmail(usuario.getEmail()) == null) {
+	    // todas opções padrão.
+	    apostador.setOpcoes(new ApostadorOpcoes());
 
-            this.checarConfirmacaoSenha(usuario, confirmacaoSenha);
-            this.confirirPoliticaSenha(usuario.getSenha());
-            UsuarioUtils.criptografarSenha(passwordEncryptor, usuario);
+	    this.checarConfirmacaoSenha(usuario, confirmacaoSenha);
+	    this.confirirPoliticaSenha(usuario.getSenha());
+	    UsuarioUtils.criptografarSenha(passwordEncryptor, usuario);
 
-            usuarioDAO.create(usuario);
-            apostadorDAO.create(apostador);
+	    usuarioDAO.create(usuario);
+	    apostadorDAO.create(apostador);
 
-            // TODO: enviar email de confirmação.
-            LOGGER.debug(
-                    "[cadastrarApostadorUsuario] Apostador '{}' cadastrado com sucesso!",
-                    usuario);
-        } else {
-            LOGGER.warn(
-                    "[cadastrarApostadorUsuario] Tentativa de cadastro de usuario com o email '{}'. Ja existe.",
-                    usuario.getEmail());
-            throw new CadastroApostadorException(messageSource,
-                    MessagesCodes.USUARIO_JA_CADASTRADO, usuario.getEmail());
-        }
+	    // TODO: enviar email de confirmação.
+	    LOGGER.debug(
+		    "[cadastrarApostadorUsuario] Apostador '{}' cadastrado com sucesso!",
+		    usuario);
+	} else {
+	    LOGGER.warn(
+		    "[cadastrarApostadorUsuario] Tentativa de cadastro de usuario com o email '{}'. Ja existe.",
+		    usuario.getEmail());
+	    throw new CadastroApostadorException(messageSource,
+		    MessagesCodes.USUARIO_JA_CADASTRADO, usuario.getEmail());
+	}
     }
 
     public UserDetails loadUserByUsername(String username)
-            throws UsernameNotFoundException {
-        LOGGER.debug("[loadUserByUsername] Tentando carregar o usuario '{}'.",
-                username);
+	    throws UsernameNotFoundException {
+	LOGGER.debug("[loadUserByUsername] Tentando carregar o usuario '{}'.",
+		username);
 
-        Apostador apostador = apostadorDAO.selecionarPorEmail(username);
+	Apostador apostador = apostadorDAO.selecionarPorEmail(username);
 
-        if (apostador == null || apostador.getUsuario() == null) {
-            throw new UsernameNotFoundException(messageSource.getMessage(
-                    MessagesCodes.USUARIO_NAO_ENCONTRADO,
-                    new Object[] { username }, Locale.getDefault()));
-        }
+	if (apostador == null || apostador.getUsuario() == null) {
+	    throw new UsernameNotFoundException(messageSource.getMessage(
+		    MessagesCodes.USUARIO_NAO_ENCONTRADO,
+		    new Object[] { username }, Locale.getDefault()));
+	}
 
-        Usuario usuario = apostador.getUsuario();
-        usuario.setUltimoLogin(new Date());
+	Usuario usuario = apostador.getUsuario();
+	usuario.setUltimoLogin(new Date());
 
-        usuarioDAO.update(usuario);
+	usuarioDAO.update(usuario);
 
-        LOGGER.debug(
-                "[loadUserByUsername] Apostador com o usuario '{}' carregado.",
-                usuario);
-        return UsuarioUtils.construirUsuario(apostador);
+	LOGGER.debug(
+		"[loadUserByUsername] Apostador com o usuario '{}' carregado.",
+		usuario);
+	return UsuarioUtils.construirUsuario(apostador);
     }
 
     @Override
     public boolean alterarSenhaApostadorUsuario(PasswordContext passwordContext)
-            throws CadastroApostadorException {
-        if (passwordContext.hasToken()) {
-            // TODO validar o token
-        } else {
-            final String senhaAtual = usuarioDAO
-                    .recuperarSenhaAtual(passwordContext.getEmailUsuario());
+	    throws CadastroApostadorException {
+	if (passwordContext.hasToken()) {
+	    // TODO validar o token
+	} else {
+	    final String senhaAtual = usuarioDAO
+		    .recuperarSenhaAtual(passwordContext.getEmailUsuario());
 
-            if (!this.passwordEncryptor.checkPassword(
-                    passwordContext.getSenhaAtual(), senhaAtual)) {
-                throw new CadastroApostadorException(messageSource,
-                        MessagesCodes.SENHA_ATUAL_NAO_CONFERE);
-            }
-        }
+	    if (!this.passwordEncryptor.checkPassword(
+		    passwordContext.getSenhaAtual(), senhaAtual)) {
+		throw new CadastroApostadorException(messageSource,
+			MessagesCodes.SENHA_ATUAL_NAO_CONFERE);
+	    }
+	}
 
-        this.checarConfirmacaoSenha(passwordContext.getNovaSenha(),
-                passwordContext.getConfirmacaoSenha());
-        this.confirirPoliticaSenha(passwordContext.getNovaSenha());
+	this.checarConfirmacaoSenha(passwordContext.getNovaSenha(),
+		passwordContext.getConfirmacaoSenha());
+	this.confirirPoliticaSenha(passwordContext.getNovaSenha());
 
-        usuarioDAO.alterarSenha(passwordContext.getEmailUsuario(), UsuarioUtils
-                .criptografarSenha(passwordEncryptor,
-                        passwordContext.getNovaSenha()));
+	usuarioDAO.alterarSenha(passwordContext.getEmailUsuario(), UsuarioUtils
+		.criptografarSenha(passwordEncryptor,
+			passwordContext.getNovaSenha()));
 
-        return true;
+	return true;
     }
 
     @Override
     public void enviarTokenEsqueciMinhaSenha(String emailUsuario)
-            throws UsuarioInexistenteException {
-        
+	    throws UsuarioInexistenteException {
+	checkNotNull(emptyToNull(emailUsuario), "Email do usuario obrigatorio");
 
+	final Usuario usuario = this.recuperarUsuario(emailUsuario);
+	final TokenLostPassword token = TokenLostPassword.newInstance(usuario);
+	final Map<String, Object> contextoEmail = TemplateContextoBuilder
+		.contextLinkBuilder(token.getToken());
+	contextoEmail.put("usuario", usuario);
+
+	// salvar o token
+	// enviar por email
+	notificacaoService.enviarNotificacao(
+		new ContatoImpl(emailUsuario),
+		TipoNotificacao.ESQUECI_SENHA, 
+		contextoEmail);
+    }
+
+    /**
+     * Recupera o usuário com o email em questão
+     * 
+     * @param email
+     * @return instância do usuário
+     * @throws UsuarioInexistenteException
+     *             caso não encontre.
+     */
+    private Usuario recuperarUsuario(String email)
+	    throws UsuarioInexistenteException {
+	final Usuario usuario = usuarioDAO.selecionarPorEmail(email);
+
+	if (usuario == null) {
+	    throw new UsuarioInexistenteException(email);
+	}
+
+	return usuario;
     }
 
     /*
@@ -185,31 +224,31 @@ class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
      *      policy</a>
      */
     protected void confirirPoliticaSenha(final String senha)
-            throws CadastroApostadorException {
-        Pattern p = Pattern.compile("(?=.{6,})" + // "" followed by 6+ symbols
-                "(?=.*[a-zA-Z])" + // --- ' ' --- at least 1 lower or upper
-                // "(?=.*[A-Z])" + // --- ' ' --- at least 1 upper
-                "(?=.*[0-9])" + // --- ' ' --- at least 1 digit
-                // "(?=.*\\p{Punct})"+ // --- ' ' --- at least 1 symbol
-                ".*"); // the actual characters
+	    throws CadastroApostadorException {
+	Pattern p = Pattern.compile("(?=.{6,})" + // "" followed by 6+ symbols
+		"(?=.*[a-zA-Z])" + // --- ' ' --- at least 1 lower or upper
+		// "(?=.*[A-Z])" + // --- ' ' --- at least 1 upper
+		"(?=.*[0-9])" + // --- ' ' --- at least 1 digit
+		// "(?=.*\\p{Punct})"+ // --- ' ' --- at least 1 symbol
+		".*"); // the actual characters
 
-        if (!p.matcher(senha).matches()) {
-            throw new CadastroApostadorException(messageSource,
-                    MessagesCodes.SENHA_FAIL_POLITICA);
-        }
+	if (!p.matcher(senha).matches()) {
+	    throw new CadastroApostadorException(messageSource,
+		    MessagesCodes.SENHA_FAIL_POLITICA);
+	}
     }
 
     protected void checarConfirmacaoSenha(final Usuario usuario,
-            final String confirmacaoSenha) throws CadastroApostadorException {
-        this.checarConfirmacaoSenha(usuario.getSenha(), confirmacaoSenha);
+	    final String confirmacaoSenha) throws CadastroApostadorException {
+	this.checarConfirmacaoSenha(usuario.getSenha(), confirmacaoSenha);
     }
 
     protected void checarConfirmacaoSenha(final String senha,
-            final String confirmacaoSenha) throws CadastroApostadorException {
-        if (!confirmacaoSenha.equals(senha)) {
-            throw new CadastroApostadorException(messageSource,
-                    MessagesCodes.SENHA_NAO_CONFERE);
-        }
+	    final String confirmacaoSenha) throws CadastroApostadorException {
+	if (!confirmacaoSenha.equals(senha)) {
+	    throw new CadastroApostadorException(messageSource,
+		    MessagesCodes.SENHA_NAO_CONFERE);
+	}
     }
 
 }

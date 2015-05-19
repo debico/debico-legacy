@@ -56,7 +56,6 @@ public final class EmailTemplate extends Template implements Contato {
     	return new InternetAddress(this.emailRemetente, this.nomeRemetente);
     }
     
-    
     @Override
     public int hashCode() {
         return Objects.hashCode(this.assunto, this.nomeRemetente, this.emailRemetente) + super.hashCode();

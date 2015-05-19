@@ -16,7 +16,12 @@ public enum TipoNotificacao {
     /**
      * Tipo de notificação de quando alguém envia o formulário de feedback.
      */
-    CONTATO(2);
+    CONTATO(2),
+    
+    /**
+     * Tipo de notificação que ocorre quando o usuário esquece a senha e requisita o token.
+     */
+    ESQUECI_SENHA(3);
     
     private final int id;
     
