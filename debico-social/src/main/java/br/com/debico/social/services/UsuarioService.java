@@ -2,6 +2,7 @@ package br.com.debico.social.services;
 
 import br.com.debico.model.Apostador;
 import br.com.debico.social.CadastroApostadorException;
+import br.com.debico.social.UsuarioInexistenteException;
 import br.com.debico.social.model.PasswordContext;
 
 /**
@@ -39,5 +40,21 @@ public interface UsuarioService {
     boolean alterarSenhaApostadorUsuario(PasswordContext passwordContext)
             throws CadastroApostadorException;
 
+    /**
+     * Envia um email com um link+token para o usuário que deseja resgatar essa
+     * senha. <br/>
+     * O token tem validade de um dia e depois disso será descartado. <br/>
+     * Ao clicar no link enviado, o sistema deve redirecionar o usuário para uma
+     * tela onde ele poderá cadastrar uma nova senha.
+     * 
+     * @param emailUsuario
+     *            que deseja resgatar a sua senha.
+     * @throws UsuarioInexistenteException
+     *             caso o email enviado não esteja cadastrado.
+     * @since 2.0.2
+     * @see #alterarSenhaApostadorUsuario(PasswordContext)
+     */
+    void enviarTokenEsqueciMinhaSenha(String emailUsuario)
+            throws UsuarioInexistenteException;
 
 }

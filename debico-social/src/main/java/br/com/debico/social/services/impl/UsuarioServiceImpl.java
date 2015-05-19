@@ -1,8 +1,6 @@
 package br.com.debico.social.services.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -13,20 +11,17 @@ import org.jasypt.util.password.PasswordEncryptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.core.MessagesCodes;
-import br.com.debico.core.spring.security.ApostadorUserDetails;
 import br.com.debico.model.Apostador;
 import br.com.debico.model.ApostadorOpcoes;
 import br.com.debico.model.Usuario;
 import br.com.debico.social.CadastroApostadorException;
+import br.com.debico.social.UsuarioInexistenteException;
 import br.com.debico.social.dao.ApostadorDAO;
 import br.com.debico.social.dao.UsuarioDAO;
 import br.com.debico.social.model.PasswordContext;
@@ -92,7 +87,7 @@ class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 
             this.checarConfirmacaoSenha(usuario, confirmacaoSenha);
             this.confirirPoliticaSenha(usuario.getSenha());
-            this.criptografarSenha(usuario);
+            UsuarioUtils.criptografarSenha(passwordEncryptor, usuario);
 
             usuarioDAO.create(usuario);
             apostadorDAO.create(apostador);
@@ -131,7 +126,7 @@ class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
         LOGGER.debug(
                 "[loadUserByUsername] Apostador com o usuario '{}' carregado.",
                 usuario);
-        return this.construirUsuario(apostador);
+        return UsuarioUtils.construirUsuario(apostador);
     }
 
     @Override
@@ -142,8 +137,9 @@ class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
         } else {
             final String senhaAtual = usuarioDAO
                     .recuperarSenhaAtual(passwordContext.getEmailUsuario());
-            
-            if (!this.passwordEncryptor.checkPassword(passwordContext.getSenhaAtual(), senhaAtual)) {
+
+            if (!this.passwordEncryptor.checkPassword(
+                    passwordContext.getSenhaAtual(), senhaAtual)) {
                 throw new CadastroApostadorException(messageSource,
                         MessagesCodes.SENHA_ATUAL_NAO_CONFERE);
             }
@@ -153,11 +149,24 @@ class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
                 passwordContext.getConfirmacaoSenha());
         this.confirirPoliticaSenha(passwordContext.getNovaSenha());
 
-        usuarioDAO.alterarSenha(passwordContext.getEmailUsuario(),
-                this.criptografarSenha(passwordContext.getNovaSenha()));
+        usuarioDAO.alterarSenha(passwordContext.getEmailUsuario(), UsuarioUtils
+                .criptografarSenha(passwordEncryptor,
+                        passwordContext.getNovaSenha()));
 
         return true;
     }
+
+    @Override
+    public void enviarTokenEsqueciMinhaSenha(String emailUsuario)
+            throws UsuarioInexistenteException {
+        
+
+    }
+
+    /*
+     * TODO: passar os metodos abaixo para UsuarioUtils assim que o
+     * messageSource não for mais obrigado na exception.
+     */
 
     /**
      * Confere a política de senha.
@@ -201,56 +210,6 @@ class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
             throw new CadastroApostadorException(messageSource,
                     MessagesCodes.SENHA_NAO_CONFERE);
         }
-    }
-
-    /**
-     * Realiza a criptografia de acordo com o algoritimo fornecido pelo
-     * framework <code>jasypt</code>.
-     * 
-     * @param usuario
-     *            que possui a senha definida.
-     * @see <a href="http://www.jasypt.org/howtoencryptuserpasswords.html">How
-     *      to encrypt user passwords</a>.
-     */
-    protected void criptografarSenha(final Usuario usuario) {
-        usuario.setSenha(this.criptografarSenha(usuario.getSenha()));
-    }
-
-    protected String criptografarSenha(final String senha) {
-        return passwordEncryptor.encryptPassword(senha);
-    }
-
-    /**
-     * Constrói a estrutura base de um {@link User} de acordo com a
-     * especificação do Spring Security.
-     * 
-     * @param usuario
-     * @return
-     */
-    protected User construirUsuario(final Apostador apostador) {
-        final ApostadorUserDetails user = new ApostadorUserDetails(apostador.getUsuario()
-                .getEmail(), apostador.getUsuario().getSenha(),
-                this.construirPerfil(apostador.getUsuario()));
-
-        user.setId(apostador.getUsuario().getId());
-        user.setName(apostador.getNome());
-        user.setIdApostador(apostador.getId());
-
-        return user;
-    }
-
-    /**
-     * Constrói a estrutura de perfil de acordo com a especificação do Spring
-     * Security.
-     * 
-     * @param usuario
-     * @return
-     */
-    protected List<GrantedAuthority> construirPerfil(final Usuario usuario) {
-        List<GrantedAuthority> perfis = new ArrayList<GrantedAuthority>();
-        perfis.add(new SimpleGrantedAuthority(usuario.getPerfil()));
-
-        return perfis;
     }
 
 }
