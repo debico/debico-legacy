@@ -1,0 +1,16 @@
+<html>
+    <head>
+    <title>De Bico | Esqueci minha senha</title>
+    </head>
+     
+    <body>
+        <div>
+            <p>Salve, <strong>${usuario.email}</strong>!</p>
+            <p>Voc&ecirc; (ou algu&eacute;m tentando passar por voc&ecirc;) solicitou a troca de senha do site www.debico.com.br.</p>
+            <p><strong>Se n&atilde;o foi voc&ecirc;, ignore esse e-mail.</strong></p>
+            <p>Se esse for realmente o seu desejo, clique no link abaixo para ser redirecionado para o site e poder realizar a troca da senha:</p>
+            <p><a href="${link_acesso}">${link_acesso}</a></p>
+            <p><a href="http://www.debico.com.br/">www.debico.com.br</a></p>
+        </div>
+    </body>
+</html>

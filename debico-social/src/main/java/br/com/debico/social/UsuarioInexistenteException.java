@@ -1,6 +1,5 @@
 package br.com.debico.social;
 
-import br.com.debico.core.DebicoException;
 import br.com.debico.core.MessagesCodes;
 
 /**
@@ -10,7 +9,7 @@ import br.com.debico.core.MessagesCodes;
  * @author ricardozanini
  * @since 2.0.2
  */
-public class UsuarioInexistenteException extends DebicoException {
+public class UsuarioInexistenteException extends CadastroApostadorException {
 
     private static final long serialVersionUID = 1340982469242014556L;
 

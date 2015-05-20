@@ -36,5 +36,9 @@ public class CadastroApostadorException extends DebicoException {
 	this.setMessageCode(messageCode);
 	this.setMessageArgs(args);
     }
+    
+    public CadastroApostadorException() {
+	super();
+    }
 
 }

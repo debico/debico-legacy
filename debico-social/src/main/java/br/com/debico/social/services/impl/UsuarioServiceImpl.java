@@ -29,8 +29,10 @@ import br.com.debico.notify.model.TipoNotificacao;
 import br.com.debico.notify.services.EmailNotificacaoService;
 import br.com.debico.notify.services.TemplateContextoBuilder;
 import br.com.debico.social.CadastroApostadorException;
+import br.com.debico.social.TokenSenhaInvalidoException;
 import br.com.debico.social.UsuarioInexistenteException;
 import br.com.debico.social.dao.ApostadorDAO;
+import br.com.debico.social.dao.TokenLostPasswordDAO;
 import br.com.debico.social.dao.UsuarioDAO;
 import br.com.debico.social.model.PasswordContext;
 import br.com.debico.social.model.TokenLostPassword;
@@ -65,6 +67,9 @@ class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 
     @Inject
     private PasswordEncryptor passwordEncryptor;
+
+    @Inject
+    private TokenLostPasswordDAO tokenDAO;
 
     @Inject
     private EmailNotificacaoService notificacaoService;
@@ -140,15 +145,27 @@ class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
     @Override
     public boolean alterarSenhaApostadorUsuario(PasswordContext passwordContext)
 	    throws CadastroApostadorException {
+	LOGGER.debug(
+		"[alterarSenhaApostadorUsuario] Tentando alterar a senha no contexto {}",
+		passwordContext);
 	if (passwordContext.hasToken()) {
-	    // TODO validar o token
+	    LOGGER.debug("[alterarSenhaApostadorUsuario] Alteracao sendo realizada por token.");
+	    final TokenLostPassword token = tokenDAO.findById(passwordContext
+		    .getTokenSenha());
+	    if (token != null && token.isValido()) {
+		token.setUtilizado(true);
+		tokenDAO.update(token);
+	    } else {
+		throw new TokenSenhaInvalidoException(token.getToken());
+	    }
 	} else {
+	    LOGGER.debug("[alterarSenhaApostadorUsuario] Alteracao sendo feita por meio da senha anterior.");
 	    final String senhaAtual = usuarioDAO
 		    .recuperarSenhaAtual(passwordContext.getEmailUsuario());
 
 	    if (!this.passwordEncryptor.checkPassword(
 		    passwordContext.getSenhaAtual(), senhaAtual)) {
-		throw new CadastroApostadorException(messageSource,
+		throw new CadastroApostadorException(
 			MessagesCodes.SENHA_ATUAL_NAO_CONFERE);
 	    }
 	}
@@ -160,7 +177,7 @@ class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 	usuarioDAO.alterarSenha(passwordContext.getEmailUsuario(), UsuarioUtils
 		.criptografarSenha(passwordEncryptor,
 			passwordContext.getNovaSenha()));
-
+	LOGGER.debug("[alterarSenhaApostadorUsuario] Senha alterada com sucesso!");
 	return true;
     }
 
@@ -169,18 +186,25 @@ class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 	    throws UsuarioInexistenteException {
 	checkNotNull(emptyToNull(emailUsuario), "Email do usuario obrigatorio");
 
+	LOGGER.debug(
+		"[enviarTokenEsqueciMinhaSenha] Tentando enviar o token de senha para {}",
+		emailUsuario);
+
 	final Usuario usuario = this.recuperarUsuario(emailUsuario);
 	final TokenLostPassword token = TokenLostPassword.newInstance(usuario);
+
+	tokenDAO.create(token);
+
 	final Map<String, Object> contextoEmail = TemplateContextoBuilder
 		.contextLinkBuilder(token.getToken());
 	contextoEmail.put("usuario", usuario);
 
-	// salvar o token
-	// enviar por email
-	notificacaoService.enviarNotificacao(
-		new ContatoImpl(emailUsuario),
-		TipoNotificacao.ESQUECI_SENHA, 
-		contextoEmail);
+	notificacaoService.enviarNotificacao(new ContatoImpl(emailUsuario),
+		TipoNotificacao.ESQUECI_SENHA, contextoEmail);
+
+	LOGGER.debug(
+		"[enviarTokenEsqueciMinhaSenha] Email para recuperacao de senha enviado para {}",
+		emailUsuario);
     }
 
     /**

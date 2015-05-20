@@ -15,7 +15,7 @@ import com.google.common.collect.Maps;
  * Helper para a criação dos templates.
  * 
  * @author Ricardo Zanini (ricardozanini@gmail.com)
- *
+ * @deprecated ainda não foi pensado, mas refazer todo esse processo para envio de notificação.
  */
 public final class TemplateContextoBuilder {
 

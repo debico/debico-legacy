@@ -31,5 +31,7 @@ public final class MessagesCodes {
     public static final String APOSTADOR_DADOS_INCORRETOS = "br.com.debico.core.exception.apostador_dados_incorretos";
     
     public static final String SENHA_ATUAL_NAO_CONFERE = "br.com.debico.social.exception.senha_atual_nao_confere";
-    
+
+    public static final String TOKEN_SENHA_INVALIDO = "br.com.debico.social.exception.token_senha_invalido";
+
 }

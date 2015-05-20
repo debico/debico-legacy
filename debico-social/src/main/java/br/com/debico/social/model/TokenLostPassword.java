@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.joda.time.DateTime;
 
@@ -111,6 +112,21 @@ public class TokenLostPassword implements Serializable {
 
     public void setUtilizado(boolean utilizado) {
         this.utilizado = utilizado;
+    }
+    
+    /**
+     * Essa instância é um token válido?
+     * Um token válido não deve ter sido utilizado e deve estar dentro do prazo de validade. 
+     * 
+     * @return
+     */
+    @Transient
+    public boolean isValido() {
+	if(this.isUtilizado()) {
+	    return false;
+	}
+	
+	return new DateTime(this.validade).isAfterNow();
     }
 
     @Override
