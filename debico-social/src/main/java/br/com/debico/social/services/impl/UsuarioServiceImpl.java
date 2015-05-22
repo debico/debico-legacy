@@ -1,10 +1,9 @@
 package br.com.debico.social.services.impl;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.emptyToNull;
 
-import java.util.Date;
-import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -15,9 +14,6 @@ import org.jasypt.util.password.PasswordEncryptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.core.MessagesCodes;
@@ -38,6 +34,8 @@ import br.com.debico.social.model.PasswordContext;
 import br.com.debico.social.model.TokenLostPassword;
 import br.com.debico.social.services.UsuarioService;
 
+import com.google.common.base.Strings;
+
 /**
  * Além das funções do bolão, implementa as interfaces de acesso do
  * <code>Spring Security</code> para realizar os casos de uso de login.
@@ -54,7 +52,7 @@ import br.com.debico.social.services.UsuarioService;
  */
 @Named
 @Transactional
-class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
+class UsuarioServiceImpl implements UsuarioService {
 
     protected static final Logger LOGGER = LoggerFactory
 	    .getLogger(UsuarioServiceImpl.class);
@@ -118,30 +116,6 @@ class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 	}
     }
 
-    public UserDetails loadUserByUsername(String username)
-	    throws UsernameNotFoundException {
-	LOGGER.debug("[loadUserByUsername] Tentando carregar o usuario '{}'.",
-		username);
-
-	Apostador apostador = apostadorDAO.selecionarPorEmail(username);
-
-	if (apostador == null || apostador.getUsuario() == null) {
-	    throw new UsernameNotFoundException(messageSource.getMessage(
-		    MessagesCodes.USUARIO_NAO_ENCONTRADO,
-		    new Object[] { username }, Locale.getDefault()));
-	}
-
-	Usuario usuario = apostador.getUsuario();
-	usuario.setUltimoLogin(new Date());
-
-	usuarioDAO.update(usuario);
-
-	LOGGER.debug(
-		"[loadUserByUsername] Apostador com o usuario '{}' carregado.",
-		usuario);
-	return UsuarioUtils.construirUsuario(apostador);
-    }
-
     @Override
     public boolean alterarSenhaApostadorUsuario(PasswordContext passwordContext)
 	    throws CadastroApostadorException {
@@ -150,14 +124,11 @@ class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 		passwordContext);
 	if (passwordContext.hasToken()) {
 	    LOGGER.debug("[alterarSenhaApostadorUsuario] Alteracao sendo realizada por token.");
-	    final TokenLostPassword token = tokenDAO.findById(passwordContext
-		    .getTokenSenha());
-	    if (token != null && token.isValido()) {
-		token.setUtilizado(true);
-		tokenDAO.update(token);
-	    } else {
-		throw new TokenSenhaInvalidoException(token.getToken());
-	    }
+	    final TokenLostPassword token = this
+		    .validarTokenEsqueciMinhaSenha(passwordContext);
+	    token.setUtilizado(true);
+	    passwordContext.setEmailUsuario(token.getUsuario().getEmail());
+	    tokenDAO.update(token);
 	} else {
 	    LOGGER.debug("[alterarSenhaApostadorUsuario] Alteracao sendo feita por meio da senha anterior.");
 	    final String senhaAtual = usuarioDAO
@@ -169,6 +140,10 @@ class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 			MessagesCodes.SENHA_ATUAL_NAO_CONFERE);
 	    }
 	}
+
+	checkArgument(
+		!Strings.isNullOrEmpty(passwordContext.getEmailUsuario()),
+		"Email do usuario em branco! Nao da pra alterar a senha.");
 
 	this.checarConfirmacaoSenha(passwordContext.getNovaSenha(),
 		passwordContext.getConfirmacaoSenha());
@@ -205,6 +180,24 @@ class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 	LOGGER.debug(
 		"[enviarTokenEsqueciMinhaSenha] Email para recuperacao de senha enviado para {}",
 		emailUsuario);
+    }
+
+    private TokenLostPassword validarTokenEsqueciMinhaSenha(
+	    PasswordContext context) throws TokenSenhaInvalidoException {
+	final TokenLostPassword tokenData = tokenDAO.findById(context
+		.getTokenSenha());
+
+	if (tokenData == null || !tokenData.isValido()) {
+	    throw new TokenSenhaInvalidoException(context.getTokenSenha());
+	}
+
+	return tokenData;
+    }
+
+    @Override
+    public void validarTokenEsqueciMinhaSenha(String token)
+	    throws TokenSenhaInvalidoException {
+	this.validarTokenEsqueciMinhaSenha(new PasswordContext(token));
     }
 
     /**

@@ -33,7 +33,7 @@
 						<manifestEntries>
 							<App-Version>${project.version}</App-Version>
 							<Build-Date>${buildNumber}</Build-Date>
-							<Version-News>bugs :(</Version-News>
+							<Version-News>senha!</Version-News>
 						</manifestEntries>
 						<manifest>
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
@@ -152,6 +152,7 @@
 						<configuration>
 							<stopPort>8280</stopPort>
 							<stopKey>STOP</stopKey>
+							
 						</configuration>
 						<executions>
 							<execution>
@@ -167,6 +168,9 @@
 									<systemPropertiesFile>${basedir}/src/test/resources/jetty/env.properties</systemPropertiesFile>
 									<daemon>true</daemon>
 									<useTestScope>true</useTestScope>
+									<webApp>
+									   <overrideDescriptor>debico-ui/src/test/resources/jetty/web.xml</overrideDescriptor>
+									</webApp>
 								</configuration>
 							</execution>
 							<execution>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head></head>
+<body>
+    <!-- esqueci a senha -->
+    <div id="esqueci_senha" class="reveal-modal" data-reveal=""
+        th:fragment="modal">
+        <h4>Esqueceu a sua senha?</h4>
+        <h5>Informe o seu email para trocar por uma nova.</h5>
+        <br />
+        <form th:action="@{/public/senha}" method="post" id="esqueci_senha_form">
+            <div class="row">
+                <div class="large-12 columns">
+                    <label for="email">Email cadastrado: <input type="email"
+                        id="email_usuario" name="email_usuario" required="required"
+                        title="Parece que o seu email est&aacute; incorreto..." />
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-12 columns">
+                    <button type="submit" class="button">Vai!</button>
+                </div>
+            </div>
+        </form>
+        <a class="close-reveal-modal">&#215;</a>
+        <script th:src="@{/static/js/pages/esqueci_senha.js}" type="text/javascript"></script>
+    </div>
+</body>
+</html>

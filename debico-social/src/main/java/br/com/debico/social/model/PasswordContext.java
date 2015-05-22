@@ -29,6 +29,10 @@ public final class PasswordContext implements Serializable {
     public PasswordContext() {
 
     }
+    
+    public PasswordContext(final String tokenSenha) {
+	this.tokenSenha = tokenSenha;
+    }
 
     public String getSenhaAtual() {
         return senhaAtual;

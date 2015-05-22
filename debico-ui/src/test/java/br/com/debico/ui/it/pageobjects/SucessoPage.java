@@ -18,7 +18,7 @@ public class SucessoPage extends AbstractPage {
 
     @Override
     public String getTitle() {
-        return "Sucesso";
+        return "Mensagem do Sistema";
     }
     
     public HomePage continuarSeLogado() {

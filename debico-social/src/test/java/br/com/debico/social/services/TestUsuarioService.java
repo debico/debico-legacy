@@ -101,9 +101,9 @@ public class TestUsuarioService extends AbstractUnitTest {
 	final String token = msgBody.substring(indexOfToken + 6,
 		indexOfToken + 42);
 
+	// no contexto do token nós, clientes, não temos o email do usuário
 	final PasswordContext context = new PasswordContext();
 	context.setConfirmacaoSenha("teste123");
-	context.setEmailUsuario(TestConstants.EMAIL_CARGA);
 	context.setNovaSenha("teste123");
 	context.setTokenSenha(token);
 

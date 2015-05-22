@@ -7,12 +7,15 @@
 	<nav th:replace="fragments/header :: barra_navegacao"></nav>
 	<div class="panel clearfix">
 		<div class="row">
-			<div class="large-12 columns" th:if="${sucesso}">
-				<h3>Sucesso!</h3>
+			<div class="large-12 columns">
+				<h3 th:if="${sucesso}">Sucesso!</h3>
+				<h3 th:if="${error}">Opa! Algo n&atilde;o est&aacute; certo!</h3>
 				<hr />
 				<p th:text="${mensagem}"></p>
 				<p>
-					Voc&ecirc; deve ser redirecionado em at&eacute; 5 segundos. Se ainda n&atilde;o foi, <a id="redirecionarHome" th:href="@{/}">clique aqui</a> para retornar &agrave; p&aacute;gina inicial.
+					Voc&ecirc; deve ser redirecionado em at&eacute; 5 segundos. Se
+					ainda n&atilde;o foi, <a id="redirecionarHome" th:href="@{/}">clique
+						aqui</a> para retornar &agrave; p&aacute;gina inicial.
 				</p>
 			</div>
 		</div>
