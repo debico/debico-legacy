@@ -17,19 +17,11 @@ import br.com.debico.core.MessagesCodes;
 public class PalpiteForaPrazoException extends DebicoException {
 
     private static final long serialVersionUID = 8632448909026902340L;
-    
-    private int limite;
 
-    public PalpiteForaPrazoException(final MessageSource messageSource, int limite) {
-        super(messageSource
-                .getMessage(MessagesCodes.PALPITE_FORA_PRAZO, 
-                        new Object[] {limite}, 
-                        Locale.getDefault()));
-        
-        this.limite = limite;
+    public PalpiteForaPrazoException(final MessageSource messageSource,
+            double limite) {
+        super(messageSource.getMessage(MessagesCodes.PALPITE_FORA_PRAZO,
+                new Object[] { limite }, Locale.getDefault()));
     }
-    
-    public int getLimite() {
-        return limite;
-    }
+
 }

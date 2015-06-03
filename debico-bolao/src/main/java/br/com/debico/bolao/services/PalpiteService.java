@@ -12,9 +12,11 @@ public interface PalpiteService {
     /**
      * Limite em milisegundos do prazo do palpite.
      */
-    public static final int PRAZO_PALPITE_MILLIS = 3600000;
+    public static final int PRAZO_PALPITE_MILLIS = 900000;
 
-    public static final int PRAZO_PALPITE_HORAS = 1;
+    public static final double PRAZO_PALPITE_HORAS = 0.25;
+    
+    public static final double PRAZO_PALPITE_MINUTOS = 15;
 
     /**
      * Realiza o palpite do apastador.

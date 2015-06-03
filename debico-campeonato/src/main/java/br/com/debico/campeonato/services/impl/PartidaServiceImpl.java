@@ -1,5 +1,7 @@
 package br.com.debico.campeonato.services.impl;
 
+import java.util.Date;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -31,12 +33,26 @@ class PartidaServiceImpl implements PartidaService {
         checkArgument(idPartida > 0, "O id da partida eh invalido.");
         checkNotNull(placar, "O placar nao pode ser nulo.");
         
-        LOGGER.debug("[salvarPlacar] Tentando salvar o placar {} da partida {}", idPartida, placar);
+        LOGGER.debug("[salvarPlacar] Tentando salvar o placar {} da partida {}", placar, idPartida);
         
         Partida partida = partidaDAO.findById(idPartida);
         partida.setPlacar(placar);
         
         return partidaDAO.update(partida);
     }
+	
+	@Override
+	@CacheEvict(value = CacheKeys.PARTIDAS_RODADA, allEntries = true)
+	public Partida atualizarDataHorario(final int idPartida, final Date dataHorarioPartida) {
+	    checkArgument(idPartida > 0, "O id da partida eh invalido.");
+        checkNotNull(dataHorarioPartida, "A data e horario da partida nao pode sernulo.");
+        
+        LOGGER.debug("[salvarPlacar] Tentando salvar a data {} da partida {}", dataHorarioPartida, idPartida);
+        
+        Partida partida = partidaDAO.findById(idPartida);
+        partida.setDataHoraPartida(dataHorarioPartida);
+        
+        return partidaDAO.update(partida);
+	}
 
 }
