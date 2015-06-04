@@ -119,7 +119,7 @@ class PalpiteServiceImpl implements PalpiteService {
 
         if (dt.minus(System.currentTimeMillis()).getMillis() < PRAZO_PALPITE_MILLIS) {
             throw new PalpiteForaPrazoException(this.messageSource,
-                    PRAZO_PALPITE_HORAS);
+                    PRAZO_PALPITE_MINUTOS);
         }
     }
 
