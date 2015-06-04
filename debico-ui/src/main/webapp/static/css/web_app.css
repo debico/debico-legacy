@@ -247,6 +247,15 @@ input[type="text"].placar-input {
 	text-align: center;
 }
 
+input[type="text"].data-input {
+	margin: 0.4em !important;
+	padding: 0.15em !important;
+	width: 8rem;
+	display: inline;
+	text-align: center;
+	font-size : 0.8em !important;
+}
+
 /* -------------------------------------------------------------- */
 /* Palpites */
 /* -------------------------------------------------------------- */

@@ -115,7 +115,7 @@ function Partida(json) {
 	var self = this;
 	
 	// ref. http://momentjs.com/docs/#/displaying/
-	self.dataHoraPartida = moment(json.dataHoraPartida).format("DD/MM/YYYY HH:mm");
+	self.dataHoraPartida = ko.observable(moment(json.dataHoraPartida).format("DD/MM/YYYY HH:mm"));
 	self.local = json.local;
 	self.mandante = new Time(json.mandante);
 	self.visitante = new Time(json.visitante);

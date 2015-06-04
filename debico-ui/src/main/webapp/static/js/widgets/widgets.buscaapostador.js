@@ -38,11 +38,11 @@ $.widget("debico.buscaapostador", $.ui.autocomplete, {
 			self.options.hiddenElem.val(ui.item.id);
 
 			if (self.options.btnAction) {
-				console.log("Antes " + self.options.btnAction.attr('disabled'));
+				//console.log("Antes " + self.options.btnAction.attr('disabled'));
 				
 				self.options.btnAction.removeAttr('disabled');
 				
-				console.log("Depois " + self.options.btnAction.attr('disabled'));
+				//console.log("Depois " + self.options.btnAction.attr('disabled'));
 			}
 
 			return false;
@@ -65,7 +65,7 @@ $.widget("debico.buscaapostador", $.ui.autocomplete, {
 		ul.attr("data-dropdown-content");
 
 		return $("<li>").append(
-				"<span style='padding:0.25em;'>" + item.nome + "</span>")
+				"<span style='padding:0.25em;' class='ui-menu-item'>" + item.nome + "</span>")
 				.appendTo(ul);
 	},
 });

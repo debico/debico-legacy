@@ -27,6 +27,9 @@
 	type="image/x-icon" />
 <!-- Sempre escolher a opcao "sem tema" -->
 <link rel="stylesheet" th:href="@{/static/css/jquery-ui.min.css}" />
+<link rel="stylesheet" th:href="@{/static/css/jquery-ui.theme.min.css}" />
+<link rel="stylesheet" th:href="@{/static/css/jquery-ui.structure.min.css}" />
+<link rel="stylesheet" th:href="@{/static/css/jquery-ui-timepicker-addon.css}" />
 <link rel="stylesheet" th:href="@{/static/css/foundation-icons.css}" />
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.5.1/css/foundation.min.css" />
 
@@ -47,7 +50,7 @@
 		},
 		widgets : {
 			palpite : /*[[@{|/widgets/palpite/${campeonato==null ? 0 : campeonato.permalink}|}]]*/,
-			partidas : /*[[@{|/widgets/partidas/${campeonato==null ? 0 : campeonato.permalink}|}]]*/'/widgets/partidas/pc/{permalink}',
+			partidas : /*[[@{|/widgets/partidas/${campeonato==null ? 0 : campeonato.permalink}|}]]*/'/widgets/partidas/{permalink}',
 			rodadas : /*[[@{|/widgets/rodada/rodadas/?campeonato=${campeonato==null ? 0 : campeonato.permalink}|}]]*/'/widgets/rodada/rodadas?campeonato={permalink}',
 			buscatime : /*[[@{/widgets/time}]]*/'/widgets/time',
 			apostadores : /*[[@{/widgets/apostadores}]]*/'/widgets/apostadores',
