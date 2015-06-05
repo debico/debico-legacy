@@ -108,10 +108,10 @@
 			var RODADA_ORDEM_INICIAL = /*[[${rodada.ordem}]]*/0;
 			/*]]>*/
 		</script>
-		<script th:src="@{/static/js/vendor/jquery-ui.min.js}" type="text/javascript"></script>
-		<script th:src="@{/static/js/vendor/jquery-ui-timepicker-addon.js}" type="text/javascript"></script>
+		<script sec:authorize="hasRole('ROLE_ADMIN')" th:src="@{/static/js/vendor/jquery-ui.min.js}" type="text/javascript"></script>
+		<script sec:authorize="hasRole('ROLE_ADMIN')" th:src="@{/static/js/vendor/jquery-ui-timepicker-addon.js}" type="text/javascript"></script>
 		<script th:src="@{/static/js/partidas_rodada_list_view_model.js}"></script>
-		<script th:src="@{/static/js/partidas_rodada_edit_view_model.js}"></script>
+		<script sec:authorize="hasRole('ROLE_ADMIN')" th:src="@{/static/js/partidas_rodada_edit_view_model.js}"></script>
 		<script th:src="@{/static/js/rodadas_nav.js}"></script>
 		<script th:src="@{/static/js/widgets/widgets.rodada.js}"></script>
 		<script th:src="@{/static/js/controllers/controller.widget.rodada.js}"></script>

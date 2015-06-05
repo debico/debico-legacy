@@ -54,15 +54,24 @@ PartidasRodadaEditViewModel.prototype.carregarPartidas = function(url) {
 			}, p.placar);
 
 			p.dataHoraPartida.subscribe(function(newValue) {
-				// DebicoAdmin.Partida.atualizarDataHorario(p.id,
-				// p.dataHoraPartida());
-				console.log("a data mudou");
+				var args = {
+					blockEl : 'tabela_partidas',
+					partidaId : p.id,
+					dataPartida : newValue
+				};
+
+				console.log("a data mudou para " + newValue);
+
+				DebicoAdmin.Partida.atualizarDataHorario(args).then(DebicoUtils.View.notify);
 			}, p.dataHoraPartida);
 
 			return p;
 		});
 
 		self.partidas(mapped);
-		$(".data-input").datetimepicker();
+		$(".data-input").datetimepicker({
+			dateFormat : 'dd/mm/yy',
+			controlType : 'select'
+		});
 	});
 };

@@ -17,25 +17,29 @@ DebicoAdmin.Partida = (function() {
 	var _urlAPI = URLS.api.partida;
 
 	var _sendAjax = function(args) {
+		console.log("enviando o ajax");
 		var self = this;
-		var deferred = Q.defer();
+		self.deferred = Q.defer();
+		
 		// TODO throw
 		self.args = args || {};
 
 		$.ajax(args.url, {
 			type : args.method,
-			data : JSON.stringfy(args.data),
+			data : ko.toJSON(args.data),
 			contentType : "application/json",
 			dataType : 'json'
 		}).done(function(response) {
+			console.log("ajax recebico OK");
 			self.args.response = response;
-			deferred.resolve(self.args);
+			self.deferred.resolve(self.args);
 		}).fail(function(err) {
+			console.log("falhou no ajax!");
 			self.args.err = err;
-			deferred.reject(self.args);
+			self.deferred.reject(self.args);
 		});
 
-		return deferred.promise;
+		return self.deferred.promise;
 	}
 
 	var salvarPlacarPartida = function(placar) {
@@ -59,14 +63,18 @@ DebicoAdmin.Partida = (function() {
 		}
 	}
 
-	var atualizarDataHorario = function(idPartida, dataHora) {
-		var args = {
-			url : _urlAPI + "/" + idPartida,
-			method : 'PATCH',
-			data : dataHora,
-			sucessMsg : 'Data atualizada com sucesso!',
-			errMsg : 'Erro ao tentar atualizar a data.'
-		};
+	var atualizarDataHorario = function(args) {
+		var args = args || {};
+		var mData = moment(args.dataPartida, "DD/MM/YYYY HH:mm");
+		if (!mData.isValid()) {
+			throw "Data " + args.dataPartida + " invalida.";
+		}
+
+		args.url = _urlAPI + "/" + args.partidaId;
+		args.method = 'PATCH';
+		args.data = mData.toISOString();
+		args.sucessMsg = 'Data atualizada com sucesso!';
+		args.errMsg = 'Erro ao tentar atualizar a data.';
 
 		// a promise
 		return _sendAjax(args);

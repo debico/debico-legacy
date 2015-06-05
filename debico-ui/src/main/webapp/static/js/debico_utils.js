@@ -1,6 +1,5 @@
 /**
- * Utilidades úteis.
- *  ;)
+ * Utilidades úteis. ;)
  * 
  * @since 2.0.3
  */
@@ -10,7 +9,7 @@ var DebicoUtils = DebicoUtils || {};
  * Utilidades para a View.
  */
 DebicoUtils.View = (function() {
-	var _notifyUI = function(args) {
+	var notify = function(args) {
 		var args = args || {};
 		if (args.err) {
 			// TODO: tratar err (parse e etc)
@@ -20,11 +19,17 @@ DebicoUtils.View = (function() {
 		}
 	}
 
-	var _blockUI = function(el) {
+	var block = function(args) {
 		$(el).block();
 	}
 
-	var _unblockUI = function(el) {
+	var unblock = function(args) {
 		$(el).unblock();
 	}
-});
+
+	return {
+		notify : notify,
+		block : block,
+		unblock : unblock
+	};
+})();
