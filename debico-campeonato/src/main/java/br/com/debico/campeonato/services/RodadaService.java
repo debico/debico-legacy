@@ -5,6 +5,8 @@ import java.util.List;
 import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.model.campeonato.Rodada;
 
+import com.google.common.base.Optional;
+
 /**
  * Utilizada para interagir com a Rodada, independente do tipo de Campeonato ou
  * Partida.
@@ -33,5 +35,14 @@ public interface RodadaService {
 	 * @since 2.0.0
 	 */
 	List<Rodada> selecionarRodadasNaoCalculadas(Campeonato campeonato);
+	
+	/**
+	 * Recupera a rodada em questão (sem as partidas).
+	 * 
+	 * @param idRodada
+	 * @return
+	 * @since 2.0.3
+	 */
+	Optional<Rodada> selecionarRodadaMeta(int idRodada);
 
 }

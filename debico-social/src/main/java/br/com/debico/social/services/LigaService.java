@@ -5,6 +5,8 @@ import java.util.List;
 import br.com.debico.social.CadastroLigaException;
 import br.com.debico.social.model.Liga;
 
+import com.google.common.base.Optional;
+
 /**
  * Serviços de interesse da Liga.
  * 
@@ -22,7 +24,7 @@ public interface LigaService {
 	 */
 	List<Liga> consultarLiga(final String emailUsuario);
 	
-	Liga recuperarLiga(final long idLiga);
+	Optional<Liga> recuperarLiga(final long idLiga);
 
 	
 	/**

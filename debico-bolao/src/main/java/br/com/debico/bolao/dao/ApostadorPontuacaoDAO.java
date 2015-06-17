@@ -19,6 +19,25 @@ public interface ApostadorPontuacaoDAO extends Dao<ApostadorPontuacao, Apostador
      * @return
      */
     List<ApostadorPontuacao> selecionarApostadoresPorLiga(int idCampeonato, long idLiga);
+    
+    /**
+     * Retorna os apostadores de determinada rodada.
+     * 
+     * @param idRodada
+     * @return
+     * @since 2.0.3
+     */
+    List<ApostadorPontuacao> selecionarApostadoresPorRodada(int idRodada);
+    
+    /**
+     * Retorna os apostadores de determinada rodada e liga.
+     * 
+     * @param idRodada
+     * @param idLiga
+     * @return
+     * @since 2.0.3
+     */
+    List<ApostadorPontuacao> selecionarApostadoresPorRodadaELiga(int idRodada, long idLiga);
         
     ApostadorPontuacao selecionarApostador(Apostador apostador, Campeonato campeonato);
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -68,6 +69,16 @@ public class TestApostadorPontuacaoServiceImpl extends AbstractBolaoUnitTest {
     	assertNotNull(ranking);
     	assertFalse(ranking.isEmpty()); // pelo menos eu \o/
     	assertTrue(ranking.size() == 1);
+    }
+    
+    @Ignore("temos que calcular ainda por RODADA no Drools!!")
+    @Test
+    public void testListarPorRodadaELiga() throws CadastroLigaException {
+        final Liga liga = ligaService.cadastrarNovaLiga("Liga da Justiça MODAFOCA", TestConstants.EMAIL_CARGA);
+        List<ApostadorPontuacao> ranking = apostadorService.listarRankingPorRodadaELiga(39, liga.getId());
+        assertNotNull(ranking);
+        assertFalse(ranking.isEmpty()); // pelo menos eu \o/
+        assertTrue(ranking.size() == 1);
     }
     
 }

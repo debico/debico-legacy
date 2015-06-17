@@ -22,7 +22,8 @@ import br.com.debico.social.services.ApostadorService;
 import br.com.debico.social.services.LigaApostadorService;
 import br.com.debico.social.services.LigaService;
 
-import static com.google.common.base.Preconditions.checkArgument;
+import com.google.common.base.Optional;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import static com.google.common.base.Strings.emptyToNull;
@@ -31,103 +32,106 @@ import static com.google.common.base.Strings.emptyToNull;
 @Transactional(readOnly = false)
 class LigaServiceImpl implements LigaService {
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(LigaServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory
+            .getLogger(LigaServiceImpl.class);
 
-	@Inject
-	private LigaDAO ligaDAO;
+    @Inject
+    private LigaDAO ligaDAO;
 
-	@Inject
-	private LigaApostadorService ligaApostadorService;
+    @Inject
+    private LigaApostadorService ligaApostadorService;
 
-	@Inject
-	private ApostadorService apostadorService;
+    @Inject
+    private ApostadorService apostadorService;
 
-	public LigaServiceImpl() {
+    public LigaServiceImpl() {
 
-	}
+    }
 
-	@Cacheable(value=CacheKeys.MINHAS_LIGAS)
-	@Override
-	public List<Liga> consultarLiga(String emailUsuario) {
-		LOGGER.debug(
-				"[consultarLiga] Tentando efetuar a consulta das ligas do usuario {}",
-				emailUsuario);
+    @Cacheable(value = CacheKeys.MINHAS_LIGAS)
+    @Override
+    public List<Liga> consultarLiga(String emailUsuario) {
+        LOGGER.debug(
+                "[consultarLiga] Tentando efetuar a consulta das ligas do usuario {}",
+                emailUsuario);
 
-		checkNotNull(emptyToNull(emailUsuario));
+        checkNotNull(emptyToNull(emailUsuario));
 
-		final Apostador apostador = apostadorService
-				.selecionarApostadorPorEmail(emailUsuario);
+        final Apostador apostador = apostadorService
+                .selecionarApostadorPorEmail(emailUsuario);
 
-		if (apostador == null) {
-			return Collections.emptyList();
-		}
+        if (apostador == null) {
+            return Collections.emptyList();
+        }
 
-		return ligaDAO.selecionarPorUsuario(apostador.getUsuario().getId());
-	}
+        return ligaDAO.selecionarPorUsuario(apostador.getUsuario().getId());
+    }
 
-	@Override
-	public Liga recuperarLiga(long idLiga) {
-		checkArgument(idLiga > 0);
-		return ligaDAO.findById(idLiga);
-	}
+    @Override
+    public Optional<Liga> recuperarLiga(long idLiga) {
+        if (idLiga == 0) {
+            return Optional.absent();
+        }
 
-	@CacheEvict(value=CacheKeys.MINHAS_LIGAS, key="#emailAdmin")
-	@Override
-	public Liga cadastrarNovaLiga(String nome, String emailAdmin)
-			throws CadastroLigaException {
+        return Optional.of(ligaDAO.findById(idLiga));
+    }
 
-		checkNotNull(emptyToNull(nome));
+    @CacheEvict(value = CacheKeys.MINHAS_LIGAS, key = "#emailAdmin")
+    @Override
+    public Liga cadastrarNovaLiga(String nome, String emailAdmin)
+            throws CadastroLigaException {
 
-		final Apostador apostador = this.recuperarApostador(emailAdmin);
+        checkNotNull(emptyToNull(nome));
 
-		final Liga liga = new Liga(nome);
-		liga.setAdministrador(apostador);
+        final Apostador apostador = this.recuperarApostador(emailAdmin);
 
-		ligaDAO.create(liga);
-		ligaApostadorService.inscreverApostador(liga, apostador);
+        final Liga liga = new Liga(nome);
+        liga.setAdministrador(apostador);
 
-		// enviar email.
+        ligaDAO.create(liga);
+        ligaApostadorService.inscreverApostador(liga, apostador);
 
-		return liga;
-	}
+        // enviar email.
 
-	@CacheEvict(value=CacheKeys.MINHAS_LIGAS, key="#emailAdmin")
-	@Override
-	public Liga atualizarLiga(long idLiga, String nome, String emailAdmin)
-			throws CadastroLigaException {
-		checkNotNull(emptyToNull(nome));
+        return liga;
+    }
 
-		final Apostador apostador = this.recuperarApostador(emailAdmin);
-		final Liga liga = ligaDAO.findById(idLiga);
+    @CacheEvict(value = CacheKeys.MINHAS_LIGAS, key = "#emailAdmin")
+    @Override
+    public Liga atualizarLiga(long idLiga, String nome, String emailAdmin)
+            throws CadastroLigaException {
+        checkNotNull(emptyToNull(nome));
 
-		if (liga.getAdministrador().equals(apostador)) {
-			liga.setNome(nome);
-			liga.setPermalink(WebUtils.toPermalink(nome));
+        final Apostador apostador = this.recuperarApostador(emailAdmin);
+        final Liga liga = ligaDAO.findById(idLiga);
 
-			ligaDAO.update(liga);
+        if (liga.getAdministrador().equals(apostador)) {
+            liga.setNome(nome);
+            liga.setPermalink(WebUtils.toPermalink(nome));
 
-			return liga;
-		}
+            ligaDAO.update(liga);
 
-		throw new CadastroLigaException("Adm nao pertence liga",
-				"liga.err.atualiza.adm");
-	}
+            return liga;
+        }
 
-	private Apostador recuperarApostador(final String email)
-			throws CadastroLigaException {
-		checkNotNull(emptyToNull(email),
-				"O email do administrador da liga nao pode ser nulo");
+        throw new CadastroLigaException("Adm nao pertence liga",
+                "liga.err.atualiza.adm");
+    }
 
-		final Apostador apostador = apostadorService
-				.selecionarPerfilApostadorPorEmail(email);
+    private Apostador recuperarApostador(final String email)
+            throws CadastroLigaException {
+        checkNotNull(emptyToNull(email),
+                "O email do administrador da liga nao pode ser nulo");
 
-		if (apostador == null) {
-			throw new CadastroLigaException("Apostador nao encontrado",
-					"liga.err.cad.adm.not_found");
-		}
+        final Apostador apostador = apostadorService
+                .selecionarPerfilApostadorPorEmail(email);
 
-		return apostador;
-	}
+        if (apostador == null) {
+            throw new CadastroLigaException("Apostador nao encontrado",
+                    "liga.err.cad.adm.not_found");
+        }
+
+        return apostador;
+    }
 
 }

@@ -39,7 +39,7 @@
 												th:href="@{|/campeonatos/${#strings.toLowerCase(c.tipo)}/${c.permalink}|}"
 												th:text="${c.nome}"></a></td>
 											<td class="action"><a
-												th:href="@{|/ranking/${c.permalink}/liga/${liga.id}|}"
+												th:href="@{|/ranking/${c.permalink}/?liga=${liga.id}|}"
 												title="Ranking da Liga"><i class="fi-graph-trend"></i> </a></td>
 											<td class="action"><a
 												sec:authorize="!hasRole('ROLE_ADMIN')"

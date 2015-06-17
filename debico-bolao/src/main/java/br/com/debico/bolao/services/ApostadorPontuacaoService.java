@@ -16,6 +16,12 @@ import br.com.debico.model.campeonato.CampeonatoImpl;
  */
 public interface ApostadorPontuacaoService {
 
+    /**
+     * Todos os apostadores no campeonato.
+     * 
+     * @param campeonato
+     * @return
+     */
 	List<ApostadorPontuacao> listarRanking(final Campeonato campeonato);
 	
 	/**
@@ -25,8 +31,29 @@ public interface ApostadorPontuacaoService {
 	 * @param idLiga
 	 * @return
 	 */
+	// id do campeonato por causa do cache
 	List<ApostadorPontuacao> listarRankingPorLiga(final int idCampeonato, final long idLiga);
+	
+	/**
+	 * Lista o Ranking de acordo com a rodada no campeonato em questão.
+	 * 
+	 * @param idCampeonato
+	 * @param idRodada
+	 * @return
+	 * @deprecated temos que calcular por rodada no DROOLS. Pensar...
+	 */
+	List<ApostadorPontuacao> listarRankingPorRodada(final int idRodada);
 
+	/**
+	 * Lista o Ranking de acordo com a rodada e a liga em questão.
+	 * 
+	 * @param idRodada
+	 * @param idLiga
+	 * @return
+	 * @deprecated temos que calcular por rodada no DROOLS. Pensar...
+	 */
+	List<ApostadorPontuacao> listarRankingPorRodadaELiga(final int idRodada, final long idLiga);
+	
 	void inscreverApostadorCampeonato(final Apostador apostador,
 			final CampeonatoImpl campeonato)
 			throws ApostadorJaInscritoException;

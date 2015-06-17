@@ -39,7 +39,7 @@ public class LigaWidgetController {
 	@ApiOperation("Consulta a liga pelo ID.")
 	@RequestMapping(value = "/widgets/liga/{id}", method = RequestMethod.GET)
 	public @ResponseBody Liga recuperarLiga(@PathVariable("id") final long id) {
-		return ligaService.recuperarLiga(id);
+		return ligaService.recuperarLiga(id).orNull();
 	}
 
 	@ApiOperation("Atualiza o nome da liga, gerando um novo permalink.")

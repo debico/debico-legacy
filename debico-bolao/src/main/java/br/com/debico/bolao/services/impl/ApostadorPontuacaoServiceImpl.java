@@ -93,6 +93,27 @@ public class ApostadorPontuacaoServiceImpl implements ApostadorPontuacaoService 
         return pontuacao;
     }
 
+    @Cacheable(value = CacheKeys.RANKING_APOSTADORES, key = "{#idRodada, 'R'}")
+    public List<ApostadorPontuacao> listarRankingPorRodada(int idRodada) {
+        final List<ApostadorPontuacao> pontuacao = apostadorPontuacaoDAO
+                .selecionarApostadoresPorRodada(idRodada);
+
+        Collections.sort(pontuacao);
+
+        return pontuacao;
+    }
+
+    @Cacheable(value = CacheKeys.RANKING_APOSTADORES, key = "{#idRodada, #idLiga, 'RL'}")
+    public List<ApostadorPontuacao> listarRankingPorRodadaELiga(int idRodada,
+            long idLiga) {
+        final List<ApostadorPontuacao> pontuacao = apostadorPontuacaoDAO
+                .selecionarApostadoresPorRodadaELiga(idRodada, idLiga);
+
+        Collections.sort(pontuacao);
+
+        return pontuacao;
+    }
+
     @Cacheable(value = CacheKeys.RANKING_APOSTADORES)
     public List<ApostadorPontuacao> listarRanking(Campeonato campeonato) {
         final List<ApostadorPontuacao> pontuacao = apostadorPontuacaoDAO

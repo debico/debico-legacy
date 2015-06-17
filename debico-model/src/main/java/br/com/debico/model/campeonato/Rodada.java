@@ -111,6 +111,16 @@ public class Rodada implements Serializable, Comparable<Rodada> {
 		return nome;
 	}
 	
+	/**
+	 * Recupera o nome da rodada de acordo com '{@value #NOME_RODADA_FORMAT}'.
+	 * 
+	 * @since 2.0.3
+	 * @return
+	 */
+	public String getNomeFormatado() {
+        return String.format(NOME_RODADA_FORMAT, this.ordem);
+    }
+	
 	public Date getDataFimRodada() {
 		return dataFimRodada;
 	}

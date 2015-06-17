@@ -10,7 +10,11 @@ import br.com.debico.model.campeonato.Chave;
 
 import com.google.common.base.Objects;
 
-// TODO: PartidaChave também vai ser rodada. #fikadica
+/**
+ * @deprecated PartidaChave também vai ser rodada. #fikadica
+ * @author ricardozanini
+ *
+ */
 @Entity
 @DiscriminatorValue(Partida.PARTIDA_COM_CHAVE)
 public class PartidaChave extends Partida {

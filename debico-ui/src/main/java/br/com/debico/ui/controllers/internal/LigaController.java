@@ -43,7 +43,7 @@ public class LigaController extends AbstractViewController {
 	public ModelAndView liga(@PathVariable("id") long id,
 			@PathVariable("permalink") String permalink) {
 		resetViewName();
-		final Liga liga = ligaService.recuperarLiga(id);
+		final Liga liga = ligaService.recuperarLiga(id).get();
 		this.addObject("liga", liga);
 		this.addObject("campeonatos",
 				campeonatoService.selecionarCampeonatosAtivos());
