@@ -2,7 +2,7 @@ package br.com.debico.bolao.dao;
 
 import java.util.List;
 
-import br.com.debico.bolao.model.PontuacaoRodadaApostador;
+import br.com.debico.bolao.model.graph.PontuacaoRodadaApostador;
 import br.com.debico.model.campeonato.Campeonato;
 
 /**

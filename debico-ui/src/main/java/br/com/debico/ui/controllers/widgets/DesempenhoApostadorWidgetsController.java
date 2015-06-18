@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import br.com.debico.bolao.model.PontuacaoRodadaApostadorSerie;
+import br.com.debico.bolao.model.graph.PontuacaoRodadaApostadorSerie;
 import br.com.debico.bolao.services.DesempenhoApostadorService;
 import br.com.debico.campeonato.services.CampeonatoService;
 

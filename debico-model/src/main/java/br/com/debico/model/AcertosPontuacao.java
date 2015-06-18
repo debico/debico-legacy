@@ -1,13 +1,13 @@
 package br.com.debico.model;
 
-import static com.google.common.base.Objects.equal;
-
 import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 import com.google.common.base.Objects;
+
+import static com.google.common.base.Objects.equal;
 
 /**
  * Representa a base de acertos do palpite para que seja utilizado para extrair
@@ -21,19 +21,19 @@ public class AcertosPontuacao implements Serializable {
 
     private static final long serialVersionUID = 3505802837134251609L;
 
-    @Column(name = "ST_PLACAR", nullable = false)
+    @Column(name = "IN_PLACAR", nullable = false)
     private Boolean placar;
 
-    @Column(name = "ST_VENCEDOR", nullable = false)
+    @Column(name = "IN_VENCEDOR", nullable = false)
     private Boolean vencedor;
 
-    @Column(name = "ST_GOL", nullable = false)
+    @Column(name = "IN_GOL", nullable = false)
     private Boolean gol;
 
-    @Column(name = "ST_EMPATE", nullable = false)
+    @Column(name = "IN_EMPATE", nullable = false)
     private Boolean empate;
 
-    @Column(name = "ST_ERRADO", nullable = false)
+    @Column(name = "IN_ERRADO", nullable = false)
     private Boolean errado;
 
     public AcertosPontuacao() {

@@ -7,6 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -21,190 +23,192 @@ import static com.google.common.base.Objects.equal;
 
 @Entity
 @Table(name = "tb_apostador_campeonato")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class ApostadorPontuacao implements Serializable,
-		Comparable<ApostadorPontuacao> {
+        Comparable<ApostadorPontuacao> {
 
-	private static final long serialVersionUID = -1668188676088438225L;
+    private static final long serialVersionUID = -1668188676088438225L;
 
-	@Id
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_APOSTADOR", nullable = false, unique = false)
-	private Apostador apostador;
+    @Id
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_APOSTADOR", nullable = false, unique = false)
+    private Apostador apostador;
 
-	@Id
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_CAMPEONATO", nullable = false, unique = false)
-	private CampeonatoImpl campeonato;
+    @Id
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_CAMPEONATO", nullable = false, unique = false)
+    private CampeonatoImpl campeonato;
 
-	@Column(name = "NU_PONTOS", nullable = false)
-	private Integer pontosTotal;
+    @Column(name = "NU_PONTOS", nullable = false)
+    private Integer pontosTotal;
 
-	@Column(name = "NU_PLACAR", nullable = false)
-	private Integer placar;
+    @Column(name = "NU_PLACAR", nullable = false)
+    private Integer placar;
 
-	@Column(name = "NU_VENCEDOR", nullable = false)
-	private Integer vencedor;
+    @Column(name = "NU_VENCEDOR", nullable = false)
+    private Integer vencedor;
 
-	@Column(name = "NU_GOLS", nullable = false)
-	private Integer gols;
+    @Column(name = "NU_GOLS", nullable = false)
+    private Integer gols;
 
-	@Column(name = "NU_EMPATE", nullable = false)
-	private Integer empates;
+    @Column(name = "NU_EMPATE", nullable = false)
+    private Integer empates;
 
-	@Column(name = "NU_ERRADOS", nullable = false)
-	private Integer errados;
+    @Column(name = "NU_ERRADOS", nullable = false)
+    private Integer errados;
 
-	public ApostadorPontuacao() {
-		this.pontosTotal = 0;
-		this.empates = 0;
-		this.gols = 0;
-		this.placar = 0;
-		this.vencedor = 0;
-		this.errados = 0;
-	}
+    public ApostadorPontuacao() {
+        this.pontosTotal = 0;
+        this.empates = 0;
+        this.gols = 0;
+        this.placar = 0;
+        this.vencedor = 0;
+        this.errados = 0;
+    }
 
-	public ApostadorPontuacao(final Apostador apostador) {
-		this();
-		this.apostador = apostador;
-	}
-	
-	public ApostadorPontuacao(final Apostador apostador,
-			final CampeonatoImpl campeonato) {
-		this(apostador);
-		this.campeonato = campeonato;
-	}
+    public ApostadorPontuacao(final Apostador apostador) {
+        this();
+        this.apostador = apostador;
+    }
 
-	public Campeonato getCampeonato() {
-		return campeonato;
-	}
+    public ApostadorPontuacao(final Apostador apostador,
+            final CampeonatoImpl campeonato) {
+        this(apostador);
+        this.campeonato = campeonato;
+    }
 
-	public void setCampeonato(final CampeonatoImpl campeonato) {
-		this.campeonato = campeonato;
-	}
+    public Campeonato getCampeonato() {
+        return campeonato;
+    }
 
-	public Apostador getApostador() {
-		return apostador;
-	}
+    public void setCampeonato(final CampeonatoImpl campeonato) {
+        this.campeonato = campeonato;
+    }
 
-	public void setApostador(Apostador apostador) {
-		this.apostador = apostador;
-	}
+    public Apostador getApostador() {
+        return apostador;
+    }
 
-	public Integer getPontosTotal() {
-		return pontosTotal;
-	}
+    public void setApostador(Apostador apostador) {
+        this.apostador = apostador;
+    }
 
-	public void setPontosTotal(final Integer pontosTotal) {
-		this.pontosTotal = pontosTotal;
-	}
+    public Integer getPontosTotal() {
+        return pontosTotal;
+    }
 
-	public void somarPontosTotal(final int pontos) {
-		this.pontosTotal += pontos;
-	}
+    public void setPontosTotal(final Integer pontosTotal) {
+        this.pontosTotal = pontosTotal;
+    }
 
-	public Integer getGols() {
-		return gols;
-	}
+    public void somarPontosTotal(final int pontos) {
+        this.pontosTotal += pontos;
+    }
 
-	public void setGols(Integer gols) {
-		this.gols = gols;
-	}
+    public Integer getGols() {
+        return gols;
+    }
 
-	public Integer getPlacar() {
-		return placar;
-	}
+    public void setGols(Integer gols) {
+        this.gols = gols;
+    }
 
-	public void setPlacar(Integer placar) {
-		this.placar = placar;
-	}
+    public Integer getPlacar() {
+        return placar;
+    }
 
-	public Integer getVencedor() {
-		return vencedor;
-	}
+    public void setPlacar(Integer placar) {
+        this.placar = placar;
+    }
 
-	public void setVencedor(Integer vencedor) {
-		this.vencedor = vencedor;
-	}
+    public Integer getVencedor() {
+        return vencedor;
+    }
 
-	public Integer getEmpates() {
-		return empates;
-	}
+    public void setVencedor(Integer vencedor) {
+        this.vencedor = vencedor;
+    }
 
-	public void setEmpates(Integer empates) {
-		this.empates = empates;
-	}
+    public Integer getEmpates() {
+        return empates;
+    }
 
-	public Integer getErrados() {
-		return errados;
-	}
+    public void setEmpates(Integer empates) {
+        this.empates = empates;
+    }
 
-	public void setErrados(Integer errados) {
-		this.errados = errados;
-	}
+    public Integer getErrados() {
+        return errados;
+    }
 
-	/**
-	 * Critério de desempate:
-	 * <ol>
-	 * <li>Quantidade de placar na cabe&ccedil;a.</li>
-	 * <li>Quantidade de empates.</li>
-	 * <li>Quantidade de vit&oacute;rias.</li>
-	 * <li>Quantidade de gols.</li>
-	 * <li>Menor quantidade de palpites errados.</li>
-	 * <li>Se mesmo assim empatar, vai ter que ser no palitinho (na pr&aacute;tica o sistema ordena por ordem alfab&eacute;tica).</li>
-	 * </ol>
-	 */
-	public int compareTo(ApostadorPontuacao o) {
-		return ComparisonChain.start()
-				.compare(o.getPontosTotal(), this.pontosTotal)
-				.compare(o.getPlacar(), this.placar)
-				.compare(o.getEmpates(), this.empates)
-				.compare(o.getVencedor(), this.vencedor)
-				.compare(o.getGols(), this.gols)
-				.compare(this.errados, o.getErrados())
-				.compare(o.getApostador(), this.apostador).result();
-	}
+    public void setErrados(Integer errados) {
+        this.errados = errados;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(this.apostador, this.pontosTotal, this.empates,
-				this.errados, this.gols, this.placar, this.vencedor);
-	}
+    /**
+     * Critério de desempate:
+     * <ol>
+     * <li>Quantidade de placar na cabe&ccedil;a.</li>
+     * <li>Quantidade de empates.</li>
+     * <li>Quantidade de vit&oacute;rias.</li>
+     * <li>Quantidade de gols.</li>
+     * <li>Menor quantidade de palpites errados.</li>
+     * <li>Se mesmo assim empatar, vai ter que ser no palitinho (na
+     * pr&aacute;tica o sistema ordena por ordem alfab&eacute;tica).</li>
+     * </ol>
+     */
+    public int compareTo(ApostadorPontuacao o) {
+        return ComparisonChain.start()
+                .compare(o.getPontosTotal(), this.pontosTotal)
+                .compare(o.getPlacar(), this.placar)
+                .compare(o.getEmpates(), this.empates)
+                .compare(o.getVencedor(), this.vencedor)
+                .compare(o.getGols(), this.gols)
+                .compare(this.errados, o.getErrados())
+                .compare(o.getApostador(), this.apostador).result();
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder stringBuilder = new StringBuilder();
-		Formatter formatter = new Formatter(stringBuilder);
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(this.apostador, this.pontosTotal, this.empates,
+                this.errados, this.gols, this.placar, this.vencedor);
+    }
 
-		String template = "\n %-20s %-1s(P) %-1s(A) %-1s(V) %-1s(E) %-1s(G) %-1s(R)";
-		formatter.format(template, this.apostador, this.pontosTotal,
-				this.placar, this.vencedor, this.empates, this.gols,
-				this.errados);
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        Formatter formatter = new Formatter(stringBuilder);
 
-		String line = stringBuilder.toString();
-		formatter.close();
+        String template = "\n %-20s %-1s(P) %-1s(A) %-1s(V) %-1s(E) %-1s(G) %-1s(R)";
+        formatter.format(template, this.apostador, this.pontosTotal,
+                this.placar, this.vencedor, this.empates, this.gols,
+                this.errados);
 
-		return line;
-	}
+        String line = stringBuilder.toString();
+        formatter.close();
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
+        return line;
+    }
 
-		if (obj == this) {
-			return true;
-		}
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
 
-		if (obj.getClass() != getClass()) {
-			return false;
-		}
+        if (obj == this) {
+            return true;
+        }
 
-		ApostadorPontuacao that = (ApostadorPontuacao) obj;
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
 
-		return equal(this.apostador, that.getApostador())
-				&& equal(this.campeonato, that.getCampeonato())
-				&& equal(this.pontosTotal, that.getPontosTotal());
-	}
+        ApostadorPontuacao that = (ApostadorPontuacao) obj;
+
+        return equal(this.apostador, that.getApostador())
+                && equal(this.campeonato, that.getCampeonato())
+                && equal(this.pontosTotal, that.getPontosTotal());
+    }
 
 }

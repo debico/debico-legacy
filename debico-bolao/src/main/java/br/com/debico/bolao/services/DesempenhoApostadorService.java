@@ -2,7 +2,7 @@ package br.com.debico.bolao.services;
 
 import java.util.Set;
 
-import br.com.debico.bolao.model.PontuacaoRodadaApostadorSerie;
+import br.com.debico.bolao.model.graph.PontuacaoRodadaApostadorSerie;
 import br.com.debico.model.campeonato.Campeonato;
 
 /**

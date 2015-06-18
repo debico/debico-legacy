@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.debico.bolao.model.PontuacaoRodadaApostadorSerie;
+import br.com.debico.bolao.model.graph.PontuacaoRodadaApostadorSerie;
 import br.com.debico.bolao.services.DesempenhoApostadorService;
 import br.com.debico.bolao.test.support.AbstractBolaoUnitTest;
 import br.com.debico.model.campeonato.Campeonato;

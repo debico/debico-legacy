@@ -1,6 +1,7 @@
 package br.com.debico.bolao.services.impl;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+
 import static com.google.common.base.Strings.emptyToNull;
 
 import java.util.List;
@@ -16,8 +17,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.bolao.dao.PontuacaoRodadaApostadorDAO;
-import br.com.debico.bolao.model.PontuacaoRodadaApostador;
-import br.com.debico.bolao.model.PontuacaoRodadaApostadorSerie;
+import br.com.debico.bolao.model.graph.PontuacaoRodadaApostador;
+import br.com.debico.bolao.model.graph.PontuacaoRodadaApostadorSerie;
 import br.com.debico.bolao.services.DesempenhoApostadorService;
 import br.com.debico.core.helpers.CacheKeys;
 import br.com.debico.model.Apostador;

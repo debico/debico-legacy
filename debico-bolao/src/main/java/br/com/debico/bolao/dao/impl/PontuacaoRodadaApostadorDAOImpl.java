@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.bolao.dao.PontuacaoRodadaApostadorDAO;
-import br.com.debico.bolao.model.PontuacaoRodadaApostador;
+import br.com.debico.bolao.model.graph.PontuacaoRodadaApostador;
 import br.com.debico.model.campeonato.Campeonato;
 
 @Named
