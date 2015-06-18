@@ -2,7 +2,7 @@ package br.com.debico.bolao.services;
 
 import java.util.List;
 
-import br.com.debico.bolao.model.PartidaRodadaPalpiteView;
+import br.com.debico.bolao.model.view.PartidaRodadaPalpiteView;
 
 /**
  * 

@@ -12,7 +12,7 @@ import javax.inject.Named;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.bolao.dao.PartidaPalpiteViewDAO;
-import br.com.debico.bolao.model.PartidaRodadaPalpiteView;
+import br.com.debico.bolao.model.view.PartidaRodadaPalpiteView;
 import br.com.debico.bolao.services.PartidaPalpiteService;
 import br.com.debico.model.Apostador;
 import br.com.debico.social.services.ApostadorService;

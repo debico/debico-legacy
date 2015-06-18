@@ -1,4 +1,4 @@
-package br.com.debico.bolao.model;
+package br.com.debico.bolao.model.view;
 
 import static com.google.common.base.Objects.equal;
 import br.com.debico.model.PalpiteBase;

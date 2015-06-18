@@ -2,7 +2,7 @@ package br.com.debico.bolao.dao;
 
 import java.util.List;
 
-import br.com.debico.bolao.model.PartidaRodadaPalpiteView;
+import br.com.debico.bolao.model.view.PartidaRodadaPalpiteView;
 
 /**
  * Casos de uso para recuperação de Visões relacionadas com partidas e palpites.

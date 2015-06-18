@@ -19,8 +19,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.bolao.dao.PartidaPalpiteViewDAO;
-import br.com.debico.bolao.model.PalpiteView;
-import br.com.debico.bolao.model.PartidaRodadaPalpiteView;
+import br.com.debico.bolao.model.view.PalpiteView;
+import br.com.debico.bolao.model.view.PartidaRodadaPalpiteView;
 import br.com.debico.model.Placar;
 import br.com.debico.model.Time;
 

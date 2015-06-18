@@ -4,8 +4,11 @@ import static com.google.common.base.Objects.equal;
 
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,6 +19,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.joda.time.DateTime;
+
+import br.com.debico.model.to.PalpiteTO;
 
 import com.google.common.base.Objects;
 
@@ -33,110 +38,122 @@ public class Palpite extends PalpiteBase {
     @Column(name = "ID_PALPITE")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    
+
     @Column(name = "NU_PONTOS", nullable = true)
     private Integer pontos;
 
     @Column(name = "DH_PALPITE", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataHoraPalpite;
-    
-    @Column(name= "DH_COMPUTADO", nullable = true)
+
+    @Column(name = "DH_COMPUTADO", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataComputado;
 
-    public Palpite(final Apostador apostador, final Partida partida, final Placar placar) {
-        super(apostador, placar);
+    @Embedded
+    @Basic(fetch = FetchType.LAZY)
+    private AcertosPontuacao acertos;
 
-        this.partida = partida;
-        this.pontos = 0;
-    	this.dataHoraPalpite = new Date();
+    public Palpite(final Apostador apostador, final Partida partida,
+	    final Placar placar) {
+	super(apostador, placar);
+
+	this.partida = partida;
+	this.pontos = 0;
+	this.dataHoraPalpite = new Date();
+	this.acertos = new AcertosPontuacao();
     }
-    
+
     /**
-     * @see PalpiteBase#PalpiteBase(PalpiteLite)
-     * @param palpiteLite
+     * @see PalpiteBase#PalpiteBase(PalpiteTO)
+     * @param palpiteTO
      */
-    public Palpite(final PalpiteLite palpiteLite) {
-        super(palpiteLite);
-        this.id = palpiteLite.getId();
-        this.pontos = 0;
-        this.dataHoraPalpite = new Date();
+    public Palpite(final PalpiteTO palpiteTO) {
+	super(palpiteTO);
+	this.id = palpiteTO.getId();
+	this.pontos = 0;
+	this.dataHoraPalpite = new Date();
+	this.acertos = new AcertosPontuacao();
     }
-    
+
     public Palpite() {
-        super();
-        this.pontos = 0;
-        this.dataHoraPalpite = new Date();
+	super();
+	this.pontos = 0;
+	this.dataHoraPalpite = new Date();
+	this.acertos = new AcertosPontuacao();
     }
-    
+
     public void somarPontos(final int pontos) {
-        this.pontos += pontos;
+	this.pontos += pontos;
     }
-    
+
     public int getPontos() {
-        return pontos;
+	return pontos;
     }
 
     public void setPontos(int pontos) {
-        this.pontos = pontos;
+	this.pontos = pontos;
     }
 
     public Partida getPartida() {
-        return partida;
+	return partida;
     }
 
     public void setPartida(Partida partida) {
-        this.partida = partida;
+	this.partida = partida;
     }
-    
+
     public int getId() {
-        return id;
+	return id;
     }
-    
+
     public void setId(int id) {
-        this.id = id;
+	this.id = id;
     }
 
     public void setDataComputado(final Date dataComputado) {
-		this.dataComputado = new DateTime(dataComputado).toDate();
-	}
+	this.dataComputado = new DateTime(dataComputado).toDate();
+    }
     
+    public AcertosPontuacao getAcertos() {
+	return acertos;
+    }
+
     @Override
     public String toString() {
-        return toStringHelper()
-                .add("ID", this.id)
-                .addValue(this.pontos)
-                .addValue(this.getApostador())
-        		.addValue(this.partida).toString();
+	return toStringHelper().add("ID", this.id).addValue(this.pontos)
+		.addValue(this.getApostador()).addValue(this.partida)
+		.toString();
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode() + Objects.hashCode(this.partida, this.pontos, this.dataHoraPalpite, this.dataComputado);
+	return super.hashCode()
+		+ Objects.hashCode(this.partida, this.pontos,
+			this.dataHoraPalpite, this.dataComputado);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
+	if (obj == null) {
+	    return false;
+	}
 
-        if (obj == this) {
-            return true;
-        }
+	if (obj == this) {
+	    return true;
+	}
 
-        if (obj.getClass() != getClass()) {
-            return false;
-        }
+	if (obj.getClass() != getClass()) {
+	    return false;
+	}
 
-        Palpite that = (Palpite) obj;
+	Palpite that = (Palpite) obj;
 
-        return  equal(this.id, that.getId()) 
-                && equal(this.partida, that.getPartida())
-                && equal(this.pontos, that.getPontos())
-                && equal(this.getApostador(), that.getApostador())
-                && equal(this.isComputado(), that.isComputado()) 
-                && equal(this.getPlacar(), that.getPlacar());
+	return equal(this.id, that.getId())
+		&& equal(this.partida, that.getPartida())
+		&& equal(this.pontos, that.getPontos())
+		&& equal(this.getApostador(), that.getApostador())
+		&& equal(this.isComputado(), that.isComputado())
+		&& equal(this.getPlacar(), that.getPlacar());
     }
 }

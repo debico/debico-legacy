@@ -19,12 +19,12 @@ import br.com.debico.campeonato.services.CampeonatoPontosCorridosService;
 import br.com.debico.campeonato.services.PartidaService;
 import br.com.debico.campeonato.services.RodadaService;
 import br.com.debico.core.DebicoException;
-import br.com.debico.model.PalpiteLite;
 import br.com.debico.model.PartidaRodada;
 import br.com.debico.model.Placar;
 import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.model.campeonato.CampeonatoImpl;
 import br.com.debico.model.campeonato.Rodada;
+import br.com.debico.model.to.PalpiteTO;
 import static org.junit.Assert.assertNotNull;
 
 @Transactional
@@ -52,7 +52,7 @@ public class TestPalpiteService extends AbstractBolaoUnitTest {
                 .selecionarCampeonato(CAMPEONATO_ID);
 
         // passou um minuto
-        final PalpiteLite palpiteIO = this.atualizarPartidaERetornarPalpite(
+        final PalpiteTO palpiteIO = this.atualizarPartidaERetornarPalpite(
                 new DateTime(System.currentTimeMillis()).plusMinutes(
                         (int) PalpiteService.PRAZO_PALPITE_MINUTOS - 1)
                         .toDate(), campeonatoImpl);
@@ -66,7 +66,7 @@ public class TestPalpiteService extends AbstractBolaoUnitTest {
         final CampeonatoImpl campeonatoImpl = this.campeonatoService
                 .selecionarCampeonato(CAMPEONATO_ID);
         // no limite
-        final PalpiteLite palpiteIO = this.atualizarPartidaERetornarPalpite(
+        final PalpiteTO palpiteIO = this.atualizarPartidaERetornarPalpite(
                 new DateTime(System.currentTimeMillis()).plusMinutes(
                         (int) PalpiteService.PRAZO_PALPITE_MINUTOS + 1)
                         .toDate(), campeonatoImpl);
@@ -74,7 +74,7 @@ public class TestPalpiteService extends AbstractBolaoUnitTest {
         assertNotNull(palpiteService.palpitar(palpiteIO, campeonatoImpl));
     }
 
-    private PalpiteLite atualizarPartidaERetornarPalpite(Date dataHoraPartida,
+    private PalpiteTO atualizarPartidaERetornarPalpite(Date dataHoraPartida,
             Campeonato campeonato) {
         final List<Rodada> rodadas = rodadaService.selecionarRodadas(campeonato
                 .getPermalink());
@@ -84,7 +84,7 @@ public class TestPalpiteService extends AbstractBolaoUnitTest {
         partidaService.atualizarDataHorario(partidaRodadas.get(0).getId(),
                 dataHoraPartida);
 
-        return new PalpiteLite(EMAIL_PRIMEIRO_RANKING, new Placar(2, 0),
+        return new PalpiteTO(EMAIL_PRIMEIRO_RANKING, new Placar(2, 0),
                 partidaRodadas.get(0).getId());
     }
 }

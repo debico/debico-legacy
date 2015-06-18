@@ -1,9 +1,12 @@
-package br.com.debico.model;
+package br.com.debico.model.to;
 
 import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Objects.toStringHelper;
 
 import java.io.Serializable;
+
+import br.com.debico.model.Palpite;
+import br.com.debico.model.Placar;
 
 import com.google.common.base.Objects;
 
@@ -14,7 +17,7 @@ import com.google.common.base.Objects;
  * @author ricardozanini
  *
  */
-public class PalpiteLite implements Serializable {
+public class PalpiteTO implements Serializable {
 
 	private static final long serialVersionUID = 1450856284231390125L;
 
@@ -23,7 +26,7 @@ public class PalpiteLite implements Serializable {
 	private Placar placar;
 	private int idPartida;
 
-	public PalpiteLite(final String apostadorEmail, final Placar placar,
+	public PalpiteTO(final String apostadorEmail, final Placar placar,
 			final int idPartida) {
 		this.apostadorEmail = apostadorEmail;
 		this.idPartida = idPartida;
@@ -31,7 +34,7 @@ public class PalpiteLite implements Serializable {
 	}
 
 	// JSON
-	public PalpiteLite() {
+	public PalpiteTO() {
 
 	}
 
@@ -94,7 +97,7 @@ public class PalpiteLite implements Serializable {
 			return false;
 		}
 
-		PalpiteLite that = (PalpiteLite) obj;
+		PalpiteTO that = (PalpiteTO) obj;
 
 		return super.equals(obj) && equal(this.id, that.getId())
 				&& equal(this.placar, that.getPlacar())

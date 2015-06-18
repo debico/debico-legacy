@@ -1,7 +1,11 @@
 package br.com.debico.bolao.brms.impl;
 
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -34,6 +38,9 @@ import br.com.debico.model.Usuario;
 import br.com.debico.model.campeonato.CampeonatoImpl;
 import br.com.debico.social.services.UsuarioService;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestCalculoPalpitesService extends AbstractBolaoUnitTest {
@@ -60,43 +67,43 @@ public class TestCalculoPalpitesService extends AbstractBolaoUnitTest {
 
     @Before
     public void setUp() throws Exception {
-        super.setUp();
+	super.setUp();
 
-        zanini = new Apostador("Zanini", new Usuario("zanini@bolao.com.br",
-                "Bolao1234"));
-        zapa = new Apostador("Zaparoli", new Usuario("zapa@bolao.com.br",
-                "Bolao1234"));
-        adriano = new Apostador("Adriano", new Usuario("adriano@bolao.com.br",
-                "Bolao1234"));
+	zanini = new Apostador("Zanini", new Usuario("zanini@bolao.com.br",
+		"Bolao1234"));
+	zapa = new Apostador("Zaparoli", new Usuario("zapa@bolao.com.br",
+		"Bolao1234"));
+	adriano = new Apostador("Adriano", new Usuario("adriano@bolao.com.br",
+		"Bolao1234"));
 
-        List<Time> times = new ArrayList<Time>();
+	List<Time> times = new ArrayList<Time>();
 
-        Time brasil = new Time("Brasil");
-        Time argentina = new Time("Argentina");
-        Time italia = new Time("Italia");
+	Time brasil = new Time("Brasil");
+	Time argentina = new Time("Argentina");
+	Time italia = new Time("Italia");
 
-        times.add(argentina);
-        times.add(italia);
-        times.add(brasil);
-        EstruturaCampeonato estruturaCampeonato = this
-                .novaEstruturaCampeonato(times);
+	times.add(argentina);
+	times.add(italia);
+	times.add(brasil);
+	EstruturaCampeonato estruturaCampeonato = this
+		.novaEstruturaCampeonato(times);
 
-        this.partida1 = (PartidaRodada) estruturaCampeonato.getPartidas()
-                .get(0);
-        this.partida2 = (PartidaRodada) estruturaCampeonato.getPartidas()
-                .get(1);
-        this.partida3 = (PartidaRodada) estruturaCampeonato.getPartidas()
-                .get(2);
+	this.partida1 = (PartidaRodada) estruturaCampeonato.getPartidas()
+		.get(0);
+	this.partida2 = (PartidaRodada) estruturaCampeonato.getPartidas()
+		.get(1);
+	this.partida3 = (PartidaRodada) estruturaCampeonato.getPartidas()
+		.get(2);
 
-        this.partida1.getPlacar().setGolsMandante(2);
-        this.partida1.getPlacar().setGolsVisitante(0);
-        this.partida2.getPlacar().setGolsMandante(1);
-        this.partida2.getPlacar().setGolsVisitante(3);
-        this.partida3.getPlacar().setGolsMandante(1);
-        this.partida3.getPlacar().setGolsVisitante(1);
+	this.partida1.getPlacar().setGolsMandante(2);
+	this.partida1.getPlacar().setGolsVisitante(0);
+	this.partida2.getPlacar().setGolsMandante(1);
+	this.partida2.getPlacar().setGolsVisitante(3);
+	this.partida3.getPlacar().setGolsMandante(1);
+	this.partida3.getPlacar().setGolsVisitante(1);
 
-        this.campeonato = (CampeonatoImpl) estruturaCampeonatoService
-                .inserirNovaEstrutura(estruturaCampeonato);
+	this.campeonato = (CampeonatoImpl) estruturaCampeonatoService
+		.inserirNovaEstrutura(estruturaCampeonato);
     }
 
     /*
@@ -114,61 +121,81 @@ public class TestCalculoPalpitesService extends AbstractBolaoUnitTest {
     @Test
     public void testComputarPalpites() throws DebicoException {
 
-        // palpites
-        usuarioService.cadastrarApostadorUsuario(adriano, "Bolao1234");
-        usuarioService.cadastrarApostadorUsuario(zanini, "Bolao1234");
-        usuarioService.cadastrarApostadorUsuario(zapa, "Bolao1234");
+	// palpites
+	usuarioService.cadastrarApostadorUsuario(adriano, "Bolao1234");
+	usuarioService.cadastrarApostadorUsuario(zanini, "Bolao1234");
+	usuarioService.cadastrarApostadorUsuario(zapa, "Bolao1234");
 
-        // inscricao
-        apostadorPontuacaoService.inscreverApostadorCampeonato(adriano,
-                campeonato);
-        apostadorPontuacaoService.inscreverApostadorCampeonato(zanini,
-                campeonato);
-        apostadorPontuacaoService
-                .inscreverApostadorCampeonato(zapa, campeonato);
+	// inscricao
+	apostadorPontuacaoService.inscreverApostadorCampeonato(adriano,
+		campeonato);
+	apostadorPontuacaoService.inscreverApostadorCampeonato(zanini,
+		campeonato);
+	apostadorPontuacaoService
+		.inscreverApostadorCampeonato(zapa, campeonato);
 
-        palpiteService.palpitar(
-                new Palpite(zanini, partida1, new Placar(0, 3)), campeonato);
-        palpiteService.palpitar(
-                new Palpite(zanini, partida2, new Placar(1, 1)), campeonato);
-        palpiteService.palpitar(
-                new Palpite(zanini, partida3, new Placar(3, 3)), campeonato);
+	palpiteService.palpitar(
+		new Palpite(zanini, partida1, new Placar(0, 3)), campeonato);
+	palpiteService.palpitar(
+		new Palpite(zanini, partida2, new Placar(1, 1)), campeonato);
+	palpiteService.palpitar(
+		new Palpite(zanini, partida3, new Placar(3, 3)), campeonato);
 
-        palpiteService.palpitar(new Palpite(zapa, partida1, new Placar(2, 0)),
-                campeonato);
-        palpiteService.palpitar(new Palpite(zapa, partida2, new Placar(2, 1)),
-                campeonato);
-        palpiteService.palpitar(new Palpite(zapa, partida3, new Placar(2, 1)),
-                campeonato);
+	palpiteService.palpitar(new Palpite(zapa, partida1, new Placar(2, 0)),
+		campeonato);
+	palpiteService.palpitar(new Palpite(zapa, partida2, new Placar(2, 1)),
+		campeonato);
+	palpiteService.palpitar(new Palpite(zapa, partida3, new Placar(2, 1)),
+		campeonato);
 
-        palpiteService.palpitar(
-                new Palpite(adriano, partida1, new Placar(1, 0)), campeonato);
-        palpiteService.palpitar(
-                new Palpite(adriano, partida2, new Placar(0, 3)), campeonato);
-        palpiteService.palpitar(
-                new Palpite(adriano, partida3, new Placar(0, 2)), campeonato);
+	palpiteService.palpitar(
+		new Palpite(adriano, partida1, new Placar(1, 0)), campeonato);
+	palpiteService.palpitar(
+		new Palpite(adriano, partida2, new Placar(0, 3)), campeonato);
+	palpiteService.palpitar(
+		new Palpite(adriano, partida3, new Placar(0, 2)), campeonato);
 
-        // execução
-        processadorRegrasBolao.processarResultados(campeonato);
+	// execução
+	processadorRegrasBolao.processarResultados(campeonato);
 
-        List<ApostadorPontuacao> apostadores = apostadorPontuacaoService
-                .listarRanking(campeonato);
+	List<ApostadorPontuacao> apostadores = apostadorPontuacaoService
+		.listarRanking(campeonato);
 
-        // asserts
-        assertNotNull(apostadores);
+	// asserts
+	assertNotNull(apostadores);
 
-        Collections.sort(apostadores);
-        LOGGER.info("Relacao dos apostadores: {}", apostadores);
+	Collections.sort(apostadores);
+	LOGGER.info("Relacao dos apostadores: {}", apostadores);
 
-        assertTrue(apostadores.size() == 3);
+	assertTrue(apostadores.size() == 3);
 
-        assertEquals(zapa, apostadores.get(0).getApostador());
-        assertEquals(adriano, apostadores.get(1).getApostador());
-        assertEquals(zanini, apostadores.get(2).getApostador());
+	assertEquals(zapa, apostadores.get(0).getApostador());
+	assertEquals(adriano, apostadores.get(1).getApostador());
+	assertEquals(zanini, apostadores.get(2).getApostador());
 
-        assertEquals((Integer) 6, apostadores.get(0).getPontosTotal());
-        assertEquals((Integer) 6, apostadores.get(1).getPontosTotal());
-        assertEquals((Integer) 3, apostadores.get(2).getPontosTotal());
+	assertEquals((Integer) 6, apostadores.get(0).getPontosTotal());
+	assertEquals((Integer) 6, apostadores.get(1).getPontosTotal());
+	assertEquals((Integer) 3, apostadores.get(2).getPontosTotal());
+
+	final List<Palpite> palpites = palpiteService
+		.recuperarPalpites(campeonato);
+	
+	assertThat(palpites, not(empty()));
+	
+	final Palpite[] palpitesZanini = Collections2.filter(palpites, new Predicate<Palpite>() {
+	    public boolean apply(Palpite input) {
+	        return input.getApostador().getNome().equals("Zanini");
+	    }
+	}).toArray(new Palpite[0]);
+	
+	assertTrue(palpitesZanini[0].getAcertos().isErrado());
+	assertTrue(palpitesZanini[1].getAcertos().isGol());
+	assertTrue(palpitesZanini[2].getAcertos().isEmpate());
+	
+	assertFalse(palpitesZanini[0].getAcertos().isEmpate());
+	assertFalse(palpitesZanini[0].getAcertos().isGol());
+	assertFalse(palpitesZanini[0].getAcertos().isPlacar());
+	assertFalse(palpitesZanini[0].getAcertos().isVencedor());
     }
 
 }

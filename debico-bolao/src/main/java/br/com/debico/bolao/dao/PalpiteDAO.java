@@ -5,6 +5,7 @@ import java.util.List;
 import br.com.debico.model.Apostador;
 import br.com.debico.model.Palpite;
 import br.com.debico.model.Partida;
+import br.com.debico.model.campeonato.CampeonatoImpl;
 import br.com.tecnobiz.spring.config.dao.Dao;
 
 
@@ -17,6 +18,15 @@ public interface PalpiteDAO extends Dao<Palpite, Integer> {
      * @return relação dos palpites.
      */
     List<Palpite> selecionarTodos(List<? extends Partida> partidas);
+    
+    /**
+     * Recupera todos os palpites do campeonato em questão. Utilizar com cuidado.
+     * 
+     * @param campeonato
+     * @since 2.0.3
+     * @return
+     */
+    List<Palpite> selecionarTodos(CampeonatoImpl campeonato);
     
     /**
      * Pesquisa a existência de um palpite para determinada partida.

@@ -1,5 +1,7 @@
 package br.com.debico.bolao.services.impl;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -17,10 +19,10 @@ import br.com.debico.bolao.services.PalpiteService;
 import br.com.debico.campeonato.dao.PartidaDAO;
 import br.com.debico.core.DebicoException;
 import br.com.debico.model.Palpite;
-import br.com.debico.model.PalpiteLite;
+import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.model.campeonato.CampeonatoImpl;
+import br.com.debico.model.to.PalpiteTO;
 import br.com.debico.social.services.ApostadorService;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 
 @Named
@@ -46,17 +48,24 @@ class PalpiteServiceImpl implements PalpiteService {
     @Named("resourceBundleMessageSource")
     private MessageSource messageSource;
     
-    public PalpiteLite palpitar(final PalpiteLite palpiteLite, final CampeonatoImpl campeonato) throws DebicoException {
-        checkNotNull(palpiteLite);
+    @Override
+    public List<Palpite> recuperarPalpites(Campeonato campeonato) {
+	checkNotNull(campeonato, "O Campeonato nao pode ser nulo");
+	
+        return palpiteDAO.selecionarTodos((CampeonatoImpl)campeonato);
+    }
+    
+    public PalpiteTO palpitar(final PalpiteTO palpiteTO, final CampeonatoImpl campeonato) throws DebicoException {
+        checkNotNull(palpiteTO);
 
-        Palpite palpite = new Palpite(palpiteLite);
-        palpite.setApostador(apostadorService.selecionarApostadorPorEmail(palpiteLite.getApostadorEmail()));
-        palpite.setPartida(partidaDAO.findById(palpiteLite.getIdPartida()));
+        Palpite palpite = new Palpite(palpiteTO);
+        palpite.setApostador(apostadorService.selecionarApostadorPorEmail(palpiteTO.getApostadorEmail()));
+        palpite.setPartida(partidaDAO.findById(palpiteTO.getIdPartida()));
 
         this.palpitar(palpite, campeonato);
         
-        palpiteLite.setId(palpite.getId());
-        return palpiteLite;
+        palpiteTO.setId(palpite.getId());
+        return palpiteTO;
     }
 
     public void palpitar(final Palpite palpite, final CampeonatoImpl campeonato)

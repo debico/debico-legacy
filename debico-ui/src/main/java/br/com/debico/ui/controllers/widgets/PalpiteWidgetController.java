@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import br.com.debico.bolao.model.PartidaRodadaPalpiteView;
+import br.com.debico.bolao.model.view.PartidaRodadaPalpiteView;
 import br.com.debico.bolao.services.PalpiteService;
 import br.com.debico.bolao.services.PartidaPalpiteService;
 import br.com.debico.campeonato.services.CampeonatoService;
 import br.com.debico.core.DebicoException;
-import br.com.debico.model.PalpiteLite;
+import br.com.debico.model.to.PalpiteTO;
 
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -63,9 +63,9 @@ public class PalpiteWidgetController {
 
     @ApiOperation("Realiza um palpite")
     @RequestMapping(method = RequestMethod.POST, value = "/widgets/palpite/{permalink}")
-    public @ResponseBody PalpiteLite palpitar(
+    public @ResponseBody PalpiteTO palpitar(
             @PathVariable(value = "permalink") final String permalink,
-            @RequestBody final PalpiteLite palpiteIO, final Principal principal)
+            @RequestBody final PalpiteTO palpiteIO, final Principal principal)
             throws DebicoException {
 
         palpiteIO.setApostadorEmail(principal.getName());

@@ -19,6 +19,7 @@ then
     $palpite.setPontos( 5 );
     $palpite.setComputado( true );
     $palpite.setDataComputado( new java.util.Date() );
+    $palpite.getAcertos().setPlacar( true );
     
     $pontuacao.somarPontosTotal( 5 );
     $pontuacao.setPlacar( $pontuacao.getPlacar() + 1 );
@@ -47,6 +48,8 @@ when
 then
     $pontuacao.somarPontosTotal( 2 );
     $pontuacao.setVencedor( $pontuacao.getVencedor() + 1 );
+    
+    $palpite.getAcertos().setVencedor( true );
     $palpite.setPontos(2);
     $palpite.setDataComputado(new java.util.Date());
     
@@ -72,6 +75,7 @@ then
     $pontuacao.somarPontosTotal( 2 );
     $pontuacao.setEmpates( $pontuacao.getEmpates() + 1 );
     
+    $palpite.getAcertos().setEmpate( true );
     $palpite.setPontos(2);
     $palpite.setDataComputado(new java.util.Date());
     
@@ -96,6 +100,7 @@ then
     $palpite.somarPontos( 1 );
     $palpite.setComputado( true );
     $palpite.setDataComputado( new java.util.Date() );
+    $palpite.getAcertos().setGol( true );
     
     $pontuacao.somarPontosTotal( 1 );
     $pontuacao.setGols( $pontuacao.getGols() + 1 );
@@ -121,6 +126,8 @@ then
     $palpite.setPontos( 0 );
     $palpite.setComputado( true );
     $palpite.setDataComputado( new java.util.Date() );
+    $palpite.getAcertos().setErrado( true );
+    
     $pontuacao.setErrados( $pontuacao.getErrados() + 1 );
     
     //fim

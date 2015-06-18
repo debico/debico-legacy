@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
+import br.com.debico.model.to.PalpiteTO;
+
 import com.google.common.base.Objects;
 import com.google.common.base.Objects.ToStringHelper;
 
@@ -32,13 +34,13 @@ public abstract class PalpiteBase implements Serializable {
     private boolean computado;
     
     /**
-     * Cria uma nova instância com base em {@link PalpiteLite}. Não define {@link Apostador} e {@link Partida}.
+     * Cria uma nova instância com base em {@link PalpiteTO}. Não define {@link Apostador} e {@link Partida}.
      * O próprio cliente deve ser responsável por definir essas propriedades com base em serviços.
      *  
-     * @param palpiteLite
+     * @param palpiteTO
      */
-    public PalpiteBase(final PalpiteLite palpiteLite) {
-        this.placar = palpiteLite.getPlacar();
+    public PalpiteBase(final PalpiteTO palpiteTO) {
+        this.placar = palpiteTO.getPlacar();
     }
     
     public PalpiteBase(final Apostador apostador, final Placar placar) {
