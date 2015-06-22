@@ -1,7 +1,10 @@
 package br.com.debico.core.spring.config;
 
 import javax.inject.Inject;
+import javax.management.MBeanServer;
 import javax.sql.DataSource;
+
+import net.sf.ehcache.management.ManagementService;
 
 import org.jasypt.util.password.PasswordEncryptor;
 import org.jasypt.util.password.StrongPasswordEncryptor;
@@ -19,6 +22,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.jmx.support.MBeanServerFactoryBean;
 import org.springframework.security.acls.domain.AclAuthorizationStrategyImpl;
 import org.springframework.security.acls.domain.ConsoleAuditLogger;
 import org.springframework.security.acls.domain.DefaultPermissionGrantingStrategy;
@@ -65,6 +69,8 @@ public final class InfrastructureConfig {
 
     }
 
+    // ~ Cache
+    // ===================================================================================================
     /**
      * Cache Manager ativado quando no profile {@link Release}.
      * <p />
@@ -109,7 +115,25 @@ public final class InfrastructureConfig {
 	cmfb.setShared(true);
 	return cmfb;
     }
+    
+    // serviço de gerenciamento de cache
+    @Bean(initMethod="init", destroyMethod="dispose")
+    @Release
+    public ManagementService ehCacheManagementService(net.sf.ehcache.CacheManager cacheManager, MBeanServer beanServer) {
+	return new ManagementService(cacheManager, beanServer, true, true, true, true);
+    }
+    
+    @Bean
+    @Release
+    public MBeanServerFactoryBean mbeanServerFactoryBean() {
+	final MBeanServerFactoryBean factoryBean = new MBeanServerFactoryBean();
+        factoryBean.setLocateExistingServerIfPossible(true);
+        
+	return factoryBean;
+    }
 
+    // ~ Misc.
+    // ===================================================================================================
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
 	return new PropertySourcesPlaceholderConfigurer();
