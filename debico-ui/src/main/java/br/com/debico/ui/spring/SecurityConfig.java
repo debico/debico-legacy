@@ -70,6 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	/**
 	 * Veja os exemplos de configuração nos links abaixo.
 	 * 
+	 * @see <a href="http://www.baeldung.com/spring-security-session">Spring Security Session Management</a>
 	 * @see <a href="http://docs.spring.io/spring-security/site/docs/3.2.x/guides/form.html">Creating  a Custom Login Form</a>
 	 * @see <a href="http://docs.spring.io/spring-security/site/docs/3.2.4.RELEASE/reference/htmlsingle/">Spring Secutiry Doc</a>
 	 * @see <a href="http://www.mkyong.com/spring-security/spring-security-remember-me-example/">Spring Security Remember Me Example</a>
@@ -77,7 +78,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
+		http.sessionManagement()
+			.invalidSessionUrl("/support/session_exp")
+			.maximumSessions(5)
+			.expiredUrl("/support/session_exp")
+			.and()
+		.and()
+		    .authorizeRequests()
 				.antMatchers("/robots.txt").permitAll()
 				.antMatchers("/static/**").permitAll()
 				.antMatchers("/contato/").permitAll()

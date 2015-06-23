@@ -34,7 +34,7 @@
 		<script  type="text/javascript" th:inline="javascript">
 			/*<![CDATA[*/
 			  var APP = {
-				version : /*[[${appversion.version}]]*/'',
+				version : /*[[${appversion != null ? appversion.version : ''}]]*/'',
 				name : 'br.com.debico.ui'
 			  };
 			  /*]]>*/
@@ -53,7 +53,7 @@
 		    <span>
 			 Problemas? <a href="#" data-reveal-id="contato">D&ecirc; seu Feedback</a> | 
 			</span>
-			<span >
+			<span th:if="${appversion}">
 				Vers&atilde;o <a th:href="@{|https://bitbucket.org/ricardozanini/debico/issues?milestone=v${appversion.releaseVersion}|}" th:text="${appversion.version}" target="_blank"></a> 
 				rev <span th:text="${appversion.buildNumber}"></span>
 				<span class="round label" th:text="${appversion.versionNews}"></span>

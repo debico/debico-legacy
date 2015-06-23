@@ -8,4 +8,16 @@
         <param-name>spring.profiles.active</param-name>
         <param-value>standalone-jpa,release</param-value>
     </context-param>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/support/access_denied</location>
+    </error-page>
+    <error-page>
+        <error-code>401</error-code>
+        <location>/support/access_denied</location>
+    </error-page>
+        <error-page>
+        <error-code>404</error-code>
+        <location>/support/not_found</location>
+    </error-page>
 </web-app>
