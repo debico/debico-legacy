@@ -30,13 +30,35 @@ public class SupportController extends AbstractViewController {
 	return "support";
     }
 
+    // redirecionados do web.xml onde o HTTPErrorHandler nao conseguiu capturar.
+    @RequestMapping(value = "/support/server_error")
+    public String redirectFromServerError(HttpServletRequest req,
+	    Model model) {
+	LOGGER.debug("[redirectFromServerError] Erro no servidor");
+	this.clearError();
+	final Throwable throwable = (Throwable) req
+		.getAttribute("javax.servlet.error.exception");
+	String errorMsg = null;
+	
+	if (throwable != null) {
+	    errorMsg = throwable.getMessage();
+	}
+
+	model.addAttribute("errorCode",
+		req.getAttribute("javax.servlet.error.status_code"));
+	model.addAttribute("errorMsg", errorMsg);
+	model.addAttribute("error", true);
+
+	return this.getViewName();
+    }
+
     @RequestMapping(value = "/support/not_found")
     public String redirectFromNotFound(HttpServletRequest request, Model model) {
 	LOGGER.debug("[redirectFromNotFound] Pagina nao encontrada");
 	this.clearError();
 	model.addAttribute("errorCode", HttpStatus.NOT_FOUND.value());
 	model.addAttribute("error", false);
-	
+
 	return this.getViewName();
     }
 

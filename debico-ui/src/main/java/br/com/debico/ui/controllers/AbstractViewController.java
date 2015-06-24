@@ -9,6 +9,8 @@ import org.springframework.context.MessageSourceAware;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.debico.core.DebicoException;
+import br.com.debico.core.spring.security.ApostadorUserDetails;
+import br.com.debico.ui.thymeleaf.UsuarioAuthUtils;
 import br.com.debico.ui.utils.MessageSourceUtils;
 
 public abstract class AbstractViewController implements MessageSourceAware {
@@ -122,5 +124,13 @@ public abstract class AbstractViewController implements MessageSourceAware {
      */
     protected void addTitleParam(Object titleParam) {
 	this.addObject("title_param", titleParam);
+    }
+    
+    protected ApostadorUserDetails getApostadorAutenticado() {
+	return UsuarioAuthUtils.apostadorAutenticado();
+    }
+    
+    protected String getLoginUsuarioAutenticado() {
+	return UsuarioAuthUtils.loginUsuarioAutenticado();
     }
 }

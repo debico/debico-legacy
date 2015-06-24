@@ -29,7 +29,8 @@
 				<h3 th:text="#{support.error.html.title}"></h3>
 				<hr />
 				<p>
-					<a th:href="${errorUrl}" th:text="#{support.error.html.urlMsg}"></a>
+					<a th:if="${errorUrl}" th:href="${errorUrl}" th:text="#{support.error.html.urlMsg}"></a>
+					<a th:if="${errorUrl} == null" th:href="@{/}" th:text="#{support.error.html.urlMsg}"></a>
 				</p>
 				<button th:if="${errorMsg}" class="button" id="btn_support_msg"
 					th:text="#{support.error.html.show_button}"></button>

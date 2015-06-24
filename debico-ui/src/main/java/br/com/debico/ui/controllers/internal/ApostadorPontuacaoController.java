@@ -1,5 +1,7 @@
 package br.com.debico.ui.controllers.internal;
 
+import static com.google.common.base.Objects.firstNonNull;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -20,7 +22,7 @@ import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.social.services.LigaService;
 import br.com.debico.ui.controllers.AbstractViewController;
 
-import static com.google.common.base.Objects.firstNonNull;
+import com.google.common.base.Strings;
 
 /**
  * Carrega o ranking dos Apostadores, por campeonato.
@@ -45,49 +47,63 @@ public class ApostadorPontuacaoController extends AbstractViewController {
     private RodadaService rodadaService;
 
     @Override
+    public void init() {
+	super.init();
+	this.carregarFiltroLigas();
+    }
+
+    @Override
     protected String getViewName() {
-        return "ranking";
+	return "ranking";
     }
 
     @RequestMapping(value = "/ranking/{permalink}", method = RequestMethod.GET)
     public ModelAndView ranking(
-            @PathVariable(value = "permalink") String permalink,
-            @RequestParam(value = "liga", required = false) final Long idLigaParam,
-            @RequestParam(value = "rodada", required = false) final Integer idRodadaParam) {
-        final Campeonato campeonato = campeonatoService
-                .selecionarCampeonato(permalink);
+	    @PathVariable(value = "permalink") String permalink,
+	    @RequestParam(value = "liga", required = false) final Long idLigaParam,
+	    @RequestParam(value = "rodada", required = false) final Integer idRodadaParam) {
+	final Campeonato campeonato = campeonatoService
+		.selecionarCampeonato(permalink);
 
-        final int idRodada = firstNonNull(idRodadaParam, 0);
-        final long idLiga = firstNonNull(idLigaParam, 0L);
+	final int idRodada = firstNonNull(idRodadaParam, 0);
+	final long idLiga = firstNonNull(idLigaParam, 0L);
 
-        this.addObject("liga", ligaService.recuperarLiga(idLiga).orNull());
-        this.addObject("rodada", rodadaService.selecionarRodadaMeta(idRodada)
-                .orNull());
-        this.addObject("campeonato", campeonato);
-        this.addObject("ranking",
-                this.listarRanking(campeonato, idLiga, idRodada));
+	this.addObject("liga", ligaService.recuperarLiga(idLiga).orNull());
+	this.addObject("rodada", rodadaService.selecionarRodadaMeta(idRodada)
+		.orNull());
+	this.addObject("campeonato", campeonato);
+	this.addObject("ranking",
+		this.listarRanking(campeonato, idLiga, idRodada));
 
-        return getModelAndView();
+	return getModelAndView();
     }
 
     private List<ApostadorPontuacao> listarRanking(final Campeonato campeonato,
-            final long idLiga, final int idRodada) {
+	    final long idLiga, final int idRodada) {
 
-        if (idLiga > 0 && idRodada > 0) {
-            return apostadorPontuacaoService.listarRankingPorRodadaELiga(
-                    idRodada, idLiga);
-        }
+	if (idLiga > 0 && idRodada > 0) {
+	    return apostadorPontuacaoService.listarRankingPorRodadaELiga(
+		    idRodada, idLiga);
+	}
 
-        if (idLiga > 0) {
-            return apostadorPontuacaoService.listarRankingPorLiga(
-                    campeonato.getId(), idLiga);
-        }
+	if (idLiga > 0) {
+	    return apostadorPontuacaoService.listarRankingPorLiga(
+		    campeonato.getId(), idLiga);
+	}
 
-        if (idRodada > 0) {
-            return apostadorPontuacaoService.listarRankingPorRodada(idRodada);
-        }
+	if (idRodada > 0) {
+	    return apostadorPontuacaoService.listarRankingPorRodada(idRodada);
+	}
 
-        return apostadorPontuacaoService.listarRanking(campeonato);
+	return apostadorPontuacaoService.listarRanking(campeonato);
+    }
+
+    private void carregarFiltroLigas() {
+	final String usuario = this.getLoginUsuarioAutenticado();
+
+	if (!Strings.isNullOrEmpty(usuario)) {
+	    this.addObject("ligas", ligaService.consultarLiga(usuario));
+	}
     }
 
 }

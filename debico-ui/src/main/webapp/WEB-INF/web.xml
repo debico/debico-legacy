@@ -9,6 +9,10 @@
         <param-value>standalone-jpa,release</param-value>
     </context-param>
     <error-page>
+        <error-code>500</error-code>
+        <location>/support/server_error</location>
+    </error-page>
+    <error-page>
         <error-code>403</error-code>
         <location>/support/access_denied</location>
     </error-page>

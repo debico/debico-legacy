@@ -31,7 +31,7 @@ import static com.google.common.base.Objects.toStringHelper;
  */
 @Entity
 @Table(name = "tb_liga")
-public final class Liga implements BaseModel<Long>, Serializable, Comparable<Liga> {
+public class Liga implements BaseModel<Long>, Serializable, Comparable<Liga> {
 
 	private static final long serialVersionUID = 1877249715720845337L;
 
