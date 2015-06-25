@@ -122,6 +122,12 @@ function Partida(json) {
 	self.computadaCampeonato = json.computadaCampeonato;
 	self.status = json.status;
 	self.id = json.id;
+	
+	self.editing = ko.observable(false);
+	
+	self.edit = function() {
+		self.editing(true);
+	}
 
 	if (typeof json.placar !== "undefined" && json.placar !== null) {
 		self.placar = new Placar(json.placar, json.id);

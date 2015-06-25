@@ -60,7 +60,7 @@ PartidasRodadaEditViewModel.prototype.carregarPartidas = function(url) {
 					dataPartida : newValue
 				};
 
-				console.log("a data mudou para " + newValue);
+				// console.log("a data mudou para " + newValue);
 
 				DebicoAdmin.Partida.atualizarDataHorario(args).then(DebicoUtils.View.notify);
 			}, p.dataHoraPartida);
@@ -71,7 +71,7 @@ PartidasRodadaEditViewModel.prototype.carregarPartidas = function(url) {
 		self.partidas(mapped);
 		$(".data-input").datetimepicker({
 			dateFormat : 'dd/mm/yy',
-			controlType : 'select'
+			controlType : 'select',
 		});
 	});
 };
