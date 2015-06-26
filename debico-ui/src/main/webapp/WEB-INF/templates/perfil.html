@@ -14,53 +14,64 @@
 					<div class="large-12 columns">
 						<br />
 						<h2>
-							<span th:text="#{perfil.titulo}"></span> <small debico:usuario="name"></small>
+							<span th:text="#{perfil.titulo}"></span> <small
+								debico:usuario="name"></small>
 						</h2>
 						<hr />
 						<div th:replace="fragments/alert :: error"></div>
-						<form th:action="@{/perfil/}" method="post" id="perfil_form" th:object="${apostador}">
+						<form th:action="@{/perfil/}" method="post" id="perfil_form"
+							th:object="${apostador}">
 							<h4 th:text="#{perfil.subtitulo1}"></h4>
 							<br />
 							<div class="row">
 								<div class="large-12 columns">
-									<label for="nome"><span th:text="#{label.nome}" th:remove="tag"></span> 
-									<input th:field="*{nome}"
-										type="text" id="nome" name="nome" required="required"
-										maxlength="500" th:title="#{input.nome.error}" />
-									</label>
+									<label for="nome"><span th:text="#{label.nome}"
+										th:remove="tag"></span> <input th:field="*{nome}" type="text"
+										id="nome" name="nome" required="required" maxlength="500"
+										th:title="#{input.nome.error}" /> </label>
 								</div>
 							</div>
 							<div class="row">
-                                <div class="large-12 columns">
-                                    <label for="apelido"><span th:text="#{perfil.form.apelido}" th:remove="tag"></span>
-                                        <input type="text" id="apelido" name="apelido" th:field="*{apelido}"
-                                        maxlength="128" th:title="#{perfil.form.apelido.err}" />
-                                    </label>
-                                </div>
-                            </div>
+								<div class="large-12 columns">
+									<label for="apelido"><span
+										th:text="#{perfil.form.apelido}" th:remove="tag"></span> <input
+										type="text" id="apelido" name="apelido" th:field="*{apelido}"
+										maxlength="128" th:title="#{perfil.form.apelido.err}" /> </label>
+								</div>
+							</div>
 							<div class="row">
 								<div class="large-12 columns">
-									<label for="buscaTime"><span th:text="#{perfil.form.timecoracao}" th:remove="tag"></span>
-										<input type="text" id="buscaTime" name="buscaTime" th:attr="placeholder=#{perfil.form.ph.timecoracao}" th:field="*{opcoes.timeCoracao.nome}" />
-									</label>
-									<input type="hidden" id="timeCoracao" name="timeCoracao" th:field="*{opcoes.timeCoracao.id}" />
+									<label for="buscaTime"><span
+										th:text="#{perfil.form.timecoracao}" th:remove="tag"></span> <input
+										type="text" id="buscaTime" name="buscaTime"
+										th:attr="placeholder=#{perfil.form.ph.timecoracao}"
+										th:field="*{opcoes.timeCoracao.nome}" /> </label> <input
+										type="hidden" id="timeCoracao" name="timeCoracao"
+										th:field="*{opcoes.timeCoracao.id}" />
 								</div>
 							</div>
 							<hr />
 							<h4 th:text="#{perfil.subtitulo2}"></h4>
 							<br />
 							<div class="row">
-								<div class="large-12 columns">
-									<input id="lembretePalpites" type="checkbox" th:field="*{opcoes.lembretePalpites}"/><label for="lembretePalpites" th:text="#{perfil.opcoes.lembrePalpites}"></label>
+								<div class="small-1 columns">
+									<input id="lembretePalpites" type="checkbox"
+										th:field="*{opcoes.lembretePalpites}" />
+								</div>
+								<div class="small-11 columns">
+									<label for="lembretePalpites"
+										th:text="#{perfil.opcoes.lembrePalpites}" class="left"></label>
 								</div>
 							</div>
 							<hr />
 							<div class="row">
 								<div class="large-12 columns">
-									<button type="submit" id="perfilButton" class="button" th:text="#{botao.atualizar}"></button>
+									<button type="submit" id="perfilButton" class="button"
+										th:text="#{botao.atualizar}"></button>
 								</div>
 							</div>
-							<input type="hidden" th:field="*{id}" id="idApostador" name="idApostador" />
+							<input type="hidden" th:field="*{id}" id="idApostador"
+								name="idApostador" />
 						</form>
 					</div>
 				</div>
@@ -69,8 +80,10 @@
 	</div>
 	<div th:replace="fragments/footer :: footer-copy"></div>
 	<div th:replace="fragments/footer :: footer-scripts"></div>
-	<script type="text/javascript" th:src="@{/static/js/vendor/jquery-ui.min.js}"></script>
-	<script type="text/javascript" th:src="@{/static/js/widgets/widgets.buscatime.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/static/js/vendor/jquery-ui.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/static/js/widgets/widgets.buscatime.js}"></script>
 	<script type="text/javascript" th:src="@{/static/js/pages/perfil.js}"></script>
 </body>
 </html>
