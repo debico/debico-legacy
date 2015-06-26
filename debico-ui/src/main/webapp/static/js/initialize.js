@@ -67,4 +67,6 @@ $(document).ready(function() {
 		paginationSpeed : 400,
 		singleItem : true
 	});
+	
+	moment.locale('pt-BR');
 });
