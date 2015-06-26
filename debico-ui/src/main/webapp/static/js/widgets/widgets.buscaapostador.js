@@ -61,11 +61,10 @@ $.widget("debico.buscaapostador", $.ui.autocomplete, {
 	},
 
 	_renderItem : function(ul, item) {
-		ul.addClass("f-dropdown");
-		ul.attr("data-dropdown-content");
+		// nao fica legal com o tema do jquery-ui
+		// ul.addClass("f-dropdown");
+		// ul.attr("data-dropdown-content");
 
-		return $("<li>").append(
-				"<span style='padding:0.25em;' class='ui-menu-item'>" + item.nome + "</span>")
-				.appendTo(ul);
+		return $("<li>").append(item.nome).appendTo(ul);
 	},
 });

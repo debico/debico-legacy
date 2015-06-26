@@ -21,13 +21,12 @@ $(document).ready(
 				$('#rodada_table').unblock();
 			});
 
-			
 			var partidasListViewModel = new PartidasRodadaListViewModel();
-			
-			if(typeof PartidasRodadaEditViewModel !== "undefined") {
+
+			if (typeof PartidasRodadaEditViewModel !== "undefined") {
 				partidasListViewModel = new PartidasRodadaEditViewModel();
 			}
-			
+
 			partidasListViewModel.carregarPartidasRodada(RODADA_INICIAL);
 			ko.applyBindings(partidasListViewModel, document
 					.getElementById("rodada_table"));
