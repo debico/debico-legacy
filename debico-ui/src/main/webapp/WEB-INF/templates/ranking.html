@@ -32,11 +32,12 @@
 					</div>
 					<div class="large-8 columns">
 						<div class="large-6 small-12 columns">
-							<select id="filtro_lista" th:field="*{ligas}">
+							<select id="filtro_lista" th:field="*{ligas}" th:if="${!#lists.isEmpty(ligas)}">
 								<option value="0">Ligas...</option>
 								<option th:each="l: ${ligas}" th:value="${l.id}"
 									th:text="${l.nome}"></option>
 							</select>
+							<span th:if="${#lists.isEmpty(ligas)}">&nbsp;</span>
 						</div>
 						<div class="large-4 small-12 columns">
                             <select id="filtro_rodada">
