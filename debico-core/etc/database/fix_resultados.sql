@@ -8,3 +8,11 @@ update tb_pontuacao set
 update tb_apostador_campeonato set 
     nu_empate = 0, nu_gols = 0, nu_errados = 0,
     nu_placar = 0, nu_pontos = 0, nu_vencedor = 0;
+    
+-- update do backup
+    
+select concat('update tb_apostador_campeonato set  nu_empate = ',cast(nu_empate as char(10)),', nu_gols = ',cast(nu_gols as char(10)),', 
+    nu_errados = ',cast(nu_errados as char(10)),',
+    nu_placar = ',cast(nu_placar as char(10)),', nu_pontos = ',cast(nu_pontos as char(10)),', nu_vencedor = ',cast(nu_vencedor as char(10)),'
+    where id_apostador = ',cast(id_apostador as char(10)),' and id_campeonato = 2;') as query1
+from tb_apostador_campeonato where id_campeonato = 2 and id_apostador = ?;
