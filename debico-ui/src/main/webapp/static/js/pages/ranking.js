@@ -84,9 +84,15 @@ $(document).ready(function() {
 		$("#alert-loading").hide();
 	}).carregarGrafico();
 
-//	$("#filtro_lista").on('change', function() {
-//		if (parseInt(this.value) > 0) {
-//			window.location.replace();
+//	$("#btn_filtro").on('click', function() {
+//		var liga = parseInt($("#filtro_lista").val());
+//		if (liga > 0) {
+//			var url = $(window.location);
+//			var params = url.param();
+//			params["liga"] = liga;
+//			window.location.replace("?" + params);
+//		} else {
+//			$.notify("Escolha uma liga!", "warn");
 //		}
 //	});
 

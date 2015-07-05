@@ -57,10 +57,10 @@ public class DroolsBRMSExecutor implements BRMSExecutor, InitializingBean {
 			LOGGER.debug(
 					"[processar] Processamento realizado com sucesso! {} regras processadas",
 					rules);
-
 			return rules;
 		} finally {
 			if (kieSession != null) {
+			    // kieSession.destroy();
 				kieSession.dispose();
 			}
 		}

@@ -7,7 +7,6 @@ import javax.inject.Named;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.bolao.brms.CalculoPalpitesService;
@@ -20,7 +19,7 @@ import br.com.debico.model.Partida;
 import br.com.debico.model.campeonato.Campeonato;
 
 @Named
-@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
+@Transactional(readOnly = false)
 class CalculoPalpitesServiceImpl implements CalculoPalpitesService {
 
     protected static final Logger LOGGER = LoggerFactory

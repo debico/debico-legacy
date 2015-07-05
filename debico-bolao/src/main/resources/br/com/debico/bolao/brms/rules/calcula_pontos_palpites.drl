@@ -7,12 +7,12 @@ rule "Calcula resultados na cabeca"
     agenda-group "resultado_palpite"
     no-loop 
 when
-    $pontuacao : ApostadorPontuacao( )
-    $partida : Partida( status != StatusPartida.ND )
+    $pontuacao : ApostadorPontuacao( apostador.id > 0 )
+    $partida : Partida( status != StatusPartida.ND, id > 0 )
     $palpite : Palpite( 
+    		partida.id == $partida.id,
             computado == false,
-            apostador == $pontuacao.apostador, 
-            partida == $partida, 
+            apostador.id == $pontuacao.apostador.id,  
             placar.golsVisitante == $partida.placar.golsVisitante, 
             placar.golsMandante == $partida.placar.golsMandante )
 then
@@ -23,7 +23,7 @@ then
     
     $pontuacao.somarPontosTotal( 5 );
     $pontuacao.setPlacar( $pontuacao.getPlacar() + 1 );
-        
+     
     //nao precisamos mais desse palpite em memoria.
     retract ( $palpite );
 end
@@ -33,12 +33,12 @@ rule "Calcula resultados vencedor"
     agenda-group "resultado_palpite"
     no-loop 
 when
-    $pontuacao : ApostadorPontuacao( )
-    $partida : Partida( status == StatusPartida.VM || status == StatusPartida.VV  )
+    $pontuacao : ApostadorPontuacao( apostador.id > 0 )
+    $partida : Partida( status == StatusPartida.VM || status == StatusPartida.VV, id > 0  )
     $palpite : Palpite( 
-            apostador == $pontuacao.apostador, 
+            partida.id == $partida.id,
+            apostador.id == $pontuacao.apostador.id, 
             computado == false, 
-            partida == $partida, 
                 (
 	                (placar.golsVisitante > placar.golsMandante && $partida.placar.golsVisitante > $partida.placar.golsMandante) 
 	                || (placar.golsMandante > placar.golsVisitante && $partida.placar.golsMandante > $partida.placar.golsVisitante)
@@ -46,15 +46,16 @@ when
                 )
             )
 then
-    $pontuacao.somarPontosTotal( 2 );
-    $pontuacao.setVencedor( $pontuacao.getVencedor() + 1 );
-    
     $palpite.getAcertos().setVencedor( true );
     $palpite.setPontos(2);
     $palpite.setDataComputado(new java.util.Date());
+        
+    $pontuacao.somarPontosTotal( 2 );
+    $pontuacao.setVencedor( $pontuacao.getVencedor() + 1 );
     
     // usamos modify pois  outras regras terao de ser revisitadas.
     modify ($palpite) { setComputado(true) }
+    // retract ($palpite);
 end
 
 
@@ -63,24 +64,25 @@ rule "Calcula resultados empate"
     agenda-group "resultado_palpite"
     no-loop 
 when
-    $pontuacao : ApostadorPontuacao( )
-    $partida : Partida( status == StatusPartida.EM  )
+    $pontuacao : ApostadorPontuacao( apostador.id > 0 )
+    $partida : Partida( status == StatusPartida.EM, id > 0  )
     $palpite : Palpite( 
-            apostador == $pontuacao.apostador,
-            computado == false, 
-            partida == $partida,
+            partida.id == $partida.id,
+            apostador.id == $pontuacao.apostador.id,
+            computado == false,
                 (placar.golsVisitante == placar.golsMandante && $partida.placar.golsVisitante == $partida.placar.golsMandante)
             )
 then
-    $pontuacao.somarPontosTotal( 2 );
-    $pontuacao.setEmpates( $pontuacao.getEmpates() + 1 );
-    
     $palpite.getAcertos().setEmpate( true );
     $palpite.setPontos(2);
     $palpite.setDataComputado(new java.util.Date());
     
+    $pontuacao.somarPontosTotal( 2 );
+    $pontuacao.setEmpates( $pontuacao.getEmpates() + 1 );
+    
     // usamos modify pois  outras regras terao de ser revisitadas.
     modify ($palpite) { setComputado(true) }
+    // retract ($palpite);
 end
 
 
@@ -88,12 +90,12 @@ rule "Calcula gols corretos"
     salience -4
     agenda-group "resultado_palpite"
 when
-    $pontuacao : ApostadorPontuacao( )
-    $partida : Partida( status != StatusPartida.ND  )
+    $pontuacao : ApostadorPontuacao( apostador.id > 0 )
+    $partida : Partida( status != StatusPartida.ND, id > 0  )
     $palpite : Palpite( 
             //nao importa se foi computado
-            apostador == $pontuacao.apostador,
-            partida == $partida,
+            apostador.id == $pontuacao.apostador.id,
+            partida.id == $partida.id,
                 (placar.golsVisitante == $partida.placar.golsVisitante || placar.golsMandante == $partida.placar.golsMandante )
             )
 then
@@ -114,12 +116,12 @@ rule "Calcula resultados incorretos"
     salience -5
     agenda-group "resultado_palpite"
 when
-    $pontuacao : ApostadorPontuacao( )
-    $partida : Partida( status != StatusPartida.ND  )
+    $pontuacao : ApostadorPontuacao( apostador.id > 0 )
+    $partida : Partida( status != StatusPartida.ND, id > 0  )
     $palpite : Palpite( 
-            apostador == $pontuacao.apostador, 
+            partida.id == $partida.id,
+            apostador.id == $pontuacao.apostador.id, 
             computado == false,
-            partida == $partida,
             (placar.golsVisitante != $partida.placar.golsVisitante && placar.golsMandante != $partida.placar.golsMandante )
             )
 then
