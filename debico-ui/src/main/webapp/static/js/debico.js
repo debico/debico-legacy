@@ -91,12 +91,24 @@ Debico.Ranking = (function() {
 	/**
 	 * Aplica o filtro pela rodada, liga ou ambas. O que vier com o
 	 * identificador do objeto maior do que zero.
+	 * 
+	 * @see <a href="http://medialize.github.io/URI.js/docs.html">URI.js</a>
 	 */
 	var aplicarFiltro = function(liga, rodada) {
 		var l = parseInt(liga) || 0;
 		var r = parseInt(rodada) || 0;
+		var uri = new URI(window.location);
 
-		// do the yadayada
+		// só consideramos a liga por enquanto
+		if (liga > 0) {
+			uri.setSearch({
+				"liga" : liga
+			})
+		} else {
+			uri.removeSearch("liga");
+		}
+
+		window.location.replace(uri.toString());
 	}
 
 	return {

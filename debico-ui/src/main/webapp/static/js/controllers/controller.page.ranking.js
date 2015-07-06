@@ -22,12 +22,7 @@ $(document).ready(function() {
 	});
 
 	$("#btn_filtro").on('click', function() {
-		var liga = parseInt($("#filtro_lista").val());
-		if (liga > 0) {
-			Debico.Ranking.aplicarFiltro(liga);
-		} else {
-			$.notify("Escolha uma liga!", "warn");
-		}
+		Debico.Ranking.aplicarFiltro($("#filtro_lista").val());
 	});
 
 });
