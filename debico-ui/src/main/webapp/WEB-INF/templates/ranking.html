@@ -25,14 +25,13 @@
 				</div>
 
 				<div class="row">
-					<div class="large-6 columns">
+					<div class="large-4 columns">
 						<p>
 							D&uacute;vidas? Leia as <a href="#" data-reveal-id="regras">regras</a>.
 						</p>
 					</div>
-					<!-- 
-					<div class="large-6 columns" th:if="${!#lists.isEmpty(ligas)}">
-						<div class="large-8 small-12 columns">
+					<div class="large-8 columns">
+						<div class="large-6 small-12 columns">
 							<select id="filtro_lista" th:field="*{ligas}" th:if="${!#lists.isEmpty(ligas)}">
 								<option value="0">Ligas...</option>
 								<option th:each="l: ${ligas}" th:value="${l.id}"
@@ -45,11 +44,10 @@
                                 <option value="0">Rodadas...</option>
                             </select>
                         </div>
-						<div class="large-4 small-12 columns">
+						<div class="large-2 small-12 columns">
 							<button class="button postfix" id="btn_filtro">Filtrar</button>
 						</div>
 					</div>
-					 -->
 				</div>
 			</div>
 
@@ -133,6 +131,6 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.13/d3.min.js"></script>
 	<script
 		src="//cdnjs.cloudflare.com/ajax/libs/rickshaw/1.4.6/rickshaw.min.js"></script>
-	<script th:src="@{/static/js/pages/ranking.js}"></script>
+	<script th:src="@{/static/js/controllers/controller.page.ranking.js}"></script>
 </body>
 </html>

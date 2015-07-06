@@ -17,7 +17,6 @@ DebicoAdmin.Partida = (function() {
 	var _urlAPI = URLS.api.partida;
 
 	var _sendAjax = function(args) {
-		console.log("enviando o ajax");
 		var self = this;
 		self.deferred = Q.defer();
 		
@@ -30,11 +29,9 @@ DebicoAdmin.Partida = (function() {
 			contentType : "application/json",
 			dataType : 'json'
 		}).done(function(response) {
-			console.log("ajax recebico OK");
 			self.args.response = response;
 			self.deferred.resolve(self.args);
 		}).fail(function(err) {
-			console.log("falhou no ajax!");
 			self.args.err = err;
 			self.deferred.reject(self.args);
 		});

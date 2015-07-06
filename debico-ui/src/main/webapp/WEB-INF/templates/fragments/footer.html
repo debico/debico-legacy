@@ -23,13 +23,14 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.3/moment-with-locales.min.js" charset="utf-8"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.66.0-2013.10.09/jquery.blockUI.min.js"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.2/owl.carousel.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/URI.js/1.15.2/URI.min.js"></script>
 		<script th:src="@{/static/js/vendor/notify.min.js}"></script>
 		<script th:src="@{/static/js/jquery.validate.methods.js}" type="text/javascript"></script>
 		<script th:src="@{/static/js/blockui.defaults.js}" type="text/javascript"></script>
 		<script th:src="@{/static/js/notify.defaults.js}" type="text/javascript"></script>
-		<script th:src="@{/static/js/debico_utils.js}" type="text/javascript"></script>
-		
-		<script sec:authorize="isAuthenticated()" type="text/javascript" th:src="@{/static/js/model.js}"></script>
+		<script th:src="@{/static/js/debico_utils.js}" type="text/javascript" charset="utf-8"></script>
+				
+		<script sec:authorize="isAuthenticated()" type="text/javascript" th:src="@{/static/js/model.js}" charset="utf-8"></script>
 		
 		<script  type="text/javascript" th:inline="javascript">
 			/*<![CDATA[*/
@@ -40,6 +41,7 @@
 			  /*]]>*/
 		</script>
 		
+		<script sec:authorize="isAuthenticated()" th:src="@{/static/js/debico.js}" type="text/javascript" charset="utf-8"></script>
 		<script sec:authorize="hasRole('ROLE_ADMIN')" type="text/javascript" th:src="@{/static/js/debico_admin.js}"></script>
 		<script type="text/javascript" th:src="@{/static/js/initialize.js}"></script>
 	</div>
