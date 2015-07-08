@@ -25,7 +25,7 @@ import static com.google.common.base.Objects.toStringHelper;
  */
 @Entity
 @Table(name = "tb_liga_apostador")
-public final class LigaApostador implements Serializable {
+public class LigaApostador implements Serializable {
 
 	private static final long serialVersionUID = -7413492928518433770L;
 

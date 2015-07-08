@@ -139,7 +139,14 @@ public class PartidaBase implements Serializable, Comparable<PartidaBase> {
      */
     @Transient
     public boolean isIniciada() {
-        return new DateTime(this.dataHoraPartida).isAfterNow();
+        return new DateTime(this.dataHoraPartida).isBeforeNow();
+    }
+
+    @Transient
+    // ignore até Jackson 2.6.0
+    // https://github.com/FasterXML/jackson-databind/issues/95
+    public void setIniciada(boolean iniciada) {
+        // nothing
     }
 
     public int compareTo(PartidaBase o) {

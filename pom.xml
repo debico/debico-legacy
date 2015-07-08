@@ -75,7 +75,7 @@
 		<javax.mail.version>1.4.7</javax.mail.version>
 
 		<!-- One Library to rule them all -->
-		<spring.version>4.0.5.RELEASE</spring.version>
+		<spring.version>4.1.7.RELEASE</spring.version>
 		<spring.security.version>4.0.0.RELEASE</spring.security.version>
 
 		<!-- Database -->
@@ -87,7 +87,7 @@
 		<hamcrest.version>1.3</hamcrest.version>
 
 		<!-- Web -->
-		<jackson.version>2.5.2</jackson.version>
+		<jackson.version>2.5.4</jackson.version>
 
 		<!-- Plugins -->
 		<surefire.version>2.17</surefire.version>
