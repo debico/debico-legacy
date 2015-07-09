@@ -14,6 +14,7 @@ import br.com.debico.campeonato.dao.RodadaDAO;
 import br.com.debico.campeonato.services.RodadaService;
 import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.model.campeonato.Rodada;
+import br.com.debico.model.campeonato.RodadaMeta;
 
 import com.google.common.base.Optional;
 
@@ -51,12 +52,17 @@ class RodadaServiceImpl implements RodadaService {
     }
 
     @Override
-    public Optional<Rodada> selecionarRodadaMeta(int idRodada) {
+    public Optional<Rodada> selecionarRodada(int idRodada) {
         if (idRodada == 0) {
             return Optional.absent();
         }
 
         return Optional.of(rodadaDAO.findById(idRodada));
+    }
+    
+    @Override
+    public List<RodadaMeta> selecionarRodadasCalculadas(Campeonato campeonato) {
+        return rodadaDAO.selecionarRodadasComPartidasProcessadas(campeonato);
     }
 
 }

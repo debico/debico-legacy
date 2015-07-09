@@ -5,6 +5,7 @@ import java.util.List;
 
 import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.model.campeonato.Rodada;
+import br.com.debico.model.campeonato.RodadaMeta;
 import br.com.tecnobiz.spring.config.dao.Dao;
 
 public interface RodadaDAO extends Dao<Rodada, Integer> {
@@ -53,5 +54,14 @@ public interface RodadaDAO extends Dao<Rodada, Integer> {
      * @return
      */
     List<Rodada> selecionarRodadasNaoCalculadas(Campeonato campeonato);
-
+    
+    /**
+     * Seleciona todas as rodadas de determiando campeonato com partidas já processadas.
+     * 
+     * @param campeonato
+     * @since 2.0.4
+     * @return lista de rodadas
+     */
+    List<RodadaMeta> selecionarRodadasComPartidasProcessadas(Campeonato campeonato);
+ 
 }

@@ -33,15 +33,17 @@
 					<div class="large-8 columns">
 						<div class="large-6 small-12 columns">
 							<select id="filtro_lista" th:if="${!#lists.isEmpty(ligas)}">
-								<option value="0">Ligas...</option>
+								<option value="0">Por Liga</option>
 								<option th:each="l: ${ligas}" th:value="${l.id}"
 									th:text="${l.nome}" th:selected="${liga != null ? liga.id == l.id : false}"></option>
 							</select>
 							<span th:if="${#lists.isEmpty(ligas)}">&nbsp;</span>
 						</div>
 						<div class="large-4 small-12 columns">
-                            <select id="filtro_rodada">
-                                <option value="0">Rodadas...</option>
+                            <select id="filtro_rodada" >
+                                <option value="0">Por Rodada</option>
+                                <option th:each="r: ${rodadas}" th:value="${r.id}"
+									th:text="${r.nome}" th:selected="${rodada != null ? rodada.id == r.id : false}"></option>
                             </select>
                         </div>
 						<div class="large-2 small-12 columns">

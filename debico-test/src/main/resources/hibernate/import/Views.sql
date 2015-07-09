@@ -91,3 +91,16 @@ CREATE VIEW vi_partida_rodada as
         tb_campeonato as C ON (F.ID_CAMPEONATO = C.ID_CAMPEONATO) 
 	WHERE
 		P.TP_PARTIDA = 'R';
+		
+		
+CREATE VIEW vi_rodada_partida_processada AS
+SELECT DISTINCT
+    R.ID_RODADA, R.NM_RODADA, F.ID_CAMPEONATO, R.NU_ORDEM
+FROM
+    tb_rodada R
+        INNER JOIN
+    tb_partida P ON (R.ID_RODADA = P.ID_RODADA)
+        INNER JOIN
+    tb_fase F ON (P.ID_FASE = F.ID_FASE)
+WHERE
+    P.IN_COMPUTADA = 1;

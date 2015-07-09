@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.model.campeonato.Rodada;
+import br.com.debico.model.campeonato.RodadaMeta;
 
 import com.google.common.base.Optional;
 
@@ -43,6 +44,15 @@ public interface RodadaService {
 	 * @return
 	 * @since 2.0.3
 	 */
-	Optional<Rodada> selecionarRodadaMeta(int idRodada);
+	Optional<Rodada> selecionarRodada(int idRodada);
+	
+	/**
+	 * Recupera as rodadas que possuem partidas calculadas.
+	 * 
+	 * @param campeonato
+	 * @return
+	 * @since 2.0.4
+	 */
+	List<RodadaMeta> selecionarRodadasCalculadas(Campeonato campeonato);
 
 }
