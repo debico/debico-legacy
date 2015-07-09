@@ -8,6 +8,10 @@
 	</parent>
 	<artifactId>debico-bolao</artifactId>
 
+	<properties>
+		<spring.batch.version>3.0.4.RELEASE</spring.batch.version>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>br.com.debico</groupId>
@@ -26,10 +30,15 @@
 			<artifactId>debico-notify</artifactId>
 		</dependency>
 		<dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.batch</groupId>
+			<artifactId>spring-batch-core</artifactId>
+			<version>${spring.batch.version}</version>
+		</dependency>
 	</dependencies>
 	<name>Debico Bolão</name>
 </project>

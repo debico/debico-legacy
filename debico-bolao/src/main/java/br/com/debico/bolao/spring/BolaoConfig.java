@@ -29,7 +29,7 @@ import br.com.debico.social.spring.SocialConfig;
  */
 @EnableScheduling
 @Configuration
-@Import({ CampeonatoConfig.class, SocialConfig.class, NotifyConfig.class })
+@Import({ CampeonatoConfig.class, SocialConfig.class, NotifyConfig.class, BatchProcessorsConfig.class })
 @ComponentScan({ "br.com.debico.bolao.services", "br.com.debico.bolao.dao",
 	"br.com.debico.bolao.brms", "br.com.debico.bolao.schedulers" })
 public class BolaoConfig extends ServicesConfig {
@@ -45,6 +45,9 @@ public class BolaoConfig extends ServicesConfig {
 
     @Inject
     protected NotifyConfig notifyConfig;
+    
+    @Inject
+    protected BatchProcessorsConfig batchProcessorsConfig;
 
     public BolaoConfig() {
 
