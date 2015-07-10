@@ -44,7 +44,11 @@ public class BatchProcessorsConfig {
     
     @Bean
     public Step step1SumarizarPontuacaoApostadorPorRodada(StepBuilderFactory steps) {
-        return steps.get("step1SPAPR").chunk(100).reader(this.pontuacaoSumarizadaReader()).build();
+        return steps.get("step1SPAPR")
+        	.chunk(100)
+        	.reader(this.pontuacaoSumarizadaReader())
+        	//.writer(this.pontucaoSumarizadaWriter())
+        	.build();
     }
     
     @Bean
