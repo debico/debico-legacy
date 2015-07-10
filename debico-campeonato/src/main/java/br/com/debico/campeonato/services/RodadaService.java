@@ -54,5 +54,12 @@ public interface RodadaService {
 	 * @since 2.0.4
 	 */
 	List<RodadaMeta> selecionarRodadasCalculadas(Campeonato campeonato);
+	
+	/**
+	 * Exclui uma rodada específica
+	 * @param idRodada
+	 * @since 2.0.4
+	 */
+	void excluirRodada(int idRodada);
 
 }

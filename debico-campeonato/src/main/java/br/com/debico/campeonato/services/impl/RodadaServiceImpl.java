@@ -23,7 +23,7 @@ import com.google.common.base.Optional;
 class RodadaServiceImpl implements RodadaService {
 
     private static final Logger LOGGER = LoggerFactory
-            .getLogger(RodadaServiceImpl.class);
+	    .getLogger(RodadaServiceImpl.class);
 
     @Inject
     private RodadaDAO rodadaDAO;
@@ -36,33 +36,37 @@ class RodadaServiceImpl implements RodadaService {
     }
 
     public List<Rodada> selecionarRodadas(final String campeonatoPermalink) {
-        LOGGER.debug(
-                "[selecionarRodadas] Tentando selecionar as rodadas do campeonato '{}'",
-                campeonatoPermalink);
-        return rodadaDAO.selecionarRodadas(campeonatoDAO
-                .selecionarPorPermalink(campeonatoPermalink));
+	LOGGER.debug(
+		"[selecionarRodadas] Tentando selecionar as rodadas do campeonato '{}'",
+		campeonatoPermalink);
+	return rodadaDAO.selecionarRodadas(campeonatoDAO
+		.selecionarPorPermalink(campeonatoPermalink));
     }
 
     @Override
     public List<Rodada> selecionarRodadasNaoCalculadas(Campeonato campeonato) {
-        LOGGER.debug(
-                "[selecionarRodadasNaoProcessadas] Tentando selecionar as rodadas do campeonato {}",
-                campeonato);
-        return rodadaDAO.selecionarRodadasNaoCalculadas(campeonato);
+	LOGGER.debug(
+		"[selecionarRodadasNaoProcessadas] Tentando selecionar as rodadas do campeonato {}",
+		campeonato);
+	return rodadaDAO.selecionarRodadasNaoCalculadas(campeonato);
     }
 
     @Override
     public Optional<Rodada> selecionarRodada(int idRodada) {
-        if (idRodada == 0) {
-            return Optional.absent();
-        }
+	if (idRodada == 0) {
+	    return Optional.absent();
+	}
 
-        return Optional.of(rodadaDAO.findById(idRodada));
+	return Optional.of(rodadaDAO.findById(idRodada));
     }
-    
+
     @Override
     public List<RodadaMeta> selecionarRodadasCalculadas(Campeonato campeonato) {
-        return rodadaDAO.selecionarRodadasComPartidasProcessadas(campeonato);
+	return rodadaDAO.selecionarRodadasComPartidasProcessadas(campeonato);
     }
 
+    @Override
+    public void excluirRodada(int idRodada) {
+	rodadaDAO.remove(rodadaDAO.findById(idRodada));
+    }
 }
