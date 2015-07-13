@@ -13,9 +13,9 @@ import br.com.debico.model.Partida;
 import br.com.debico.model.PartidaChave;
 import br.com.debico.model.PartidaRodada;
 import br.com.debico.model.StatusPartida;
+import br.com.debico.model.campeonato.AbstractRodada;
 import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.model.campeonato.Chave;
-import br.com.debico.model.campeonato.Rodada;
 import br.com.tecnobiz.spring.config.dao.AbstractJPADao;
 
 @Named
@@ -28,7 +28,7 @@ class PartidaDAOImpl extends AbstractJPADao<Partida, Integer> implements Partida
         super(Partida.class);
     }
 
-    public List<PartidaRodada> selecionarPartidasNaoDefinidasComPlacar(final Rodada rodada) {
+    public List<PartidaRodada> selecionarPartidasNaoDefinidasComPlacar(final AbstractRodada rodada) {
         return getEntityManager()
                 .createQuery("SELECT p FROM PartidaRodada p WHERE rodada = :rodada AND status = :status AND placar IS NOT NULL " + ORDER_BY_PARTIDA, PartidaRodada.class)
                 .setParameter("status", StatusPartida.ND)

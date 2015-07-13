@@ -5,6 +5,7 @@ import java.util.List;
 import br.com.debico.model.Partida;
 import br.com.debico.model.PartidaChave;
 import br.com.debico.model.PartidaRodada;
+import br.com.debico.model.campeonato.AbstractRodada;
 import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.model.campeonato.Chave;
 import br.com.debico.model.campeonato.Rodada;
@@ -20,7 +21,7 @@ public interface PartidaDAO extends Dao<Partida, Integer> {
      * 
      * @return Lista de {@link Partida}.
      */
-    List<PartidaRodada> selecionarPartidasNaoDefinidasComPlacar(Rodada rodada);
+    List<PartidaRodada> selecionarPartidasNaoDefinidasComPlacar(AbstractRodada rodada);
     
     /**
      * @see #selecionarPartidasNaoDefinidasComPlacar(Rodada)

@@ -22,6 +22,7 @@
 		<module>debico-social</module>
 		<module>debico-notify</module>
 		<module>debico-ui</module>
+		<module>debico-resultados</module>
 	</modules>
 
 	<developers>
