@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.debico.campeonato.brms.CalculoPartidasService;
 import br.com.debico.resultados.Context;
 import br.com.debico.resultados.Processor;
+import br.com.debico.resultados.ProcessorBeans;
 
 /**
  * Processador para calcular as estatísticas gerais (pontos, números de gols,
@@ -18,7 +19,7 @@ import br.com.debico.resultados.Processor;
  * @author Ricardo Zanini (ricardozanini@gmail.com)
  *
  */
-@Named
+@Named(ProcessorBeans.CALCULA_ESTATISTICA_TIME)
 @Transactional(readOnly = false, propagation = Propagation.MANDATORY)
 final class CalculaEstatisticaTimeProcessor implements Processor {
 
@@ -31,8 +32,13 @@ final class CalculaEstatisticaTimeProcessor implements Processor {
 
     @Override
     public boolean execute(Context context) {
+	if(context.getPartidas().isEmpty()) {
+	    return false;
+	}
+	
         calculoPartidasService.calcularPontuacaoTimes(context.getCampeonato(),
                 context.getPartidas());
+        
         return true;
     }
 

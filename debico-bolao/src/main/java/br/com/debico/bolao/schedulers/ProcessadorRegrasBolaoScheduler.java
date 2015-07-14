@@ -16,8 +16,8 @@ import br.com.debico.model.campeonato.Campeonato;
  * @author ricardozanini
  *
  */
-@Named
-@Transactional(readOnly = false)
+//@Named
+//@Transactional(readOnly = false)
 class ProcessadorRegrasBolaoScheduler implements ProcessadorRegrasBolao {
 
     @Inject

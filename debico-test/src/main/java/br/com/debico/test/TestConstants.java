@@ -18,6 +18,11 @@ public final class TestConstants {
 	 * usuário principal de {@link #EMAIL_CARGA}
 	 */
 	public static final Integer[] IDS_APOSTADORES = new Integer[] { 7, 8, 9 };
+	
+	/**
+	 * Identificador do campeonato ativo da carga
+	 */
+	public static final int CAMPEONATO_ID = 1;
 
 	private TestConstants() {
 

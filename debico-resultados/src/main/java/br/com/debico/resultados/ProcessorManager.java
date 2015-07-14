@@ -7,9 +7,11 @@ package br.com.debico.resultados;
  * @author Ricardo Zanini (ricardozanini@gmail.com)
  * @since 2.0.4
  */
-public interface ProcessorManager {
+public interface ProcessorManager<T> {
     
     void start();
+    
+    void start(T parameter);
     
     void init();
     

@@ -15,6 +15,7 @@ import br.com.debico.campeonato.factories.EstruturaCampeonatoProvider;
 import br.com.debico.campeonato.services.CampeonatoService;
 import br.com.debico.campeonato.spring.CampeonatoConfig;
 import br.com.debico.model.campeonato.CampeonatoPontosCorridos;
+import br.com.debico.test.TestConstants;
 import br.com.debico.test.spring.AbstractUnitTest;
 
 @Transactional
@@ -26,7 +27,6 @@ public abstract class AbstractCampeonatoUnitTest extends AbstractUnitTest {
 			.getLogger(AbstractCampeonatoUnitTest.class);
 
 	protected static final String EMAIL_SEM_OPCAO_NOTIFICACAO = "sergio.tondin@gps-pamcary.com.br";
-	private static final int CAMPEONATO_ID = 1;
 
 	protected CampeonatoPontosCorridos CAMPEONATO;
 
@@ -47,7 +47,7 @@ public abstract class AbstractCampeonatoUnitTest extends AbstractUnitTest {
 	@Before
 	public void setUp() throws Exception {
 		CAMPEONATO = (CampeonatoPontosCorridos) campeonatoService
-				.selecionarCampeonato(CAMPEONATO_ID);
+				.selecionarCampeonato(TestConstants.CAMPEONATO_ID);
 	}
 
 }

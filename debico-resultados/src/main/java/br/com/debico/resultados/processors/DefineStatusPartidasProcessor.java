@@ -32,7 +32,7 @@ final class DefineStatusPartidasProcessor implements Processor {
     @Override
     public boolean execute(Context context) {
         for (AbstractRodada rodada : context.getRodadas()) {
-            calculoPartidasService.definirStatusPartidas(rodada);    
+            context.addPartidas(calculoPartidasService.definirStatusPartidas(rodada));    
         }
         
         return true;

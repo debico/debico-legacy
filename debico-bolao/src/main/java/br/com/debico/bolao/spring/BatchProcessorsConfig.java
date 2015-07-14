@@ -12,6 +12,7 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.launch.support.SimpleJobLauncher;
@@ -26,7 +27,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Scope;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 
@@ -37,6 +37,7 @@ import br.com.debico.campeonato.services.RodadaService;
 import br.com.debico.core.spring.config.InfrastructureConfig;
 
 // no futuro, se precisar dividir a configuração do batch, verificar na anotação como fazer.
+// TODO ficar de olho em https://jira.spring.io/browse/BATCH-2161 por causa do WARN do log.
 @EnableBatchProcessing
 @Configuration
 @ComponentScan("br.com.debico.bolao.batch.impl")
@@ -54,12 +55,6 @@ public class BatchProcessorsConfig {
     @Inject
     @Named("removedorRodadaTaskletBean")
     protected MethodInvokingTaskletAdapter removedorRodadaTaskletBean;
-
-    @Inject
-    private RodadaService rodadaService;
-
-    @Inject
-    private DataSource dataSource;
 
     public BatchProcessorsConfig() {
 
@@ -93,10 +88,10 @@ public class BatchProcessorsConfig {
 		.tasklet(removedorRodadaTaskletBean).build();
     }
 
-    @Scope("step")
+    @StepScope
     @Bean(name = "removedorRodadaTaskletBean")
     public MethodInvokingTaskletAdapter removedorRodadaTasklet(
-	    @Value("#{jobParameters['rodada_id']}") final int rodadaId) {
+	    @Value("#{jobParameters['rodada_id']}") final int rodadaId, RodadaService rodadaService) {
 	final MethodInvokingTaskletAdapter taskletAdapter = new MethodInvokingTaskletAdapter();
 	taskletAdapter.setTargetMethod("excluirRodada");
 	taskletAdapter.setTargetObject(rodadaService);
@@ -116,29 +111,29 @@ public class BatchProcessorsConfig {
     }
 
     @Bean(name = "pontuacaoSumarizadaReaderBean")
-    public ItemReader<ApostadorPontuacaoRodada> pontuacaoSumarizadaReader(
-	    @Named("pontuacaoSumarizadaReaderPSBean") PreparedStatementSetter ps) {
+    public JdbcCursorItemReader<ApostadorPontuacaoRodada> pontuacaoSumarizadaReader(
+	    @Named("pontuacaoSumarizadaReaderPSBean") PreparedStatementSetter ps, DataSource dataSource) {
 	final JdbcCursorItemReader<ApostadorPontuacaoRodada> cursor = new JdbcCursorItemReader<ApostadorPontuacaoRodada>();
 	cursor.setDataSource(dataSource);
 	cursor.setIgnoreWarnings(true);
 	cursor.setRowMapper(new ApostadorPontuacaoRodadaRowMapper());
 	cursor.setSaveState(false);
 	cursor.setPreparedStatementSetter(ps);
-	cursor.setSql("");
+	cursor.setSql("SELECT * FROM tb_palpite");
 	return cursor;
     }
 
     @Bean(name = "pontucaoSumarizadaWriterBean")
-    public ItemWriter<ApostadorPontuacaoRodada> pontucaoSumarizadaWriter() {
+    public JdbcBatchItemWriter<ApostadorPontuacaoRodada> pontucaoSumarizadaWriter(DataSource dataSource) {
 	final JdbcBatchItemWriter<ApostadorPontuacaoRodada> itemWriter = new JdbcBatchItemWriter<ApostadorPontuacaoRodada>();
 	itemWriter.setDataSource(dataSource);
 	itemWriter
 		.setItemSqlParameterSourceProvider(new ApostadorPontuacaoRodadaParameterSourceProvider());
-	itemWriter.setSql("");
+	itemWriter.setSql("INSERT INTO tb_apostador_pontuacao_rodada (ID_RODADA) VALUES (:ID_RODADA)");
 	return itemWriter;
     }
 
-    @Scope("step")
+    @StepScope
     @Bean(name = "pontuacaoSumarizadaReaderPSBean")
     public PreparedStatementSetter pontuacaoSumarizadaReaderPS(
 	    @Value("#{jobParameters['rodada_id']}") final int rodadaId) {

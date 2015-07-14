@@ -19,70 +19,70 @@ import com.google.common.collect.Lists;
 public class ContextImpl implements Context {
 
     private static final long serialVersionUID = -2316667746008564072L;
-    
+
     private final Campeonato campeonato;
-    
-    private List<? extends AbstractRodada> rodadas;
+
+    private List<AbstractRodada> rodadas;
     private List<PartidaBase> partidas;
     private List<ApostadorPontuacao> apostadores;
     private List<PalpiteBase> palpites;
 
     public ContextImpl(Campeonato campeonato) {
-        this.campeonato = campeonato;
-        this.rodadas = Lists.newArrayList();
-        this.partidas = Lists.newArrayList();
-        this.apostadores = Lists.newArrayList();
-        this.palpites = Lists.newArrayList();
+	this.campeonato = campeonato;
+	this.rodadas = Lists.newArrayList();
+	this.partidas = Lists.newArrayList();
+	this.apostadores = Lists.newArrayList();
+	this.palpites = Lists.newArrayList();
     }
 
     @Override
     public Campeonato getCampeonato() {
-        return campeonato;
+	return campeonato;
     }
 
     @Override
-    public List<? extends AbstractRodada> getRodadas() {
-        return rodadas;
+    public List<AbstractRodada> getRodadas() {
+	return rodadas;
     }
 
     @Override
     public void setRodadas(List<? extends AbstractRodada> rodadas) {
-        this.rodadas = rodadas;
+	this.rodadas = Lists.newArrayList(rodadas);
     }
 
     @Override
-    public List<? super PartidaBase> getPartidas() {
-        return this.partidas;
+    public List<PartidaBase> getPartidas() {
+	return this.partidas;
     }
 
     @Override
-    public void setPartidas(List<? super PartidaBase> partidas) {
-        this.partidas = partidas;
-    }
-    
-    @Override
-    public void addPartidas(List<? super PartidaBase> partidas) {
-        this.partidas.addAll(partidas);
+    public void setPartidas(List<? extends PartidaBase> partidas) {
+	this.partidas = Lists.newArrayList(partidas);
     }
 
     @Override
-    public List<? extends ApostadorPontuacao> getApostadores() {
-        return apostadores;
+    public void addPartidas(List<? extends PartidaBase> partidas) {
+	this.partidas.addAll(partidas);
+    }
+
+    @Override
+    public List<ApostadorPontuacao> getApostadores() {
+	return apostadores;
     }
 
     @Override
     public void setApostadores(List<? extends ApostadorPontuacao> apostadores) {
-        this.apostadores = apostadores;
+	this.apostadores = Lists.newArrayList(apostadores);
     }
 
     @Override
-    public List<? extends PalpiteBase> getPalpites() {
-        return palpites;
+    public List<PalpiteBase> getPalpites() {
+	return palpites;
     }
 
     @Override
     public void setPalpites(List<? extends PalpiteBase> palpites) {
-        this.palpites = palpites;
+	this.palpites = Lists.newArrayList(palpites);
     }
 
 }

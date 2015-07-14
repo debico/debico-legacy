@@ -33,7 +33,7 @@ public interface Context extends Serializable {
      * 
      * @return
      */
-    List<? extends AbstractRodada> getRodadas();
+    List<AbstractRodada> getRodadas();
 
     void setRodadas(List<? extends AbstractRodada> rodadas);
 
@@ -43,28 +43,28 @@ public interface Context extends Serializable {
      * 
      * @return
      */
-    List<? super PartidaBase> getPartidas();
+    List<PartidaBase> getPartidas();
 
     /**
      * Sobrescreve as partidas já adicionadas.
      * 
      * @param partidas
      */
-    void setPartidas(List<? super PartidaBase> partidas);
-    
+    void setPartidas(List<? extends PartidaBase> partidas);
+
     /**
      * Adiciona partidas no contexto.
      * 
      * @param partidas
      */
-    void addPartidas(List<? super PartidaBase> partidas);
+    void addPartidas(List<? extends PartidaBase> partidas);
 
     /**
      * Lista dos apostadores do campeonato do contexto.
      * 
      * @return
      */
-    List<? extends ApostadorPontuacao> getApostadores();
+    List<ApostadorPontuacao> getApostadores();
 
     void setApostadores(List<? extends ApostadorPontuacao> apostadores);
 
@@ -73,7 +73,7 @@ public interface Context extends Serializable {
      * 
      * @return
      */
-    List<? extends PalpiteBase> getPalpites();
+    List<PalpiteBase> getPalpites();
 
     void setPalpites(List<? extends PalpiteBase> palpites);
 }
