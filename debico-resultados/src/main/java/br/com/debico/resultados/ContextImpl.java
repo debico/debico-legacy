@@ -1,5 +1,8 @@
 package br.com.debico.resultados;
 
+import static com.google.common.base.Objects.equal;
+import static com.google.common.base.Objects.toStringHelper;
+
 import java.util.List;
 
 import br.com.debico.model.ApostadorPontuacao;
@@ -8,6 +11,7 @@ import br.com.debico.model.PartidaBase;
 import br.com.debico.model.campeonato.AbstractRodada;
 import br.com.debico.model.campeonato.Campeonato;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 
 /**
@@ -83,6 +87,37 @@ public class ContextImpl implements Context {
     @Override
     public void setPalpites(List<? extends PalpiteBase> palpites) {
 	this.palpites = Lists.newArrayList(palpites);
+    }
+
+    @Override
+    public int hashCode() {
+	return Objects.hashCode(this.campeonato);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+	if (obj == null) {
+	    return false;
+	}
+
+	if (obj == this) {
+	    return true;
+	}
+
+	if (obj.getClass() != getClass()) {
+	    return false;
+	}
+
+	Context that = (Context) obj;
+
+	return equal(this.campeonato, that.getCampeonato());
+    }
+
+    @Override
+    public String toString() {
+	return toStringHelper(this).omitNullValues().addValue(this.campeonato)
+		.addValue(this.rodadas).addValue(this.partidas)
+		.addValue(this.palpites).addValue(this.apostadores).toString();
     }
 
 }

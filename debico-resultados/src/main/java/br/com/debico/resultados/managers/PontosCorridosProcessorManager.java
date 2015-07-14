@@ -29,8 +29,9 @@ import br.com.debico.resultados.ProcessorPipeline;
 @Transactional(readOnly = false)
 public class PontosCorridosProcessorManager implements
 	ProcessorManager<CampeonatoPontosCorridos>, Processor {
-    
-    private static final Logger LOGGER = LoggerFactory.getLogger(PontosCorridosProcessorManager.class);
+
+    private static final Logger LOGGER = LoggerFactory
+	    .getLogger(PontosCorridosProcessorManager.class);
 
     private final ProcessorPipeline processorPipeline;
 
@@ -89,7 +90,9 @@ public class PontosCorridosProcessorManager implements
     }
 
     private void doStart(CampeonatoPontosCorridos campeonato) {
-	LOGGER.debug("[doStart] Inicializando o processamento do campeonato {}", campeonato);
+	LOGGER.debug(
+		"[doStart] Inicializando o processamento do campeonato {}",
+		campeonato);
 	final Context context = new ContextImpl(campeonato);
 	context.setRodadas(rodadaService
 		.selecionarRodadasNaoCalculadas(campeonato));
@@ -97,11 +100,16 @@ public class PontosCorridosProcessorManager implements
 	this.processorPipeline.doProcess(context);
 	LOGGER.debug("[doStart] Fim do processamento de {}", campeonato);
     }
-    
+
+    /**
+     * Atua como um {@link Processor}, por essa razão não cria o contexto. É
+     * esperado o campeonato e as rodadas que deverão ser processadas.
+     */
     @CacheEvict(CacheKeys.TABELA_CAMPEONATO)
     public boolean execute(Context context) {
-	this.start();
-        return true;
+	checkNotNull(context.getCampeonato(), "O campeonato deve ser definido");
+	this.processorPipeline.doProcess(context);
+	return true;
     }
 
 }
