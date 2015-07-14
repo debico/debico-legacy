@@ -21,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Ricardo Zanini (ricardozanini@gmail.com)
  *
  */
-public abstract class BRMSProcessor implements Processor {
+public abstract class BRMSProcessor extends ProcessorSupport {
 
     private static final Logger LOGGER = LoggerFactory
             .getLogger(BRMSProcessor.class);
@@ -49,7 +49,7 @@ public abstract class BRMSProcessor implements Processor {
     }
 
     @Override
-    public final boolean execute(Context context) {
+    public final void execute(Context context) {
         final Collection<?>[] fatos = selecionarFatos(context);
         if (fatos.length > 0) {
             LOGGER.debug("[execute] Iniciando o processamento da agenda {}",
@@ -57,12 +57,11 @@ public abstract class BRMSProcessor implements Processor {
             this.postExecute(context,
                     brmsExecutor.processar(getAgendaRule(), fatos), fatos);
             LOGGER.debug("[execute] Execucao de {} terminada", getAgendaRule());
-            return true;
+            this.executeNext(context);
         } else {
             LOGGER.debug(
                     "[execute] Execucao de {} cancelada por falta de fatos.",
                     getAgendaRule());
-            return false;
         }
     }
 

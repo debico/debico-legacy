@@ -2,6 +2,7 @@ package br.com.debico.resultados.managers;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -22,13 +23,14 @@ import br.com.debico.resultados.ContextImpl;
 import br.com.debico.resultados.DefaultProcessorPipeline;
 import br.com.debico.resultados.Processor;
 import br.com.debico.resultados.ProcessorBeans;
-import br.com.debico.resultados.ProcessorManager;
 import br.com.debico.resultados.ProcessorPipeline;
+
+import com.google.common.collect.Lists;
 
 @Named
 @Transactional(readOnly = false)
-public class PontosCorridosProcessorManager implements
-	ProcessorManager<CampeonatoPontosCorridos>, Processor {
+class PontosCorridosProcessorManager extends
+	CampeonatoProcessorManagerSupport<CampeonatoPontosCorridos> {
 
     private static final Logger LOGGER = LoggerFactory
 	    .getLogger(PontosCorridosProcessorManager.class);
@@ -56,6 +58,11 @@ public class PontosCorridosProcessorManager implements
     public PontosCorridosProcessorManager() {
 	this.processorPipeline = new DefaultProcessorPipeline();
     }
+    
+    @Override
+    protected Class<CampeonatoPontosCorridos> getType() {
+        return CampeonatoPontosCorridos.class;
+    }
 
     @PostConstruct
     public void init() {
@@ -75,21 +82,24 @@ public class PontosCorridosProcessorManager implements
      * que estão ativos.
      */
     @CacheEvict(CacheKeys.TABELA_CAMPEONATO)
-    public void start() {
+    public List<Context> start() {
+	final List<Context> contexts = Lists.newArrayList();
 	final List<CampeonatoPontosCorridos> campeonatoPontosCorridos = campeonatoPontosCorridosService
 		.selecionarCampeonatosPontosCorridosAtivos();
 
 	for (CampeonatoPontosCorridos campeonato : campeonatoPontosCorridos) {
-	    this.doStart(campeonato);
+	    contexts.add(this.doStart(campeonato));
 	}
+
+	return contexts;
     }
 
     @CacheEvict(CacheKeys.TABELA_CAMPEONATO)
-    public void start(CampeonatoPontosCorridos campeonato) {
-	this.doStart(campeonato);
+    public List<Context> start(CampeonatoPontosCorridos campeonato) {
+	return Collections.singletonList(this.doStart(campeonato));
     }
 
-    private void doStart(CampeonatoPontosCorridos campeonato) {
+    private Context doStart(CampeonatoPontosCorridos campeonato) {
 	LOGGER.debug(
 		"[doStart] Inicializando o processamento do campeonato {}",
 		campeonato);
@@ -99,17 +109,39 @@ public class PontosCorridosProcessorManager implements
 
 	this.processorPipeline.doProcess(context);
 	LOGGER.debug("[doStart] Fim do processamento de {}", campeonato);
+
+	return context;
     }
 
     /**
      * Atua como um {@link Processor}, por essa razão não cria o contexto. É
-     * esperado o campeonato e as rodadas que deverão ser processadas.
+     * esperado o campeonato no contexto.
      */
     @CacheEvict(CacheKeys.TABELA_CAMPEONATO)
-    public boolean execute(Context context) {
+    public void execute(Context context) {
 	checkNotNull(context.getCampeonato(), "O campeonato deve ser definido");
+
+	if (!this.supports(context.getCampeonato())) {
+	    LOGGER.debug(
+		    "[execute] Campeonato {} nao suportado.",
+		    context.getCampeonato());
+	    this.executeNext(context);
+	}
+
+	LOGGER.debug(
+		"[execute] Inicializando o processamento do campeonato {}",
+		context.getCampeonato());
+
+	if (context.getRodadas().isEmpty()) {
+	    context.setRodadas(rodadaService
+		    .selecionarRodadasNaoCalculadas(context.getCampeonato()));
+	}
+
 	this.processorPipeline.doProcess(context);
-	return true;
+	LOGGER.debug("[execute] Fim do processamento de {}",
+		context.getCampeonato());
+
+	this.executeNext(context);
     }
 
 }

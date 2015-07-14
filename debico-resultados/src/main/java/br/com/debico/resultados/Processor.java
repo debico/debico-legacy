@@ -10,6 +10,18 @@ package br.com.debico.resultados;
  */
 public interface Processor {
 
-    boolean execute(Context context);
+    /**
+     * Executa o processo no contexto especificado.
+     * 
+     * @param context
+     */
+    void execute(Context context);
 
+    /**
+     * Define o próximo processor na cadeia.
+     * 
+     * @param processor
+     */
+    void setNextProcessor(Processor processor);
+    
 }

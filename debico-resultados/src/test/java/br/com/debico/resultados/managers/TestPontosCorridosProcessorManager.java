@@ -10,6 +10,7 @@ import javax.inject.Inject;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,18 +18,18 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.debico.campeonato.services.CampeonatoPontosCorridosService;
 import br.com.debico.model.campeonato.CampeonatoPontosCorridos;
 import br.com.debico.model.campeonato.PontuacaoTime;
-import br.com.debico.resultados.ProcessorManager;
 import br.com.debico.resultados.ResultadosConfig;
 import br.com.debico.test.TestConstants;
 import br.com.debico.test.spring.AbstractUnitTest;
 
+@ActiveProfiles({ "dev", "embedded-jpa" })
 @ContextConfiguration(classes = { ResultadosConfig.class })
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestPontosCorridosProcessorManager extends AbstractUnitTest {
 
     @Inject
-    private ProcessorManager<CampeonatoPontosCorridos> processorManager;
+    private CampeonatoProcessorManager<CampeonatoPontosCorridos> processorManager;
 
     @Inject
     private CampeonatoPontosCorridosService campeonatoPontosCorridosService;

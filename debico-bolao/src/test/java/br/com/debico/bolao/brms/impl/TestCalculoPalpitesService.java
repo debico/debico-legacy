@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +20,6 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.debico.bolao.brms.ProcessadorRegrasBolao;
 import br.com.debico.bolao.services.ApostadorPontuacaoService;
 import br.com.debico.bolao.services.PalpiteService;
 import br.com.debico.bolao.test.support.AbstractBolaoUnitTest;
@@ -45,9 +43,9 @@ import com.google.common.collect.Collections2;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestCalculoPalpitesService extends AbstractBolaoUnitTest {
 
-    @Inject
-    @Named("processadorRegrasBolaoImpl")
-    private ProcessadorRegrasBolao processadorRegrasBolao;
+  //  @Inject
+   // @Named("processadorRegrasBolaoImpl")
+   // private ProcessadorRegrasBolao processadorRegrasBolao;
 
     @Inject
     private PalpiteService palpiteService;
@@ -156,7 +154,7 @@ public class TestCalculoPalpitesService extends AbstractBolaoUnitTest {
 		new Palpite(adriano, partida3, new Placar(0, 2)), campeonato);
 
 	// execução
-	processadorRegrasBolao.processarResultados(campeonato);
+	//processadorRegrasBolao.processarResultados(campeonato);
 
 	List<ApostadorPontuacao> apostadores = apostadorPontuacaoService
 		.listarRanking(campeonato);

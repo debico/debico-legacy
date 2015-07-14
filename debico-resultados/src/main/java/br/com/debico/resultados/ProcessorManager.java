@@ -1,5 +1,7 @@
 package br.com.debico.resultados;
 
+import java.util.List;
+
 /**
  * Responsável por criar um {@link ProcessorPipeline} para a realização de um
  * processamento de resultados específico.
@@ -9,9 +11,19 @@ package br.com.debico.resultados;
  */
 public interface ProcessorManager<T> {
     
-    void start();
+    /**
+     * Inicia o processamento.
+     * 
+     * @return
+     */
+    List<Context> start();
     
-    void start(T parameter);
+    /**
+     * Inicia o processamento com base nos parâmetros de &lt;T&gt;
+     * @param parameter
+     * @return
+     */
+    List<Context> start(T parameter);
     
     void init();
     

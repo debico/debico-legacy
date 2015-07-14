@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.debico.campeonato.brms.CalculoPartidasService;
 import br.com.debico.model.campeonato.AbstractRodada;
 import br.com.debico.resultados.Context;
-import br.com.debico.resultados.Processor;
 import br.com.debico.resultados.ProcessorBeans;
 
 /**
@@ -21,7 +20,7 @@ import br.com.debico.resultados.ProcessorBeans;
  */
 @Named(ProcessorBeans.DEFINE_STATUS_PARTIDAS)
 @Transactional(propagation = Propagation.MANDATORY, readOnly = false)
-final class DefineStatusPartidasProcessor implements Processor {
+final class DefineStatusPartidasProcessor extends ProcessorSupport {
 
     @Inject
     private CalculoPartidasService calculoPartidasService;
@@ -30,11 +29,12 @@ final class DefineStatusPartidasProcessor implements Processor {
     }
 
     @Override
-    public boolean execute(Context context) {
-        for (AbstractRodada rodada : context.getRodadas()) {
-            context.addPartidas(calculoPartidasService.definirStatusPartidas(rodada));    
-        }
-        
-        return true;
+    public void execute(Context context) {
+	for (AbstractRodada rodada : context.getRodadas()) {
+	    context.addPartidas(calculoPartidasService
+		    .definirStatusPartidas(rodada));
+	}
+	
+	this.executeNext(context);
     }
 }

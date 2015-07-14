@@ -2,22 +2,30 @@ package br.com.debico.resultados;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.List;
+import java.util.Deque;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 
+/**
+ * Implementação padrão com uma lista interna de gerenciamento da cadeia. A cada
+ * adição, um próximo elemento na cadeia é adicionado. Na hora da execução, o
+ * primeiro adicionado é o primeiro a ser executado (FIFO)
+ * 
+ * @author Ricardo Zanini (ricardozanini@gmail.com)
+ *
+ */
 public class DefaultProcessorPipeline implements ProcessorPipeline {
 
     private static final Logger LOGGER = LoggerFactory
 	    .getLogger(DefaultProcessorPipeline.class);
 
-    private final List<Processor> chain;
+    private final Deque<Processor> chain;
 
     public DefaultProcessorPipeline() {
-	this.chain = Lists.newArrayList();
+	this.chain = Lists.newLinkedList();
     }
 
     @Override
@@ -25,23 +33,26 @@ public class DefaultProcessorPipeline implements ProcessorPipeline {
 	LOGGER.debug("[addProcessor] Tentando adicionar o processor {}",
 		processor);
 	checkNotNull(processor, "O processor nao pode ser nulo!");
-	this.chain.add(processor);
+
+	if (!this.chain.isEmpty()) {
+	    this.chain.getLast().setNextProcessor(processor);
+	}
+
+	this.chain.addLast(processor);
+
 	LOGGER.debug("[addProcessor] Processor {} adicionado com sucesso!",
 		processor);
     }
 
     @Override
     public void doProcess(Context context) {
-	for (Processor processor : chain) {
-	    LOGGER.debug("[doProcess] Processando {} no contexto {}",
-		    processor, context);
-	    if (!processor.execute(context)) {
-		LOGGER.debug(
-			"[doProcess] Processamento cancelado em {} no contexto {}",
-			processor, context);
-		break;
-	    }
+	if (!this.chain.isEmpty()) {
+	    this.chain.getFirst().execute(context);
 	}
     }
 
+    @Override
+    public String toString() {
+	return this.chain.toString();
+    }
 }

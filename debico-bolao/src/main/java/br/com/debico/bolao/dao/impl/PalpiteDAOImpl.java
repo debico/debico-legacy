@@ -11,6 +11,7 @@ import br.com.debico.bolao.dao.PalpiteDAO;
 import br.com.debico.model.Apostador;
 import br.com.debico.model.Palpite;
 import br.com.debico.model.Partida;
+import br.com.debico.model.PartidaBase;
 import br.com.debico.model.campeonato.CampeonatoImpl;
 import br.com.tecnobiz.spring.config.dao.AbstractJPADao;
 
@@ -32,7 +33,7 @@ class PalpiteDAOImpl extends AbstractJPADao<Palpite, Integer> implements
 		.getResultList();
     }
 
-    public List<Palpite> selecionarTodos(List<? extends Partida> partidas) {
+    public List<Palpite> selecionarTodos(List<? extends PartidaBase> partidas) {
 	return getEntityManager()
 		.createQuery(
 			"SELECT p FROM Palpite p JOIN FETCH p.apostador WHERE p.computado = false AND p.partida IN (:partidas)",
