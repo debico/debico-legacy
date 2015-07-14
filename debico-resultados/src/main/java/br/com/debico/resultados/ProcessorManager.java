@@ -9,4 +9,8 @@ package br.com.debico.resultados;
  */
 public interface ProcessorManager {
     
+    void start();
+    
+    void init();
+    
 }

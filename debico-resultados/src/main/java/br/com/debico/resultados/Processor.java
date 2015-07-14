@@ -10,6 +10,6 @@ package br.com.debico.resultados;
  */
 public interface Processor {
 
-    void execute(Context context);
+    boolean execute(Context context);
 
 }

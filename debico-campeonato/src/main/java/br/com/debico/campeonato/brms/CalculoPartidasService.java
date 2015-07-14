@@ -3,12 +3,11 @@ package br.com.debico.campeonato.brms;
 import java.util.List;
 
 import br.com.debico.model.Partida;
-import br.com.debico.model.PartidaChave;
+import br.com.debico.model.PartidaBase;
 import br.com.debico.model.PartidaRodada;
 import br.com.debico.model.StatusPartida;
+import br.com.debico.model.campeonato.AbstractRodada;
 import br.com.debico.model.campeonato.Campeonato;
-import br.com.debico.model.campeonato.Chave;
-import br.com.debico.model.campeonato.Rodada;
 
 
 /**
@@ -27,22 +26,14 @@ public interface CalculoPartidasService {
      * @param rodada desejada.
      * @return partidas processadas.
      */
-    List<PartidaRodada> definirStatusPartidas(Rodada rodada);
-    
-    /**
-     * @see #definirStatusPartidas(Rodada)
-     * @param chave desejada.
-     * @return partidas processadas.
-     */
-    List<PartidaChave> definirStatusPartidas(Chave chave);
+    List<PartidaRodada> definirStatusPartidas(AbstractRodada rodada);
     
     /**
      * Atualiza a pontuação dos times de acordo com as partidas realizadas.
      * 
      * @param partidas partidas com placar e status já definidos.
-     * @param agendaGroup nome da <code>agenda</code> utilizada pelo motor para processar as regras de cálculo.
      * @see CalculoPartidasService#definirStatusPartidas()
      */
-    void calcularPontuacaoTimes(Campeonato campeonato, List<? extends Partida> partidas, String agendaGroup);
+    void calcularPontuacaoTimes(Campeonato campeonato, List<? extends PartidaBase> partidas);
 
 }

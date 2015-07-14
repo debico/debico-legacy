@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import br.com.debico.model.Partida;
+import br.com.debico.model.PartidaBase;
 import br.com.debico.model.Time;
 
 /**
@@ -25,10 +25,10 @@ final class ResultadosUtils {
      * @param partidas
      * @return
      */
-    public static Set<Time> recuperarTimes(final List<? extends Partida> partidas) {
+    public static Set<Time> recuperarTimes(final List<? extends PartidaBase> partidas) {
         Set<Time> times = new HashSet<Time>();
 
-        for (Partida p : partidas) {
+        for (PartidaBase p : partidas) {
             times.add(p.getMandante());
             times.add(p.getVisitante());
         }

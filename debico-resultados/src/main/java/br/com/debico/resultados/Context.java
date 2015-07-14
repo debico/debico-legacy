@@ -43,9 +43,21 @@ public interface Context extends Serializable {
      * 
      * @return
      */
-    List<? extends PartidaBase> getPartidas();
+    List<? super PartidaBase> getPartidas();
 
-    void setPartidas(List<? extends PartidaBase> partidas);
+    /**
+     * Sobrescreve as partidas já adicionadas.
+     * 
+     * @param partidas
+     */
+    void setPartidas(List<? super PartidaBase> partidas);
+    
+    /**
+     * Adiciona partidas no contexto.
+     * 
+     * @param partidas
+     */
+    void addPartidas(List<? super PartidaBase> partidas);
 
     /**
      * Lista dos apostadores do campeonato do contexto.
