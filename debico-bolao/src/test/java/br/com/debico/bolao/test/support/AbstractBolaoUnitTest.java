@@ -11,7 +11,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.bolao.spring.BolaoConfig;
-import br.com.debico.campeonato.factories.EstruturaCampeonatoProvider;
+import br.com.debico.campeonato.factories.impl.QuadrangularSimplesFactory;
 import br.com.debico.campeonato.model.EstruturaCampeonato;
 import br.com.debico.campeonato.services.CampeonatoService;
 import br.com.debico.model.Time;
@@ -22,19 +22,13 @@ import br.com.debico.test.spring.AbstractUnitTest;
 @ContextConfiguration(classes = { BolaoConfig.class })
 public class AbstractBolaoUnitTest extends AbstractUnitTest {
 
-    private final EstruturaCampeonatoProvider provider;
-
     protected static final String EMAIL_PRIMEIRO_RANKING = "abacafrehley@gmail.com";
     protected static final String EMAIL_ULTIMO_RANKING = "fhbernardo@yahoo.com.br";
     protected static final String EMAIL_SEM_OPCAO_NOTIFICACAO = "sergio.tondin@gps-pamcary.com.br";
     protected static final int CAMPEONATO_ID = 1;
 
-    public AbstractBolaoUnitTest() {
-        provider = new EstruturaCampeonatoProvider();
-    }
-
     protected EstruturaCampeonato novaEstruturaCampeonato(List<Time> times) {
-        return provider.getDefaultFactory().criarCampeonato(
+        return new QuadrangularSimplesFactory().criarCampeonato(
                 "Campeonato do Teste Unidade", times);
     }
 

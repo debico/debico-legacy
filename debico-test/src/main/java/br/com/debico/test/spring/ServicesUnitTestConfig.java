@@ -3,6 +3,7 @@ package br.com.debico.test.spring;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
+import br.com.debico.core.spring.config.ServicesConfig;
 import br.com.debico.core.spring.profiles.Dev;
 import br.com.tecnobiz.spring.config.dao.profiles.EmbeddedJPA;
 
@@ -17,6 +18,6 @@ import br.com.tecnobiz.spring.config.dao.profiles.EmbeddedJPA;
 @Dev
 @Configuration
 @PropertySource({ "/META-INF/debico-test.properties" })
-public class ServicesUnitTestConfig {
+public class ServicesUnitTestConfig extends ServicesConfig {
 
 }

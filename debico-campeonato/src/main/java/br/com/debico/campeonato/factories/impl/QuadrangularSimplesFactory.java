@@ -1,5 +1,9 @@
 package br.com.debico.campeonato.factories.impl;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.emptyToNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -18,11 +22,6 @@ import br.com.debico.model.campeonato.ParametrizacaoCampeonato;
 import br.com.debico.model.campeonato.PontuacaoTime;
 import br.com.debico.model.campeonato.Rodada;
 import br.com.debico.model.campeonato.Tabela;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import static com.google.common.base.Strings.emptyToNull;
 
 /**
  * Dado uma lista de times já criados, persistidos e com Identificadores

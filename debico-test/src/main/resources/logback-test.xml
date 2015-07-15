@@ -60,7 +60,7 @@
 	<logger name="org.jboss" level="${log.sys.level:-INFO}" />
 	<logger name="javax" level="${log.sys.level:-INFO}" />
 	<logger name="com.sun" level="${log.sys.level:-INFO}" />
-	<logger name="com.omniweb" level="${log.sys.level:-TRACE}" />
+	<logger name="br.com.debico" level="${log.sys.level:-TRACE}" />
 	<logger name="org.kie" level="${log.sys.level:-INFO}" />
 	<logger name="org.jboss" level="${log.sys.level:-INFO}" />
 

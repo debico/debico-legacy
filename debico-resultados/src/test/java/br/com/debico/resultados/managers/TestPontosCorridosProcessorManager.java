@@ -18,11 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.debico.campeonato.services.CampeonatoPontosCorridosService;
 import br.com.debico.model.campeonato.CampeonatoPontosCorridos;
 import br.com.debico.model.campeonato.PontuacaoTime;
-import br.com.debico.resultados.ResultadosConfig;
+import br.com.debico.resultados.config.ResultadosConfig;
 import br.com.debico.test.TestConstants;
 import br.com.debico.test.spring.AbstractUnitTest;
 
-@ActiveProfiles({ "dev", "embedded-jpa" })
+@ActiveProfiles(profiles = { TestConstants.PROFILE_DEV,
+	TestConstants.PROFILE_DB })
 @ContextConfiguration(classes = { ResultadosConfig.class })
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)

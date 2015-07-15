@@ -9,14 +9,10 @@ import javax.sql.DataSource;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
-import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
-import org.springframework.batch.core.launch.support.SimpleJobLauncher;
-import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.tasklet.MethodInvokingTaskletAdapter;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
@@ -24,25 +20,18 @@ import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.database.JdbcCursorItemReader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 
+import br.com.debico.bolao.batch.BolaoJobNames;
 import br.com.debico.bolao.dao.mappers.ApostadorPontuacaoRodadaRowMapper;
 import br.com.debico.bolao.dao.setters.ApostadorPontuacaoRodadaParameterSourceProvider;
 import br.com.debico.bolao.model.ApostadorPontuacaoRodada;
 import br.com.debico.campeonato.services.RodadaService;
 import br.com.debico.core.spring.config.InfrastructureConfig;
 
-// no futuro, se precisar dividir a configuração do batch, verificar na anotação como fazer.
-// TODO ficar de olho em https://jira.spring.io/browse/BATCH-2161 por causa do WARN do log.
-@EnableBatchProcessing
 @Configuration
-@ComponentScan("br.com.debico.bolao.batch.impl")
-@Import(InfrastructureConfig.class)
-public class BatchProcessorsConfig {
+public class BatchSumarizacaoJobsConfig {
 
     @Inject
     @Named("pontuacaoSumarizadaReaderBean")
@@ -56,25 +45,14 @@ public class BatchProcessorsConfig {
     @Named("removedorRodadaTaskletBean")
     protected MethodInvokingTaskletAdapter removedorRodadaTaskletBean;
 
-    public BatchProcessorsConfig() {
-
-    }
+    @Inject
+    protected InfrastructureConfig infrastructureConfig;
 
     // ~ CONFIG
-    @Bean(name = "sumarizarPontuacaoApostadorRodadaLauncher")
-    public JobLauncher sumarizarPontuacaoApostadorRodadaLauncher(
-	    JobRepository jobRepository) {
-	final SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
-	jobLauncher.setJobRepository(jobRepository);
-	jobLauncher.setTaskExecutor(new SimpleAsyncTaskExecutor());
-
-	return jobLauncher;
-    }
-
-    @Bean(name = "sumarizarPontuacaoApostadorRodadaJob")
+    @Bean
     public Job sumarizarPontuacaoApostadorPorRodada(JobBuilderFactory jobs,
 	    StepBuilderFactory steps) {
-	return jobs.get("sumarizarPontuacaoApostadorPorRodada")
+	return jobs.get(BolaoJobNames.SUMARIZAR_PONTUACAO_APOSTADOR_RODADA)
 		.incrementer(new RunIdIncrementer())
 		.flow(this.step1ExcluirPontuacaoRodada(steps))
 		.next(this.step2SumarizarPontuacaoApostadorPorRodada(steps))
@@ -91,7 +69,8 @@ public class BatchProcessorsConfig {
     @StepScope
     @Bean(name = "removedorRodadaTaskletBean")
     public MethodInvokingTaskletAdapter removedorRodadaTasklet(
-	    @Value("#{jobParameters['rodada_id']}") final int rodadaId, RodadaService rodadaService) {
+	    @Value("#{jobParameters['rodada_id']}") final int rodadaId,
+	    RodadaService rodadaService) {
 	final MethodInvokingTaskletAdapter taskletAdapter = new MethodInvokingTaskletAdapter();
 	taskletAdapter.setTargetMethod("excluirRodada");
 	taskletAdapter.setTargetObject(rodadaService);
@@ -112,7 +91,8 @@ public class BatchProcessorsConfig {
 
     @Bean(name = "pontuacaoSumarizadaReaderBean")
     public JdbcCursorItemReader<ApostadorPontuacaoRodada> pontuacaoSumarizadaReader(
-	    @Named("pontuacaoSumarizadaReaderPSBean") PreparedStatementSetter ps, DataSource dataSource) {
+	    @Named("pontuacaoSumarizadaReaderPSBean") PreparedStatementSetter ps,
+	    DataSource dataSource) {
 	final JdbcCursorItemReader<ApostadorPontuacaoRodada> cursor = new JdbcCursorItemReader<ApostadorPontuacaoRodada>();
 	cursor.setDataSource(dataSource);
 	cursor.setIgnoreWarnings(true);
@@ -124,12 +104,14 @@ public class BatchProcessorsConfig {
     }
 
     @Bean(name = "pontucaoSumarizadaWriterBean")
-    public JdbcBatchItemWriter<ApostadorPontuacaoRodada> pontucaoSumarizadaWriter(DataSource dataSource) {
+    public JdbcBatchItemWriter<ApostadorPontuacaoRodada> pontucaoSumarizadaWriter(
+	    DataSource dataSource) {
 	final JdbcBatchItemWriter<ApostadorPontuacaoRodada> itemWriter = new JdbcBatchItemWriter<ApostadorPontuacaoRodada>();
 	itemWriter.setDataSource(dataSource);
 	itemWriter
 		.setItemSqlParameterSourceProvider(new ApostadorPontuacaoRodadaParameterSourceProvider());
-	itemWriter.setSql("INSERT INTO tb_apostador_pontuacao_rodada (ID_RODADA) VALUES (:ID_RODADA)");
+	itemWriter
+		.setSql("INSERT INTO tb_apostador_pontuacao_rodada (ID_RODADA) VALUES (:ID_RODADA)");
 	return itemWriter;
     }
 

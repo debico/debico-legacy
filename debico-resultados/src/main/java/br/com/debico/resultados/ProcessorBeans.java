@@ -1,7 +1,7 @@
 package br.com.debico.resultados;
 
 /**
- * Nome dos Beans dados à Factory do Spring.
+ * Nome dos Beans de {@link Processor}s dados à Factory do Spring.
  * 
  * @author ricardozanini
  *

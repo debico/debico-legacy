@@ -11,7 +11,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-@ActiveProfiles({ "dev", "embedded-jpa" })
+import br.com.debico.test.TestConstants;
+
+@ActiveProfiles({ TestConstants.PROFILE_DEV, TestConstants.PROFILE_DB })
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
 @ContextConfiguration(classes = { ServicesUnitTestConfig.class })

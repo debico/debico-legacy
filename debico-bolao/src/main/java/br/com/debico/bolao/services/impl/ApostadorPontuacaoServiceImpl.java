@@ -24,7 +24,7 @@ import br.com.debico.model.campeonato.CampeonatoImpl;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 @Named
-@Transactional(readOnly = true)
+@Transactional(readOnly = false)
 public class ApostadorPontuacaoServiceImpl implements ApostadorPontuacaoService {
 
     protected static final Logger LOGGER = LoggerFactory

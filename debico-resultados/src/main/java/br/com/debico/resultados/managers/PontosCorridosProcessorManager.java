@@ -21,13 +21,14 @@ import br.com.debico.model.campeonato.CampeonatoPontosCorridos;
 import br.com.debico.resultados.Context;
 import br.com.debico.resultados.ContextImpl;
 import br.com.debico.resultados.DefaultProcessorPipeline;
+import br.com.debico.resultados.ManagerBeans;
 import br.com.debico.resultados.Processor;
 import br.com.debico.resultados.ProcessorBeans;
 import br.com.debico.resultados.ProcessorPipeline;
 
 import com.google.common.collect.Lists;
 
-@Named
+@Named(ManagerBeans.CAMPEONATO_PC_MANAGER)
 @Transactional(readOnly = false)
 class PontosCorridosProcessorManager extends
 	CampeonatoProcessorManagerSupport<CampeonatoPontosCorridos> {
@@ -58,10 +59,10 @@ class PontosCorridosProcessorManager extends
     public PontosCorridosProcessorManager() {
 	this.processorPipeline = new DefaultProcessorPipeline();
     }
-    
+
     @Override
     protected Class<CampeonatoPontosCorridos> getType() {
-        return CampeonatoPontosCorridos.class;
+	return CampeonatoPontosCorridos.class;
     }
 
     @PostConstruct
@@ -99,49 +100,45 @@ class PontosCorridosProcessorManager extends
 	return Collections.singletonList(this.doStart(campeonato));
     }
 
-    private Context doStart(CampeonatoPontosCorridos campeonato) {
-	LOGGER.debug(
-		"[doStart] Inicializando o processamento do campeonato {}",
-		campeonato);
-	final Context context = new ContextImpl(campeonato);
-	context.setRodadas(rodadaService
-		.selecionarRodadasNaoCalculadas(campeonato));
-
-	this.processorPipeline.doProcess(context);
-	LOGGER.debug("[doStart] Fim do processamento de {}", campeonato);
-
-	return context;
-    }
-
-    /**
-     * Atua como um {@link Processor}, por essa razão não cria o contexto. É
-     * esperado o campeonato no contexto.
-     */
     @CacheEvict(CacheKeys.TABELA_CAMPEONATO)
     public void execute(Context context) {
 	checkNotNull(context.getCampeonato(), "O campeonato deve ser definido");
 
 	if (!this.supports(context.getCampeonato())) {
-	    LOGGER.debug(
-		    "[execute] Campeonato {} nao suportado.",
+	    LOGGER.debug("[execute] Campeonato {} nao suportado.",
 		    context.getCampeonato());
 	    this.executeNext(context);
+	    return;
 	}
 
+	this.executeNext(this.doStart(context));
+    }
+    
+    private Context doStart(CampeonatoPontosCorridos campeonato) {
+	return this.doStart(new ContextImpl(campeonato));
+    }
+    
+    private Context doStart(Context context) {
 	LOGGER.debug(
-		"[execute] Inicializando o processamento do campeonato {}",
+		"[doStart] Inicializando o processamento do campeonato {}",
 		context.getCampeonato());
+	this.decorateContext(context);
+	this.processorPipeline.execute(context);
+	LOGGER.debug("[doStart] Fim do processamento de {}", context.getCampeonato());
+	return context;
+    }
 
+    /**
+     * Complementa o {@link Context} com o restante das informações necessárias
+     * para o processamento.
+     * 
+     * @param context
+     */
+    private void decorateContext(final Context context) {
 	if (context.getRodadas().isEmpty()) {
 	    context.setRodadas(rodadaService
 		    .selecionarRodadasNaoCalculadas(context.getCampeonato()));
 	}
-
-	this.processorPipeline.doProcess(context);
-	LOGGER.debug("[execute] Fim do processamento de {}",
-		context.getCampeonato());
-
-	this.executeNext(context);
     }
 
 }

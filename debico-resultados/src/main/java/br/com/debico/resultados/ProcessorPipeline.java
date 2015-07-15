@@ -1,13 +1,14 @@
 package br.com.debico.resultados;
 
 /**
- * Implementação do Pattern <i>Chain of Responsibility</i> para realizar o
- * processamento de pequenas instâncias de regras da API de resultados.
+ * <i>Composite</i> de {@link Processor} para realizar o processamento em forma
+ * sequencial.
  * 
  * @author Ricardo Zanini (ricardozanini@gmail.com)
+ * @see <a href="http://www.enterpriseintegrationpatterns.com/PipesAndFilters.html">Pipes And Filters</a>
  * @since 2.0.4
  */
-public interface ProcessorPipeline {
+public interface ProcessorPipeline extends Processor {
 
     /**
      * Adiciona um {@link Processor} no pipeline.
@@ -19,6 +20,6 @@ public interface ProcessorPipeline {
     /**
      * Realiza a cadeia de processamento do pipeline no esquema FIFO.
      */
-    void doProcess(Context context);
+    void execute(Context context);
 
 }

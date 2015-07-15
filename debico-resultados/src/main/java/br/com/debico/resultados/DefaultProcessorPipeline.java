@@ -7,6 +7,8 @@ import java.util.Deque;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import br.com.debico.resultados.processors.ProcessorSupport;
+
 import com.google.common.collect.Lists;
 
 /**
@@ -17,7 +19,7 @@ import com.google.common.collect.Lists;
  * @author Ricardo Zanini (ricardozanini@gmail.com)
  *
  */
-public class DefaultProcessorPipeline implements ProcessorPipeline {
+public class DefaultProcessorPipeline extends ProcessorSupport implements ProcessorPipeline {
 
     private static final Logger LOGGER = LoggerFactory
 	    .getLogger(DefaultProcessorPipeline.class);
@@ -45,10 +47,12 @@ public class DefaultProcessorPipeline implements ProcessorPipeline {
     }
 
     @Override
-    public void doProcess(Context context) {
+    public void execute(Context context) {
 	if (!this.chain.isEmpty()) {
 	    this.chain.getFirst().execute(context);
 	}
+	
+	this.executeNext(context);
     }
 
     @Override

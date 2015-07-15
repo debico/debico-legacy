@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.debico.campeonato.factories.impl.QuadrangularSimplesFactory;
 import br.com.debico.campeonato.model.EstruturaCampeonato;
 import br.com.debico.campeonato.services.EstruturaCampeonatoService;
 import br.com.debico.campeonato.test.support.AbstractCampeonatoUnitTest;
@@ -37,8 +38,7 @@ public class TestEstruturaCampeonatoServiceImpl extends
 		times.add(ITALIA);
 		times.add(BRASIL);
 		
-		EstruturaCampeonato estruturaCampeonato = getDefaultFactory().criarCampeonato("Time dos Solteiros", times);
-		assertNotNull(estruturaCampeonato);
+		EstruturaCampeonato estruturaCampeonato = new QuadrangularSimplesFactory().criarCampeonato("Time dos Solteiros", times);
 		
 		Campeonato campeonato = estruturaCampeonatoService.inserirNovaEstrutura(estruturaCampeonato);
 		

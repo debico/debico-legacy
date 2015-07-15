@@ -10,8 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.debico.campeonato.factories.EstruturaCampeonatoFactory;
-import br.com.debico.campeonato.factories.EstruturaCampeonatoProvider;
+import br.com.debico.campeonato.CampeonatoBeans;
 import br.com.debico.campeonato.services.CampeonatoService;
 import br.com.debico.campeonato.spring.CampeonatoConfig;
 import br.com.debico.model.campeonato.CampeonatoPontosCorridos;
@@ -31,18 +30,8 @@ public abstract class AbstractCampeonatoUnitTest extends AbstractUnitTest {
 	protected CampeonatoPontosCorridos CAMPEONATO;
 
 	@Inject
-	@Named("campeonatoServiceImpl")
+	@Named(CampeonatoBeans.CAMPEONATO_SERVICE)
 	protected CampeonatoService campeonatoService;
-
-	private EstruturaCampeonatoProvider provider;
-
-	public AbstractCampeonatoUnitTest() {
-		provider = new EstruturaCampeonatoProvider();
-	}
-
-	protected EstruturaCampeonatoFactory getDefaultFactory() {
-		return provider.getDefaultFactory();
-	}
 
 	@Before
 	public void setUp() throws Exception {

@@ -33,6 +33,7 @@ import org.springframework.security.acls.jdbc.LookupStrategy;
 import org.springframework.security.acls.model.AclCache;
 import org.springframework.security.acls.model.MutableAclService;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import br.com.debico.core.helpers.CacheKeys;
 import br.com.debico.core.helpers.Roles;
@@ -51,7 +52,7 @@ import br.com.tecnobiz.spring.config.dao.base.ProfileBasedDaoConfig;
 @Import(ProfileBasedDaoConfig.class)
 @ComponentScan("br.com.debico.core.spring.security.impl")
 @PropertySource(value = "classpath:META-INF/debico.properties", ignoreResourceNotFound = false)
-public final class InfrastructureConfig {
+public class InfrastructureConfig {
 
     /**
      * Bean para o trato do Ambiente.
@@ -65,8 +66,19 @@ public final class InfrastructureConfig {
     @Inject
     protected DataSource dataSource;
 
+    @Inject
+    protected PlatformTransactionManager transactionManager;
+
     public InfrastructureConfig() {
 
+    }
+
+    public DataSource getDataSource() {
+	return dataSource;
+    }
+
+    public PlatformTransactionManager getTransactionManager() {
+	return transactionManager;
     }
 
     // ~ Cache
@@ -115,20 +127,22 @@ public final class InfrastructureConfig {
 	cmfb.setShared(true);
 	return cmfb;
     }
-    
+
     // serviço de gerenciamento de cache
-    @Bean(initMethod="init", destroyMethod="dispose")
+    @Bean(initMethod = "init", destroyMethod = "dispose")
     @Release
-    public ManagementService ehCacheManagementService(net.sf.ehcache.CacheManager cacheManager, MBeanServer beanServer) {
-	return new ManagementService(cacheManager, beanServer, true, true, true, true);
+    public ManagementService ehCacheManagementService(
+	    net.sf.ehcache.CacheManager cacheManager, MBeanServer beanServer) {
+	return new ManagementService(cacheManager, beanServer, true, true,
+		true, true);
     }
-    
+
     @Bean
     @Release
     public MBeanServerFactoryBean mbeanServerFactoryBean() {
 	final MBeanServerFactoryBean factoryBean = new MBeanServerFactoryBean();
-        factoryBean.setLocateExistingServerIfPossible(true);
-        
+	factoryBean.setLocateExistingServerIfPossible(true);
+
 	return factoryBean;
     }
 
