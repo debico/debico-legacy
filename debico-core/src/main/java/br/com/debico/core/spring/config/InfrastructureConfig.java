@@ -33,7 +33,6 @@ import org.springframework.security.acls.jdbc.LookupStrategy;
 import org.springframework.security.acls.model.AclCache;
 import org.springframework.security.acls.model.MutableAclService;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.transaction.PlatformTransactionManager;
 
 import br.com.debico.core.helpers.CacheKeys;
 import br.com.debico.core.helpers.Roles;
@@ -66,19 +65,8 @@ public class InfrastructureConfig {
     @Inject
     protected DataSource dataSource;
 
-    @Inject
-    protected PlatformTransactionManager transactionManager;
-
     public InfrastructureConfig() {
 
-    }
-
-    public DataSource getDataSource() {
-	return dataSource;
-    }
-
-    public PlatformTransactionManager getTransactionManager() {
-	return transactionManager;
     }
 
     // ~ Cache

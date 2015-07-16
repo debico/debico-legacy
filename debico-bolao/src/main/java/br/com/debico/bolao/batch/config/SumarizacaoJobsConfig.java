@@ -1,4 +1,4 @@
-package br.com.debico.bolao.spring;
+package br.com.debico.bolao.batch.config;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -31,7 +31,7 @@ import br.com.debico.campeonato.services.RodadaService;
 import br.com.debico.core.spring.config.InfrastructureConfig;
 
 @Configuration
-public class BatchSumarizacaoJobsConfig {
+public class SumarizacaoJobsConfig {
 
     @Inject
     @Named("pontuacaoSumarizadaReaderBean")

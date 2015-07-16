@@ -43,7 +43,7 @@ import br.com.debico.test.spring.AbstractUnitTest;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 
-@ContextConfiguration(classes = { ResultadosConfig.class })
+@ContextConfiguration(classes = { ResultadosConfig.class } )
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestBolaoProcessorManager extends AbstractUnitTest {
 
