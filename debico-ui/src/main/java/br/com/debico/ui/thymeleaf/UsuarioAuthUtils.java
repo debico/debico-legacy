@@ -33,7 +33,7 @@ public final class UsuarioAuthUtils {
     public static ApostadorUserDetails apostadorAutenticado() {
 	final Authentication auth = AuthUtils.getAuthenticationObject();
 
-	if (auth.getPrincipal() instanceof ApostadorUserDetails) {
+	if(auth != null && auth.getPrincipal() instanceof ApostadorUserDetails) {
 	    return (ApostadorUserDetails) auth.getPrincipal();
 	} else {
 	    return ApostadorUserDetails

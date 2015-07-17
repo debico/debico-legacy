@@ -25,9 +25,11 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 
 import br.com.debico.bolao.batch.BolaoJobNames;
 import br.com.debico.bolao.dao.mappers.ApostadorPontuacaoRodadaRowMapper;
+import br.com.debico.bolao.dao.names.TBApostadorPontuacaoRodada;
 import br.com.debico.bolao.dao.setters.ApostadorPontuacaoRodadaParameterSourceProvider;
 import br.com.debico.bolao.model.ApostadorPontuacaoRodada;
 import br.com.debico.campeonato.services.RodadaService;
+import br.com.debico.core.dao.DAOUtils;
 import br.com.debico.core.spring.config.InfrastructureConfig;
 
 @Configuration
@@ -110,8 +112,9 @@ public class SumarizacaoJobsConfig {
 	itemWriter.setDataSource(dataSource);
 	itemWriter
 		.setItemSqlParameterSourceProvider(new ApostadorPontuacaoRodadaParameterSourceProvider());
-	itemWriter
-		.setSql("INSERT INTO tb_apostador_pontuacao_rodada (ID_RODADA) VALUES (:ID_RODADA)");
+	itemWriter.setSql(DAOUtils.generateSQLInsertNamedParameters(
+		"tb_apostador_pontuacao_rodada",
+		TBApostadorPontuacaoRodada.TODOS));
 	return itemWriter;
     }
 
