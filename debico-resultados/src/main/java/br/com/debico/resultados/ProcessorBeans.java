@@ -16,5 +16,6 @@ public final class ProcessorBeans {
     public static final String CALCULA_POSICAO_TIMES = "calculaPosicaoTimes";
     public static final String DEFINE_STATUS_PARTIDAS = "defineStatusPartidas";
     public static final String COMPUTA_PALPITES = "computaPalpites";
+    public static final String SUMARIZA_PONTOS_APOSTADOR_RODADA = "sumarizaPontosApostadorRodada";
 
 }

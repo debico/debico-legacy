@@ -20,20 +20,20 @@ import br.com.tecnobiz.spring.config.dao.AbstractJPADao;
 @Named
 @Transactional(propagation = Propagation.MANDATORY)
 class ApostadorPontuacaoDAOImpl extends
-        AbstractJPADao<ApostadorPontuacao, Apostador> implements
-        ApostadorPontuacaoDAO {
+	AbstractJPADao<ApostadorPontuacao, Apostador> implements
+	ApostadorPontuacaoDAO {
 
     private static final Logger LOGGER = LoggerFactory
-            .getLogger(ApostadorPontuacaoDAOImpl.class);
+	    .getLogger(ApostadorPontuacaoDAOImpl.class);
 
     public ApostadorPontuacaoDAOImpl() {
-        super(ApostadorPontuacao.class);
+	super(ApostadorPontuacao.class);
     }
 
     @Override
     public List<ApostadorPontuacao> selecionarApostadoresPorLiga(
-            int idCampeonato, long idLiga) {
-        // @formatter:off
+	    int idCampeonato, long idLiga) {
+	// @formatter:off
 		return getEntityManager()
 				.createQuery("SELECT A FROM ApostadorPontuacao AS A JOIN FETCH A.apostador, LigaApostador AS L WHERE A.apostador.id = L.apostador.id AND A.campeonato.id = :idCampeonato AND L.liga.id = :idLiga", 
 						ApostadorPontuacao.class)
@@ -44,8 +44,9 @@ class ApostadorPontuacaoDAOImpl extends
     }
 
     @Override
-    public List<AbstractApostadorPontuacao> selecionarApostadoresPorRodada(int idRodada) {
-        // @formatter:off
+    public List<AbstractApostadorPontuacao> selecionarApostadoresPorRodada(
+	    int idRodada) {
+	// @formatter:off
 	    return getEntityManager()
 	            .createQuery("SELECT A FROM ApostadorPontuacaoRodada A JOIN FETCH A.apostador WHERE A.rodada.id = :idRodada", AbstractApostadorPontuacao.class)
 	            .setParameter("idRodada", idRodada)
@@ -55,8 +56,8 @@ class ApostadorPontuacaoDAOImpl extends
 
     @Override
     public List<AbstractApostadorPontuacao> selecionarApostadoresPorRodadaELiga(
-            int idRodada, long idLiga) {
-        // @formatter:off
+	    int idRodada, long idLiga) {
+	// @formatter:off
         return getEntityManager()
                 .createQuery("SELECT A FROM ApostadorPontuacaoRodada AS A JOIN FETCH A.apostador, LigaApostador AS L WHERE A.apostador.id = L.apostador.id AND P.rodada.id = :idRodada AND L.liga.id = :idLiga", 
                         AbstractApostadorPontuacao.class)
@@ -67,29 +68,38 @@ class ApostadorPontuacaoDAOImpl extends
     }
 
     public List<ApostadorPontuacao> selecionarApostadores(Campeonato campeonato) {
-        return getEntityManager()
-                .createQuery(
-                        "SELECT A FROM ApostadorPontuacao AS A JOIN FETCH A.apostador WHERE A.campeonato = :campeonato",
-                        ApostadorPontuacao.class)
-                .setParameter("campeonato", campeonato).getResultList();
+	return getEntityManager()
+		.createQuery(
+			"SELECT A FROM ApostadorPontuacao AS A JOIN FETCH A.apostador WHERE A.campeonato = :campeonato",
+			ApostadorPontuacao.class)
+		.setParameter("campeonato", campeonato).getResultList();
     }
 
     public ApostadorPontuacao selecionarApostador(Apostador apostador,
-            Campeonato campeonato) {
-        try {
-            return getEntityManager()
-                    .createQuery(
-                            "SELECT ap FROM ApostadorPontuacao ap WHERE campeonato = :campeonato AND apostador = :apostador",
-                            ApostadorPontuacao.class)
-                    .setParameter("apostador", apostador)
-                    .setParameter("campeonato", campeonato).getSingleResult();
+	    Campeonato campeonato) {
+	try {
+	    return getEntityManager()
+		    .createQuery(
+			    "SELECT ap FROM ApostadorPontuacao ap WHERE campeonato = :campeonato AND apostador = :apostador",
+			    ApostadorPontuacao.class)
+		    .setParameter("apostador", apostador)
+		    .setParameter("campeonato", campeonato).getSingleResult();
 
-        } catch (NoResultException nre) {
-            LOGGER.debug(
-                    "[selecionarApostador] Nenhum resultado encontrado na busca pelo apostador '{}' inscrito no campeonato '{}'.",
-                    apostador, campeonato);
-            return null;
-        }
+	} catch (NoResultException nre) {
+	    LOGGER.debug(
+		    "[selecionarApostador] Nenhum resultado encontrado na busca pelo apostador '{}' inscrito no campeonato '{}'.",
+		    apostador, campeonato);
+	    return null;
+	}
+    }
+
+    @Override
+    public void excluirApostadorPontuacaoRodada(int idRodada) {
+	getEntityManager()
+		.createQuery(
+			"DELETE FROM ApostadorPontuacaoRodada apr WHERE rodada.id = :id_rodada")
+		.setParameter("id_rodada", idRodada).executeUpdate();
+
     }
 
 }

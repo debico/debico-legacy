@@ -67,5 +67,12 @@ public interface ApostadorPontuacaoService {
 	 */
 	void inscreverApostadorCampeonatoSileciosamente(final Apostador apostador,
 			final CampeonatoImpl campeonato);
+	
+	/**
+	 * Exclui a pontuação de todos apostadores de uma rodada específica.
+	 * 
+	 * @param idRodada
+	 */
+	void removerPontuacaoRodada(final int idRodada);
 
 }

@@ -12,7 +12,7 @@ import org.springframework.batch.core.launch.NoSuchJobException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import br.com.debico.bolao.batch.BolaoJobNames;
+import br.com.debico.bolao.batch.BolaoJobConstants;
 import br.com.debico.test.spring.AbstractUnitTest;
 
 @ContextConfiguration(classes = ModularBatchProcessorsConfig.class)
@@ -25,7 +25,7 @@ public class TestModularBatchProcessorsConfig extends AbstractUnitTest {
     @Test
     public void test() throws NoSuchJobException {
 	Job job = jobRegistry
-		.getJob(BolaoJobNames.SUMARIZAR_PONTUACAO_APOSTADOR_RODADA);
+		.getJob(BolaoJobConstants.JOB_SUMARIZAR_PONTUACAO_APOSTADOR_RODADA);
 	assertNotNull(job);
     }
 

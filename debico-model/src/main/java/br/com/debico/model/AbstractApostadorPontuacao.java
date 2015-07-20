@@ -201,7 +201,7 @@ public abstract class AbstractApostadorPontuacao implements Serializable, Compar
                 .compare(o.getVencedor(), this.getVencedor())
                 .compare(o.getGols(), this.getGols())
                 .compare(this.getErrados(), o.getErrados())
-                .compare(o.getApostador(), this.getErrados()).result();
+                .compare(o.getApostador(), this.getApostador()).result();
     }
 
 }

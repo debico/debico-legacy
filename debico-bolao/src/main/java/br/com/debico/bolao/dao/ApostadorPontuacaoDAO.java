@@ -39,6 +39,13 @@ public interface ApostadorPontuacaoDAO extends Dao<ApostadorPontuacao, Apostador
      * @since 2.0.3
      */
     List<AbstractApostadorPontuacao> selecionarApostadoresPorRodadaELiga(int idRodada, long idLiga);
+    
+    /**
+     * Elimina a pontuação dos apostadores de uma rodada específica.
+     * @param idRodada
+     * @since 2.0.4
+     */
+    void excluirApostadorPontuacaoRodada(int idRodada);
         
     ApostadorPontuacao selecionarApostador(Apostador apostador, Campeonato campeonato);
 

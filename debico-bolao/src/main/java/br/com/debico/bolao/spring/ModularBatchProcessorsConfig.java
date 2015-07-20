@@ -17,7 +17,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import br.com.debico.bolao.batch.config.SumarizacaoJobsConfig;
 import br.com.debico.core.spring.config.InfrastructureConfig;
-import br.com.tecnobiz.spring.config.dao.base.ProfileBasedDaoConfig;
 import br.com.tecnobiz.spring.config.dao.profiles.ContainerJPA;
 import br.com.tecnobiz.spring.config.dao.profiles.EmbeddedJPA;
 import br.com.tecnobiz.spring.config.dao.profiles.StandaloneJPA;
@@ -33,7 +32,7 @@ import br.com.tecnobiz.spring.config.dao.profiles.StandaloneJPA;
 @EnableBatchProcessing(modular = true)
 @Configuration
 @ComponentScan("br.com.debico.bolao.batch.impl")
-@Import(ProfileBasedDaoConfig.class)
+@Import(InfrastructureConfig.class)
 public class ModularBatchProcessorsConfig extends DefaultBatchConfigurer {
 
     @Inject
@@ -42,6 +41,7 @@ public class ModularBatchProcessorsConfig extends DefaultBatchConfigurer {
     @Inject
     protected EntityManagerFactory entityManagerFactory;
 
+    @Inject
     protected DataSource dataSource;
 
     // infelizmente é necessário recriar o TransactionManager por conta

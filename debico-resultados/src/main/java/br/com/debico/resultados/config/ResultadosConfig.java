@@ -6,10 +6,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.Order;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import br.com.debico.bolao.spring.BolaoConfig;
 import br.com.debico.campeonato.spring.CampeonatoConfig;
 
+@EnableAsync
 @Order(Integer.MAX_VALUE)
 @Configuration
 @Import({BolaoConfig.class, CampeonatoConfig.class})
