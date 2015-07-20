@@ -2,6 +2,7 @@ package br.com.debico.bolao.dao;
 
 import java.util.List;
 
+import br.com.debico.model.AbstractApostadorPontuacao;
 import br.com.debico.model.Apostador;
 import br.com.debico.model.ApostadorPontuacao;
 import br.com.debico.model.campeonato.Campeonato;
@@ -27,7 +28,7 @@ public interface ApostadorPontuacaoDAO extends Dao<ApostadorPontuacao, Apostador
      * @return
      * @since 2.0.3
      */
-    List<ApostadorPontuacao> selecionarApostadoresPorRodada(int idRodada);
+    List<AbstractApostadorPontuacao> selecionarApostadoresPorRodada(int idRodada);
     
     /**
      * Retorna os apostadores de determinada rodada e liga.
@@ -37,7 +38,7 @@ public interface ApostadorPontuacaoDAO extends Dao<ApostadorPontuacao, Apostador
      * @return
      * @since 2.0.3
      */
-    List<ApostadorPontuacao> selecionarApostadoresPorRodadaELiga(int idRodada, long idLiga);
+    List<AbstractApostadorPontuacao> selecionarApostadoresPorRodadaELiga(int idRodada, long idLiga);
         
     ApostadorPontuacao selecionarApostador(Apostador apostador, Campeonato campeonato);
 

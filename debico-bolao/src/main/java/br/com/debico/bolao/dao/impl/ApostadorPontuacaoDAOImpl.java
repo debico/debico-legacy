@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.bolao.dao.ApostadorPontuacaoDAO;
+import br.com.debico.model.AbstractApostadorPontuacao;
 import br.com.debico.model.Apostador;
 import br.com.debico.model.ApostadorPontuacao;
 import br.com.debico.model.campeonato.Campeonato;
@@ -43,22 +44,22 @@ class ApostadorPontuacaoDAOImpl extends
     }
 
     @Override
-    public List<ApostadorPontuacao> selecionarApostadoresPorRodada(int idRodada) {
+    public List<AbstractApostadorPontuacao> selecionarApostadoresPorRodada(int idRodada) {
         // @formatter:off
 	    return getEntityManager()
-	            .createQuery("SELECT DISTINCT A FROM ApostadorPontuacao A JOIN FETCH A.apostador, PartidaRodada AS P, Fase AS F WHERE A.campeonato.id = F.campeonato.id AND F.id = P.fase.id AND P.rodada.id = :idRodada", ApostadorPontuacao.class)
+	            .createQuery("SELECT A FROM ApostadorPontuacaoRodada A JOIN FETCH A.apostador WHERE A.rodada.id = :idRodada", AbstractApostadorPontuacao.class)
 	            .setParameter("idRodada", idRodada)
 	            .getResultList();
 	    // @formatter:on
     }
 
     @Override
-    public List<ApostadorPontuacao> selecionarApostadoresPorRodadaELiga(
+    public List<AbstractApostadorPontuacao> selecionarApostadoresPorRodadaELiga(
             int idRodada, long idLiga) {
         // @formatter:off
         return getEntityManager()
-                .createQuery("SELECT DISTINCT A FROM ApostadorPontuacao AS A JOIN FETCH A.apostador, LigaApostador AS L, PartidaRodada AS P, FaseImpl AS F WHERE A.apostador.id = L.apostador.id AND A.campeonato.id = F.campeonato.id AND F.id = P.fase.id AND P.rodada.id = :idRodada AND L.liga.id = :idLiga", 
-                        ApostadorPontuacao.class)
+                .createQuery("SELECT A FROM ApostadorPontuacaoRodada AS A JOIN FETCH A.apostador, LigaApostador AS L WHERE A.apostador.id = L.apostador.id AND P.rodada.id = :idRodada AND L.liga.id = :idLiga", 
+                        AbstractApostadorPontuacao.class)
                 .setParameter("idRodada", idRodada)
                 .setParameter("idLiga", idLiga)
                 .getResultList();

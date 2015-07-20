@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import br.com.debico.bolao.services.ApostadorPontuacaoService;
 import br.com.debico.campeonato.services.CampeonatoService;
 import br.com.debico.campeonato.services.RodadaService;
-import br.com.debico.model.ApostadorPontuacao;
+import br.com.debico.model.AbstractApostadorPontuacao;
 import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.social.services.LigaService;
 import br.com.debico.ui.controllers.AbstractViewController;
@@ -64,7 +64,7 @@ public class ApostadorPontuacaoController extends AbstractViewController {
             @RequestParam(value = "rodada", required = false) final Integer idRodadaParam) {
         final Campeonato campeonato = campeonatoService
                 .selecionarCampeonato(permalink);
-        
+
         this.carregarFiltroRodadas(campeonato);
 
         final int idRodada = firstNonNull(idRodadaParam, 0);
@@ -80,8 +80,8 @@ public class ApostadorPontuacaoController extends AbstractViewController {
         return getModelAndView();
     }
 
-    private List<ApostadorPontuacao> listarRanking(final Campeonato campeonato,
-            final long idLiga, final int idRodada) {
+    private List<? extends AbstractApostadorPontuacao> listarRanking(
+            final Campeonato campeonato, final long idLiga, final int idRodada) {
 
         if (idLiga > 0 && idRodada > 0) {
             return apostadorPontuacaoService.listarRankingPorRodadaELiga(

@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.debico.bolao.ApostadorJaInscritoException;
 import br.com.debico.bolao.services.ApostadorPontuacaoService;
 import br.com.debico.bolao.test.support.AbstractBolaoUnitTest;
+import br.com.debico.model.AbstractApostadorPontuacao;
 import br.com.debico.model.Apostador;
 import br.com.debico.model.ApostadorPontuacao;
 import br.com.debico.model.Usuario;
@@ -75,7 +76,7 @@ public class TestApostadorPontuacaoServiceImpl extends AbstractBolaoUnitTest {
     @Test
     public void testListarPorRodadaELiga() throws CadastroLigaException {
         final Liga liga = ligaService.cadastrarNovaLiga("Liga da Justiça MODAFOCA", TestConstants.EMAIL_CARGA);
-        List<ApostadorPontuacao> ranking = apostadorService.listarRankingPorRodadaELiga(39, liga.getId());
+        List<AbstractApostadorPontuacao> ranking = apostadorService.listarRankingPorRodadaELiga(39, liga.getId());
         assertNotNull(ranking);
         assertFalse(ranking.isEmpty()); // pelo menos eu \o/
         assertTrue(ranking.size() == 1);

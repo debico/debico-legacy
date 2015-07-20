@@ -16,6 +16,7 @@ import br.com.debico.bolao.ApostadorJaInscritoException;
 import br.com.debico.bolao.dao.ApostadorPontuacaoDAO;
 import br.com.debico.bolao.services.ApostadorPontuacaoService;
 import br.com.debico.core.helpers.CacheKeys;
+import br.com.debico.model.AbstractApostadorPontuacao;
 import br.com.debico.model.Apostador;
 import br.com.debico.model.ApostadorPontuacao;
 import br.com.debico.model.campeonato.Campeonato;
@@ -94,8 +95,8 @@ public class ApostadorPontuacaoServiceImpl implements ApostadorPontuacaoService 
     }
 
     @Cacheable(value = CacheKeys.RANKING_APOSTADORES, key = "{#idRodada, 'R'}")
-    public List<ApostadorPontuacao> listarRankingPorRodada(int idRodada) {
-        final List<ApostadorPontuacao> pontuacao = apostadorPontuacaoDAO
+    public List<AbstractApostadorPontuacao> listarRankingPorRodada(int idRodada) {
+        final List<AbstractApostadorPontuacao> pontuacao = apostadorPontuacaoDAO
                 .selecionarApostadoresPorRodada(idRodada);
 
         Collections.sort(pontuacao);
@@ -104,9 +105,9 @@ public class ApostadorPontuacaoServiceImpl implements ApostadorPontuacaoService 
     }
 
     @Cacheable(value = CacheKeys.RANKING_APOSTADORES, key = "{#idRodada, #idLiga, 'RL'}")
-    public List<ApostadorPontuacao> listarRankingPorRodadaELiga(int idRodada,
+    public List<AbstractApostadorPontuacao> listarRankingPorRodadaELiga(int idRodada,
             long idLiga) {
-        final List<ApostadorPontuacao> pontuacao = apostadorPontuacaoDAO
+        final List<AbstractApostadorPontuacao> pontuacao = apostadorPontuacaoDAO
                 .selecionarApostadoresPorRodadaELiga(idRodada, idLiga);
 
         Collections.sort(pontuacao);

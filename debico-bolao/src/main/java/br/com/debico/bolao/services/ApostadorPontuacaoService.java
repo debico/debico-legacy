@@ -3,6 +3,7 @@ package br.com.debico.bolao.services;
 import java.util.List;
 
 import br.com.debico.bolao.ApostadorJaInscritoException;
+import br.com.debico.model.AbstractApostadorPontuacao;
 import br.com.debico.model.Apostador;
 import br.com.debico.model.ApostadorPontuacao;
 import br.com.debico.model.campeonato.Campeonato;
@@ -40,9 +41,8 @@ public interface ApostadorPontuacaoService {
 	 * @param idCampeonato
 	 * @param idRodada
 	 * @return
-	 * @deprecated temos que calcular por rodada no DROOLS. Pensar...
 	 */
-	List<ApostadorPontuacao> listarRankingPorRodada(final int idRodada);
+	List<AbstractApostadorPontuacao> listarRankingPorRodada(final int idRodada);
 
 	/**
 	 * Lista o Ranking de acordo com a rodada e a liga em questão.
@@ -50,9 +50,8 @@ public interface ApostadorPontuacaoService {
 	 * @param idRodada
 	 * @param idLiga
 	 * @return
-	 * @deprecated temos que calcular por rodada no DROOLS. Pensar...
 	 */
-	List<ApostadorPontuacao> listarRankingPorRodadaELiga(final int idRodada, final long idLiga);
+	List<AbstractApostadorPontuacao> listarRankingPorRodadaELiga(final int idRodada, final long idLiga);
 	
 	void inscreverApostadorCampeonato(final Apostador apostador,
 			final CampeonatoImpl campeonato)
