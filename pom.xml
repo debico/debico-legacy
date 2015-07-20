@@ -182,6 +182,11 @@
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
+                <groupId>br.com.debico</groupId>
+                <artifactId>debico-resultados</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+			<dependency>
 				<groupId>br.com.debico</groupId>
 				<artifactId>debico-test</artifactId>
 				<version>${project.version}</version>

@@ -190,14 +190,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>br.com.debico</groupId>
-			<artifactId>debico-bolao</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>br.com.debico</groupId>
-			<artifactId>debico-campeonato</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>br.com.debico</groupId>
 			<artifactId>debico-social</artifactId>
 		</dependency>
 		<dependency>
@@ -280,6 +272,10 @@
 					<groupId>commons-logging</groupId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>br.com.debico</groupId>
+			<artifactId>debico-resultados</artifactId>
 		</dependency>
 	</dependencies>
 </project>
