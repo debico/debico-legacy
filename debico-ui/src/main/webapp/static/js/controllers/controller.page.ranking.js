@@ -4,28 +4,36 @@
  * 
  * @since 2.0.4
  */
-$(document).ready(function() {
-	$("#alert-semdados").hide();
-	$("#chart_container").hide();
-	$("#alert-loading").show();
+$(document).ready(
+		function() {
+			$("#alert-semdados").hide();
+			$("#chart_container").hide();
+			$("#alert-loading").show();
 
-	Debico.Ranking.carregarGraficoDesempenhoApostador({
-		chartElement : document.getElementById('chart'),
-		yElement : document.getElementById('y_axis'),
-		xElement : document.getElementById('x_axis')
-	}).then(function(args) {
-		$("#chart_container").show();
-	}).fail(function(error) {
-		$("#alert-semdados").show();
-	}).fin(function() {
-		$("#alert-loading").hide();
-	});
+			Debico.Ranking.carregarGraficoDesempenhoApostador({
+				chartElement : document.getElementById('chart'),
+				yElement : document.getElementById('y_axis'),
+				xElement : document.getElementById('x_axis')
+			}).then(function(args) {
+				$("#chart_container").show();
+			}).fail(function(error) {
+				$("#alert-semdados").show();
+			}).fin(function() {
+				$("#alert-loading").hide();
+			});
 
-	$("#btn_filtro").on('click', function() {
-		Debico.Ranking.aplicarFiltro($("#filtro_lista").val());
-	});
+			$("#btn_filtro").on(
+					'click',
+					function() {
+						Debico.Ranking.aplicarFiltro($("#filtro_liga").val(),
+								$("#filtro_rodada").val());
+					});
 
-});
+			$("#btn_limpar").on('click', function() {
+				Debico.Ranking.limparFiltro();
+			});
+
+		});
 
 // referencia para mais tarde:
 // -----------------------------

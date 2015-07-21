@@ -66,7 +66,7 @@ public class TestSumarizacaoJobsConfig extends AbstractBolaoUnitTest {
         parameters.put(BolaoJobConstants.PARAM_CAMPEONATO_ID, new JobParameter(
                 1L));
         parameters
-                .put(BolaoJobConstants.PARAM_RODADA_ID, new JobParameter(77L));
+                .put(BolaoJobConstants.PARAM_RODADA_ID, new JobParameter(75L));
 
         final JobParameters jobParameters = new JobParameters(parameters);
         final JobExecution jobExecution = jobLauncherTestUtils

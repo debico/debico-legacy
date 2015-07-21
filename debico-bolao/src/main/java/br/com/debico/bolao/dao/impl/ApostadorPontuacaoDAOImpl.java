@@ -59,7 +59,7 @@ class ApostadorPontuacaoDAOImpl extends
 	    int idRodada, long idLiga) {
 	// @formatter:off
         return getEntityManager()
-                .createQuery("SELECT A FROM ApostadorPontuacaoRodada AS A JOIN FETCH A.apostador, LigaApostador AS L WHERE A.apostador.id = L.apostador.id AND P.rodada.id = :idRodada AND L.liga.id = :idLiga", 
+                .createQuery("SELECT A FROM ApostadorPontuacaoRodada AS A JOIN FETCH A.apostador, LigaApostador AS L WHERE A.apostador.id = L.apostador.id AND A.rodada.id = :idRodada AND L.liga.id = :idLiga", 
                         AbstractApostadorPontuacao.class)
                 .setParameter("idRodada", idRodada)
                 .setParameter("idLiga", idLiga)

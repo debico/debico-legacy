@@ -99,20 +99,27 @@ Debico.Ranking = (function() {
 		var r = parseInt(rodada) || 0;
 		var uri = new URI(window.location);
 
-		// só consideramos a liga por enquanto
-		if (liga > 0) {
-			uri.setSearch({
-				"liga" : liga
-			})
-		} else {
-			uri.removeSearch("liga");
-		}
+		uri.setSearch({
+			"liga" : liga,
+			"rodada" : rodada
+		});
+		
+		if (liga <= 0) uri.removeSearch("liga");
+		if (rodada <= 0) uri.removeSearch("rodada");
 
+		window.location.replace(uri.toString());
+	}
+	
+	var limparFiltro = function() {
+		var uri = new URI(window.location);
+		uri.removeSearch(["liga", "rodada"]);
+		
 		window.location.replace(uri.toString());
 	}
 
 	return {
 		carregarGraficoDesempenhoApostador : carregarGraficoDesempenhoApostador,
-		aplicarFiltro : aplicarFiltro
+		aplicarFiltro : aplicarFiltro,
+		limparFiltro : limparFiltro
 	}
 })();

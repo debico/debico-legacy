@@ -112,19 +112,34 @@ public class SumarizacaoJobsConfig {
     private String getSQLItemReader() {
         final StringBuffer buffer = new StringBuffer();
         buffer.append("SELECT ")
-                .append(" SUM(P.IN_EMPATE) AS NU_EMPATE,")
-                .append(" SUM(P.IN_ERRADO) AS NU_ERRADOS,")
-                .append(" SUM(P.IN_GOL) AS NU_GOLS,")
-                .append(" SUM(P.IN_PLACAR) AS NU_PLACAR,")
-                .append(" SUM(P.NU_PONTOS) AS NU_PONTOS,")
-                .append(" SUM(P.IN_VENCEDOR) AS NU_VENCEDOR,")
-                .append(" A.ID_CAMPEONATO, A.ID_APOSTADOR, R.ID_RODADA")
-                .append(" FROM")
-                .append(" tb_apostador_campeonato AS A LEFT join")
-                .append(" tb_palpite as P ON (A.ID_APOSTADOR = P.ID_APOSTADOR) inner join")
-                .append(" tb_partida as R ON (P.ID_PARTIDA = R.ID_PARTIDA)")
-                .append(" WHERE R.ID_RODADA = ? AND A.ID_CAMPEONATO = ?")
-                .append(" GROUP BY A.ID_CAMPEONATO, A.ID_APOSTADOR, R.ID_RODADA");
+        .append(" COALESCE(SUM(P.IN_EMPATE), 0) AS NU_EMPATE,")
+        .append(" COALESCE(SUM(P.IN_ERRADO), 0) AS NU_ERRADOS,")
+        .append(" COALESCE(SUM(P.IN_GOL), 0) AS NU_GOLS,")
+        .append(" COALESCE(SUM(P.IN_PLACAR), 0) AS NU_PLACAR,")
+        .append(" COALESCE(SUM(P.NU_PONTOS), 0) AS NU_PONTOS,")
+        .append(" COALESCE(SUM(P.IN_VENCEDOR), 0) AS NU_VENCEDOR,")
+        .append(" A.ID_CAMPEONATO, A.ID_APOSTADOR, COALESCE(P.ID_RODADA, ?) AS ID_RODADA")
+        .append(" FROM")
+        .append(" tb_apostador_campeonato AS A LEFT JOIN")
+        .append(" (SELECT palp . *, part.ID_RODADA FROM tb_palpite AS palp INNER JOIN")
+        .append(" tb_partida AS part ON (palp.ID_PARTIDA = part.ID_PARTIDA) WHERE part.ID_RODADA = ?)")
+        .append(" AS P ON (P.ID_APOSTADOR = A.ID_APOSTADOR)")
+        .append(" WHERE A.ID_CAMPEONATO = ?")
+        .append(" GROUP BY A.ID_CAMPEONATO, A.ID_APOSTADOR, P.ID_RODADA");
+//        buffer.append("SELECT ")
+//                .append(" SUM(P.IN_EMPATE) AS NU_EMPATE,")
+//                .append(" SUM(P.IN_ERRADO) AS NU_ERRADOS,")
+//                .append(" SUM(P.IN_GOL) AS NU_GOLS,")
+//                .append(" SUM(P.IN_PLACAR) AS NU_PLACAR,")
+//                .append(" SUM(P.NU_PONTOS) AS NU_PONTOS,")
+//                .append(" SUM(P.IN_VENCEDOR) AS NU_VENCEDOR,")
+//                .append(" A.ID_CAMPEONATO, A.ID_APOSTADOR, R.ID_RODADA")
+//                .append(" FROM")
+//                .append(" tb_apostador_campeonato AS A LEFT join")
+//                .append(" tb_palpite as P ON (A.ID_APOSTADOR = P.ID_APOSTADOR) inner join")
+//                .append(" tb_partida as R ON (P.ID_PARTIDA = R.ID_PARTIDA)")
+//                .append(" WHERE R.ID_RODADA = ? AND A.ID_CAMPEONATO = ?")
+//                .append(" GROUP BY A.ID_CAMPEONATO, A.ID_APOSTADOR, R.ID_RODADA");
 
         return buffer.toString();
     }
@@ -151,7 +166,8 @@ public class SumarizacaoJobsConfig {
             @Override
             public void setValues(PreparedStatement ps) throws SQLException {
                 ps.setLong(1, rodadaId);
-                ps.setLong(2, campeonatoId);
+                ps.setLong(2, rodadaId);
+                ps.setLong(3, campeonatoId);
             }
         };
     }

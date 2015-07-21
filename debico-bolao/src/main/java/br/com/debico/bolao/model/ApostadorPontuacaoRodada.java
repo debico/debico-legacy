@@ -15,8 +15,6 @@ import br.com.debico.model.ApostadorPontuacao;
 import br.com.debico.model.campeonato.CampeonatoImpl;
 import br.com.debico.model.campeonato.Rodada;
 
-import com.google.common.base.Objects;
-
 /**
  * Representa uma instância de {@link ApostadorPontuacao} indexado pela rodada.
  * 
@@ -32,43 +30,43 @@ public class ApostadorPontuacaoRodada extends AbstractApostadorPontuacao {
 
     @Id
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false, name="ID_RODADA")
+    @JoinColumn(nullable = false, name = "ID_RODADA")
     private Rodada rodada;
 
     public ApostadorPontuacaoRodada() {
-        super();
+	super();
     }
 
     public ApostadorPontuacaoRodada(Apostador apostador) {
-        super(apostador);
+	super(apostador);
     }
 
     public ApostadorPontuacaoRodada(Apostador apostador,
-            CampeonatoImpl campeonato) {
-        super(apostador, campeonato);
+	    CampeonatoImpl campeonato) {
+	super(apostador, campeonato);
     }
 
     public Rodada getRodada() {
-        return rodada;
+	return rodada;
     }
 
     public void setRodada(Rodada rodada) {
-        this.rodada = rodada;
+	this.rodada = rodada;
     }
 
     @Override
     public String toString() {
-        return super.toString();
+	return super.toString();
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode() + Objects.hashCode(this.rodada);
+	return super.hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+	return super.equals(obj);
     }
 
 }
