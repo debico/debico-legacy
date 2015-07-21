@@ -7,8 +7,6 @@ import javax.inject.Named;
 
 import org.junit.Before;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.bolao.spring.BolaoConfig;
 import br.com.debico.campeonato.factories.impl.QuadrangularSimplesFactory;
@@ -17,8 +15,6 @@ import br.com.debico.campeonato.services.CampeonatoService;
 import br.com.debico.model.Time;
 import br.com.debico.test.spring.AbstractUnitTest;
 
-@Transactional
-@TransactionConfiguration(defaultRollback = true)
 @ContextConfiguration(classes = { BolaoConfig.class })
 public class AbstractBolaoUnitTest extends AbstractUnitTest {
 

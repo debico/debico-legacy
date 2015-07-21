@@ -1,7 +1,5 @@
 package br.com.debico.bolao.batch.impl;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -30,6 +28,8 @@ import br.com.debico.model.campeonato.Campeonato;
 
 import com.google.common.collect.Maps;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Atua como um <code>wrapper</code> para a execução do Job configurado via
  * Spring Batch.
@@ -39,10 +39,10 @@ import com.google.common.collect.Maps;
  */
 @Named
 class SumarizadorPontuacaoApostadorRodadaImpl implements
-	SumarizadorPontuacaoApostadorRodada {
+        SumarizadorPontuacaoApostadorRodada {
 
     private static final Logger LOGGER = LoggerFactory
-	    .getLogger(SumarizadorPontuacaoApostadorRodadaImpl.class);
+            .getLogger(SumarizadorPontuacaoApostadorRodadaImpl.class);
 
     private Job job;
 
@@ -59,18 +59,18 @@ class SumarizadorPontuacaoApostadorRodadaImpl implements
     }
 
     private void setUpJob() throws NoSuchJobException {
-	if (this.job == null) {
-	    LOGGER.debug("[init] Inicializacao do Runner {}", this);
-	    checkNotNull(jobRegistry, "JobRegistry nao definido");
-	    checkNotNull(jobRepository, "JobRepository nao definido");
+        if (this.job == null) {
+            LOGGER.debug("[init] Inicializacao do Runner {}", this);
+            checkNotNull(jobRegistry, "JobRegistry nao definido");
+            checkNotNull(jobRepository, "JobRepository nao definido");
 
-	    this.job = jobRegistry
-		    .getJob(BolaoJobConstants.JOB_SUMARIZAR_PONTUACAO_APOSTADOR_RODADA);
-	    this.jobLauncher = new SimpleJobLauncher();
-	    this.jobLauncher.setJobRepository(jobRepository);
-	    this.jobLauncher.setTaskExecutor(new SyncTaskExecutor());
-	    LOGGER.debug("[init] Fim da inicializacao do runner {}", this);
-	}
+            this.job = jobRegistry
+                    .getJob(BolaoJobConstants.JOB_SUMARIZAR_PONTUACAO_APOSTADOR_RODADA);
+            this.jobLauncher = new SimpleJobLauncher();
+            this.jobLauncher.setJobRepository(jobRepository);
+            this.jobLauncher.setTaskExecutor(new SyncTaskExecutor());
+            LOGGER.debug("[init] Fim da inicializacao do runner {}", this);
+        }
     }
 
     // rodamos de forma assíncrona para forçar não executar dentro da transação
@@ -79,41 +79,47 @@ class SumarizadorPontuacaoApostadorRodadaImpl implements
     @Async
     @Override
     public Future<List<AbstractRodada>> sumarizarAsync(Campeonato campeonato,
-	    List<? extends AbstractRodada> rodadas) {
-	return new AsyncResult<List<AbstractRodada>>(this.doSumarizar(
-		campeonato, rodadas));
+            List<? extends AbstractRodada> rodadas) {
+        return new AsyncResult<List<AbstractRodada>>(this.doSumarizar(
+                campeonato, rodadas));
     }
 
     @Override
     public void sumarizarSync(Campeonato campeonato,
-	    List<? extends AbstractRodada> rodadas) {
-	this.doSumarizar(campeonato, rodadas);
+            List<? extends AbstractRodada> rodadas) {
+        this.doSumarizar(campeonato, rodadas);
     }
 
     @SuppressWarnings("unchecked")
     private List<AbstractRodada> doSumarizar(Campeonato campeonato,
-	    List<? extends AbstractRodada> rodadas) {
-	try {
-	    this.setUpJob();
-	} catch (NoSuchJobException nsje) {
-	    throw new IllegalStateException(
-		    "Erro ao configurar o JOB. Parece que o contexto Batch nao foi inicializado",
-		    nsje);
-	}
+            List<? extends AbstractRodada> rodadas) {
+        try {
+            this.setUpJob();
+        } catch (NoSuchJobException nsje) {
+            throw new IllegalStateException(
+                    "Erro ao configurar o JOB. Parece que o contexto Batch nao foi inicializado",
+                    nsje);
+        }
 
-	for (AbstractRodada rodada : rodadas) {
-	    final Map<String, JobParameter> params = Maps.newHashMap();
-	    params.put(BolaoJobConstants.PARAM_RODADA_ID,
-		    new JobParameter(Long.valueOf(rodada.getId())));
-	    params.put(BolaoJobConstants.PARAM_CAMPEONATO_ID, new JobParameter(
-		    Long.valueOf(campeonato.getId())));
-	    try {
-		jobLauncher.run(job, new JobParameters(params));
-	    } catch (JobExecutionException e) {
-		LOGGER.debug("[sumarizar] Impossivel executar o job", e);
-	    }
-	}
+        for (AbstractRodada rodada : rodadas) {
+            final Map<String, JobParameter> params = Maps.newHashMap();
+            params.put(BolaoJobConstants.PARAM_RODADA_ID,
+                    new JobParameter(Long.valueOf(rodada.getId())));
+            params.put(BolaoJobConstants.PARAM_CAMPEONATO_ID, new JobParameter(
+                    Long.valueOf(campeonato.getId())));
+            // para poder rodar o job para a mesma rodada a qualquer momento.
+            params.put("timestamp",
+                    new JobParameter(System.currentTimeMillis()));
+            final JobParameters jobParameters = new JobParameters(params);
 
-	return (List<AbstractRodada>) rodadas;
+            try {
+                jobLauncher.run(job, jobParameters);
+            } catch (JobExecutionException e) {
+                throw new IllegalStateException(
+                        "[sumarizar] Impossivel executar o job", e);
+            }
+        }
+
+        return (List<AbstractRodada>) rodadas;
     }
 }

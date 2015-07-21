@@ -1,8 +1,5 @@
 package br.com.debico.bolao.batch.config;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -31,10 +28,13 @@ import br.com.debico.bolao.test.support.AbstractBolaoUnitTest;
 
 import com.google.common.collect.Maps;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
-	StepScopeTestExecutionListener.class })
+        StepScopeTestExecutionListener.class })
 public class TestSumarizacaoJobsConfig extends AbstractBolaoUnitTest {
 
     private JobLauncherTestUtils jobLauncherTestUtils;
@@ -47,28 +47,31 @@ public class TestSumarizacaoJobsConfig extends AbstractBolaoUnitTest {
 
     @Before
     public void setUp() throws NoSuchJobException {
-	final SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
-	jobLauncher.setJobRepository(jobRepository);
-	jobLauncher.setTaskExecutor(new SyncTaskExecutor());
+        final SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
+        jobLauncher.setJobRepository(jobRepository);
+        jobLauncher.setTaskExecutor(new SyncTaskExecutor());
 
-	jobLauncherTestUtils = new JobLauncherTestUtils();
-	jobLauncherTestUtils.setJobRepository(jobRepository);
-	jobLauncherTestUtils.setJobLauncher(jobLauncher);
-	jobLauncherTestUtils.setJob(jobRegistry
-		.getJob(BolaoJobConstants.JOB_SUMARIZAR_PONTUACAO_APOSTADOR_RODADA));
+        jobLauncherTestUtils = new JobLauncherTestUtils();
+        jobLauncherTestUtils.setJobRepository(jobRepository);
+        jobLauncherTestUtils.setJobLauncher(jobLauncher);
+        jobLauncherTestUtils
+                .setJob(jobRegistry
+                        .getJob(BolaoJobConstants.JOB_SUMARIZAR_PONTUACAO_APOSTADOR_RODADA));
     }
 
     @Test
     public void testSumarizarPontuacaoApostadorPorRodada() throws Exception {
-	final Map<String, JobParameter> parameters = Maps.newHashMap();
-	
-	parameters.put(BolaoJobConstants.PARAM_CAMPEONATO_ID, new JobParameter(1L));
-	parameters.put(BolaoJobConstants.PARAM_RODADA_ID, new JobParameter(77L));
-	
-	final JobParameters jobParameters = new JobParameters(parameters);
-	final JobExecution jobExecution = jobLauncherTestUtils
-		.launchJob(jobParameters);
+        final Map<String, JobParameter> parameters = Maps.newHashMap();
 
-	assertThat(jobExecution.getStatus(), is(BatchStatus.COMPLETED));
+        parameters.put(BolaoJobConstants.PARAM_CAMPEONATO_ID, new JobParameter(
+                1L));
+        parameters
+                .put(BolaoJobConstants.PARAM_RODADA_ID, new JobParameter(77L));
+
+        final JobParameters jobParameters = new JobParameters(parameters);
+        final JobExecution jobExecution = jobLauncherTestUtils
+                .launchJob(jobParameters);
+
+        assertThat(jobExecution.getStatus(), is(BatchStatus.COMPLETED));
     }
 }
