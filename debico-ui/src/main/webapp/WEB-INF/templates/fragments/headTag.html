@@ -17,11 +17,23 @@
 	content="Gerencie com facilidade e muita divers&atilde;o um bol&atilde;o de futebol com seus amigos!" />
 
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 <meta name="_csrf" th:content="${_csrf.token}" />
 <meta name="_csrf_header" th:content="${_csrf.headerName}" />
 
 <title th:text="${title}">De Bico! \o/</title>
+
+<!-- wepapp icons -->
+<link th:href="@{/static/images/mobile/apple-touch-icon.png}" rel="apple-touch-icon" />
+<link th:href="@{/static/images/mobile/apple-touch-icon-76x76.png}" rel="apple-touch-icon" sizes="76x76" />
+<link th:href="@{/static/images/mobile/apple-touch-icon-120x120.png}" rel="apple-touch-icon" sizes="120x120" />
+<link th:href="@{/static/images/mobile/apple-touch-icon-152x152.png}" rel="apple-touch-icon" sizes="152x152" />
+<link th:href="@{/static/images/mobile/apple-touch-icon-180x180.png}" rel="apple-touch-icon" sizes="180x180" />
+<link th:href="@{/static/images/mobile/icon-hires.png}" rel="icon" sizes="192x192" />
+<link th:href="@{/static/images/mobile/icon-normal.png}" rel="icon" sizes="128x128" />
+<script th:src="@{/static/js/vendor/stay_standalone.js}" type="text/javascript"></script>
 
 <link th:href="@{/static/css/favicon.ico}" rel="icon"
 	type="image/x-icon" />
