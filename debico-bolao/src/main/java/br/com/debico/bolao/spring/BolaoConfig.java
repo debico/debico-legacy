@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import br.com.debico.campeonato.spring.CampeonatoConfig;
@@ -27,16 +28,19 @@ import br.com.debico.social.spring.SocialConfig;
  * @author ricardozanini
  *
  */
+// email de alerta
 @EnableScheduling
+// batch
+@EnableAsync
 @Configuration
 @Import({ CampeonatoConfig.class, SocialConfig.class, NotifyConfig.class,
-        ModularBatchProcessorsConfig.class })
+	ModularBatchProcessorsConfig.class })
 @ComponentScan({ "br.com.debico.bolao.services", "br.com.debico.bolao.dao",
-        "br.com.debico.bolao.brms", "br.com.debico.bolao.schedulers" })
+	"br.com.debico.bolao.brms", "br.com.debico.bolao.schedulers" })
 public class BolaoConfig extends ServicesConfig {
 
     private static final Logger LOGGER = LoggerFactory
-            .getLogger(BolaoConfig.class);
+	    .getLogger(BolaoConfig.class);
 
     @Inject
     protected CampeonatoConfig campeonatoConfig;
@@ -56,17 +60,17 @@ public class BolaoConfig extends ServicesConfig {
 
     @Bean(name = "bolaoBrmsExecutor")
     public BRMSExecutor bolaoBrmsExecutor() {
-        LOGGER.debug("********* INICIO DA CONFIGURACAO DO KIE *********");
+	LOGGER.debug("********* INICIO DA CONFIGURACAO DO KIE *********");
 
-        KieServices kieServices = KieServices.Factory.get();
+	KieServices kieServices = KieServices.Factory.get();
 
-        DroolsBRMSExecutor brmsExecutor = new DroolsBRMSExecutor();
-        brmsExecutor.setKieBase(kieServices.getKieClasspathContainer()
-                .getKieBase("bolaoKBase"));
+	DroolsBRMSExecutor brmsExecutor = new DroolsBRMSExecutor();
+	brmsExecutor.setKieBase(kieServices.getKieClasspathContainer()
+		.getKieBase("bolaoKBase"));
 
-        LOGGER.debug("********* FIM DA CONFIGURACAO DO KIE *********");
+	LOGGER.debug("********* FIM DA CONFIGURACAO DO KIE *********");
 
-        return brmsExecutor;
+	return brmsExecutor;
     }
 
 }
