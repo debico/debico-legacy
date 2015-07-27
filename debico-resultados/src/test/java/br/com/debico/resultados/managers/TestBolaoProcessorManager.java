@@ -35,7 +35,7 @@ import br.com.debico.model.Usuario;
 import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.model.campeonato.CampeonatoImpl;
 import br.com.debico.resultados.ManagerBeans;
-import br.com.debico.resultados.ProcessorManager;
+import br.com.debico.resultados.ParameterizeProcessorManager;
 import br.com.debico.resultados.config.ResultadosConfig;
 import br.com.debico.social.services.UsuarioService;
 import br.com.debico.test.spring.AbstractUnitTest;
@@ -61,7 +61,7 @@ public class TestBolaoProcessorManager extends AbstractUnitTest {
 
     @Inject
     @Named(ManagerBeans.BOLAO_MANAGER)
-    private ProcessorManager<Campeonato> processorManager;
+    private ParameterizeProcessorManager<Campeonato> parameterizeProcessorManager;
 
     /*
      * Partidas:
@@ -149,7 +149,7 @@ public class TestBolaoProcessorManager extends AbstractUnitTest {
 		new Palpite(adriano, partida3, new Placar(0, 2)), campeonato);
 
 	// execução
-	processorManager.start(campeonato);
+	parameterizeProcessorManager.start(campeonato);
 
 	List<ApostadorPontuacao> apostadores = apostadorPontuacaoService
 		.listarRanking(campeonato);

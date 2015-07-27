@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import br.com.debico.campeonato.spring.CampeonatoConfig;
@@ -29,7 +28,6 @@ import br.com.debico.social.spring.SocialConfig;
  *
  */
 @EnableScheduling
-@EnableAsync
 @Configuration
 @Import({ CampeonatoConfig.class, SocialConfig.class, NotifyConfig.class,
         ModularBatchProcessorsConfig.class })

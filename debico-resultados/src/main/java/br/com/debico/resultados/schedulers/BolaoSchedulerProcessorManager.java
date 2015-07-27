@@ -1,20 +1,29 @@
-package br.com.debico.bolao.schedulers;
+package br.com.debico.resultados.schedulers;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.springframework.scheduling.annotation.Scheduled;
 
+import br.com.debico.resultados.ManagerBeans;
+import br.com.debico.resultados.ProcessorManager;
+import br.com.debico.resultados.SchedulerProcessorManager;
+
 /**
- * Wrapper para a verdadeira implementação de {@link ProcessadorResultados} com
- * as configurações de {@link Scheduled}.
+ * Delega o processamento perante um agendamento ao {@link ProcessorManager} do
+ * bolão.
  * 
- * @author ricardozanini
- *
+ * @author Ricardo Zanini (ricardozanini@gmail.com)
+ * @since 2.0.4
  */
-//@Named
-//@Transactional(readOnly = false)
-class ProcessadorRegrasBolaoScheduler  {
+@Named
+class BolaoSchedulerProcessorManager implements SchedulerProcessorManager {
 
+    @Inject
+    @Named(ManagerBeans.BOLAO_MANAGER)
+    private ProcessorManager processorManager;
 
-    public ProcessadorRegrasBolaoScheduler() {
+    public BolaoSchedulerProcessorManager() {
 
     }
 
@@ -38,9 +47,7 @@ class ProcessadorRegrasBolaoScheduler  {
      * @see Scheduled
      */
     @Scheduled(cron = "0 0 2 ? * MON,THU,FRI,SUN")
-    public void processarResultados() {
-	//this.innerProcessador.processarResultados();
+    public void start() {
     }
 
-  
 }

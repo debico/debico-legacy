@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.resultados.Context;
 import br.com.debico.resultados.ManagerBeans;
-import br.com.debico.resultados.ProcessorManager;
+import br.com.debico.resultados.ParameterizeProcessorManager;
 import br.com.debico.ui.controllers.AbstractViewController;
 
 /**
@@ -34,7 +34,7 @@ public class ProcessamentoResultadosController extends AbstractViewController {
 
     @Inject
     @Named(ManagerBeans.SUMARIZADOR_MANAGER)
-    private ProcessorManager<Campeonato> processorManager;
+    private ParameterizeProcessorManager<Campeonato> parameterizeProcessorManager;
 
     public ProcessamentoResultadosController() {
 
@@ -53,7 +53,7 @@ public class ProcessamentoResultadosController extends AbstractViewController {
     @RequestMapping(method = RequestMethod.GET, value = "/admin/processador/disparar")
     public @ResponseBody boolean dispararProcessador() {
 	LOGGER.debug("[dispararProcessador] Iniciando processador.");
-	List<Context> contexts = this.processorManager.start();
+	List<Context> contexts = this.parameterizeProcessorManager.start();
 	LOGGER.debug(
 		"[dispararProcessador] Processamento realizado. Retorno: {}",
 		contexts);

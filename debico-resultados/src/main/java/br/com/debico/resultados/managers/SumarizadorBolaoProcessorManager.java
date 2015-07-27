@@ -14,7 +14,7 @@ import br.com.debico.resultados.DefaultProcessorPipeline;
 import br.com.debico.resultados.ManagerBeans;
 import br.com.debico.resultados.Processor;
 import br.com.debico.resultados.ProcessorBeans;
-import br.com.debico.resultados.ProcessorManager;
+import br.com.debico.resultados.ParameterizeProcessorManager;
 import br.com.debico.resultados.ProcessorPipeline;
 
 /**
@@ -27,13 +27,13 @@ import br.com.debico.resultados.ProcessorPipeline;
  */
 @Named(ManagerBeans.SUMARIZADOR_MANAGER)
 public class SumarizadorBolaoProcessorManager implements
-	ProcessorManager<Campeonato> {
+	ParameterizeProcessorManager<Campeonato> {
 
     private final ProcessorPipeline processorPipeline;
 
     @Inject
     @Named(ManagerBeans.BOLAO_MANAGER)
-    private ProcessorManager<Campeonato> bolaoManager;
+    private ParameterizeProcessorManager<Campeonato> bolaoManager;
 
     @Inject
     @Named(ProcessorBeans.SUMARIZA_PONTOS_APOSTADOR_RODADA)

@@ -23,14 +23,14 @@ import br.com.debico.resultados.DefaultProcessorPipeline;
 import br.com.debico.resultados.ManagerBeans;
 import br.com.debico.resultados.Processor;
 import br.com.debico.resultados.ProcessorBeans;
-import br.com.debico.resultados.ProcessorManager;
+import br.com.debico.resultados.ParameterizeProcessorManager;
 import br.com.debico.resultados.ProcessorPipeline;
 
 import com.google.common.collect.Lists;
 
 @Named(ManagerBeans.BOLAO_MANAGER)
 @Transactional(readOnly = false)
-class BolaoProcessorManager implements ProcessorManager<Campeonato> {
+class BolaoProcessorManager implements ParameterizeProcessorManager<Campeonato> {
 
     private final ProcessorPipeline processorPipeline;
 

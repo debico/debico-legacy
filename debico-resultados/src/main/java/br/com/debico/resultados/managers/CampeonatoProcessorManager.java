@@ -5,7 +5,7 @@ import java.util.List;
 import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.resultados.Context;
 import br.com.debico.resultados.Processor;
-import br.com.debico.resultados.ProcessorManager;
+import br.com.debico.resultados.ParameterizeProcessorManager;
 
 /**
  * Marked Interface para definir processadores responsáveis por processar tipos
@@ -17,7 +17,7 @@ import br.com.debico.resultados.ProcessorManager;
  *            extenção de {@link Campeonato} que será processado.
  */
 interface CampeonatoProcessorManager<T extends Campeonato> extends
-	ProcessorManager<T>, Processor {
+	ParameterizeProcessorManager<T>, Processor {
 
     @Override
     List<Context> start(T parameter);
