@@ -3,11 +3,43 @@
 /* -------------------------------------------------------------- */
 .right-box {
 	font-size: 0.8em;
-	float:right;
+	float: right;
 	margin-botton: -50px;
 	text-align: right;
+	padding-bottom: 15px;
 }
 
+input.social {
+	width: 100%;
+}
+
+/* http://www.color-hex.com/color-palette/185 */
+input.fb {
+	background-color: #3b5998;
+	color: #ffffff;
+	border-color: #3B4A61;
+	background: #3b5998 none repeat scroll 0% 0%;
+}
+
+input.fb:hover {
+	background: #3B4A61;
+	border-bottom: 1px solid #3b5998;
+	border-top: 2px solid #3b5998;
+}
+
+/* http://www.color-hex.com/color-palette/1872 */
+input.google {
+	background-color: #d62d20;
+	color: #ffffff;
+	border-color: #B22D20;
+	background: #d62d20 none repeat scroll 0% 0%;
+}
+
+input.google:hover {
+    background: #B22D20;
+    border-bottom: 1px solid #d62d20;
+    border-top: 2px solid #d62d20;
+}
 /* -------------------------------------------------------------- */
 /* Creditos */
 /* -------------------------------------------------------------- */
@@ -253,7 +285,7 @@ input[type="text"].data-input {
 	width: 8rem;
 	display: inline;
 	text-align: center;
-	font-size : 0.8em !important;
+	font-size: 0.8em !important;
 }
 
 /* -------------------------------------------------------------- */

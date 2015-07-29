@@ -90,6 +90,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/sucesso/").permitAll()
 				.antMatchers("/support/").permitAll()
 				.antMatchers("/public/**").anonymous()
+				.antMatchers("/connect/**").anonymous()
 				.antMatchers(HttpMethod.POST, "/senha/").permitAll()
 				.antMatchers("/campeonatos/**/palpite/**").access("!hasRole('" + Roles.ROLE_ADMIN + "') and isAuthenticated()")
 				.antMatchers("/campeonatos/**/palpites/**").access("!hasRole('" + Roles.ROLE_ADMIN + "') and isAuthenticated()")

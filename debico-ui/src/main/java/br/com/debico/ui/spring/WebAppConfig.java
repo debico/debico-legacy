@@ -15,6 +15,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.social.connect.web.thymeleaf.SpringSocialDialect;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -122,6 +123,7 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 	templateEngine.setTemplateResolver(templateResolver);
 	templateEngine.addDialect(new SpringSecurityDialect());
 	templateEngine.addDialect(new DebicoDialect());
+	templateEngine.addDialect(new SpringSocialDialect());
 
 	return templateEngine;
     }
@@ -131,7 +133,7 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 	ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
 	viewResolver.setTemplateEngine(templateEngine);
 	viewResolver.setOrder(1);
-
+	viewResolver.setExcludedViewNames(new String[] { "connect*" });
 	return viewResolver;
     }
 
@@ -195,6 +197,7 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 	// @formatter:off
         registry.addInterceptor(this.menuInterceptor())
                 .addPathPatterns("/**")
+                .excludePathPatterns("/connect/**")
                 .excludePathPatterns("/public/**")
                 .excludePathPatterns("/api/**")
                 .excludePathPatterns("/contato/**")
@@ -202,10 +205,12 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 
         registry.addInterceptor(this.footerInterceptor())
                 .addPathPatterns("/**")
+                .excludePathPatterns("/connect/**")
                 .excludePathPatterns("/api/**");
 
         registry.addInterceptor(this.titleInterceptor())
                 .addPathPatterns("/**")
+                .excludePathPatterns("/connect/**")
                 .excludePathPatterns("/api/**");
         // @formatter:on
     }
