@@ -48,6 +48,7 @@ class BolaoSchedulerProcessorManager implements SchedulerProcessorManager {
      */
     @Scheduled(cron = "0 0 2 ? * MON,THU,FRI,SUN")
     public void start() {
+	this.processorManager.start();
     }
 
 }
