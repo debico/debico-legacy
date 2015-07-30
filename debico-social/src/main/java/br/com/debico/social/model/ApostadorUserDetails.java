@@ -1,10 +1,11 @@
-package br.com.debico.core.spring.security;
+package br.com.debico.social.model;
 
 import java.util.Collection;
 
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.social.security.SocialUserDetails;
 
 /**
  * Implementação de
@@ -24,7 +25,7 @@ import org.springframework.security.core.userdetails.User;
  *      "http://stackoverflow.com/questions/8764545/how-to-get-active-users-userdetails"
  *      >How to get active user's UserDetails</a>
  */
-public final class ApostadorUserDetails extends User implements
+public final class ApostadorUserDetails extends User implements SocialUserDetails,
 	Comparable<ApostadorUserDetails> {
 
     private static final long serialVersionUID = 6525890008500713493L;
@@ -34,6 +35,8 @@ public final class ApostadorUserDetails extends User implements
     private int idApostador = 0;
 
     private String name;
+    
+    private String userId;
 
     public ApostadorUserDetails(String username, String password,
 	    Collection<? extends GrantedAuthority> authorities) {
@@ -69,6 +72,10 @@ public final class ApostadorUserDetails extends User implements
     public void setIdApostador(int idApostador) {
 	this.idApostador = idApostador;
     }
+    
+    public void setUserId(String userId) {
+	this.userId = userId;
+    }
 
     /**
      * Identificador do Usuário.
@@ -95,6 +102,11 @@ public final class ApostadorUserDetails extends User implements
      */
     public int getIdApostador() {
 	return idApostador;
+    }
+    
+    @Override
+    public String getUserId() {
+        return userId;
     }
 
     @Override

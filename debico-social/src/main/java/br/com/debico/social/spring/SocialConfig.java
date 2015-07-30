@@ -3,7 +3,6 @@ package br.com.debico.social.spring;
 import javax.inject.Inject;
 import javax.sql.DataSource;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -15,10 +14,8 @@ import org.springframework.social.config.annotation.ConnectionFactoryConfigurer;
 import org.springframework.social.config.annotation.EnableSocial;
 import org.springframework.social.config.annotation.SocialConfigurerAdapter;
 import org.springframework.social.connect.ConnectionFactoryLocator;
-import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
-import org.springframework.social.connect.web.ConnectController;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
 import org.springframework.social.security.AuthenticationNameUserIdSource;
 
@@ -32,7 +29,9 @@ import br.com.debico.notify.spring.NotifyConfig;
  * Clientes devem extender {@link ServicesConfig}.
  * 
  * @author ricardozanini
- * @see <a href="http://docs.spring.io/spring-social/docs/current/reference/htmlsingle">Spring Social</a>
+ * @see <a
+ *      href="http://docs.spring.io/spring-social/docs/current/reference/htmlsingle">Spring
+ *      Social</a>
  */
 @Configuration
 @EnableSocial
@@ -63,10 +62,11 @@ public class SocialConfig extends SocialConfigurerAdapter {
     public void addConnectionFactories(
 	    ConnectionFactoryConfigurer connectionFactoryConfigurer,
 	    Environment env) {
-	connectionFactoryConfigurer
-		.addConnectionFactory(new GoogleConnectionFactory(env
-			.getProperty(PROP_CONSUMER_KEY), env
-			.getProperty(PROP_CONSUMER_SECRET)));
+	final GoogleConnectionFactory connectionFactory = new GoogleConnectionFactory(
+		env.getProperty(PROP_CONSUMER_KEY),
+		env.getProperty(PROP_CONSUMER_SECRET));
+	
+	connectionFactoryConfigurer.addConnectionFactory(connectionFactory);
     }
 
     @Override
@@ -82,14 +82,6 @@ public class SocialConfig extends SocialConfigurerAdapter {
     @Override
     public UserIdSource getUserIdSource() {
 	return new AuthenticationNameUserIdSource();
-    }
-
-    @Bean
-    public ConnectController connectController(
-	    ConnectionFactoryLocator connectionFactoryLocator,
-	    ConnectionRepository connectionRepository) {
-	return new ConnectController(connectionFactoryLocator,
-		connectionRepository);
     }
 
 }

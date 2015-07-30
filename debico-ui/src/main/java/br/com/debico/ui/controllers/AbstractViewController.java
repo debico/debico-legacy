@@ -9,7 +9,7 @@ import org.springframework.context.MessageSourceAware;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.debico.core.DebicoException;
-import br.com.debico.core.spring.security.ApostadorUserDetails;
+import br.com.debico.social.model.ApostadorUserDetails;
 import br.com.debico.ui.thymeleaf.UsuarioAuthUtils;
 import br.com.debico.ui.utils.MessageSourceUtils;
 

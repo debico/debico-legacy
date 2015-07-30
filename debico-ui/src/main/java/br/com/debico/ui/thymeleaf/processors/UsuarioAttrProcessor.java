@@ -4,7 +4,7 @@ import org.thymeleaf.Arguments;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.processor.attr.AbstractTextChildModifierAttrProcessor;
 
-import br.com.debico.core.spring.security.ApostadorUserDetails;
+import br.com.debico.social.model.ApostadorUserDetails;
 import br.com.debico.ui.thymeleaf.UsuarioAuthUtils;
 
 import com.google.common.base.Strings;

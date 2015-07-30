@@ -11,20 +11,23 @@ import javax.inject.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.social.security.SocialUserDetails;
+import org.springframework.social.security.SocialUserDetailsService;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.core.MessagesCodes;
-import br.com.debico.core.spring.security.ApostadorUserDetails;
 import br.com.debico.model.Apostador;
 import br.com.debico.model.Usuario;
 import br.com.debico.social.dao.ApostadorDAO;
 import br.com.debico.social.dao.UsuarioDAO;
+import br.com.debico.social.model.ApostadorUserDetails;
 
 /**
  * Implementação de {@link UserDetailsService} do Spring Security para tratar do
@@ -36,7 +39,8 @@ import br.com.debico.social.dao.UsuarioDAO;
  */
 @Named
 @Transactional(readOnly = false)
-class ApostadorUserDetailsServiceImpl implements UserDetailsService {
+class ApostadorUserDetailsServiceImpl implements UserDetailsService,
+	SocialUserDetailsService {
 
     protected static final Logger LOGGER = LoggerFactory
 	    .getLogger(ApostadorUserDetailsServiceImpl.class);
@@ -56,6 +60,18 @@ class ApostadorUserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
+    public SocialUserDetails loadUserByUserId(String userId)
+	    throws UsernameNotFoundException, DataAccessException {
+	LOGGER.debug(
+		"[loadUserByUserId] Tentando carregar o usuario pelo Id da rede Social '{}'.",
+		userId);
+
+	Apostador apostador = apostadorDAO.selecionarPorSocialId(userId);
+
+	return this.validarConstruirUsuario(apostador, userId);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username)
 	    throws UsernameNotFoundException {
 	LOGGER.debug("[loadUserByUsername] Tentando carregar o usuario '{}'.",
@@ -63,6 +79,11 @@ class ApostadorUserDetailsServiceImpl implements UserDetailsService {
 
 	Apostador apostador = apostadorDAO.selecionarPorEmail(username);
 
+	return this.validarConstruirUsuario(apostador, username);
+    }
+
+    private ApostadorUserDetails validarConstruirUsuario(
+	    final Apostador apostador, String username) {
 	if (apostador == null || apostador.getUsuario() == null) {
 	    throw new UsernameNotFoundException(messageSource.getMessage(
 		    MessagesCodes.USUARIO_NAO_ENCONTRADO,
@@ -87,7 +108,7 @@ class ApostadorUserDetailsServiceImpl implements UserDetailsService {
      * @param usuario
      * @return
      */
-    private User construirUsuario(final Apostador apostador) {
+    private ApostadorUserDetails construirUsuario(final Apostador apostador) {
 	// @formatter:off
 	final ApostadorUserDetails user = 
 		new ApostadorUserDetails(
@@ -98,6 +119,7 @@ class ApostadorUserDetailsServiceImpl implements UserDetailsService {
 	user.setId(apostador.getUsuario().getId());
 	user.setName(apostador.getNome());
 	user.setIdApostador(apostador.getId());
+	user.setUserId(apostador.getUsuario().getSocialUserId());
 
 	return user;
     }

@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.social.security.SpringSocialConfigurer;
 
 import br.com.debico.core.helpers.Roles;
 import br.com.debico.core.spring.config.ServicesConfig;
@@ -113,7 +114,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 				.rememberMe()
 				    .tokenValiditySeconds(1209600)
-				    .tokenRepository(this.persistentTokenRepository());
+				    .tokenRepository(this.persistentTokenRepository())
+				.and()
+				    .apply(new SpringSocialConfigurer());
 	}
 	
 	@Bean

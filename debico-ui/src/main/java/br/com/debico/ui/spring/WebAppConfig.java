@@ -15,6 +15,9 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.social.connect.ConnectionFactoryLocator;
+import org.springframework.social.connect.ConnectionRepository;
+import org.springframework.social.connect.web.ConnectController;
 import org.springframework.social.connect.web.thymeleaf.SpringSocialDialect;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
@@ -248,5 +251,13 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 		.getProperty("br.com.debico.ui.web.ga.localhost")));
 
 	return viewOptions;
+    }
+
+    @Bean
+    public ConnectController connectController(
+	    ConnectionFactoryLocator connectionFactoryLocator,
+	    ConnectionRepository connectionRepository) {
+	return new ConnectController(connectionFactoryLocator,
+		connectionRepository);
     }
 }

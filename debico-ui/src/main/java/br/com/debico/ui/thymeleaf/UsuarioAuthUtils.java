@@ -9,7 +9,7 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.thymeleaf.extras.springsecurity4.auth.AuthUtils;
 
-import br.com.debico.core.spring.security.ApostadorUserDetails;
+import br.com.debico.social.model.ApostadorUserDetails;
 
 /**
  * Utilidade para tratar dos cenários de autenticação

@@ -12,6 +12,14 @@ public interface ApostadorDAO extends Dao<Apostador, Integer> {
 	Apostador selecionarPorEmail(String email);
 
 	Apostador selecionarPorIdUsuario(int idUsuario);
+	
+	/**
+	 * Efetua a busca pelo Id de usuário da rede social.
+	 * 
+	 * @param socialUserId
+	 * @return
+	 */
+	Apostador selecionarPorSocialId(String socialUserId);
 
 	/**
 	 * Recupera todas as informações do {@link Apostador} por meio de FETCH
