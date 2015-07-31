@@ -3,6 +3,7 @@ package br.com.debico.social.services;
 import org.springframework.social.connect.UserProfile;
 
 import br.com.debico.model.Apostador;
+import br.com.debico.model.Usuario;
 import br.com.debico.social.CadastroApostadorException;
 import br.com.debico.social.TokenSenhaInvalidoException;
 import br.com.debico.social.UsuarioInexistenteException;
@@ -35,7 +36,7 @@ public interface UsuarioService {
      * @param userProfile
      * @since 2.0.5
      */
-    void cadastrarOuRelacionarApostadorUserProfide(UserProfile userProfile)
+    Usuario cadastrarOuRelacionarApostadorUserProfile(UserProfile userProfile)
             throws CadastroApostadorException;
 
     /**

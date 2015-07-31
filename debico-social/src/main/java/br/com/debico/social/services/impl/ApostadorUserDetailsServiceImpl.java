@@ -8,6 +8,7 @@ import java.util.Locale;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -66,7 +67,8 @@ class ApostadorUserDetailsServiceImpl implements UserDetailsService,
 		"[loadUserByUserId] Tentando carregar o usuario pelo Id da rede Social '{}'.",
 		userId);
 
-	Apostador apostador = apostadorDAO.selecionarPorSocialId(userId);
+	Apostador apostador = apostadorDAO.selecionarPorIdUsuario(Integer
+		.parseInt(StringUtils.defaultString(userId, "0")));
 
 	return this.validarConstruirUsuario(apostador, userId);
     }

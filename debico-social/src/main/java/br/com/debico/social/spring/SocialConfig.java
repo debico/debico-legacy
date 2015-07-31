@@ -14,6 +14,7 @@ import org.springframework.social.config.annotation.ConnectionFactoryConfigurer;
 import org.springframework.social.config.annotation.EnableSocial;
 import org.springframework.social.config.annotation.SocialConfigurerAdapter;
 import org.springframework.social.connect.ConnectionFactoryLocator;
+import org.springframework.social.connect.ConnectionSignUp;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
@@ -50,6 +51,9 @@ public class SocialConfig extends SocialConfigurerAdapter {
 
     @Inject
     private DataSource dataSource;
+    
+    @Inject
+    private ConnectionSignUp connectionSignUp;
 
     @Inject
     private Environment globalEnv;
@@ -76,6 +80,8 @@ public class SocialConfig extends SocialConfigurerAdapter {
                 dataSource, connectionFactoryLocator, Encryptors.queryableText(
                         globalEnv.getProperty(PROP_ENC_PASS),
                         globalEnv.getProperty(PROP_ENC_SALT)));
+        connectionRepository.setConnectionSignUp(connectionSignUp);
+        
         return connectionRepository;
     }
 
