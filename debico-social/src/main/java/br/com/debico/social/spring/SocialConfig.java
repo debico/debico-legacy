@@ -22,6 +22,7 @@ import org.springframework.social.security.AuthenticationNameUserIdSource;
 
 import br.com.debico.core.spring.config.ServicesConfig;
 import br.com.debico.notify.spring.NotifyConfig;
+import br.com.debico.social.utils.PropsKeys;
 
 /**
  * Deve ser importada por clientes que precisem dos Beans de
@@ -40,11 +41,6 @@ import br.com.debico.notify.spring.NotifyConfig;
 @Import({ NotifyConfig.class, ServicesConfig.class })
 @PropertySource(value = "classpath:/META-INF/debico-social.properties", ignoreResourceNotFound = false)
 public class SocialConfig extends SocialConfigurerAdapter {
-
-    private static final String PROP_CONSUMER_KEY = "br.com.debico.social.google.consumerKey";
-    private static final String PROP_CONSUMER_SECRET = "br.com.debico.social.google.consumerSecret";
-    private static final String PROP_ENC_PASS = "br.com.debico.social.encryptor.pass";
-    private static final String PROP_ENC_SALT = "br.com.debico.social.encryptor.salt";
 
     @Inject
     protected NotifyConfig notifyConfig;
@@ -67,8 +63,8 @@ public class SocialConfig extends SocialConfigurerAdapter {
             ConnectionFactoryConfigurer connectionFactoryConfigurer,
             Environment env) {
         final GoogleConnectionFactory connectionFactory = new GoogleConnectionFactory(
-                env.getProperty(PROP_CONSUMER_KEY),
-                env.getProperty(PROP_CONSUMER_SECRET));
+                env.getProperty(PropsKeys.GOOGLE_CONSUMER_KEY),
+                env.getProperty(PropsKeys.GOOGLE_CONSUMER_SECRET));
 
         connectionFactoryConfigurer.addConnectionFactory(connectionFactory);
     }
@@ -78,8 +74,8 @@ public class SocialConfig extends SocialConfigurerAdapter {
             ConnectionFactoryLocator connectionFactoryLocator) {
         JdbcUsersConnectionRepository connectionRepository = new JdbcUsersConnectionRepository(
                 dataSource, connectionFactoryLocator, Encryptors.queryableText(
-                        globalEnv.getProperty(PROP_ENC_PASS),
-                        globalEnv.getProperty(PROP_ENC_SALT)));
+                        globalEnv.getProperty(PropsKeys.ENC_PASS),
+                        globalEnv.getProperty(PropsKeys.ENC_SALT)));
         connectionRepository.setConnectionSignUp(connectionSignUp);
         
         return connectionRepository;
