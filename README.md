@@ -93,6 +93,15 @@ Utilizo a Amazon Web Services para realizar o envio de e-mails. Abaixo, as confi
 
 O serviço de log utilizado pela aplicação é o SLF4J com implementação do Logback. É esperado que as bibliotecas do SLF4J estejam no *classpath* do servidor de aplicação. Para saber como configurar o Tomcat para utilizar o SLF4J como padrão, leia [este artigo](http://adfinmunich.blogspot.com.br/2012/03/how-to-configure-tomcat-to-use-slf4j.html) e [este aqui também](http://stackoverflow.com/questions/8012595/tomcat-logging-with-slf4j-and-log4j). 
 
+### Criptografia ###
+
+Em virtude do uso da API de criptografia do `Spring Security` é necessário atualizar as políticas de segurança da JVM. Para tal, baixar a política do sistema operacional [neste link](http://tinyurl.com/m65q5ax) e adicionar os `jars` baixados em `JAVA_HOME\jre\lib\security`, substituindo os arquivos lá encontrados.
+
+Referências:
+
+* [java.security.InvalidKeyException – How to solve InvalidKeyException](http://examples.javacodegeeks.com/core-java/security/invalidkeyexception/java-security-invalidkeyexception-how-to-solve-invalidkeyexception/)
+* [Spring Security Crypto Module](http://docs.spring.io/spring-security/site/docs/current/reference/html/crypto.html)
+
 ### Copyright ###
 
 2015

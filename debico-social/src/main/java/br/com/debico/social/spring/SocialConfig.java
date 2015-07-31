@@ -60,28 +60,28 @@ public class SocialConfig extends SocialConfigurerAdapter {
 
     @Override
     public void addConnectionFactories(
-	    ConnectionFactoryConfigurer connectionFactoryConfigurer,
-	    Environment env) {
-	final GoogleConnectionFactory connectionFactory = new GoogleConnectionFactory(
-		env.getProperty(PROP_CONSUMER_KEY),
-		env.getProperty(PROP_CONSUMER_SECRET));
-	
-	connectionFactoryConfigurer.addConnectionFactory(connectionFactory);
+            ConnectionFactoryConfigurer connectionFactoryConfigurer,
+            Environment env) {
+        final GoogleConnectionFactory connectionFactory = new GoogleConnectionFactory(
+                env.getProperty(PROP_CONSUMER_KEY),
+                env.getProperty(PROP_CONSUMER_SECRET));
+
+        connectionFactoryConfigurer.addConnectionFactory(connectionFactory);
     }
 
     @Override
     public UsersConnectionRepository getUsersConnectionRepository(
-	    ConnectionFactoryLocator connectionFactoryLocator) {
-	JdbcUsersConnectionRepository connectionRepository = new JdbcUsersConnectionRepository(
-		dataSource, connectionFactoryLocator, Encryptors.text(
-			globalEnv.getProperty(PROP_ENC_PASS),
-			globalEnv.getProperty(PROP_ENC_SALT)));
-	return connectionRepository;
+            ConnectionFactoryLocator connectionFactoryLocator) {
+        JdbcUsersConnectionRepository connectionRepository = new JdbcUsersConnectionRepository(
+                dataSource, connectionFactoryLocator, Encryptors.queryableText(
+                        globalEnv.getProperty(PROP_ENC_PASS),
+                        globalEnv.getProperty(PROP_ENC_SALT)));
+        return connectionRepository;
     }
 
     @Override
     public UserIdSource getUserIdSource() {
-	return new AuthenticationNameUserIdSource();
+        return new AuthenticationNameUserIdSource();
     }
 
 }

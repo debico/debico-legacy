@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -68,6 +69,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.passwordEncoder(this.passwordEncoder());
 	}	
 	
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+	    web
+	        .ignoring()
+	            .antMatchers("/robots.txt")
+	            .antMatchers("/static/**");
+	}
+	
 	/**
 	 * Veja os exemplos de configuração nos links abaixo.
 	 * 
@@ -85,13 +94,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 		.and()
 		    .authorizeRequests()
-				.antMatchers("/robots.txt").permitAll()
-				.antMatchers("/static/**").permitAll()
 				.antMatchers("/contato/").permitAll()
 				.antMatchers("/sucesso/").permitAll()
 				.antMatchers("/support/").permitAll()
 				.antMatchers("/public/**").anonymous()
-				.antMatchers("/connect/**").anonymous()
+				.antMatchers("/connect/**").permitAll()
 				.antMatchers(HttpMethod.POST, "/senha/").permitAll()
 				.antMatchers("/campeonatos/**/palpite/**").access("!hasRole('" + Roles.ROLE_ADMIN + "') and isAuthenticated()")
 				.antMatchers("/campeonatos/**/palpites/**").access("!hasRole('" + Roles.ROLE_ADMIN + "') and isAuthenticated()")
@@ -116,7 +123,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				    .tokenValiditySeconds(1209600)
 				    .tokenRepository(this.persistentTokenRepository())
 				.and()
-				    .apply(new SpringSocialConfigurer());
+				    .apply(new SpringSocialConfigurer().signupUrl("/public/cadastro/social"));
 	}
 	
 	@Bean

@@ -1,8 +1,5 @@
 package br.com.debico.model;
 
-import static com.google.common.base.Objects.equal;
-import static com.google.common.base.Objects.toStringHelper;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -20,6 +17,9 @@ import javax.persistence.TemporalType;
 import org.joda.time.DateTime;
 
 import com.google.common.base.Objects;
+
+import static com.google.common.base.Objects.equal;
+import static com.google.common.base.Objects.toStringHelper;
 
 @Entity
 @Table(name = "tb_usuario")
@@ -40,7 +40,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
     @Column(name = "DC_SENHA", length = 64, nullable = false, updatable = false)
     private String senha;
 
-    @Column(name = "NM_SOCIAL_ID", length = 255, nullable = true, updatable = false)
+    @Column(name = "NM_SOCIAL_ID", length = 255, nullable = true, updatable = true)
     private String socialUserId;
 
     @Basic(fetch = FetchType.LAZY)
