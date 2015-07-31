@@ -37,11 +37,8 @@ public class LigaController extends AbstractViewController {
 		return "liga";
 	}
 
-	// na verdade nao precisamos do permalink, ele é necessário apenas para
-	// deixar o link bonitinho. :D
-	@RequestMapping(value = "/liga/{id}/{permalink}", method = RequestMethod.GET)
-	public ModelAndView liga(@PathVariable("id") long id,
-			@PathVariable("permalink") String permalink) {
+	@RequestMapping(value = "/liga/{id}", method = RequestMethod.GET)
+	public ModelAndView liga(@PathVariable("id") long id) {
 		resetViewName();
 		final Liga liga = ligaService.recuperarLiga(id).get();
 		this.addObject("liga", liga);

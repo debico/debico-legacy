@@ -29,7 +29,7 @@
 								class="fi-heart"></i>&nbsp;Minhas Ligas</a>
 							<ul class="dropdown">
 								<li th:each="l : ${ligas}"><a
-									th:href="@{|/liga/${l.id}/${l.permalink}|}" th:text="${l.nome}"></a>
+									th:href="@{|/liga/${l.id}|}" th:text="${l.nome}"></a>
 								</li>
 							</ul></li>
 					</ul></li>

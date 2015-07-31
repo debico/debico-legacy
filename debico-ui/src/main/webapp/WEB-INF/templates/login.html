@@ -11,13 +11,13 @@
 				<h3>Login</h3>
 				<hr />
 				<div class="large-12 columns">
+					<div th:if="${logout}" class="row" id="logoutAlert">
+						<div class="large-12 columns">
+							<div class="alert-box success" th:text="#{login.logout}"></div>
+						</div>
+					</div>
 					<div class="large-8 medium-8 small-12 columns">
 						<div th:replace="fragments/alert :: error"></div>
-						<div th:if="${logout}" class="row" id="logoutAlert">
-							<div class="large-12 columns">
-								<div class="alert-box success" th:text="#{login.logout}"></div>
-							</div>
-						</div>
 						<form th:action="@{/login}" method="post">
 							<div class="row">
 								<div class="large-12 columns">
