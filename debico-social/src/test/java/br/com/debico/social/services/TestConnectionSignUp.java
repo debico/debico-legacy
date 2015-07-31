@@ -1,10 +1,5 @@
 package br.com.debico.social.services;
 
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
-
 import javax.inject.Inject;
 
 import org.junit.Test;
@@ -13,12 +8,17 @@ import org.mockito.Mockito;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionSignUp;
 import org.springframework.social.connect.UserProfile;
+import org.springframework.social.connect.UserProfileBuilder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.social.spring.SocialConfig;
 import br.com.debico.test.spring.AbstractUnitTest;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -30,15 +30,18 @@ public class TestConnectionSignUp extends AbstractUnitTest {
 
     @Test
     public void testExecute() {
-	UserProfile userProfile = new UserProfile("616", "Peter Parker",
-		"Peter", "Parker", "pparker@oscorp.com.br", "pparker");
-	Connection<?> connection = Mockito.mock(Connection.class);
-	Mockito.when(connection.fetchUserProfile()).thenReturn(userProfile);
+        UserProfile userProfile = new UserProfileBuilder()
+                .setEmail("pparker@oscorp.com.br").setFirstName("Peter")
+                .setLastName("Parker").setName("Peter Parker")
+                .setUsername("pparker").build();
 
-	String userId = connectionSignUp.execute(connection);
+        Connection<?> connection = Mockito.mock(Connection.class);
+        Mockito.when(connection.fetchUserProfile()).thenReturn(userProfile);
 
-	assertThat(userId, notNullValue());
-	assertThat(Integer.parseInt(userId), is(greaterThan(0)));
+        String userId = connectionSignUp.execute(connection);
+
+        assertThat(userId, notNullValue());
+        assertThat(Integer.parseInt(userId), is(greaterThan(0)));
     }
 
 }

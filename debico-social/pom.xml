@@ -44,7 +44,8 @@
 		<dependency>
 			<groupId>org.springframework.social</groupId>
 			<artifactId>spring-social-core</artifactId>
-			<version>1.2.0.BUILD-SNAPSHOT</version>
+			<!-- version>1.2.0.BUILD-SNAPSHOT</version patch do proxy-->
+			<version>${spring.social.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.social</groupId>
@@ -67,10 +68,10 @@
 			<version>${spring.social.fb.version}</version>
 		</dependency>
 		<dependency>
-            <groupId>org.springframework.social</groupId>
-            <artifactId>spring-social-google</artifactId>
-            <version>${spring.social.google.version}</version>
-        </dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-google</artifactId>
+			<version>${spring.social.google.version}</version>
+		</dependency>
 
 
 	</dependencies>
