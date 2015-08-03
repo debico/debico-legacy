@@ -15,6 +15,7 @@ import org.jasypt.util.password.PasswordEncryptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
+import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.UserProfile;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -85,10 +86,10 @@ class UsuarioServiceImpl implements UsuarioService {
 
     @Transactional(rollbackFor = CadastroApostadorException.class)
     public Usuario cadastrarOuRelacionarApostadorUserProfile(
-	    UserProfile userProfile) throws CadastroApostadorException {
+	    Connection<?> connection) throws CadastroApostadorException {
+	checkNotNull(connection, "A conexao com o Servico nao pode ser nulo");
 
-	Apostador apostador = this
-		.construirApostadorComUserProfile(userProfile);
+	Apostador apostador = this.construirApostadorComUserProfile(connection);
 
 	try {
 	    this.cadastrarApostadorUsuario(apostador, apostador.getUsuario()
@@ -96,11 +97,12 @@ class UsuarioServiceImpl implements UsuarioService {
 	} catch (UsuarioJaCadastradoException e) {
 	    LOGGER.info(
 		    "[cadastrarOuRelacionarApostadorUserProfile] Como o usuario {} ja existe, relacionamos o seu cadastro com o perfil.",
-		    userProfile.getEmail());
+		    apostador.getEmail());
 	    // vamos relacionar o perfil desse usuario com o nosso cadastro.
-	    Usuario usuario = usuarioDAO.selecionarPorEmail(userProfile
+	    Usuario usuario = usuarioDAO.selecionarPorEmail(apostador
 		    .getEmail());
-	    usuario.setSocialUserId(userProfile.getUsername());
+	    usuario.setSocialUserId(connection.getKey().getProviderUserId());
+	    usuario.setSocialNetwork(connection.getKey().getProviderId());
 	    return usuario;
 	}
 
@@ -253,8 +255,11 @@ class UsuarioServiceImpl implements UsuarioService {
      *             caso nao seja encontrado um email no profile.
      */
     private Apostador construirApostadorComUserProfile(
-	    final UserProfile userProfile) throws CadastroApostadorException {
+	    final Connection<?> connection) throws CadastroApostadorException {
 	final Apostador apostador = new Apostador();
+	final UserProfile userProfile = connection.fetchUserProfile();
+	checkNotNull(userProfile,
+		"Nao foi possivel recuperar o UserProfile, impossivel continuar.");
 
 	if (Strings.isNullOrEmpty(userProfile.getName())) {
 	    apostador.setNome(String.format("%s %s",
@@ -264,7 +269,8 @@ class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	final Usuario usuario = new Usuario(userProfile.getEmail());
-	usuario.setSocialUserId(userProfile.getUsername());
+	usuario.setSocialUserId(connection.getKey().getProviderUserId());
+	usuario.setSocialNetwork(connection.getKey().getProviderId());
 	// senha para passar pela política de senha. :)
 	usuario.setSenha(RandomStringUtils.randomAlphanumeric(10));
 

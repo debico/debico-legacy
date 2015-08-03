@@ -11,6 +11,14 @@ public final class PropsKeys {
      */
     public static final String GOOGLE_CONSUMER_SECRET = "br.com.debico.social.google.consumerSecret";
     /**
+     * App ID Debico para conexão com o Facebook
+     */
+    public static final String FACEBOOK_APP_ID = "br.com.debico.social.facebook.appId";
+    /**
+     * App Secret Debico para conexão com o Facebook
+     */
+    public static final String FACEBOOK_APP_SECRET = "br.com.debico.social.facebook.appSecret";
+    /**
      * Senha de autenticação para SSO do Disqus
      */
     public static final String DISQUS_SECRET = "JFsWER3KbjtjOUlUnIlHtB61bkXNkXv1n8c35FIOmPdH4XwvdrKyC05Jv811POSH";

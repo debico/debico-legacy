@@ -1,6 +1,6 @@
 package br.com.debico.social.services;
 
-import org.springframework.social.connect.UserProfile;
+import org.springframework.social.connect.Connection;
 
 import br.com.debico.model.Apostador;
 import br.com.debico.model.Usuario;
@@ -26,7 +26,7 @@ public interface UsuarioService {
      *            em formato aberto, conforme cadastro.
      */
     void cadastrarApostadorUsuario(final Apostador apostador,
-            final String confirmacaoSenha) throws CadastroApostadorException;
+	    final String confirmacaoSenha) throws CadastroApostadorException;
 
     /**
      * Cadastra um novo apostador que acaba de tentar entrar utilizando a rede
@@ -36,8 +36,8 @@ public interface UsuarioService {
      * @param userProfile
      * @since 2.0.5
      */
-    Usuario cadastrarOuRelacionarApostadorUserProfile(UserProfile userProfile)
-            throws CadastroApostadorException;
+    Usuario cadastrarOuRelacionarApostadorUserProfile(Connection<?> connection)
+	    throws CadastroApostadorException;
 
     /**
      * Altera uma senha baseada em um contexto que contenha um token de
@@ -53,7 +53,7 @@ public interface UsuarioService {
      * @since 2.0.2
      */
     boolean alterarSenhaApostadorUsuario(PasswordContext passwordContext)
-            throws CadastroApostadorException;
+	    throws CadastroApostadorException;
 
     /**
      * Envia um email com um link+token para o usuário que deseja resgatar essa
@@ -70,7 +70,7 @@ public interface UsuarioService {
      * @see #alterarSenhaApostadorUsuario(PasswordContext)
      */
     void enviarTokenEsqueciMinhaSenha(String emailUsuario)
-            throws UsuarioInexistenteException;
+	    throws UsuarioInexistenteException;
 
     /**
      * Valida o token de "esqueci minha senha" enviado. Um token válido não pode
@@ -82,6 +82,6 @@ public interface UsuarioService {
      * @since 2.0.2
      */
     void validarTokenEsqueciMinhaSenha(String token)
-            throws TokenSenhaInvalidoException;
+	    throws TokenSenhaInvalidoException;
 
 }

@@ -45,8 +45,7 @@ class ApostadorConnectionSignUp implements ConnectionSignUp {
 
 	try {
 	    Usuario usuario = usuarioService
-		    .cadastrarOuRelacionarApostadorUserProfile(connection
-			    .fetchUserProfile());
+		    .cadastrarOuRelacionarApostadorUserProfile(connection);
 	    return String.valueOf(usuario.getId());
 	} catch (CadastroApostadorException e) {
 	    LOGGER.warn(

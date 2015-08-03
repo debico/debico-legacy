@@ -1,5 +1,8 @@
 package br.com.debico.model;
 
+import static com.google.common.base.Objects.equal;
+import static com.google.common.base.Objects.toStringHelper;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -17,9 +20,6 @@ import javax.persistence.TemporalType;
 import org.joda.time.DateTime;
 
 import com.google.common.base.Objects;
-
-import static com.google.common.base.Objects.equal;
-import static com.google.common.base.Objects.toStringHelper;
 
 @Entity
 @Table(name = "tb_usuario")
@@ -42,6 +42,9 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 
     @Column(name = "NM_SOCIAL_ID", length = 255, nullable = true, updatable = true)
     private String socialUserId;
+
+    @Column(name = "NM_SOCIAL_NET", length = 255, nullable = true, updatable = true)
+    private String socialNetwork;
 
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "DH_ULTIMO_LOGIN")
@@ -116,18 +119,31 @@ public class Usuario implements Serializable, Comparable<Usuario> {
     public void setDataCadastro(Date dataCadastro) {
 	this.dataCadastro = dataCadastro;
     }
-    
+
     /**
      * Id do profile do usuário no serviço de rede social (Facebook, Google)
-     *  
+     * 
      * @return
      */
     public String getSocialUserId() {
 	return socialUserId;
     }
-    
+
     public void setSocialUserId(String socialUserId) {
 	this.socialUserId = socialUserId;
+    }
+
+    /**
+     * Serviço de rede social que o usuário utilizou para fazer o login
+     * 
+     * @return
+     */
+    public String getSocialNetwork() {
+	return socialNetwork;
+    }
+
+    public void setSocialNetwork(String socialNetwork) {
+	this.socialNetwork = socialNetwork;
     }
 
     @Override

@@ -17,6 +17,7 @@ import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.ConnectionSignUp;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
+import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
 import org.springframework.social.security.AuthenticationNameUserIdSource;
 
@@ -47,7 +48,7 @@ public class SocialConfig extends SocialConfigurerAdapter {
 
     @Inject
     private DataSource dataSource;
-    
+
     @Inject
     private ConnectionSignUp connectionSignUp;
 
@@ -60,30 +61,36 @@ public class SocialConfig extends SocialConfigurerAdapter {
 
     @Override
     public void addConnectionFactories(
-            ConnectionFactoryConfigurer connectionFactoryConfigurer,
-            Environment env) {
-        final GoogleConnectionFactory connectionFactory = new GoogleConnectionFactory(
-                env.getProperty(PropsKeys.GOOGLE_CONSUMER_KEY),
-                env.getProperty(PropsKeys.GOOGLE_CONSUMER_SECRET));
+	    ConnectionFactoryConfigurer connectionFactoryConfigurer,
+	    Environment env) {
+	final GoogleConnectionFactory googleConnectionFactory = new GoogleConnectionFactory(
+		env.getProperty(PropsKeys.GOOGLE_CONSUMER_KEY),
+		env.getProperty(PropsKeys.GOOGLE_CONSUMER_SECRET));
+	final FacebookConnectionFactory facebookConnectionFactory = new FacebookConnectionFactory(
+		env.getProperty(PropsKeys.FACEBOOK_APP_ID),
+		env.getProperty(PropsKeys.FACEBOOK_APP_SECRET));
 
-        connectionFactoryConfigurer.addConnectionFactory(connectionFactory);
+	connectionFactoryConfigurer
+		.addConnectionFactory(googleConnectionFactory);
+	connectionFactoryConfigurer
+		.addConnectionFactory(facebookConnectionFactory);
     }
 
     @Override
     public UsersConnectionRepository getUsersConnectionRepository(
-            ConnectionFactoryLocator connectionFactoryLocator) {
-        JdbcUsersConnectionRepository connectionRepository = new JdbcUsersConnectionRepository(
-                dataSource, connectionFactoryLocator, Encryptors.queryableText(
-                        globalEnv.getProperty(PropsKeys.ENC_PASS),
-                        globalEnv.getProperty(PropsKeys.ENC_SALT)));
-        connectionRepository.setConnectionSignUp(connectionSignUp);
-        
-        return connectionRepository;
+	    ConnectionFactoryLocator connectionFactoryLocator) {
+	JdbcUsersConnectionRepository connectionRepository = new JdbcUsersConnectionRepository(
+		dataSource, connectionFactoryLocator, Encryptors.queryableText(
+			globalEnv.getProperty(PropsKeys.ENC_PASS),
+			globalEnv.getProperty(PropsKeys.ENC_SALT)));
+	connectionRepository.setConnectionSignUp(connectionSignUp);
+
+	return connectionRepository;
     }
 
     @Override
     public UserIdSource getUserIdSource() {
-        return new AuthenticationNameUserIdSource();
+	return new AuthenticationNameUserIdSource();
     }
 
 }
