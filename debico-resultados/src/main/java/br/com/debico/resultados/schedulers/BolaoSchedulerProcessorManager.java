@@ -20,7 +20,7 @@ import br.com.debico.resultados.SchedulerProcessorManager;
 class BolaoSchedulerProcessorManager implements SchedulerProcessorManager {
 
     @Inject
-    @Named(ManagerBeans.BOLAO_MANAGER)
+    @Named(ManagerBeans.SUMARIZADOR_MANAGER)
     private ProcessorManager processorManager;
 
     public BolaoSchedulerProcessorManager() {

@@ -8,13 +8,16 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.springframework.cache.annotation.CacheEvict;
+
+import br.com.debico.core.helpers.CacheKeys;
 import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.resultados.Context;
 import br.com.debico.resultados.DefaultProcessorPipeline;
 import br.com.debico.resultados.ManagerBeans;
+import br.com.debico.resultados.ParameterizeProcessorManager;
 import br.com.debico.resultados.Processor;
 import br.com.debico.resultados.ProcessorBeans;
-import br.com.debico.resultados.ParameterizeProcessorManager;
 import br.com.debico.resultados.ProcessorPipeline;
 
 /**
@@ -26,7 +29,7 @@ import br.com.debico.resultados.ProcessorPipeline;
  * @since 2.0.4
  */
 @Named(ManagerBeans.SUMARIZADOR_MANAGER)
-public class SumarizadorBolaoProcessorManager implements
+class SumarizadorBolaoProcessorManager implements
 	ParameterizeProcessorManager<Campeonato> {
 
     private final ProcessorPipeline processorPipeline;
@@ -51,6 +54,8 @@ public class SumarizadorBolaoProcessorManager implements
 	this.processorPipeline.addProcessor(sumarizarPontosRodadaApostador);
     }
 
+    @CacheEvict(value = { CacheKeys.TABELA_CAMPEONATO,
+	    CacheKeys.RANKING_APOSTADORES, CacheKeys.DESEMPENHO_IND_APOSTADOR }, allEntries = true)
     @Override
     public List<Context> start() {
 	final List<Context> contexts = this.bolaoManager.start();
@@ -62,6 +67,8 @@ public class SumarizadorBolaoProcessorManager implements
 	return contexts;
     }
 
+    @CacheEvict(value = { CacheKeys.TABELA_CAMPEONATO,
+	    CacheKeys.RANKING_APOSTADORES, CacheKeys.DESEMPENHO_IND_APOSTADOR }, allEntries = true)
     @Override
     public List<Context> start(Campeonato parameter) {
 	final List<Context> contexts = this.bolaoManager.start(parameter);
