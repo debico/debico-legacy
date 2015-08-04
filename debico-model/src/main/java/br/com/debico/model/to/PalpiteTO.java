@@ -1,14 +1,14 @@
 package br.com.debico.model.to;
 
-import static com.google.common.base.Objects.equal;
-import static com.google.common.base.Objects.toStringHelper;
-
 import java.io.Serializable;
 
 import br.com.debico.model.Palpite;
 import br.com.debico.model.Placar;
 
 import com.google.common.base.Objects;
+
+import static com.google.common.base.Objects.equal;
+import static com.google.common.base.Objects.toStringHelper;
 
 /**
  * Estrutura simples baseada em {@link Palpite} sem relações com as entidades do
@@ -19,89 +19,107 @@ import com.google.common.base.Objects;
  */
 public class PalpiteTO implements Serializable {
 
-	private static final long serialVersionUID = 1450856284231390125L;
+    private static final long serialVersionUID = 1450856284231390125L;
 
-	private int id;
-	private String apostadorEmail;
-	private Placar placar;
-	private int idPartida;
+    private int id;
+    private String apostadorEmail;
+    private Placar placar;
+    private int idPartida;
+    private int idUsuario;
 
-	public PalpiteTO(final String apostadorEmail, final Placar placar,
-			final int idPartida) {
-		this.apostadorEmail = apostadorEmail;
-		this.idPartida = idPartida;
-		this.placar = placar;
-	}
+    public PalpiteTO(final String apostadorEmail, final Placar placar,
+            final int idPartida) {
+        this.apostadorEmail = apostadorEmail;
+        this.idPartida = idPartida;
+        this.placar = placar;
+    }
 
-	// JSON
-	public PalpiteTO() {
+    public PalpiteTO(final int idUsuario, final Placar placar,
+            final int idPartida) {
+        this.idUsuario = idUsuario;
+        this.idPartida = idPartida;
+        this.placar = placar;
+    }
 
-	}
+    // JSON
+    public PalpiteTO() {
 
-	public int getId() {
-		return id;
-	}
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public String getApostadorEmail() {
-		return apostadorEmail;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setApostadorEmail(String apostadorEmail) {
-		this.apostadorEmail = apostadorEmail;
-	}
+    @Deprecated
+    public String getApostadorEmail() {
+        return apostadorEmail;
+    }
 
-	public Placar getPlacar() {
-		return placar;
-	}
+    @Deprecated
+    public void setApostadorEmail(String apostadorEmail) {
+        this.apostadorEmail = apostadorEmail;
+    }
 
-	public void setPlacar(Placar placar) {
-		this.placar = placar;
-	}
+    public int getIdUsuario() {
+        return idUsuario;
+    }
 
-	public int getIdPartida() {
-		return idPartida;
-	}
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
 
-	public void setIdPartida(int idPartida) {
-		this.idPartida = idPartida;
-	}
+    public Placar getPlacar() {
+        return placar;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(this.apostadorEmail, this.id, this.idPartida,
-				this.placar);
-	}
+    public void setPlacar(Placar placar) {
+        this.placar = placar;
+    }
 
-	@Override
-	public String toString() {
-		return toStringHelper(this).omitNullValues().addValue(this.placar)
-				.addValue(this.idPartida).addValue(this.apostadorEmail)
-				.toString();
-	}
+    public int getIdPartida() {
+        return idPartida;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
+    public void setIdPartida(int idPartida) {
+        this.idPartida = idPartida;
+    }
 
-		if (obj == this) {
-			return true;
-		}
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(this.apostadorEmail, this.id, this.idPartida,
+                this.placar);
+    }
 
-		if (obj.getClass() != getClass()) {
-			return false;
-		}
+    @Override
+    public String toString() {
+        return toStringHelper(this).omitNullValues().addValue(this.placar)
+                .addValue(this.idPartida).addValue(this.apostadorEmail)
+                .toString();
+    }
 
-		PalpiteTO that = (PalpiteTO) obj;
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
 
-		return super.equals(obj) && equal(this.id, that.getId())
-				&& equal(this.placar, that.getPlacar())
-				&& equal(this.apostadorEmail, that.getApostadorEmail());
-	}
+        if (obj == this) {
+            return true;
+        }
+
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+
+        PalpiteTO that = (PalpiteTO) obj;
+
+        return super.equals(obj) && equal(this.id, that.getId())
+                && equal(this.placar, that.getPlacar())
+                && equal(this.idUsuario, that.getIdUsuario());
+    }
 
 }

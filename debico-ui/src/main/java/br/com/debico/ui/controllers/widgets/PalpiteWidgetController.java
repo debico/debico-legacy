@@ -1,6 +1,5 @@
 package br.com.debico.ui.controllers.widgets;
 
-import java.security.Principal;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -19,6 +18,7 @@ import br.com.debico.bolao.services.PartidaPalpiteService;
 import br.com.debico.campeonato.services.CampeonatoService;
 import br.com.debico.core.DebicoException;
 import br.com.debico.model.to.PalpiteTO;
+import br.com.debico.ui.thymeleaf.UsuarioAuthUtils;
 
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -45,30 +45,28 @@ public class PalpiteWidgetController {
     @RequestMapping(method = RequestMethod.GET, value = "/widgets/palpite/{permalink}/rodada/{id}")
     public @ResponseBody List<PartidaRodadaPalpiteView> palpitesRodada(
             @PathVariable("permalink") final String permalink,
-            @PathVariable("id") final int idRodada, final Principal principal) {
+            @PathVariable("id") final int idRodada) {
         return partidaPalpiteService.recuperarPalpitesRodada(idRodada,
-                principal.getName());
+                UsuarioAuthUtils.userId());
     }
 
     @ApiOperation("Consulta os Palpites por sequencial da Rodada")
     @RequestMapping(method = RequestMethod.GET, value = "/widgets/palpite/{permalink}/rodada/seq/{ordinal}")
     public @ResponseBody List<PartidaRodadaPalpiteView> palpitesRodadaOrdinal(
             @PathVariable(value = "permalink") final String permalink,
-            @PathVariable(value = "ordinal") final int ordem,
-            final Principal principal) {
+            @PathVariable(value = "ordinal") final int ordem) {
 
         return partidaPalpiteService.recuperarPalpitesRodadaPorOrdinal(
-                permalink, ordem, principal.getName());
+                permalink, ordem, UsuarioAuthUtils.userId());
     }
 
     @ApiOperation("Realiza um palpite")
     @RequestMapping(method = RequestMethod.POST, value = "/widgets/palpite/{permalink}")
     public @ResponseBody PalpiteTO palpitar(
             @PathVariable(value = "permalink") final String permalink,
-            @RequestBody final PalpiteTO palpiteIO, final Principal principal)
-            throws DebicoException {
+            @RequestBody final PalpiteTO palpiteIO) throws DebicoException {
 
-        palpiteIO.setApostadorEmail(principal.getName());
+        palpiteIO.setIdUsuario(UsuarioAuthUtils.userId());
         return palpiteService.palpitar(palpiteIO,
                 campeonatoService.selecionarCampeonato(permalink));
     }

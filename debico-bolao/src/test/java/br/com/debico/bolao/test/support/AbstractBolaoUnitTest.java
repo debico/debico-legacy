@@ -19,7 +19,10 @@ import br.com.debico.test.spring.AbstractUnitTest;
 public class AbstractBolaoUnitTest extends AbstractUnitTest {
 
     protected static final String EMAIL_PRIMEIRO_RANKING = "abacafrehley@gmail.com";
+    protected static final int ID_USUARIO_PRIMEIRO_RANKING = 19;
     protected static final String EMAIL_ULTIMO_RANKING = "fhbernardo@yahoo.com.br";
+    protected static final int ID_USUARIO_ULTIMO_RANKING = 9;
+
     protected static final String EMAIL_SEM_OPCAO_NOTIFICACAO = "sergio.tondin@gps-pamcary.com.br";
     protected static final int CAMPEONATO_ID = 1;
 

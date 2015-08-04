@@ -13,26 +13,31 @@ import br.com.debico.bolao.model.view.PartidaRodadaPalpiteView;
  * @author Ricardo Zanini (ricardozanini@gmail.com)
  */
 public interface PartidaPalpiteService {
-    
-    /**
-     * Recupera uma lista de partidas com ou sem palpites. 
-     * <p/>
-     * Utilizado pela view de palpites de campeonatos com pontos corridos.
-     * 
-     * @return
-     */
-    List<PartidaRodadaPalpiteView> recuperarPalpitesRodada(int idRodada, String username);
-    
+
     /**
      * Recupera uma lista de partidas com ou sem palpites.
      * <p/>
      * Utilizado pela view de palpites de campeonatos com pontos corridos.
      * 
-     * @param permalink do campeonato em questão.
-     * @param rodadaOrdinal ordem da rodada: 1, 2, 3, 4, etc.
-     * @param username do apostador
+     * @return
+     */
+    List<PartidaRodadaPalpiteView> recuperarPalpitesRodada(int idRodada,
+            int idUsuario);
+
+    /**
+     * Recupera uma lista de partidas com ou sem palpites.
+     * <p/>
+     * Utilizado pela view de palpites de campeonatos com pontos corridos.
+     * 
+     * @param permalink
+     *            do campeonato em questão.
+     * @param rodadaOrdinal
+     *            ordem da rodada: 1, 2, 3, 4, etc.
+     * @param username
+     *            do apostador
      * @return lista com as rodadas
      */
-    List<PartidaRodadaPalpiteView> recuperarPalpitesRodadaPorOrdinal(String permalink, int rodadaOrdinal, String username);
+    List<PartidaRodadaPalpiteView> recuperarPalpitesRodadaPorOrdinal(
+            String permalink, int rodadaOrdinal, int idUsuario);
 
 }

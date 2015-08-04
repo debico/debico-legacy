@@ -23,6 +23,7 @@ import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.model.campeonato.CampeonatoImpl;
 import br.com.debico.model.to.PalpiteTO;
 import br.com.debico.social.services.ApostadorService;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 @Named
@@ -34,36 +35,38 @@ class PalpiteServiceImpl implements PalpiteService {
 
     @Inject
     private PalpiteDAO palpiteDAO;
-    
+
     @Inject
     private PartidaDAO partidaDAO;
 
     @Inject
     private ApostadorPontuacaoService apostadorPontuacaoService;
-    
+
     @Inject
     private ApostadorService apostadorService;
 
     @Inject
     @Named("resourceBundleMessageSource")
     private MessageSource messageSource;
-    
+
     @Override
     public List<Palpite> recuperarPalpites(Campeonato campeonato) {
-	checkNotNull(campeonato, "O Campeonato nao pode ser nulo");
-	
-        return palpiteDAO.selecionarTodos((CampeonatoImpl)campeonato);
+        checkNotNull(campeonato, "O Campeonato nao pode ser nulo");
+
+        return palpiteDAO.selecionarTodos((CampeonatoImpl) campeonato);
     }
-    
-    public PalpiteTO palpitar(final PalpiteTO palpiteTO, final CampeonatoImpl campeonato) throws DebicoException {
+
+    public PalpiteTO palpitar(final PalpiteTO palpiteTO,
+            final CampeonatoImpl campeonato) throws DebicoException {
         checkNotNull(palpiteTO);
 
         Palpite palpite = new Palpite(palpiteTO);
-        palpite.setApostador(apostadorService.selecionarApostadorPorEmail(palpiteTO.getApostadorEmail()));
+        palpite.setApostador(apostadorService
+                .selecionarApostadorPorIdUsuario(palpiteTO.getIdUsuario()));
         palpite.setPartida(partidaDAO.findById(palpiteTO.getIdPartida()));
 
         this.palpitar(palpite, campeonato);
-        
+
         palpiteTO.setId(palpite.getId());
         return palpiteTO;
     }

@@ -27,41 +27,47 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { SocialConfig.class })
 public class TestLigaService extends AbstractUnitTest {
-	
-	@Inject
-	private LigaService ligaService;
 
-	@Test
-	public void testCadastrarNovaLiga() throws CadastroLigaException {
-		Liga liga = ligaService.cadastrarNovaLiga("Liga da Justiça", TestConstants.EMAIL_CARGA);
-		
-		assertNotNull(liga);
-		assertTrue(liga.getId() > 0);
-	}
-	
-	@Test
-	public void testConsultarLiga() throws CadastroLigaException {
-		ligaService.cadastrarNovaLiga("Liga da Justiça", TestConstants.EMAIL_CARGA);
-		final List<Liga> liga = ligaService.consultarLiga(TestConstants.EMAIL_CARGA);
-		assertNotNull(liga);
-		assertFalse(liga.isEmpty());
-	}
-	
-	@Test
-	public void testConsultarLiga_Vazia() throws CadastroLigaException {
-		final List<Liga> liga = ligaService.consultarLiga(TestConstants.EMAIL_CARGA);
-		assertNotNull(liga);
-		assertTrue(liga.isEmpty());
-	}
-	
-	@Test
-	public void testAtualizarLiga() throws CadastroLigaException {
-		final Liga liga = ligaService.cadastrarNovaLiga("Liga da Justiça", TestConstants.EMAIL_CARGA);
-		
-		final Liga vingadores = ligaService.atualizarLiga(liga.getId(), "Vingadores", TestConstants.EMAIL_CARGA);
-		
-		assertThat(vingadores.getNome(), IsEqual.equalTo("Vingadores"));
-		assertThat(vingadores.getPermalink(), IsEqual.equalTo("vingadores"));
-	}
+    @Inject
+    private LigaService ligaService;
+
+    @Test
+    public void testCadastrarNovaLiga() throws CadastroLigaException {
+        Liga liga = ligaService.cadastrarNovaLiga("Liga da Justiça",
+                TestConstants.MEU_ID_USUARIO);
+
+        assertNotNull(liga);
+        assertTrue(liga.getId() > 0);
+    }
+
+    @Test
+    public void testConsultarLiga() throws CadastroLigaException {
+        ligaService.cadastrarNovaLiga("Liga da Justiça",
+                TestConstants.MEU_ID_USUARIO);
+        final List<Liga> liga = ligaService
+                .consultarLiga(TestConstants.MEU_ID_USUARIO);
+        assertNotNull(liga);
+        assertFalse(liga.isEmpty());
+    }
+
+    @Test
+    public void testConsultarLiga_Vazia() throws CadastroLigaException {
+        final List<Liga> liga = ligaService
+                .consultarLiga(TestConstants.MEU_ID_USUARIO);
+        assertNotNull(liga);
+        assertTrue(liga.isEmpty());
+    }
+
+    @Test
+    public void testAtualizarLiga() throws CadastroLigaException {
+        final Liga liga = ligaService.cadastrarNovaLiga("Liga da Justiça",
+                TestConstants.MEU_ID_USUARIO);
+
+        final Liga vingadores = ligaService.atualizarLiga(liga.getId(),
+                "Vingadores", TestConstants.MEU_ID_USUARIO);
+
+        assertThat(vingadores.getNome(), IsEqual.equalTo("Vingadores"));
+        assertThat(vingadores.getPermalink(), IsEqual.equalTo("vingadores"));
+    }
 
 }

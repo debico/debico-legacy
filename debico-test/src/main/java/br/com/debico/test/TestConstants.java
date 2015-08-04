@@ -6,6 +6,11 @@ public final class TestConstants {
      * Email do usuário principal.
      */
     public static final String EMAIL_CARGA = "ricardozanini@gmail.com";
+    
+    /**
+     * :D
+     */
+    public static final int MEU_ID_USUARIO = 2;
 
     /**
      * Lista com 3 usuários válidos. Usuários, não apostadores. Não inclui o

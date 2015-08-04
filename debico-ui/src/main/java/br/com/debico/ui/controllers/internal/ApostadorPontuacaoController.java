@@ -20,8 +20,6 @@ import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.social.services.LigaService;
 import br.com.debico.ui.controllers.AbstractViewController;
 
-import com.google.common.base.Strings;
-
 import static com.google.common.base.Objects.firstNonNull;
 
 /**
@@ -101,10 +99,10 @@ public class ApostadorPontuacaoController extends AbstractViewController {
     }
 
     private void carregarFiltroLigas() {
-        final String usuario = this.getLoginUsuarioAutenticado();
+        final int usuarioId = this.getUsuarioIdAutenticado();
 
-        if (!Strings.isNullOrEmpty(usuario)) {
-            this.addObject("ligas", ligaService.consultarLiga(usuario));
+        if (usuarioId > 0) {
+            this.addObject("ligas", ligaService.consultarLiga(usuarioId));
         }
     }
 

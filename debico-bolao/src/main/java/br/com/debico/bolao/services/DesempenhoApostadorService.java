@@ -19,19 +19,19 @@ public interface DesempenhoApostadorService {
      * Retorna apenas a série do desempenho do Apostador em questão.
      * 
      * @param campeonato
-     * @param emailApostador
+     * @param idUsuario
      * @return
      */
-    PontuacaoRodadaApostadorSerie recuperarDesempenhoPontuacaoPorRodada(Campeonato campeonato, String emailApostador);
+    PontuacaoRodadaApostadorSerie recuperarDesempenhoPontuacaoPorRodada(Campeonato campeonato, int idUsuario);
     
     /**
      * Retorna um conjunto de apostadores (Top 10) do campeonato mais o usuário solicitado com a 
      * pontuação atingida rodada a rodada de determiando campeonato.
      * 
      * @param campeonato
-     * @param emailUsuario
+     * @param idUsuario
      * @return
      */
-    Set<PontuacaoRodadaApostadorSerie> recuperarDesempenhoTop10PontuacaoPorRodada(Campeonato campeonato, String emailApostador);
+    Set<PontuacaoRodadaApostadorSerie> recuperarDesempenhoTop10PontuacaoPorRodada(Campeonato campeonato, int idUsuario);
 
 }

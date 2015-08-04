@@ -114,7 +114,7 @@ class ApostadorUserDetailsServiceImpl implements UserDetailsService,
 	// @formatter:off
 	final ApostadorUserDetails user = 
 		new ApostadorUserDetails(
-			apostador.getUsuario().getEmail(), 
+			apostador.getUsuario().getUserName(), 
 			apostador.getUsuario().getSenha(),
 			construirPerfil(apostador.getUsuario()));
 	// @formatter:on

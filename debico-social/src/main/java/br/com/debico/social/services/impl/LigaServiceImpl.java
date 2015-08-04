@@ -1,6 +1,5 @@
 package br.com.debico.social.services.impl;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -24,6 +23,7 @@ import br.com.debico.social.services.LigaService;
 
 import com.google.common.base.Optional;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import static com.google.common.base.Strings.emptyToNull;
@@ -50,21 +50,14 @@ class LigaServiceImpl implements LigaService {
 
     @Cacheable(value = CacheKeys.MINHAS_LIGAS)
     @Override
-    public List<Liga> consultarLiga(String emailUsuario) {
+    public List<Liga> consultarLiga(int idUsuario) {
         LOGGER.debug(
                 "[consultarLiga] Tentando efetuar a consulta das ligas do usuario {}",
-                emailUsuario);
+                idUsuario);
 
-        checkNotNull(emptyToNull(emailUsuario));
+        checkArgument(idUsuario > 0, "O id de usuario deve estar definido.");
 
-        final Apostador apostador = apostadorService
-                .selecionarApostadorPorEmail(emailUsuario);
-
-        if (apostador == null) {
-            return Collections.emptyList();
-        }
-
-        return ligaDAO.selecionarPorUsuario(apostador.getUsuario().getId());
+        return ligaDAO.selecionarPorUsuario(idUsuario);
     }
 
     @Override
@@ -78,12 +71,12 @@ class LigaServiceImpl implements LigaService {
 
     @CacheEvict(value = CacheKeys.MINHAS_LIGAS, key = "#emailAdmin")
     @Override
-    public Liga cadastrarNovaLiga(String nome, String emailAdmin)
+    public Liga cadastrarNovaLiga(String nome, int idUsuario)
             throws CadastroLigaException {
 
         checkNotNull(emptyToNull(nome));
 
-        final Apostador apostador = this.recuperarApostador(emailAdmin);
+        final Apostador apostador = this.recuperarApostador(idUsuario);
 
         final Liga liga = new Liga(nome);
         liga.setAdministrador(apostador);
@@ -98,11 +91,11 @@ class LigaServiceImpl implements LigaService {
 
     @CacheEvict(value = CacheKeys.MINHAS_LIGAS, key = "#emailAdmin")
     @Override
-    public Liga atualizarLiga(long idLiga, String nome, String emailAdmin)
+    public Liga atualizarLiga(long idLiga, String nome, int idUsuario)
             throws CadastroLigaException {
         checkNotNull(emptyToNull(nome));
 
-        final Apostador apostador = this.recuperarApostador(emailAdmin);
+        final Apostador apostador = this.recuperarApostador(idUsuario);
         final Liga liga = ligaDAO.findById(idLiga);
 
         if (liga.getAdministrador().equals(apostador)) {
@@ -118,13 +111,13 @@ class LigaServiceImpl implements LigaService {
                 "liga.err.atualiza.adm");
     }
 
-    private Apostador recuperarApostador(final String email)
+    private Apostador recuperarApostador(int idUsuario)
             throws CadastroLigaException {
-        checkNotNull(emptyToNull(email),
-                "O email do administrador da liga nao pode ser nulo");
+        checkArgument(idUsuario > 0,
+                "O id de usuário do administrador da liga nao pode ser nulo");
 
         final Apostador apostador = apostadorService
-                .selecionarPerfilApostadorPorEmail(email);
+                .selecionarApostadorPorIdUsuario(idUsuario);
 
         if (apostador == null) {
             throw new CadastroLigaException("Apostador nao encontrado",

@@ -23,31 +23,31 @@ public abstract class AbstractViewController implements MessageSourceAware {
 
     @PostConstruct
     public void init() {
-	this.modelAndView = new ModelAndView(getViewName());
+        this.modelAndView = new ModelAndView(getViewName());
     }
 
     protected abstract String getViewName();
 
     public ModelAndView getModelAndView() {
-	return modelAndView;
+        return modelAndView;
     }
 
     public void setMessageSource(MessageSource messageSource) {
-	this.messageSource = messageSource;
+        this.messageSource = messageSource;
     }
 
     public String getMessage(final String messageCode) {
-	return this.messageSource.getMessage(messageCode, null,
-		Locale.getDefault());
+        return this.messageSource.getMessage(messageCode, null,
+                Locale.getDefault());
     }
 
     public String getMessage(final String messageCode, Object... args) {
-	return this.messageSource.getMessage(messageCode, args,
-		Locale.getDefault());
+        return this.messageSource.getMessage(messageCode, args,
+                Locale.getDefault());
     }
 
     public String getMessage(final DebicoException ex) {
-	return MessageSourceUtils.getMessageFromEx(ex, messageSource);
+        return MessageSourceUtils.getMessageFromEx(ex, messageSource);
     }
 
     /**
@@ -55,21 +55,21 @@ public abstract class AbstractViewController implements MessageSourceAware {
      * dados de erro.
      */
     public void clearError() {
-	modelAndView.addObject("error", false);
-	modelAndView.addObject("errorMsg", "");
-	modelAndView.setViewName(getViewName());
+        modelAndView.addObject("error", false);
+        modelAndView.addObject("errorMsg", "");
+        modelAndView.setViewName(getViewName());
     }
 
     public void setError(final String errorMessageCode) {
-	modelAndView.addObject("error", true);
-	modelAndView.addObject("errorMsg", getMessage(errorMessageCode));
-	modelAndView.setViewName(getViewName());
+        modelAndView.addObject("error", true);
+        modelAndView.addObject("errorMsg", getMessage(errorMessageCode));
+        modelAndView.setViewName(getViewName());
     }
 
     public void setError(final Throwable e) {
-	modelAndView.addObject("error", true);
-	modelAndView.addObject("errorMsg", e.getLocalizedMessage());
-	modelAndView.setViewName(getViewName());
+        modelAndView.addObject("error", true);
+        modelAndView.addObject("errorMsg", e.getLocalizedMessage());
+        modelAndView.setViewName(getViewName());
     }
 
     /**
@@ -81,10 +81,10 @@ public abstract class AbstractViewController implements MessageSourceAware {
      * @param e
      */
     public void setError(final DebicoException e) {
-	modelAndView.addObject("error", true);
-	modelAndView.addObject("errorMsg", getMessage(e));
+        modelAndView.addObject("error", true);
+        modelAndView.addObject("errorMsg", getMessage(e));
 
-	modelAndView.setViewName(getViewName());
+        modelAndView.setViewName(getViewName());
     }
 
     /**
@@ -94,26 +94,26 @@ public abstract class AbstractViewController implements MessageSourceAware {
      * @param messageCode
      */
     public void redirecionarSucesso(final String messageCode) {
-	modelAndView.clear();
-	modelAndView.setViewName(MENSAGEM_VIEW_NAME);
-	modelAndView.addObject("mensagem", getMessage(messageCode));
-	modelAndView.addObject("sucesso", true);
+        modelAndView.clear();
+        modelAndView.setViewName(MENSAGEM_VIEW_NAME);
+        modelAndView.addObject("mensagem", getMessage(messageCode));
+        modelAndView.addObject("sucesso", true);
     }
 
     public void redirecionarErro(final DebicoException exception) {
-	modelAndView.clear();
-	modelAndView.setViewName(MENSAGEM_VIEW_NAME);
-	modelAndView.addObject("mensagem", this.getMessage(exception));
-	modelAndView.addObject("error", true);
+        modelAndView.clear();
+        modelAndView.setViewName(MENSAGEM_VIEW_NAME);
+        modelAndView.addObject("mensagem", this.getMessage(exception));
+        modelAndView.addObject("error", true);
     }
 
     public void resetViewName() {
-	modelAndView.addObject("error", false);
-	modelAndView.setViewName(getViewName());
+        modelAndView.addObject("error", false);
+        modelAndView.setViewName(getViewName());
     }
 
     protected void addObject(final String key, final Object model) {
-	modelAndView.addObject(key, model);
+        modelAndView.addObject(key, model);
     }
 
     /**
@@ -123,14 +123,18 @@ public abstract class AbstractViewController implements MessageSourceAware {
      * @param titleParam
      */
     protected void addTitleParam(Object titleParam) {
-	this.addObject("title_param", titleParam);
+        this.addObject("title_param", titleParam);
     }
-    
+
     protected ApostadorUserDetails getApostadorAutenticado() {
-	return UsuarioAuthUtils.apostadorAutenticado();
+        return UsuarioAuthUtils.apostadorAutenticado();
     }
-    
+
     protected String getLoginUsuarioAutenticado() {
-	return UsuarioAuthUtils.loginUsuarioAutenticado();
+        return UsuarioAuthUtils.loginUsuarioAutenticado();
+    }
+
+    protected int getUsuarioIdAutenticado() {
+        return UsuarioAuthUtils.userId();
     }
 }

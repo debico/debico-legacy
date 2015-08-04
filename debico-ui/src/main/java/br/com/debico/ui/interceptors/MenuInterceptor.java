@@ -28,27 +28,27 @@ import br.com.debico.ui.thymeleaf.UsuarioAuthUtils;
  */
 public class MenuInterceptor extends HandlerInterceptorAdapter {
 
-	@Inject
-	@Named("campeonatoServiceImpl")
-	private CampeonatoService campeonatoService;
+    @Inject
+    @Named("campeonatoServiceImpl")
+    private CampeonatoService campeonatoService;
 
-	@Inject
-	private LigaService ligaService;
+    @Inject
+    private LigaService ligaService;
 
-	public static final String CAMPEONATOS_MODEL_KEY = "campeonatos";
-	public static final String LIGAS_MODEL_KEY = "ligas";
+    public static final String CAMPEONATOS_MODEL_KEY = "campeonatos";
+    public static final String LIGAS_MODEL_KEY = "ligas";
 
-	@Override
-	public void postHandle(HttpServletRequest request,
-			HttpServletResponse response, Object handler,
-			ModelAndView modelAndView) throws Exception {
+    @Override
+    public void postHandle(HttpServletRequest request,
+            HttpServletResponse response, Object handler,
+            ModelAndView modelAndView) throws Exception {
 
-		if (modelAndView != null) {
-			modelAndView.addObject(CAMPEONATOS_MODEL_KEY,
-					campeonatoService.selecionarCampeonatosAtivos());
-			modelAndView.addObject(LIGAS_MODEL_KEY,
-					ligaService.consultarLiga(UsuarioAuthUtils.loginUsuarioAutenticado()));
-		}
-	}
+        if (modelAndView != null) {
+            modelAndView.addObject(CAMPEONATOS_MODEL_KEY,
+                    campeonatoService.selecionarCampeonatosAtivos());
+            modelAndView.addObject(LIGAS_MODEL_KEY,
+                    ligaService.consultarLiga(UsuarioAuthUtils.userId()));
+        }
+    }
 
 }

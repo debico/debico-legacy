@@ -1,9 +1,5 @@
 package br.com.debico.bolao.services.impl;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Strings.emptyToNull;
-
 import java.util.List;
 
 import javax.inject.Inject;
@@ -17,37 +13,41 @@ import br.com.debico.bolao.services.PartidaPalpiteService;
 import br.com.debico.model.Apostador;
 import br.com.debico.social.services.ApostadorService;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 @Named
-@Transactional(readOnly=true)
+@Transactional(readOnly = true)
 class PartidaPalpiteServiceImpl implements PartidaPalpiteService {
 
     @Inject
     private PartidaPalpiteViewDAO partidaPalpiteViewDAO;
-    
+
     @Inject
     private ApostadorService apostadorService;
-    
+
     public PartidaPalpiteServiceImpl() {
 
     }
 
     public List<PartidaRodadaPalpiteView> recuperarPalpitesRodada(
-            final int idRodada, final String username) {
+            final int idRodada, final int idUsuario) {
         checkArgument(idRodada > 0);
-        checkNotNull(emptyToNull(username));
+        checkArgument(idUsuario > 0, "o Id de usuario nao pode ser nulo");
 
-        final Apostador apostador = apostadorService.selecionarApostadorPorEmail(username);
+        final Apostador apostador = apostadorService
+                .selecionarApostadorPorIdUsuario(idUsuario);
 
         return partidaPalpiteViewDAO.selecionarPartidasComSemPalpite(idRodada,
                 apostador.getId());
     }
 
     public List<PartidaRodadaPalpiteView> recuperarPalpitesRodadaPorOrdinal(
-            String permalink, int rodadaOrdinal, String username) {
+            String permalink, int rodadaOrdinal, int idUsuario) {
         checkArgument(rodadaOrdinal > 0);
-        checkNotNull(emptyToNull(username));
+        checkArgument(idUsuario > 0, "o Id de usuario nao pode ser nulo");
 
-        final Apostador apostador = apostadorService.selecionarApostadorPorEmail(username);
+        final Apostador apostador = apostadorService
+                .selecionarApostadorPorIdUsuario(idUsuario);
 
         return partidaPalpiteViewDAO.selecionarPartidasComSemPalpiteOrdinal(
                 permalink, rodadaOrdinal, apostador.getId());

@@ -1,7 +1,5 @@
 package br.com.debico.social.services.impl;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -15,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.debico.model.Usuario;
 import br.com.debico.social.CadastroApostadorException;
 import br.com.debico.social.services.UsuarioService;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Serviço que efetua o cadastro de um usuário por meio de integração com as
@@ -50,7 +50,7 @@ class ApostadorConnectionSignUp implements ConnectionSignUp {
 	} catch (CadastroApostadorException e) {
 	    LOGGER.warn(
 		    "[execute] Problema ao cadastrar o usuario utilizando o profile {}",
-		    connection.fetchUserProfile());
+		    connection.fetchUserProfile(), e);
 	    return null;
 	}
     }

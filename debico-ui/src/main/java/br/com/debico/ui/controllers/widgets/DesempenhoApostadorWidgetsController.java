@@ -1,7 +1,5 @@
 package br.com.debico.ui.controllers.widgets;
 
-import java.security.Principal;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -14,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import br.com.debico.bolao.model.graph.PontuacaoRodadaApostadorSerie;
 import br.com.debico.bolao.services.DesempenhoApostadorService;
 import br.com.debico.campeonato.services.CampeonatoService;
+import br.com.debico.ui.thymeleaf.UsuarioAuthUtils;
 
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -45,12 +44,11 @@ public class DesempenhoApostadorWidgetsController {
     @ApiOperation("Recupera a Pontuação por Rodada por Apostador")
     @RequestMapping(value = "/widgets/desempenho/apostador_rodada", method = RequestMethod.GET)
     public @ResponseBody PontuacaoRodadaApostadorSerie procurarPorNome(
-            @RequestParam(value = "campeonato", required = true) String campeonato,
-            final Principal principal) {
+            @RequestParam(value = "campeonato", required = true) String campeonato) {
         return desempenhoApostadorService
                 .recuperarDesempenhoPontuacaoPorRodada(
                         campeonatoService.selecionarCampeonato(campeonato),
-                        principal.getName());
+                        UsuarioAuthUtils.userId());
     }
 
 }

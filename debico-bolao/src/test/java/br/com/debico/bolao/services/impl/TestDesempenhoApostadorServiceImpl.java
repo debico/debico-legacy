@@ -26,17 +26,18 @@ public class TestDesempenhoApostadorServiceImpl extends AbstractBolaoUnitTest {
 
     @Inject
     private DesempenhoApostadorService desempenhoApostadorService;
-    
-   
+
     @Test
     public void testRecuperarDesempenhoTop10PontuacaoPorRodada() {
-        final Campeonato campeonato = this.campeonatoService.selecionarCampeonato(CAMPEONATO_ID);
-        
-        Set<PontuacaoRodadaApostadorSerie> serie = 
-                desempenhoApostadorService.recuperarDesempenhoTop10PontuacaoPorRodada(campeonato, EMAIL_ULTIMO_RANKING);
-        
+        final Campeonato campeonato = this.campeonatoService
+                .selecionarCampeonato(CAMPEONATO_ID);
+
+        Set<PontuacaoRodadaApostadorSerie> serie = desempenhoApostadorService
+                .recuperarDesempenhoTop10PontuacaoPorRodada(campeonato,
+                        ID_USUARIO_ULTIMO_RANKING);
+
         LOGGER.debug("Recuperada a performance da galera: {}", serie);
-        
+
         assertNotNull(serie);
         assertFalse(serie.isEmpty());
         assertThat(serie, IsCollectionWithSize.hasSize((11)));
@@ -44,13 +45,15 @@ public class TestDesempenhoApostadorServiceImpl extends AbstractBolaoUnitTest {
 
     @Test
     public void testRecuperarDesempenhoPontuacaoPorRodada() {
-    	 final Campeonato campeonato = this.campeonatoService.selecionarCampeonato(CAMPEONATO_ID);
-         
-         PontuacaoRodadaApostadorSerie serie = 
-                 desempenhoApostadorService.recuperarDesempenhoPontuacaoPorRodada(campeonato, EMAIL_PRIMEIRO_RANKING);
-         
-         LOGGER.debug("Recuperada a performance: {}", serie);
-         
-         assertNotNull(serie);
+        final Campeonato campeonato = this.campeonatoService
+                .selecionarCampeonato(CAMPEONATO_ID);
+
+        PontuacaoRodadaApostadorSerie serie = desempenhoApostadorService
+                .recuperarDesempenhoPontuacaoPorRodada(campeonato,
+                        ID_USUARIO_PRIMEIRO_RANKING);
+
+        LOGGER.debug("Recuperada a performance: {}", serie);
+
+        assertNotNull(serie);
     }
 }

@@ -1,7 +1,5 @@
 package br.com.debico.ui.controllers.internal;
 
-import java.security.Principal;
-
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Controller;
@@ -15,26 +13,26 @@ import br.com.debico.ui.controllers.AbstractViewController;
 @Controller
 public class MinhasLigasController extends AbstractViewController {
 
-	@Inject
-	private LigaService ligaService;
+    @Inject
+    private LigaService ligaService;
 
-	public MinhasLigasController() {
+    public MinhasLigasController() {
 
-	}
+    }
 
-	@Override
-	protected String getViewName() {
-		return "minhas-ligas";
-	}
+    @Override
+    protected String getViewName() {
+        return "minhas-ligas";
+    }
 
-	@RequestMapping(value = "/ligas/administrar", method = RequestMethod.GET)
-	public ModelAndView minhasLigas(final Principal principal) {
-		resetViewName();
+    @RequestMapping(value = "/ligas/administrar", method = RequestMethod.GET)
+    public ModelAndView minhasLigas() {
+        resetViewName();
 
-		this.addObject("minhasLigas",
-				ligaService.consultarLiga(principal.getName()));
+        this.addObject("minhasLigas",
+                ligaService.consultarLiga(this.getUsuarioIdAutenticado()));
 
-		return this.getModelAndView();
-	}
+        return this.getModelAndView();
+    }
 
 }

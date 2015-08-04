@@ -19,10 +19,10 @@ public interface LigaService {
 	/**
 	 * Seleciona todas as ligas de determinado usuário.
 	 * 
-	 * @param emailUsuario
+	 * @param idUsuario Identificador de usuario do apostador.
 	 * @return lista com as ligas
 	 */
-	List<Liga> consultarLiga(final String emailUsuario);
+	List<Liga> consultarLiga(final int idUsuario);
 	
 	Optional<Liga> recuperarLiga(final long idLiga);
 
@@ -32,11 +32,11 @@ public interface LigaService {
 	 * 
 	 * @param nome
 	 *            da liga
-	 * @param emailAdmin
-	 *            email do usuário administrador
+	 * @param idUsuario
+	 *            identificador de usuario do apostador administrador
 	 * @return A liga cadastrada com o id definido.
 	 */
-	Liga cadastrarNovaLiga(final String nome, final String emailAdmin)
+	Liga cadastrarNovaLiga(final String nome, final int idUsuario)
 			throws CadastroLigaException;
 	
 	/**
@@ -44,10 +44,11 @@ public interface LigaService {
 	 * 
 	 * @param idLiga identificador
 	 * @param nome da liga
-	 * @param emailAdmin do administrador da liga. Apenas ele pode alterar a liga.
-	 * @return {@link Liga} alterada.
+     * @param idUsuario
+     *            identificador de usuario do apostador administrador
+     * @return {@link Liga} alterada.
 	 */
-	Liga atualizarLiga(final long idLiga, final String nome, final String emailAdmin) throws CadastroLigaException;
+	Liga atualizarLiga(final long idLiga, final String nome, final int idUsuario) throws CadastroLigaException;
 
 	
 }
