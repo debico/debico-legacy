@@ -27,15 +27,25 @@ public interface RodadaService {
 
 	/**
 	 * Seleciona todas as rodadas de determinado {@link Campeonato} que ainda
-	 * não foram definidos os resultados. Isso inclui as rodadas com partidas
-	 * sem placar.
-	 * 
+	 * não foram definidos os resultados. Isso inclui APENAS as rodadas com partidas
+	 * com placar.
+	 * Normalmente utilizada para processar o bolão, por isso a necessidade do placar.
 	 * @param campeonato
 	 *            desejado
 	 * @return rodadas não processadas
 	 * @since 2.0.0
 	 */
 	List<Rodada> selecionarRodadasNaoCalculadas(Campeonato campeonato);
+	
+	/**
+	 * Seleciona todas as rodadas de determinado {@link Campeonato} que ainda
+	 * não foram definidos os resultados. Isso inclui as rodadas com partidas
+	 * SEM placar.
+	 * @param campeonato
+	 * @return
+	 * @since 2.0.5
+	 */
+	List<Rodada> selecionarRodadasNaoCalculadasIncuindoSemPlacar(Campeonato campeonato);
 	
 	/**
 	 * Recupera a rodada em questão (sem as partidas).

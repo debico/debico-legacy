@@ -120,7 +120,7 @@ class ExploraTabelaBrasileiraoResultadosJogosService implements
 	final List<PartidaRodada> partidas = new ArrayList<>();
 	final Set<Time> times = campeonato.getTimes();
 	final List<Rodada> rodadas = rodadaService
-		.selecionarRodadasNaoCalculadas(campeonato);
+		.selecionarRodadasNaoCalculadasIncuindoSemPlacar(campeonato);
 	final int anoAtual = DateTime.now().year().get();
 
 	try {

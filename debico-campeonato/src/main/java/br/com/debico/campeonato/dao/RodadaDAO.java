@@ -19,14 +19,14 @@ public interface RodadaDAO extends Dao<Rodada, Integer> {
     Rodada selecionarRodadaAtual(Campeonato campeonato);
 
     /**
-     * Recupera a rodada com base na data enviada. 
+     * Recupera a rodada com base na data enviada.
      * 
      * @param campeonato
      * @param data
      * @return
      */
     Rodada selecionarRodadaPorData(Campeonato campeonato, Date data);
-    
+
     /**
      * Seleciona a rodada que está dentro do período desejado.
      * 
@@ -54,14 +54,25 @@ public interface RodadaDAO extends Dao<Rodada, Integer> {
      * @return
      */
     List<Rodada> selecionarRodadasNaoCalculadas(Campeonato campeonato);
-    
+
     /**
-     * Seleciona todas as rodadas de determiando campeonato com partidas já processadas.
+     * Seleciona todas as rodadas com partidas com e sem placar definidos.
+     * 
+     * @param campeonato
+     * @return
+     */
+    List<Rodada> selecionarRodadasNaoCalculadasIncluindoSemPlacar(
+	    Campeonato campeonato);
+
+    /**
+     * Seleciona todas as rodadas de determiando campeonato com partidas já
+     * processadas.
      * 
      * @param campeonato
      * @since 2.0.4
      * @return lista de rodadas
      */
-    List<RodadaMeta> selecionarRodadasComPartidasProcessadas(Campeonato campeonato);
- 
+    List<RodadaMeta> selecionarRodadasComPartidasProcessadas(
+	    Campeonato campeonato);
+
 }

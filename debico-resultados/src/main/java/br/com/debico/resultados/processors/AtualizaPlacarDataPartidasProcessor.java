@@ -68,7 +68,8 @@ final class AtualizaPlacarDataPartidasProcessor extends ProcessorSupport {
 		context.getCampeonato());
 	final List<PartidaBase> partidasWeb = context.getPartidas();
 	final List<Rodada> rodadas = this.rodadaService
-		.selecionarRodadasNaoCalculadas(context.getCampeonato());
+		.selecionarRodadasNaoCalculadasIncuindoSemPlacar(context
+			.getCampeonato());
 
 	if (!verificaNecessidadeProcessamento(partidasWeb, rodadas)) {
 	    LOGGER.debug(
@@ -111,8 +112,9 @@ final class AtualizaPlacarDataPartidasProcessor extends ProcessorSupport {
     }
 
     private void atualizaPlacar(PartidaBase partida, PartidaBase partidaWeb) {
-	//só atualiza se não tiver placar
-	if (partida != null && partidaWeb.getPlacar() != null && partida.getPlacar() == null) {
+	// só atualiza se não tiver placar
+	if (partida != null && partidaWeb.getPlacar() != null
+		&& partida.getPlacar() == null) {
 	    LOGGER.trace("[execute] Atualizando placar da partida {}", partida);
 	    this.partidaService.salvarPlacar(partida.getId(),
 		    partidaWeb.getPlacar());

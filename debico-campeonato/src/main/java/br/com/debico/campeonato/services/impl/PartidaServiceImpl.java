@@ -47,7 +47,7 @@ class PartidaServiceImpl implements PartidaService {
 	    checkArgument(idPartida > 0, "O id da partida eh invalido.");
         checkNotNull(dataHorarioPartida, "A data e horario da partida nao pode sernulo.");
         
-        LOGGER.debug("[salvarPlacar] Tentando salvar a data {} da partida {}", dataHorarioPartida, idPartida);
+        LOGGER.debug("[atualizarDataHorario] Tentando salvar a data {} da partida {}", dataHorarioPartida, idPartida);
         
         Partida partida = partidaDAO.findById(idPartida);
         partida.setDataHoraPartida(dataHorarioPartida);

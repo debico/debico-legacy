@@ -46,9 +46,18 @@ class RodadaServiceImpl implements RodadaService {
     @Override
     public List<Rodada> selecionarRodadasNaoCalculadas(Campeonato campeonato) {
 	LOGGER.debug(
-		"[selecionarRodadasNaoProcessadas] Tentando selecionar as rodadas do campeonato {}",
+		"[selecionarRodadasNaoCalculadas] Tentando selecionar as rodadas do campeonato {}",
 		campeonato);
 	return rodadaDAO.selecionarRodadasNaoCalculadas(campeonato);
+    }
+    
+    @Override
+    public List<Rodada> selecionarRodadasNaoCalculadasIncuindoSemPlacar(
+            Campeonato campeonato) {
+	LOGGER.debug(
+		"[selecionarRodadasNaoCalculadasIncuindoSemPlacar] Tentando selecionar as rodadas do campeonato {}",
+		campeonato);
+        return rodadaDAO.selecionarRodadasNaoCalculadasIncluindoSemPlacar(campeonato);
     }
 
     @Override
