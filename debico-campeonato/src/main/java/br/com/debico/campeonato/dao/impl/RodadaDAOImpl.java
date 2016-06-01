@@ -60,7 +60,7 @@ class RodadaDAOImpl extends AbstractJPADao<Rodada, Integer> implements
     public List<Rodada> selecionarRodadasNaoCalculadas(Campeonato campeonato) {
         return getEntityManager()
                 .createQuery(
-                        "SELECT DISTINCT NEW br.com.debico.model.campeonato.Rodada(r.id) FROM Rodada r, PartidaRodada p WHERE p.rodada = r AND r.ranking.fase.campeonato = :c AND p.placar IS NOT NULL AND p.status = br.com.debico.model.StatusPartida.ND",
+                        "SELECT DISTINCT NEW br.com.debico.model.campeonato.Rodada(r.id, r.nome, r.ordem) FROM Rodada r, PartidaRodada p WHERE p.rodada = r AND r.ranking.fase.campeonato = :c AND p.placar IS NOT NULL AND p.status = br.com.debico.model.StatusPartida.ND",
                         Rodada.class).setParameter("c", campeonato)
                 .getResultList();
     }

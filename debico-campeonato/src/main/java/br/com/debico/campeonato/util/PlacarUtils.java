@@ -14,38 +14,33 @@ import br.com.debico.model.Placar;
  *
  */
 public final class PlacarUtils {
-    private static final Logger LOGGER = LoggerFactory
-	    .getLogger(PlacarUtils.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(PlacarUtils.class);
 
-    private PlacarUtils() {
-    }
-
-    /**
-     * Normaliza as Strings de gol (provavelmente vindo de alguma importação
-     * externa) e os transforma em instância de {@link Placar}.
-     * 
-     * @param golsMandante
-     * @param golsVisitante
-     * @return {@link Placar} válido ou null se as Strings não estiverem de
-     *         acordo.
-     */
-    public static final Placar novoPlacarOuNull(String golsMandante,
-	    String golsVisitante) {
-	golsMandante = firstNonNull(golsMandante, "").trim();
-	golsVisitante = firstNonNull(golsVisitante, "").trim();
-	if (emptyToNull(golsMandante) == null
-		|| emptyToNull(golsVisitante) == null) {
-	    return null;
+	private PlacarUtils() {
 	}
 
-	try {
-	    return new Placar(Integer.parseInt(golsMandante),
-		    Integer.parseInt(golsVisitante));
-	} catch (NumberFormatException ex) {
-	    LOGGER.debug(
-		    "Erro na conversao de placar gols mandante: '{}', gols visitante: '{}'",
-		    golsMandante, golsVisitante);
-	    return null;
+	/**
+	 * Normaliza as Strings de gol (provavelmente vindo de alguma importação
+	 * externa) e os transforma em instância de {@link Placar}.
+	 * 
+	 * @param golsMandante
+	 * @param golsVisitante
+	 * @return {@link Placar} válido ou null se as Strings não estiverem de
+	 *         acordo.
+	 */
+	public static final Placar novoPlacarOuNull(String golsMandante, String golsVisitante) {
+		golsMandante = firstNonNull(golsMandante, "").trim();
+		golsVisitante = firstNonNull(golsVisitante, "").trim();
+		if (emptyToNull(golsMandante) == null || emptyToNull(golsVisitante) == null) {
+			return null;
+		}
+
+		try {
+			return new Placar(Integer.parseInt(golsMandante), Integer.parseInt(golsVisitante));
+		} catch (NumberFormatException ex) {
+			LOGGER.debug("Erro na conversao de placar gols mandante: '{}', gols visitante: '{}'", golsMandante,
+					golsVisitante);
+			return null;
+		}
 	}
-    }
 }
