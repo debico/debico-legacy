@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.campeonato.brms.CalculoPartidasService;
+import br.com.debico.core.DebicoException;
 import br.com.debico.resultados.Context;
 import br.com.debico.resultados.ProcessorBeans;
 
@@ -22,23 +23,22 @@ import br.com.debico.resultados.ProcessorBeans;
 @Transactional(readOnly = false, propagation = Propagation.MANDATORY)
 final class CalculaEstatisticaTimeProcessor extends ProcessorSupport {
 
-    @Inject
-    private CalculoPartidasService calculoPartidasService;
+	@Inject
+	private CalculoPartidasService calculoPartidasService;
 
-    public CalculaEstatisticaTimeProcessor() {
+	public CalculaEstatisticaTimeProcessor() {
 
-    }
-
-    @Override
-    public void execute(Context context) {
-	if(context.getPartidas().isEmpty()) {
-	    return;
 	}
-	
-        calculoPartidasService.calcularPontuacaoTimes(context.getCampeonato(),
-                context.getPartidas());
-        
-        this.executeNext(context);
-    }
+
+	@Override
+	public void execute(Context context) throws DebicoException {
+		if (context.getPartidas().isEmpty()) {
+			return;
+		}
+
+		calculoPartidasService.calcularPontuacaoTimes(context.getCampeonato(), context.getPartidas());
+
+		this.executeNext(context);
+	}
 
 }

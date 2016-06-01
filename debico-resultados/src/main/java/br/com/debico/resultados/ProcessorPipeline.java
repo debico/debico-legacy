@@ -5,21 +5,18 @@ package br.com.debico.resultados;
  * sequencial.
  * 
  * @author Ricardo Zanini (ricardozanini@gmail.com)
- * @see <a href="http://www.enterpriseintegrationpatterns.com/PipesAndFilters.html">Pipes And Filters</a>
+ * @see <a href=
+ *      "http://www.enterpriseintegrationpatterns.com/PipesAndFilters.html">Pipes
+ *      And Filters</a>
  * @since 2.0.4
  */
 public interface ProcessorPipeline extends Processor {
 
-    /**
-     * Adiciona um {@link Processor} no pipeline.
-     * 
-     * @param processor
-     */
-    void addProcessor(Processor processor);
-
-    /**
-     * Realiza a cadeia de processamento do pipeline no esquema FIFO.
-     */
-    void execute(Context context);
+	/**
+	 * Adiciona um {@link Processor} no pipeline.
+	 * 
+	 * @param processor
+	 */
+	void addProcessor(Processor processor);
 
 }

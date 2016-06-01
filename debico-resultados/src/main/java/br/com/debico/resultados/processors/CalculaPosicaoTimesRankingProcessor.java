@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.campeonato.brms.CalculoRankingTimesService;
+import br.com.debico.core.DebicoException;
 import br.com.debico.resultados.Context;
 import br.com.debico.resultados.ProcessorBeans;
 
@@ -14,18 +15,17 @@ import br.com.debico.resultados.ProcessorBeans;
 @Transactional(readOnly = false, propagation = Propagation.MANDATORY)
 class CalculaPosicaoTimesRankingProcessor extends ProcessorSupport {
 
-    @Inject
-    private CalculoRankingTimesService calculoRankingTimesService;
+	@Inject
+	private CalculoRankingTimesService calculoRankingTimesService;
 
-    public CalculaPosicaoTimesRankingProcessor() {
+	public CalculaPosicaoTimesRankingProcessor() {
 
-    }
+	}
 
-    @Override
-    public void execute(Context context) {
-	calculoRankingTimesService
-		.calcularPosicaoGeral(context.getCampeonato());
-	this.executeNext(context);
-    }
+	@Override
+	public void execute(Context context) throws DebicoException {
+		calculoRankingTimesService.calcularPosicaoGeral(context.getCampeonato());
+		this.executeNext(context);
+	}
 
 }

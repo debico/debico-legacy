@@ -7,6 +7,7 @@ import java.util.Deque;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import br.com.debico.core.DebicoException;
 import br.com.debico.resultados.processors.ProcessorSupport;
 
 import com.google.common.collect.Lists;
@@ -47,7 +48,7 @@ public class DefaultProcessorPipeline extends ProcessorSupport implements Proces
     }
 
     @Override
-    public void execute(Context context) {
+    public void execute(Context context) throws DebicoException {
 	if (!this.chain.isEmpty()) {
 	    this.chain.getFirst().execute(context);
 	}

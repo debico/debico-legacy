@@ -1,5 +1,7 @@
 package br.com.debico.resultados;
 
+import br.com.debico.core.DebicoException;
+
 /**
  * Pequena parte do processamento. Realiza apenas uma tarefa pré-determinada que
  * fará sentido no todo durante o processamento do pipeline. Similar à
@@ -15,7 +17,7 @@ public interface Processor {
      * 
      * @param context
      */
-    void execute(Context context);
+    void execute(Context context) throws DebicoException;
 
     /**
      * Define o próximo processor na cadeia.

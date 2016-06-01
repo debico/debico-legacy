@@ -8,8 +8,11 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 
+import br.com.debico.core.DebicoException;
 import br.com.debico.core.helpers.CacheKeys;
 import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.resultados.Context;
@@ -29,55 +32,64 @@ import br.com.debico.resultados.ProcessorPipeline;
  * @since 2.0.4
  */
 @Named(ManagerBeans.SUMARIZADOR_MANAGER)
-class SumarizadorBolaoProcessorManager implements
-	ParameterizeProcessorManager<Campeonato> {
+class SumarizadorBolaoProcessorManager implements ParameterizeProcessorManager<Campeonato> {
 
-    private final ProcessorPipeline processorPipeline;
+	private static final Logger LOGGER = LoggerFactory.getLogger(SumarizadorBolaoProcessorManager.class);
 
-    @Inject
-    @Named(ManagerBeans.BOLAO_MANAGER)
-    private ParameterizeProcessorManager<Campeonato> bolaoManager;
+	private final ProcessorPipeline processorPipeline;
 
-    @Inject
-    @Named(ProcessorBeans.SUMARIZA_PONTOS_APOSTADOR_RODADA)
-    private Processor sumarizarPontosRodadaApostador;
+	@Inject
+	@Named(ManagerBeans.BOLAO_MANAGER)
+	private ParameterizeProcessorManager<Campeonato> bolaoManager;
 
-    public SumarizadorBolaoProcessorManager() {
-	processorPipeline = new DefaultProcessorPipeline();
-    }
+	@Inject
+	@Named(ProcessorBeans.SUMARIZA_PONTOS_APOSTADOR_RODADA)
+	private Processor sumarizarPontosRodadaApostador;
 
-    @PostConstruct
-    @Override
-    public void init() {
-	checkNotNull(bolaoManager, "BolaoManager interno nao pode ser nulo");
-
-	this.processorPipeline.addProcessor(sumarizarPontosRodadaApostador);
-    }
-
-    @CacheEvict(value = { CacheKeys.TABELA_CAMPEONATO,
-	    CacheKeys.RANKING_APOSTADORES, CacheKeys.DESEMPENHO_IND_APOSTADOR }, allEntries = true)
-    @Override
-    public List<Context> start() {
-	final List<Context> contexts = this.bolaoManager.start();
-
-	for (Context c : contexts) {
-	    this.processorPipeline.execute(c);
+	public SumarizadorBolaoProcessorManager() {
+		processorPipeline = new DefaultProcessorPipeline();
 	}
 
-	return contexts;
-    }
+	@PostConstruct
+	@Override
+	public void init() {
+		checkNotNull(bolaoManager, "BolaoManager interno nao pode ser nulo");
 
-    @CacheEvict(value = { CacheKeys.TABELA_CAMPEONATO,
-	    CacheKeys.RANKING_APOSTADORES, CacheKeys.DESEMPENHO_IND_APOSTADOR }, allEntries = true)
-    @Override
-    public List<Context> start(Campeonato parameter) {
-	final List<Context> contexts = this.bolaoManager.start(parameter);
-
-	for (Context c : contexts) {
-	    this.processorPipeline.execute(c);
+		this.processorPipeline.addProcessor(sumarizarPontosRodadaApostador);
 	}
 
-	return contexts;
-    }
+	@CacheEvict(value = { CacheKeys.TABELA_CAMPEONATO, CacheKeys.RANKING_APOSTADORES,
+			CacheKeys.DESEMPENHO_IND_APOSTADOR }, allEntries = true)
+	@Override
+	public List<Context> start() {
+		final List<Context> contexts = this.bolaoManager.start();
+
+		for (Context c : contexts) {
+			try {
+				this.processorPipeline.execute(c);
+			} catch (DebicoException e) {
+				LOGGER.error("Erro ao tentar sumarizar o bolao", e);
+			}
+		}
+
+		return contexts;
+	}
+
+	@CacheEvict(value = { CacheKeys.TABELA_CAMPEONATO, CacheKeys.RANKING_APOSTADORES,
+			CacheKeys.DESEMPENHO_IND_APOSTADOR }, allEntries = true)
+	@Override
+	public List<Context> start(Campeonato parameter) {
+		final List<Context> contexts = this.bolaoManager.start(parameter);
+
+		for (Context c : contexts) {
+			try {
+				this.processorPipeline.execute(c);
+			} catch (DebicoException e) {
+				LOGGER.error("Erro ao tentar sumarizar o bolao", e);
+			}
+		}
+
+		return contexts;
+	}
 
 }

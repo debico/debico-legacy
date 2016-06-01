@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.debico.campeonato.brms.CalculoPartidasService;
+import br.com.debico.core.DebicoException;
 import br.com.debico.model.campeonato.AbstractRodada;
 import br.com.debico.resultados.Context;
 import br.com.debico.resultados.ProcessorBeans;
@@ -22,19 +23,18 @@ import br.com.debico.resultados.ProcessorBeans;
 @Transactional(propagation = Propagation.MANDATORY, readOnly = false)
 final class DefineStatusPartidasProcessor extends ProcessorSupport {
 
-    @Inject
-    private CalculoPartidasService calculoPartidasService;
+	@Inject
+	private CalculoPartidasService calculoPartidasService;
 
-    public DefineStatusPartidasProcessor() {
-    }
-
-    @Override
-    public void execute(Context context) {
-	for (AbstractRodada rodada : context.getRodadas()) {
-	    context.addPartidas(calculoPartidasService
-		    .definirStatusPartidas(rodada));
+	public DefineStatusPartidasProcessor() {
 	}
-	
-	this.executeNext(context);
-    }
+
+	@Override
+	public void execute(Context context) throws DebicoException {
+		for (AbstractRodada rodada : context.getRodadas()) {
+			context.addPartidas(calculoPartidasService.definirStatusPartidas(rodada));
+		}
+
+		this.executeNext(context);
+	}
 }

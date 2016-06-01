@@ -1,5 +1,6 @@
 package br.com.debico.resultados.processors;
 
+import br.com.debico.core.DebicoException;
 import br.com.debico.resultados.Context;
 import br.com.debico.resultados.Processor;
 
@@ -11,25 +12,25 @@ import br.com.debico.resultados.Processor;
  */
 public abstract class ProcessorSupport implements Processor {
 
-    private Processor nextProcessor;
+	private Processor nextProcessor;
 
-    public ProcessorSupport() {
+	public ProcessorSupport() {
 
-    }
-
-    @Override
-    public final void setNextProcessor(Processor processor) {
-	this.nextProcessor = processor;
-    }
-
-    protected final Processor getNextProcessor() {
-	return this.nextProcessor;
-    }
-
-    protected final void executeNext(Context context) {
-	if (this.nextProcessor != null) {
-	    this.nextProcessor.execute(context);
 	}
-    }
+
+	@Override
+	public final void setNextProcessor(Processor processor) {
+		this.nextProcessor = processor;
+	}
+
+	protected final Processor getNextProcessor() {
+		return this.nextProcessor;
+	}
+
+	protected final void executeNext(Context context) throws DebicoException {
+		if (this.nextProcessor != null) {
+			this.nextProcessor.execute(context);
+		}
+	}
 
 }
