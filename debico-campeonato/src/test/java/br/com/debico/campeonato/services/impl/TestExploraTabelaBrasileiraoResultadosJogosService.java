@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.debico.campeonato.services.ExploraWebResultadosException;
 import br.com.debico.campeonato.services.ExploraWebResultadosJogosService;
 import br.com.debico.campeonato.test.support.AbstractCampeonatoUnitTest;
 import br.com.debico.model.PartidaBase;
@@ -29,7 +30,7 @@ public class TestExploraTabelaBrasileiraoResultadosJogosService extends Abstract
 	private ExploraWebResultadosJogosService<PartidaBase> exploraService;
 
 	@Test
-	public void testRecuperarPartidasFinalizadas() {
+	public void testRecuperarPartidasFinalizadas() throws ExploraWebResultadosException {
 		exploraService.setPesquisaURL(this.getClass().getResource("/web-crawl/tabelabrasileirao-2014.net.html"));
 		List<PartidaBase> partidas = exploraService.recuperarPartidasFinalizadas(this.CAMPEONATO);
 
@@ -40,7 +41,7 @@ public class TestExploraTabelaBrasileiraoResultadosJogosService extends Abstract
 	}
 
 	@Test
-	public void testRecuperarPartidas() {
+	public void testRecuperarPartidas() throws ExploraWebResultadosException {
 		exploraService.setPesquisaURL(this.getClass().getResource("/web-crawl/tabelabrasileirao-2014.net.html"));
 		List<PartidaBase> partidas = exploraService.recuperarPartidas(this.CAMPEONATO);
 

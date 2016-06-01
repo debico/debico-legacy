@@ -21,10 +21,13 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Charsets;
 
+import br.com.debico.campeonato.services.ExploraWebResultadosException;
 import br.com.debico.campeonato.services.ExploraWebResultadosJogosService;
 import br.com.debico.campeonato.services.RodadaService;
 import br.com.debico.campeonato.util.PlacarUtils;
@@ -49,7 +52,7 @@ import br.com.debico.model.campeonato.Rodada;
 @Transactional(readOnly = true)
 class ExploraTabelaBrasileiraoResultadosJogosService implements ExploraWebResultadosJogosService<PartidaRodada> {
 
-	private URL siteURL;
+	private static final Logger LOGGER = LoggerFactory.getLogger(ExploraTabelaBrasileiraoResultadosJogosService.class);
 	private static final String PROTOCOL_HTTP = "http";
 	private static final DateTimeFormatter FMT = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm")
 			.withLocale(DefaultLocale.LOCALE);
@@ -73,6 +76,8 @@ class ExploraTabelaBrasileiraoResultadosJogosService implements ExploraWebResult
 
 	@SuppressWarnings("unused")
 	private static final int IDX_LOCAL2 = 10;
+
+	private URL siteURL;
 
 	@Inject
 	private RodadaService rodadaService;
@@ -110,7 +115,10 @@ class ExploraTabelaBrasileiraoResultadosJogosService implements ExploraWebResult
 		return DateTime.parse(String.format("%s/%s %s", data, ano, hora), FMT).toDate();
 	}
 
-	private List<PartidaRodada> doRecuperarPartidas(Campeonato campeonato, AdicionaPartida callback) {
+	private List<PartidaRodada> doRecuperarPartidas(Campeonato campeonato, AdicionaPartida callback)
+			throws ExploraWebResultadosException {
+		LOGGER.debug("[doRecuperarPartidas] Tentando recuperar partidas no site {} do campeonato {}", this.siteURL,
+				campeonato);
 		final List<PartidaRodada> partidas = new ArrayList<>();
 		final Set<Time> times = campeonato.getTimes();
 		final List<Rodada> rodadas = rodadaService.selecionarRodadasNaoCalculadas(campeonato);
@@ -119,8 +127,10 @@ class ExploraTabelaBrasileiraoResultadosJogosService implements ExploraWebResult
 		try {
 			Document doc = null;
 			if (isProtocolPesquisaURLHTTP()) {
+				LOGGER.debug("[doRecuperarPartidas] Tentando efetuar a conexao em {}", this.siteURL);
 				doc = Jsoup.connect(this.siteURL.getPath()).get();
 			} else {
+				LOGGER.debug("[doRecuperarPartidas] Tentando ler o arquivo {}", this.siteURL);
 				doc = Jsoup.parse(this.siteURL.openStream(), Charsets.UTF_8.name(), "");
 			}
 
@@ -128,6 +138,7 @@ class ExploraTabelaBrasileiraoResultadosJogosService implements ExploraWebResult
 			final Elements linhaJogos = tabelaResultados.select("tr");
 			for (Element jogo : linhaJogos) {
 				if (!jogo.hasClass("titulo")) {
+					LOGGER.trace("Realizando o parse da tag {}", jogo);
 					PartidaRodada partida = new PartidaRodada();
 					partida.setMandante(TimeUtils.procuraTime(jogo.child(IDX_MANDANTE).text(), times));
 					partida.setVisitante(TimeUtils.procuraTime(jogo.child(IDX_VISITANTE).text(), times));
@@ -139,22 +150,26 @@ class ExploraTabelaBrasileiraoResultadosJogosService implements ExploraWebResult
 							jogo.child(IDX_GOLS_VISITANTE).text()));
 					partida.setDataHoraPartida(
 							formatarData(jogo.child(IDX_DATA).text(), jogo.child(IDX_HORA).text(), anoAtual));
+					LOGGER.trace("Partida criada apos o parse {}", jogo);
 					callback.adicionarPartida(partidas, partida);
 				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new ExploraWebResultadosException("Nao foi possivel conectar no site", e);
+		} catch (Exception e) {
+			throw new ExploraWebResultadosException("Erro em tempo de execucao durante o parse", e);
 		}
 		return partidas;
 	}
 
 	@Override
-	public List<PartidaRodada> recuperarPartidas(Campeonato campeonato) {
+	public List<PartidaRodada> recuperarPartidas(Campeonato campeonato) throws ExploraWebResultadosException {
 		return this.doRecuperarPartidas(campeonato, ADICIONA_PARTIDA_INTEGRIDADE);
 	}
 
 	@Override
-	public List<PartidaRodada> recuperarPartidasFinalizadas(Campeonato campeonato) {
+	public List<PartidaRodada> recuperarPartidasFinalizadas(Campeonato campeonato)
+			throws ExploraWebResultadosException {
 		// finalizada se possui placar, certo?
 		return this.doRecuperarPartidas(campeonato, ADICIONA_PARTIDA_PLACAR);
 	}

@@ -23,7 +23,7 @@ public interface ExploraWebResultadosJogosService<P extends PartidaBase> {
 	 * @param campeonato
 	 * @return
 	 */
-	List<P> recuperarPartidasFinalizadas(Campeonato campeonato);
+	List<P> recuperarPartidasFinalizadas(Campeonato campeonato) throws ExploraWebResultadosException;
 
 	/**
 	 * Recupera todas as partidas do campeonato da fonte Web.
@@ -31,7 +31,7 @@ public interface ExploraWebResultadosJogosService<P extends PartidaBase> {
 	 * @param campeonato
 	 * @return
 	 */
-	List<P> recuperarPartidas(Campeonato campeonato);
+	List<P> recuperarPartidas(Campeonato campeonato) throws ExploraWebResultadosException;
 
 	void setPesquisaURL(URL siteURL);
 
