@@ -16,23 +16,22 @@ import br.com.debico.model.campeonato.Campeonato;
  */
 public interface ExploraWebResultadosJogosService<P extends PartidaBase> {
 
-	/**
-	 * Recupera as partidas já finalizadas (com placar) de determinado
-	 * campeonato.
-	 * 
-	 * @param campeonato
-	 * @return
-	 */
-	List<P> recuperarPartidasFinalizadas(Campeonato campeonato) throws ExploraWebResultadosException;
+    /**
+     * Recupera as partidas já finalizadas (com placar) de determinado
+     * campeonato.
+     * 
+     * @param campeonato
+     * @return
+     */
+    List<P> recuperarPartidasFinalizadas(Campeonato campeonato, URL siteURL)
+	    throws ExploraWebResultadosException;
 
-	/**
-	 * Recupera todas as partidas do campeonato da fonte Web.
-	 * 
-	 * @param campeonato
-	 * @return
-	 */
-	List<P> recuperarPartidas(Campeonato campeonato) throws ExploraWebResultadosException;
-
-	void setPesquisaURL(URL siteURL);
-
+    /**
+     * Recupera todas as partidas do campeonato da fonte Web.
+     * 
+     * @param campeonato
+     * @return
+     */
+    List<P> recuperarPartidas(Campeonato campeonato, URL siteURL)
+	    throws ExploraWebResultadosException;
 }

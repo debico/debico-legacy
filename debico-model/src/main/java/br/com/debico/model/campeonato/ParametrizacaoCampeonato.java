@@ -30,6 +30,9 @@ public class ParametrizacaoCampeonato implements Serializable {
 
 	@Column(name = "NU_POS_LIM_ELITE")
 	private int posicaoLimiteElite;
+	
+	@Column(name = "DC_URL_FETCH_JOGOS", nullable = true, length = 2048)
+	private String siteURLFetchJogos;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@PrimaryKeyJoinColumn
@@ -111,6 +114,23 @@ public class ParametrizacaoCampeonato implements Serializable {
 	 */
 	public final void setPosicaoLimiteElite(int posicaoLimiteElite) {
 		this.posicaoLimiteElite = posicaoLimiteElite;
+	}
+	
+	/**
+	 * URL utilizada para recuperar os jogos de um recurso Web externo.
+	 * 
+	 * @return
+	 */
+	public String getSiteURLFetchJogos() {
+	    return siteURLFetchJogos;
+	}
+	
+	/**
+	 * @see #getSiteURLFetchJogos()
+	 * @param siteURLFetchJogos
+	 */
+	public void setSiteURLFetchJogos(String siteURLFetchJogos) {
+	    this.siteURLFetchJogos = siteURLFetchJogos;
 	}
 
 	@Override

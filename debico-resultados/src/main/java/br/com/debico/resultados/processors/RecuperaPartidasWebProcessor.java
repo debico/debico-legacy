@@ -1,6 +1,10 @@
 package br.com.debico.resultados.processors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.emptyToNull;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -17,30 +21,42 @@ import br.com.debico.resultados.ProcessorBeans;
 
 @Named(ProcessorBeans.RECUPERA_PARTIDAS_WEB)
 @Transactional(readOnly = false, propagation = Propagation.MANDATORY)
-public class RecuperaPartidasWebProcessor extends ProcessorSupport {
+class RecuperaPartidasWebProcessor extends ProcessorSupport {
 
-	// Quando tivermos mais de uma implementação, trocar por uma lista
-	private ExploraWebResultadosJogosService<PartidaRodada> exploraWebResultadosJogosService;
+    // Quando tivermos mais de uma implementação, trocar por uma lista
+    private ExploraWebResultadosJogosService<PartidaRodada> exploraWebResultadosJogosService;
 
-	@Inject
-	public void setExploraWebResultadosJogosService(
-			ExploraWebResultadosJogosService<PartidaRodada> exploraWebResultadosJogosService) {
-		this.exploraWebResultadosJogosService = exploraWebResultadosJogosService;
+    @Inject
+    public void setExploraWebResultadosJogosService(
+	    ExploraWebResultadosJogosService<PartidaRodada> exploraWebResultadosJogosService) {
+	this.exploraWebResultadosJogosService = exploraWebResultadosJogosService;
+    }
+
+    public RecuperaPartidasWebProcessor() {
+
+    }
+
+    @PostConstruct
+    public void init() {
+	checkNotNull(this.exploraWebResultadosJogosService,
+		"Referência de ExploraResultadosWeb não pode ser nula.");
+    }
+
+    @Override
+    public void execute(Context context) throws DebicoException {
+	String url = context.getCampeonato().getParametrizacao()
+		.getSiteURLFetchJogos();
+	if (emptyToNull(url) == null) {
+	    return;
 	}
-
-	public RecuperaPartidasWebProcessor() {
-		
+	try {
+	    context.addPartidas(this.exploraWebResultadosJogosService
+		    .recuperarPartidas(context.getCampeonato(), new URL(url)));
+	    this.executeNext(context);
+	} catch (MalformedURLException e) {
+	    throw new ProcessorException(String.format(
+		    "URL informada invalida: '%s'", url), e);
 	}
-
-	@PostConstruct
-	public void init() {
-		checkNotNull(this.exploraWebResultadosJogosService, "Referência de ExploraResultadosWeb não pode ser nula.");
-	}
-
-	@Override
-	public void execute(Context context) throws DebicoException {
-		context.addPartidas(this.exploraWebResultadosJogosService.recuperarPartidas(context.getCampeonato()));
-		this.executeNext(context);
-	}
+    }
 
 }

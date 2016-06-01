@@ -2671,6 +2671,7 @@ INSERT INTO tb_pontuacao (ID_PONTUACAO, NU_APROVEITAMENTO, NU_DERROTAS, NU_EMPAT
 -- A partir do 17 (inclusive) eh considerado INFERIOR
 
 INSERT INTO tb_campeonato_param (ID_CAMPEONATO, NU_POS_LIM_INFERIOR, NU_POS_LIM_ELITE) VALUES (1, 17, 4);
+UPDATE tb_campeonato_param SET DC_URL_FETCH_JOGOS = '/web-crawl/tabelabrasileirao-2014.net.html' WHERE ID_CAMPEONATO = 1;
 
 DELETE FROM tb_msg_template;
 -- http://native2ascii.net/

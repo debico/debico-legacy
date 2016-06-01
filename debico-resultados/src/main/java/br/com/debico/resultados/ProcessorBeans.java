@@ -18,5 +18,6 @@ public final class ProcessorBeans {
     public static final String COMPUTA_PALPITES = "computaPalpites";
     public static final String SUMARIZA_PONTOS_APOSTADOR_RODADA = "sumarizaPontosApostadorRodada";
     public static final String RECUPERA_PARTIDAS_WEB = "recuperaPartidasWebPontosCorridos";
+    public static final String ATUALIZA_PLACAR_DATA_PARTIDAS = "atualizaPlacarDataPartidas";
 
 }

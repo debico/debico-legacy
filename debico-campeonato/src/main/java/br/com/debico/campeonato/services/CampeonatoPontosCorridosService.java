@@ -8,7 +8,7 @@ import br.com.debico.model.campeonato.PontuacaoTime;
 import br.com.debico.model.campeonato.Rodada;
 
 // TODO: rever essa interface com uso de Generic Parameter.
-
+// TODO: refatorar para CampeonatoComPartidasRodada(?) os métodos de seleção de partidas com rodada.
 /**
  * Realizações de casos de uso para campeonatos de pontos corridos.
  * <p/>
