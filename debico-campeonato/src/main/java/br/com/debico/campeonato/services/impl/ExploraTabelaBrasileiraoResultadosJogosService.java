@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.jsoup.Jsoup;
@@ -93,22 +94,61 @@ class ExploraTabelaBrasileiraoResultadosJogosService implements
     /**
      * Formata a data de acordo com os dados da tabela HTML do Site.
      * 
-     * @param data
+     * @param diaMes
      * @param hora
      * @param ano
      * @return
      */
-    private Date formatarData(String data, String hora, int ano) {
-	data = firstNonNull(data, "").trim();
+    private Date formatarData(String diaMes, String hora, int ano) {
+	diaMes = firstNonNull(diaMes, "").trim();
 	hora = firstNonNull(hora, "").trim();
-	if (emptyToNull(data) == null) {
+	if (emptyToNull(diaMes) == null) {
 	    return null;
 	}
 	if (emptyToNull(hora) == null) {
 	    hora = HORA_PADRAO_JOGO;
 	}
-	return DateTime.parse(String.format("%s/%s %s", data, ano, hora), FMT)
+	return DateTime
+		.parse(String.format("%s/%s %s", diaMes, ano, hora), FMT)
 		.toDate();
+    }
+
+    /**
+     * Com base no dia e mês distribuido pelo site, tentamos adivinhar o ano da
+     * data com base nas informações do campeonato.
+     * 
+     * @param diaMes
+     * @param campeonato
+     * @return
+     */
+    private Date recuperarDataPartida(String diaMes, String hora,
+	    Campeonato campeonato) {
+	int anoAtual = DateTime.now().getYear();
+	
+	// nao temos o ano da partida
+	if (campeonato.getDataInicio() == null
+		|| campeonato.getDataFim() == null) {
+	    return formatarData(diaMes, hora, anoAtual);
+	}
+
+	final int anoIni = LocalDateTime.fromDateFields(
+		campeonato.getDataInicio()).getYear();
+	final int anoFim = LocalDateTime
+		.fromDateFields(campeonato.getDataFim()).getYear();
+	// campeonato no mesmo ano, a data da partida só pode ser dentro desse periodo.
+	if(anoIni == anoFim) {
+	    return formatarData(diaMes, hora, anoIni);
+	}
+
+	final Date data1 = formatarData(diaMes, hora, anoIni);
+	final Date data2 = formatarData(diaMes, hora, anoFim);
+	
+	// TODO: rever todos os cenarios.
+	if(data1.after(campeonato.getDataInicio()) && data1.before(campeonato.getDataFim())) {
+	    return data1;
+	} else {
+	    return data2;
+	}
     }
 
     private List<PartidaRodada> doRecuperarPartidas(Campeonato campeonato,
@@ -121,7 +161,6 @@ class ExploraTabelaBrasileiraoResultadosJogosService implements
 	final Set<Time> times = campeonato.getTimes();
 	final List<Rodada> rodadas = rodadaService
 		.selecionarRodadasNaoCalculadasIncuindoSemPlacar(campeonato);
-	final int anoAtual = DateTime.now().year().get();
 
 	try {
 	    Document doc = null;
@@ -155,9 +194,9 @@ class ExploraTabelaBrasileiraoResultadosJogosService implements
 		    partida.setPlacar(PlacarUtils.novoPlacarOuNull(
 			    jogo.child(IDX_GOLS_MANDANTE).text(),
 			    jogo.child(IDX_GOLS_VISITANTE).text()));
-		    partida.setDataHoraPartida(formatarData(jogo
-			    .child(IDX_DATA).text(), jogo.child(IDX_HORA)
-			    .text(), anoAtual));
+		    partida.setDataHoraPartida(recuperarDataPartida(
+			    jogo.child(IDX_DATA).text(), jogo.child(IDX_HORA)
+				    .text(), campeonato));
 		    LOGGER.trace("Partida criada apos o parse {}", jogo);
 		    callback.adicionarPartida(partidas, partida);
 		}

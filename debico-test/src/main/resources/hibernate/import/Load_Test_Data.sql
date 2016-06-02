@@ -66,8 +66,8 @@ INSERT INTO tb_apostador (ID_APOSTADOR, NM_APOSTADOR, ID_USUARIO, IN_LEMBRETE_PA
 -- Dumping data for table tb_campeonato
 --
 
-INSERT INTO tb_campeonato (TP_CAMPEONATO, ID_CAMPEONATO, IN_ATIVO, IN_FINALIZADO, NM_CAMPEONATO, DC_IMG_CAPA, DC_PERMALINK) VALUES
-('PC', 1, 1, 0, 'Brasileirão 2014', 'brasileirao-2014.jpg', 'brasileirao-2014');
+INSERT INTO tb_campeonato (TP_CAMPEONATO, ID_CAMPEONATO, IN_ATIVO, IN_FINALIZADO, NM_CAMPEONATO, DC_IMG_CAPA, DC_PERMALINK, DT_INICIO, DT_FIM) VALUES
+('PC', 1, 1, 0, 'Brasileirão 2014', 'brasileirao-2014.jpg', 'brasileirao-2014', '2014-04-20', '2014-12-07');
 
 --
 -- Dumping data for table tb_apostador_campeonato
