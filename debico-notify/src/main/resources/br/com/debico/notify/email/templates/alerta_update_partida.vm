@@ -1,0 +1,35 @@
+<html>
+    <head>
+    <title>De Bico | Administrador: partidas foram atualizadas!</title>
+    </head>
+     
+    <body>
+        <div>
+            <p>Salve, Administrador!</p>
+            <p>Os seguintes jogos do campeonato <strong>$campeonato.nome</strong> foram atualizados:</p>
+            <p>
+            <table>
+                <tr>
+                  <td>Data</td>
+                  <td>Local</td>
+                  <td>Mandante</td>
+                  <td></td>
+                  <td>Visitante</td>  
+                </tr>
+                #foreach( $partida in $partidas )
+                <tr>
+                    <td>$partida.dataHoraPartida</td>
+                    <td>$partida.local</td>
+                    <td>$partida.mandante</td>
+                    <td>x</td>
+                    <td>$partida.visitante</td>
+                </tr>
+                #end
+            </table>
+            </p>
+            <p>Para visualizar as modifica&ccedil;&otilde;es, <a href="$link_acesso">clique aqui</a>.</p>
+            <p>Um abra&ccedil;o!</p>
+            <p><a href="http://www.debico.com.br/">www.debico.com.br</a></p>
+        </div>
+    </body>
+</html>

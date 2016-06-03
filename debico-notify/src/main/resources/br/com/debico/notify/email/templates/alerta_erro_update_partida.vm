@@ -1,0 +1,16 @@
+<html>
+    <head>
+    <title>De Bico | Administrador: erro ao atualizar as partidas!</title>
+    </head>
+     
+    <body>
+        <div>
+            <p>Salve, Administrador!</p>
+            <p>Infelizmente n&atilde;o foi poss&iacute;vel atualizar os dados do campeonato <strong>$campeonato.nome</strong>. 
+            Confira abaixo o detalhe do erro:</p>
+            <p>$stackTrace</p>
+            <p>Um abra&ccedil;o!</p>
+            <p><a href="http://www.debico.com.br/">www.debico.com.br</a></p>
+        </div>
+    </body>
+</html>

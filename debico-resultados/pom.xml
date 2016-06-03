@@ -27,5 +27,9 @@
 			<groupId>br.com.debico</groupId>
 			<artifactId>debico-test</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>br.com.debico</groupId>
+			<artifactId>debico-notify</artifactId>
+		</dependency>
 	</dependencies>
 </project>

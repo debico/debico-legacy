@@ -29,7 +29,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 
     private static final long serialVersionUID = 4181501368783801877L;
 
-    public static final String PERFIL_DEFAULT = "ROLE_USER";
+    public static final String PERFIL_DEFAULT = Perfil.ROLE_USER.toString();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

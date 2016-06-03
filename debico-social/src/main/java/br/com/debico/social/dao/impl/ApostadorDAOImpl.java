@@ -23,6 +23,7 @@ import br.com.debico.model.ApostadorPontuacao;
 import br.com.debico.model.Apostador_;
 import br.com.debico.model.Palpite;
 import br.com.debico.model.Partida;
+import br.com.debico.model.Perfil;
 import br.com.debico.model.Usuario;
 import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.model.campeonato.FaseImpl;
@@ -36,6 +37,12 @@ class ApostadorDAOImpl extends AbstractJPADao<Apostador, Integer> implements
 
     public ApostadorDAOImpl() {
         super(Apostador.class);
+    }
+    
+    @Override
+    public List<Apostador> procurarPorPerfil(Perfil perfil) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     @Override

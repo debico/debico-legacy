@@ -12,16 +12,18 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 import br.com.debico.bolao.spring.BolaoConfig;
 import br.com.debico.campeonato.spring.CampeonatoConfig;
+import br.com.debico.notify.spring.NotifyConfig;
 
 @EnableScheduling
 @EnableCaching
 @EnableAsync
 @Order(Integer.MAX_VALUE)
 @Configuration
-@Import({ BolaoConfig.class, CampeonatoConfig.class })
+@Import({ BolaoConfig.class, CampeonatoConfig.class, NotifyConfig.class })
 @ComponentScan({ "br.com.debico.resultados.processors",
 	"br.com.debico.resultados.managers",
-	"br.com.debico.resultados.schedulers" })
+	"br.com.debico.resultados.schedulers",
+	"br.com.debico.resultados.helpers"})
 public class ResultadosConfig {
 
     @Inject

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import br.com.debico.model.Apostador;
+import br.com.debico.model.Perfil;
 import br.com.debico.model.Usuario;
 import br.com.debico.model.campeonato.Campeonato;
 import br.com.tecnobiz.spring.config.dao.Dao;
@@ -68,4 +69,6 @@ public interface ApostadorDAO extends Dao<Apostador, Integer> {
      * @since 2.0.0
      */
     List<Apostador> procurarPorParteNome(String parteNome);
+    
+    List<Apostador> procurarPorPerfil(Perfil perfil);
 }
