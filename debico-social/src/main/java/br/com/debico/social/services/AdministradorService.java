@@ -21,6 +21,6 @@ public interface AdministradorService {
      * @return
      * @since 2.0.5
      */
-    List<Contato> selecionarAdminComoContato();
+    List<Contato> selecionarComoContato();
 
 }

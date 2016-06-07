@@ -25,8 +25,7 @@ import br.com.debico.notify.services.TemplateContextoBuilder;
 @Transactional(readOnly = true)
 class ContatoServiceImpl implements ContatoService {
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(ContatoServiceImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ContatoServiceImpl.class);
 
 	@Inject
 	private EmailNotificacaoService emailNotificacaoService;
@@ -45,8 +44,7 @@ class ContatoServiceImpl implements ContatoService {
 
 	@PostConstruct
 	public void init() {
-		checkNotNull(
-				emptyToNull(emailAdmin),
+		checkNotNull(emptyToNull(emailAdmin),
 				"O email do admin eh obrigatorio. Verifique se a propriedade 'com.omniweb.bolao.admin.email' esta definida no ambiente.");
 		contatoAdmin = new ContatoImpl(emailAdmin);
 	}
@@ -56,20 +54,15 @@ class ContatoServiceImpl implements ContatoService {
 	}
 
 	public void enviarFeedback(Contato contato, String assunto, String mensagem) {
-		final EmailTemplate emailTemplate = templateDAO
-				.selecionarEmailTemplate(TipoNotificacao.CONTATO);
+		final EmailTemplate emailTemplate = templateDAO.selecionarEmailTemplate(TipoNotificacao.CONTATO);
 
 		if (emailTemplate != null) {
-			LOGGER.debug(
-					"[enviarFeedback] Enviando email de contato para o administrador {} de {}",
-					contatoAdmin, contato);
-			emailNotificacaoService.enviarNotificacao(contatoAdmin,
-					emailTemplate,
+			LOGGER.debug("[enviarFeedback] Enviando email de contato para o administrador {} de {}", contatoAdmin,
+					contato);
+			emailNotificacaoService.enviarNotificacao(contatoAdmin, emailTemplate,
 					TemplateContextoBuilder.contato(assunto, mensagem, contato));
 		} else {
-			LOGGER.warn(
-					"[enviarFeedback] Template '{}' nao econtrado. Email nao enviado.",
-					TipoNotificacao.CONTATO);
+			LOGGER.warn("[enviarFeedback] Template '{}' nao econtrado. Email nao enviado.", TipoNotificacao.CONTATO);
 		}
 	}
 

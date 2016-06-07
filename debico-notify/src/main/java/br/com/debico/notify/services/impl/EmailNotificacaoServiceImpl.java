@@ -29,86 +29,102 @@ import br.com.debico.notify.services.EmailNotificacaoService;
 @Named
 class EmailNotificacaoServiceImpl implements EmailNotificacaoService {
 
-    private static final Logger LOGGER = LoggerFactory
-	    .getLogger(EmailNotificacaoServiceImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(EmailNotificacaoServiceImpl.class);
 
-    @Inject
-    private JavaMailSender mailSender;
+	@Inject
+	private JavaMailSender mailSender;
 
-    @Inject
-    private VelocityEngine velocityEngine;
+	@Inject
+	private VelocityEngine velocityEngine;
 
-    @Inject
-    private TemplateDAO templateDAO;
+	@Inject
+	private TemplateDAO templateDAO;
 
-    public EmailNotificacaoServiceImpl() {
+	public EmailNotificacaoServiceImpl() {
 
-    }
-
-    public void enviarNotificacao(List<Apostador> apostadores,
-	    EmailTemplate template, Map<String, Object> contexto) {
-
-	for (Apostador apostador : apostadores) {
-	    this.enviarNotificacao(apostador, template, contexto);
 	}
-    }
 
-    public void enviarNotificacao(Apostador apostador, EmailTemplate template,
-	    Map<String, Object> contexto) {
-	contexto.put("apostador", apostador);
+	public void enviarNotificacao(List<Apostador> apostadores, EmailTemplate template, Map<String, Object> contexto) {
 
-	this.enviarNotificacao(new ContatoImpl(apostador), template, contexto);
-    }
-
-    public void enviarNotificacao(Contato destinatario, EmailTemplate template,
-	    Map<String, Object> contexto) {
-	try {
-	    this.mailSender.send(this.prepareMessage(destinatario, template,
-		    contexto));
-	} catch (MailException ex) {
-	    LOGGER.warn("Nao foi possivel enviar notificacao ao destinatario.",
-		    ex);
+		for (Apostador apostador : apostadores) {
+			this.enviarNotificacao(apostador, template, contexto);
+		}
 	}
-    }
-    
-    @Override
-    public void enviarNotificacao(Contato destinatario,
-            TipoNotificacao notificacao, Map<String, Object> contexto) {
-	
-	final EmailTemplate emailTemplate = templateDAO.selecionarEmailTemplate(notificacao);
-	contexto.put("link_acesso", emailTemplate.getLinkAcesso(contexto));
-	
-	this.enviarNotificacao(destinatario, emailTemplate, contexto);
-    }
 
-    protected MimeMessagePreparator prepareMessage(final Contato destinatario,
-	    final EmailTemplate template, final Map<String, Object> contexto) {
-	return new MimeMessagePreparator() {
+	public void enviarNotificacao(Apostador apostador, EmailTemplate template, Map<String, Object> contexto) {
+		contexto.put("apostador", apostador);
 
-	    public void prepare(MimeMessage mimeMessage) throws Exception {
-		final MimeMessageHelper message = new MimeMessageHelper(
-			mimeMessage);
-		final String text = VelocityEngineUtils
-			.mergeTemplateIntoString(velocityEngine,
-				template.getClasspathTemplate(), "UTF-8",
-				contexto);
+		this.enviarNotificacao(new ContatoImpl(apostador), template, contexto);
+	}
 
-		message.setTo(destinatario.getInternetAddress());
-		message.setFrom(template.getInternetAddress());
-		message.setSubject(MimeUtility.encodeText(
-			template.getAssunto(), "utf-8", "B"));
-		message.setSentDate(new Date());
-		message.setText(text, true);
+	public void enviarNotificacao(Contato destinatario, EmailTemplate template, Map<String, Object> contexto) {
+		try {
+			this.mailSender.send(this.prepareMessage(destinatario, template, contexto));
+		} catch (MailException ex) {
+			LOGGER.warn("Nao foi possivel enviar notificacao ao destinatario.", ex);
+		}
+	}
 
-		LOGGER.trace(
-			"[prepareMessage] Email preparado de {}, com o assunto: {}.",
-			message.getMimeMessage().getFrom(), message
-				.getMimeMessage().getSubject());
+	@Override
+	public void enviarNotificacao(Contato destinatario, TipoNotificacao notificacao, Map<String, Object> contexto) {
 
-		LOGGER.trace(
-			"[prepareMessage] Enviando email para {}, mensagem: {}",
-			message.getMimeMessage().getAllRecipients(), text);
-	    }
-	};
-    }
+		final EmailTemplate emailTemplate = templateDAO.selecionarEmailTemplate(notificacao);
+		if (emailTemplate != null) {
+			contexto.put(TemplateUtils.KEY_CONTEXTO_LINKS,
+					TemplateUtils.linkBuilder(emailTemplate.getLinkAcessoFormat(), contexto));
+
+			this.enviarNotificacao(destinatario, emailTemplate, contexto);
+		}
+	}
+
+	@Override
+	public void enviarNotificacao(List<? extends Contato> destinatarios, TipoNotificacao notificacao,
+			Map<String, Object> contexto) {
+		final EmailTemplate emailTemplate = templateDAO.selecionarEmailTemplate(notificacao);
+		if (emailTemplate != null) {
+			contexto.put(TemplateUtils.KEY_CONTEXTO_LINKS,
+					TemplateUtils.linkBuilder(emailTemplate.getLinkAcessoFormat(), contexto));
+			for (Contato contato : destinatarios) {
+				this.enviarNotificacao(contato, emailTemplate, contexto);
+			}
+		}
+	}
+
+	@Override
+	public void enviarNotificacao(Contato destinatario, TipoNotificacao notificacao, Map<String, Object> contexto,
+			List<String> contextoLinks) {
+		contexto.putAll(TemplateUtils.contextLinkBuilder(contextoLinks.toArray()));
+		this.enviarNotificacao(destinatario, notificacao, contexto);
+	}
+
+	@Override
+	public void enviarNotificacao(List<? extends Contato> destinatarios, TipoNotificacao notificacao,
+			Map<String, Object> contexto, List<String> contextoLinks) {
+		contexto.putAll(TemplateUtils.contextLinkBuilder(contextoLinks.toArray()));
+		this.enviarNotificacao(destinatarios, notificacao, contexto);
+	}
+
+	protected MimeMessagePreparator prepareMessage(final Contato destinatario, final EmailTemplate template,
+			final Map<String, Object> contexto) {
+		return new MimeMessagePreparator() {
+
+			public void prepare(MimeMessage mimeMessage) throws Exception {
+				final MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
+				final String text = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine,
+						template.getClasspathTemplate(), "UTF-8", contexto);
+
+				message.setTo(destinatario.getInternetAddress());
+				message.setFrom(template.getInternetAddress());
+				message.setSubject(MimeUtility.encodeText(template.getAssunto(), "utf-8", "B"));
+				message.setSentDate(new Date());
+				message.setText(text, true);
+
+				LOGGER.trace("[prepareMessage] Email preparado de {}, com o assunto: {}.",
+						message.getMimeMessage().getFrom(), message.getMimeMessage().getSubject());
+
+				LOGGER.trace("[prepareMessage] Enviando email para {}, mensagem: {}",
+						message.getMimeMessage().getAllRecipients(), text);
+			}
+		};
+	}
 }

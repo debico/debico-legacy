@@ -1,17 +1,18 @@
 package br.com.debico.notify.model;
 
-import java.io.UnsupportedEncodingException;
-
-import javax.mail.internet.InternetAddress;
-
-import br.com.debico.model.Apostador;
-
-import com.google.common.base.Objects;
-
 import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.emptyToNull;
+
+import java.io.UnsupportedEncodingException;
+
+import javax.mail.internet.InternetAddress;
+
+import com.google.common.base.Objects;
+
+import br.com.debico.model.Apostador;
+import br.com.debico.model.Usuario;
 
 /**
  * Representa uma estrutura simples de contato.
@@ -30,9 +31,13 @@ public class ContatoImpl implements Contato {
 	public ContatoImpl() {
 
 	}
-	
+
 	public ContatoImpl(final Apostador apostador) {
-	    this(apostador.getEmail(), apostador.getNome());
+		this(apostador.getEmail(), apostador.getNome());
+	}
+
+	public ContatoImpl(final Usuario usuario) {
+		this(usuario.getEmail());
 	}
 
 	public ContatoImpl(final String email) {
@@ -60,7 +65,7 @@ public class ContatoImpl implements Contato {
 	public InternetAddress getInternetAddress() throws UnsupportedEncodingException {
 		return new InternetAddress(this.email, this.nome);
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return Objects.hashCode(this.email, this.nome);

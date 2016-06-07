@@ -22,7 +22,7 @@ import br.com.debico.model.Usuario;
 import br.com.debico.notify.model.ContatoImpl;
 import br.com.debico.notify.model.TipoNotificacao;
 import br.com.debico.notify.services.EmailNotificacaoService;
-import br.com.debico.notify.services.TemplateContextoBuilder;
+import br.com.debico.notify.services.impl.TemplateUtils;
 import br.com.debico.social.CadastroApostadorException;
 import br.com.debico.social.TokenSenhaInvalidoException;
 import br.com.debico.social.UsuarioInexistenteException;
@@ -210,7 +210,7 @@ class UsuarioServiceImpl implements UsuarioService {
 
         tokenDAO.create(token);
 
-        final Map<String, Object> contextoEmail = TemplateContextoBuilder
+        final Map<String, Object> contextoEmail = TemplateUtils
                 .contextLinkBuilder(token.getToken());
         contextoEmail.put("usuario", usuario);
 

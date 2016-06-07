@@ -7,14 +7,14 @@ import javax.persistence.Entity;
 @DiscriminatorValue(Campeonato.PONTOS_CORRIDOS)
 public class CampeonatoPontosCorridos extends CampeonatoImpl {
 
-    private static final long serialVersionUID = 1464814442708908927L;
+	private static final long serialVersionUID = 1464814442708908927L;
 
-    public CampeonatoPontosCorridos() {
+	public CampeonatoPontosCorridos() {
 
-    }
+	}
 
-    public CampeonatoPontosCorridos(final String nome) {
-        super(nome);
-    }
+	public CampeonatoPontosCorridos(final String nome) {
+		super(nome, Campeonato.PONTOS_CORRIDOS);
+	}
 
 }
