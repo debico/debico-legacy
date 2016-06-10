@@ -9,8 +9,8 @@
 	<description>Mais que um bolão entre os amigos.</description>
 
 	<organization>
-		<name>Pixels Are Cool</name>
-		<url>http://pixelsarecool.com</url>
+		<name>Debico</name>
+		<url>http://www.debico.com.br/</url>
 	</organization>
 	<url>http://www.debico.com.br/</url>
 	<modules>
@@ -30,13 +30,11 @@
 			<email>ricardozanini@gmail.com</email>
 			<id>ricardozanini</id>
 			<name>Ricardo Zanini</name>
-			<organization>Pixels são legais</organization>
-			<organizationUrl>http://pixelsarecool.com</organizationUrl>
 			<roles>
 				<role>owner</role>
 			</roles>
 			<timezone>UTC+3</timezone>
-			<url>http://pixelsarecool.com</url>
+			<url>http://www.debico.com.br</url>
 		</developer>
 	</developers>
 
@@ -61,6 +59,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.7</java.version>
+		<timestamp>${maven.build.timestamp}</timestamp>
+		<maven.build.timestamp.format>dd-MM-yyyy HH:mm</maven.build.timestamp.format>
+		<versionNews>Fetch!</versionNews>
 
 		<!-- Commons -->
 		<slf4j.version>1.7.7</slf4j.version>
@@ -182,10 +183,10 @@
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-                <groupId>br.com.debico</groupId>
-                <artifactId>debico-resultados</artifactId>
-                <version>${project.version}</version>
-            </dependency>
+				<groupId>br.com.debico</groupId>
+				<artifactId>debico-resultados</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>br.com.debico</groupId>
 				<artifactId>debico-test</artifactId>
@@ -511,6 +512,12 @@
 
 			</plugins>
 		</pluginManagement>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
 
 </project>

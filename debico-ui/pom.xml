@@ -34,7 +34,6 @@
 						<manifestEntries>
 							<App-Version>${project.version}</App-Version>
 							<Build-Date>${buildNumber}</Build-Date>
-							<Version-News>filtros!!</Version-News>
 						</manifestEntries>
 						<manifest>
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
