@@ -1,5 +1,9 @@
 package br.com.debico.social.services.impl;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Strings.emptyToNull;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -16,11 +20,6 @@ import br.com.debico.social.CadastroApostadorException;
 import br.com.debico.social.dao.ApostadorDAO;
 import br.com.debico.social.services.ApostadorService;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import static com.google.common.base.Strings.emptyToNull;
-
 /**
  * Realizações de interação com o objeto de domínio {@link Apostador}.
  * 
@@ -31,78 +30,73 @@ import static com.google.common.base.Strings.emptyToNull;
 @Transactional(readOnly = false)
 class ApostadorServiceImpl implements ApostadorService {
 
-    protected static final Logger LOGGER = LoggerFactory
-            .getLogger(ApostadorServiceImpl.class);
+	protected static final Logger LOGGER = LoggerFactory.getLogger(ApostadorServiceImpl.class);
 
-    @Inject
-    private ApostadorDAO apostadorDAO;
+	@Inject
+	private ApostadorDAO apostadorDAO;
 
-    @Inject
-    @Named("resourceBundleMessageSource")
-    private MessageSource messageSource;
-    
-    @Override
-    public List<Apostador> pesquisarApostadoresPorParteNome(String nomeParcial) {
-    	 checkNotNull(emptyToNull(nomeParcial), "O nome do apostador nao pode ser em branco.");
-         checkArgument(nomeParcial.length() >= 3, "Informe ao menos 3 caracteres");
-         
-    	return apostadorDAO.procurarPorParteNome(nomeParcial);
-    }
+	@Inject
+	@Named("resourceBundleMessageSource")
+	private MessageSource messageSource;
 
-    @Transactional(rollbackFor = CadastroApostadorException.class)
-    public void atualizarApostador(final Apostador apostador)
-            throws CadastroApostadorException {
-        checkNotNull(apostador, "Apostador nao pode estar nulo");
+	@Override
+	public List<Apostador> pesquisarApostadoresPorParteNome(String nomeParcial) {
+		checkNotNull(emptyToNull(nomeParcial), "O nome do apostador nao pode ser em branco.");
+		checkArgument(nomeParcial.length() >= 3, "Informe ao menos 3 caracteres");
 
-        checkArgument(apostador.getId() > 0, "O apostador deve possuir um ID.");
+		return apostadorDAO.procurarPorParteNome(nomeParcial);
+	}
 
-        // TODO: melhorar a checagem de validação dos dados.
-        if (emptyToNull(apostador.getNome()) == null) {
-            throw new CadastroApostadorException(messageSource,
-                    MessagesCodes.APOSTADOR_DADOS_INCORRETOS);
-        }
+	@Transactional(rollbackFor = CadastroApostadorException.class)
+	public void atualizarApostador(final Apostador apostador) throws CadastroApostadorException {
+		checkNotNull(apostador, "Apostador nao pode estar nulo");
 
-        final Apostador apostadorBase = 
-                apostadorDAO.findById(apostador.getId());
+		checkArgument(apostador.getId() > 0, "O apostador deve possuir um ID.");
 
-        // atualiza os dados..
-        apostadorBase.setNome(apostador.getNome());
-        apostadorBase.setApelido(apostador.getApelido());
-        apostadorBase.getOpcoes().setLembretePalpites(apostador.getOpcoes().isLembretePalpites());
-        this.atualizarTimeCoracao(apostadorBase, apostador);
-    }
-    
-    protected void atualizarTimeCoracao(final Apostador apostadorBase, final Apostador apostador) {
-        if (apostador.possuiTimeCoracao()) {
-            apostadorBase.getOpcoes().setTimeCoracao(apostador.getOpcoes().getTimeCoracao());
-        } else {
-            apostadorBase.getOpcoes().setTimeCoracao(null);
-        }
-    }
-    
-    @Override
-    public Apostador selecionarApostadorPorIdUsuario(int idUsuario) {
-    	return apostadorDAO.selecionarPorIdUsuario(idUsuario);
-    }
+		// TODO: melhorar a checagem de validação dos dados.
+		if (emptyToNull(apostador.getNome()) == null) {
+			throw new CadastroApostadorException(messageSource, MessagesCodes.APOSTADOR_DADOS_INCORRETOS);
+		}
 
-    public Apostador selecionarPerfilApostadorPorEmail(String email) {
-        LOGGER.debug(
-                "[selecionarPerfilApostadorPorEmail] Selecionando o perfil completo de {}",
-                email);
+		final Apostador apostadorBase = apostadorDAO.findById(apostador.getId());
 
-        return apostadorDAO.selecionarPerfilPorEmail(email);
-    }
+		// atualiza os dados..
+		apostadorBase.setNome(apostador.getNome());
+		apostadorBase.setApelido(apostador.getApelido());
+		apostadorBase.getOpcoes().setLembretePalpites(apostador.getOpcoes().isLembretePalpites());
+		this.atualizarTimeCoracao(apostadorBase, apostador);
+	}
 
-    public Apostador selecionarApostadorPorEmail(String email) {
-        checkNotNull(emptyToNull(email), "O email deve ser informado");
+	protected void atualizarTimeCoracao(final Apostador apostadorBase, final Apostador apostador) {
+		if (apostador.possuiTimeCoracao()) {
+			apostadorBase.getOpcoes().setTimeCoracao(apostador.getOpcoes().getTimeCoracao());
+		} else {
+			apostadorBase.getOpcoes().setTimeCoracao(null);
+		}
+	}
 
-        return apostadorDAO.selecionarPorEmail(email);
-    }
-    
-    @Override
-    public Apostador selecionarApostadorPorId(int id) {
-    	checkArgument(id > 0, "Informe o Id do Apostador");
-    	return apostadorDAO.findById(id);
-    }
+	@Override
+	public Apostador selecionarApostadorPorIdUsuario(int idUsuario) {
+		checkArgument(idUsuario > 0, "Opa! Apostador NULO!");
+		return apostadorDAO.selecionarPorIdUsuario(idUsuario);
+	}
+
+	public Apostador selecionarPerfilApostadorPorEmail(String email) {
+		LOGGER.debug("[selecionarPerfilApostadorPorEmail] Selecionando o perfil completo de {}", email);
+
+		return apostadorDAO.selecionarPerfilPorEmail(email);
+	}
+
+	public Apostador selecionarApostadorPorEmail(String email) {
+		checkNotNull(emptyToNull(email), "O email deve ser informado");
+
+		return apostadorDAO.selecionarPorEmail(email);
+	}
+
+	@Override
+	public Apostador selecionarApostadorPorId(int id) {
+		checkArgument(id > 0, "Informe o Id do Apostador");
+		return apostadorDAO.findById(id);
+	}
 
 }

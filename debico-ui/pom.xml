@@ -15,8 +15,9 @@
 		<thymeleaf.version>2.1.4.RELEASE</thymeleaf.version>
 		<thymeleaf.extras.version>2.1.2.RELEASE</thymeleaf.extras.version>
 		<jcabi.version>1.0.4</jcabi.version>
-		<jetty.version>9.2.9.v20150224</jetty.version>
-		<selenium.version>2.47.1</selenium.version>
+		<jetty.version>9.2.17.v20160517</jetty.version>
+		<selenium.version>2.53.0</selenium.version>
+		<htmlunit.version>2.21</htmlunit.version>
 		<war-plugin.version>2.6</war-plugin.version>
 		<swagger-springmvc.version>1.0.0</swagger-springmvc.version>
 		<swagger-springmvc-ui.version>0.4</swagger-springmvc-ui.version>
@@ -53,6 +54,7 @@
 			</activation>
 		</profile>
 		<profile>
+			<!-- Ao rodar esse profile, subir a memoria utilizada: -XX:MaxPermSize=1024m -->
 			<id>it</id>
 			<properties>
 				<failsafe.version>2.17</failsafe.version>
@@ -64,7 +66,7 @@
 						<artifactId>maven-failsafe-plugin</artifactId>
 						<version>${failsafe.version}</version>
 						<configuration>
-							<argLine>${argLine} -XX:PermSize=128M -XX:MaxPermSize=256M</argLine>
+							<argLine>${argLine} -XX:PermSize=256M -XX:MaxPermSize=512M</argLine>
 							<additionalClasspathElements>
 								<additionalClasspathElement>${basedir}/src/test/resources/jetty</additionalClasspathElement>
 							</additionalClasspathElements>
@@ -141,18 +143,14 @@
 								<version>${slf4j.version}</version>
 								<scope>runtime</scope>
 							</dependency>
-							<!-- ref.: http://stackoverflow.com/questions/19054286/classnotfoundexception-org-eclipse-jetty-util-component-abstractlifecycle-runni -->
-							<dependency>
-								<groupId>org.eclipse.jetty</groupId>
-								<artifactId>jetty-util</artifactId>
-								<version>${jetty.version}</version>
-								<scope>runtime</scope>
-							</dependency>
+							<!-- ref.: http://stackoverflow.com/questions/19054286/classnotfoundexception-org-eclipse-jetty-util-component-abstractlifecycle-runni 
+								<dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-util</artifactId> 
+								<version>${jetty.version}</version> <scope>runtime</scope> </dependency> -->
 						</dependencies>
 						<configuration>
 							<stopPort>8280</stopPort>
 							<stopKey>STOP</stopKey>
-							
+
 						</configuration>
 						<executions>
 							<execution>
@@ -169,7 +167,7 @@
 									<daemon>true</daemon>
 									<useTestScope>true</useTestScope>
 									<webApp>
-									   <overrideDescriptor>debico-ui/src/test/resources/jetty/web.xml</overrideDescriptor>
+										<overrideDescriptor>debico-ui/src/test/resources/jetty/web.xml</overrideDescriptor>
 									</webApp>
 								</configuration>
 							</execution>
@@ -259,6 +257,12 @@
 			<groupId>xml-apis</groupId>
 			<artifactId>xml-apis</artifactId>
 			<version>1.4.01</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>htmlunit-driver</artifactId>
+			<version>${htmlunit.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

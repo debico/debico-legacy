@@ -84,7 +84,7 @@ public class TestPalpiteService extends AbstractBolaoUnitTest {
         partidaService.atualizarDataHorario(partidaRodadas.get(0).getId(),
                 dataHoraPartida);
 
-        return new PalpiteTO(EMAIL_PRIMEIRO_RANKING, new Placar(2, 0),
+        return new PalpiteTO(ID_USUARIO_PRIMEIRO_RANKING, new Placar(2, 0),
                 partidaRodadas.get(0).getId());
     }
 }
