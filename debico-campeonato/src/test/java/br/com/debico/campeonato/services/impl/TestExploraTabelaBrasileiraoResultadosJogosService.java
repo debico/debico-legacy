@@ -13,6 +13,7 @@ import javax.inject.Inject;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ import br.com.debico.campeonato.services.ExploraWebResultadosJogosService;
 import br.com.debico.campeonato.test.support.AbstractCampeonatoUnitTest;
 import br.com.debico.model.PartidaBase;
 
+@DirtiesContext
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
 @RunWith(SpringJUnit4ClassRunner.class)

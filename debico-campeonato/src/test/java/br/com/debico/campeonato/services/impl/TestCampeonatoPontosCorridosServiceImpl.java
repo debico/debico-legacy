@@ -1,11 +1,16 @@
 package br.com.debico.campeonato.services.impl;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 
 import javax.inject.Inject;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,51 +24,54 @@ import br.com.debico.model.Time;
 import br.com.debico.model.campeonato.CampeonatoPontosCorridos;
 import br.com.debico.model.campeonato.PontuacaoTime;
 import br.com.debico.model.campeonato.Rodada;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
+@DirtiesContext
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
 @TransactionConfiguration(defaultRollback = true)
-public class TestCampeonatoPontosCorridosServiceImpl extends AbstractCampeonatoUnitTest {
+public class TestCampeonatoPontosCorridosServiceImpl extends
+	AbstractCampeonatoUnitTest {
 
-	@Inject
-	private CampeonatoPontosCorridosService campeonatoPontosCorridosService;
-	
-	@Inject
-	private CampeonatoDAO campeonatoDAO;
+    @Inject
+    private CampeonatoPontosCorridosService campeonatoPontosCorridosService;
 
-	@Test
-	public void testDefinirFaseUnica() {
-		CampeonatoPontosCorridos brasileirao = new CampeonatoPontosCorridos("Marvel Super Teams 2014");
+    @Inject
+    private CampeonatoDAO campeonatoDAO;
 
-		for (int i = 1; i <= CampeonatoPontosCorridosService.QUANTIDADE_TIMES_PADRAO; i++) {
-			brasileirao.addTime(new Time("Time" + i));
-		}
+    @Test
+    public void testDefinirFaseUnica() {
+	CampeonatoPontosCorridos brasileirao = new CampeonatoPontosCorridos(
+		"Marvel Super Teams 2014");
 
-		campeonatoDAO.create(brasileirao);
-
-		campeonatoPontosCorridosService.definirFaseUnica(brasileirao);
-
-		List<PontuacaoTime> ranking = campeonatoPontosCorridosService.selecionarTabela(brasileirao);
-
-		assertNotNull(ranking);
-		assertTrue(ranking.size() == CampeonatoPontosCorridosService.QUANTIDADE_TIMES_PADRAO);
-
-		LOGGER.info("Ranking do {}: {} ", brasileirao, ranking);
+	for (int i = 1; i <= CampeonatoPontosCorridosService.QUANTIDADE_TIMES_PADRAO; i++) {
+	    brasileirao.addTime(new Time("Time" + i));
 	}
 
-	@Test
-	public void testSelecionarRodada() throws DebicoException {
-	    final Rodada rodada = campeonatoPontosCorridosService.selecionarRodadaAtual(CAMPEONATO);
-	    
-		assertNotNull(rodada);
-		
-		final List<PartidaRodada> partidas = campeonatoPontosCorridosService.selecionarPartidasRodada(rodada.getId());
-		
-		assertNotNull(partidas);
-		assertFalse(partidas.isEmpty());
-	}
+	campeonatoDAO.create(brasileirao);
+
+	campeonatoPontosCorridosService.definirFaseUnica(brasileirao);
+
+	List<PontuacaoTime> ranking = campeonatoPontosCorridosService
+		.selecionarTabela(brasileirao);
+
+	assertNotNull(ranking);
+	assertTrue(ranking.size() == CampeonatoPontosCorridosService.QUANTIDADE_TIMES_PADRAO);
+
+	LOGGER.info("Ranking do {}: {} ", brasileirao, ranking);
+    }
+
+    @Test
+    public void testSelecionarRodada() throws DebicoException {
+	final Rodada rodada = campeonatoPontosCorridosService
+		.selecionarRodadaAtual(CAMPEONATO);
+
+	assertNotNull(rodada);
+
+	final List<PartidaRodada> partidas = campeonatoPontosCorridosService
+		.selecionarPartidasRodada(rodada.getId());
+
+	assertNotNull(partidas);
+	assertFalse(partidas.isEmpty());
+    }
 
 }
