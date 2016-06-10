@@ -124,7 +124,7 @@ class ExploraTabelaBrasileiraoResultadosJogosService implements
     private Date recuperarDataPartida(String diaMes, String hora,
 	    Campeonato campeonato) {
 	int anoAtual = DateTime.now().getYear();
-	
+
 	// nao temos o ano da partida
 	if (campeonato.getDataInicio() == null
 		|| campeonato.getDataFim() == null) {
@@ -135,32 +135,36 @@ class ExploraTabelaBrasileiraoResultadosJogosService implements
 		campeonato.getDataInicio()).getYear();
 	final int anoFim = LocalDateTime
 		.fromDateFields(campeonato.getDataFim()).getYear();
-	// campeonato no mesmo ano, a data da partida só pode ser dentro desse periodo.
-	if(anoIni == anoFim) {
+	// campeonato no mesmo ano, a data da partida só pode ser dentro desse
+	// periodo.
+	if (anoIni == anoFim) {
 	    return formatarData(diaMes, hora, anoIni);
 	}
 
 	final Date data1 = formatarData(diaMes, hora, anoIni);
 	final Date data2 = formatarData(diaMes, hora, anoFim);
-	
-	// TODO: rever todos os cenarios.
-	if(data1.after(campeonato.getDataInicio()) && data1.before(campeonato.getDataFim())) {
+
+	if (data1.after(campeonato.getDataInicio())
+		&& data1.before(campeonato.getDataFim())) {
 	    return data1;
 	} else {
 	    return data2;
 	}
+
     }
 
     private List<PartidaRodada> doRecuperarPartidas(Campeonato campeonato,
 	    AdicionaPartida callback, URL siteURL)
 	    throws ExploraWebResultadosException {
 	LOGGER.debug(
-		"[doRecuperarPartidas] Tentando recuperar partidas no site {} do campeonato {}",
+		"[doRecuperarPartidas] Tentando recuperar partidas no site/arquivo {} do campeonato {}",
 		siteURL, campeonato);
 	final List<PartidaRodada> partidas = new ArrayList<>();
 	final Set<Time> times = campeonato.getTimes();
 	final List<Rodada> rodadas = rodadaService
 		.selecionarRodadasNaoCalculadasIncuindoSemPlacar(campeonato);
+	LOGGER.debug("[doRecuperarPartidas] Rodadas recuperadas [{}]: {}",
+		rodadas.size(), rodadas);
 
 	try {
 	    Document doc = null;
@@ -244,9 +248,15 @@ class ExploraTabelaBrasileiraoResultadosJogosService implements
 	@Override
 	public void adicionarPartida(Collection<PartidaRodada> partidas,
 		PartidaRodada partida) {
+
 	    if (verificarIntegridadePartida(partida)) {
 		partidas.add(partida);
+		LOGGER.debug("[adicionarPartida] Partida adicionada {}",
+			partida);
+		return;
 	    }
+	    LOGGER.debug("[adicionarPartida] Partida nao adicionada {}",
+		    partida);
 	}
     }
 
@@ -257,7 +267,12 @@ class ExploraTabelaBrasileiraoResultadosJogosService implements
 	    if (verificarIntegridadePartida(partida)
 		    && partida.getPlacar() != null) {
 		partidas.add(partida);
+		LOGGER.debug("[adicionarPartida] Partida adicionada {}",
+			partida);
+		return;
 	    }
+	    LOGGER.debug("[adicionarPartida] Partida nao adicionada {}",
+		    partida);
 	}
     }
 
