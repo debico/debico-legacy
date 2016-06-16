@@ -1,3 +1,5 @@
+DELETE FROM tb_msg_template WHERE TP_NOTIFICACAO IN (4,5);
+
 INSERT INTO tb_msg_template 
     (TP_TEMPLATE, 
     ID_TEMPLATE, 
