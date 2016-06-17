@@ -26,6 +26,10 @@ public final class UsuarioAuthUtils {
 
     }
 
+    public static boolean isApostadorAutenticado() {
+	return userId() > 0;
+    }
+    
     /**
      * Recupera os dados do Apostador autenticado.
      * @return

@@ -14,7 +14,6 @@
 	<properties>
 		<thymeleaf.version>2.1.4.RELEASE</thymeleaf.version>
 		<thymeleaf.extras.version>2.1.2.RELEASE</thymeleaf.extras.version>
-		<jcabi.version>1.0.4</jcabi.version>
 		<jetty.version>9.2.17.v20160517</jetty.version>
 		<selenium.version>2.53.0</selenium.version>
 		<htmlunit.version>2.21</htmlunit.version>
@@ -233,12 +232,13 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
 		</dependency>
+		<!--  
 		<dependency>
 			<groupId>com.jcabi</groupId>
 			<artifactId>jcabi-manifests</artifactId>
 			<version>${jcabi.version}</version>
 		</dependency>
-
+-->
 		<!-- Swagger -->
 		<dependency>
 			<groupId>com.mangofactory</groupId>

@@ -62,6 +62,7 @@
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<maven.build.timestamp.format>dd-MM-yyyy HH:mm</maven.build.timestamp.format>
 		<versionNews>Fetch!</versionNews>
+		<buildNumber>${maven.build.timestamp}</buildNumber>
 
 		<!-- Commons -->
 		<slf4j.version>1.7.7</slf4j.version>
@@ -334,6 +335,17 @@
 			<id>it</id>
 			<properties>
 				<skip.unit.tests>true</skip.unit.tests>
+			</properties>
+		</profile>
+		<profile>
+			<id>m2e</id>
+			<activation>
+				<property>
+					<name>m2e.version</name>
+				</property>
+			</activation>
+			<properties>
+				<maven.build.timestamp>2016-06-17</maven.build.timestamp>
 			</properties>
 		</profile>
 	</profiles>

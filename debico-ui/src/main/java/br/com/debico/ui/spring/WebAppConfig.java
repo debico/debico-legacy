@@ -34,7 +34,6 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import br.com.debico.core.helpers.Constants;
 import br.com.debico.resultados.config.ResultadosConfig;
 import br.com.debico.ui.controllers.ViewOptions;
-import br.com.debico.ui.interceptors.FooterInterceptor;
 import br.com.debico.ui.interceptors.MenuInterceptor;
 import br.com.debico.ui.interceptors.TitleInterceptor;
 import br.com.debico.ui.thymeleaf.DebicoDialect;
@@ -186,11 +185,6 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public FooterInterceptor footerInterceptor() {
-        return new FooterInterceptor();
-    }
-
-    @Bean
     public TitleInterceptor titleInterceptor() {
         return new TitleInterceptor();
     }
@@ -206,11 +200,12 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
                 .excludePathPatterns("/contato/**")
                 .excludePathPatterns("/login/**");
 
+        /*
         registry.addInterceptor(this.footerInterceptor())
                 .addPathPatterns("/**")
                 .excludePathPatterns("/connect/**")
                 .excludePathPatterns("/api/**");
-
+         */
         registry.addInterceptor(this.titleInterceptor())
                 .addPathPatterns("/**")
                 .excludePathPatterns("/connect/**")

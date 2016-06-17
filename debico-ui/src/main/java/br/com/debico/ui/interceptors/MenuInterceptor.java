@@ -40,15 +40,15 @@ public class MenuInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public void postHandle(HttpServletRequest request,
-            HttpServletResponse response, Object handler,
-            ModelAndView modelAndView) throws Exception {
+	    HttpServletResponse response, Object handler,
+	    ModelAndView modelAndView) throws Exception {
 
-        if (modelAndView != null) {
-            modelAndView.addObject(CAMPEONATOS_MODEL_KEY,
-                    campeonatoService.selecionarCampeonatosAtivos());
-            modelAndView.addObject(LIGAS_MODEL_KEY,
-                    ligaService.consultarLiga(UsuarioAuthUtils.userId()));
-        }
+	if (modelAndView != null && UsuarioAuthUtils.isApostadorAutenticado()) {
+	    modelAndView.addObject(CAMPEONATOS_MODEL_KEY,
+		    campeonatoService.selecionarCampeonatosAtivos());
+	    modelAndView.addObject(LIGAS_MODEL_KEY,
+		    ligaService.consultarLiga(UsuarioAuthUtils.userId()));
+	}
     }
 
 }
