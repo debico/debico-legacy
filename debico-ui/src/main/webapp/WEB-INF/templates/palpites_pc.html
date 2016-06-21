@@ -33,7 +33,8 @@
 					<div id="loader" class="right"></div>
 				</div>
 
-				<div class="text-center hide" id="palpites">
+				<div class="text-center hide" id="palpites" data-role="page">
+				<form>
 					<div class="rodada-header large-12">
 						<div class="large-12 clearfix">
 							<div class="arrows large-2 small-2 column">
@@ -64,10 +65,10 @@
 											</div>
 										</div>
 										<div class="placar large-2 small-2 column">
-											<input class="placar-input" type="text" pattern="[0-9]*"
+											<input class="placar-input" type="number" pattern="[0-9]*"
 												data-bind="value: palpite.placar.golsMandante, attr:{readonly: computadaCampeonato || iniciada}"
 												maxlength="2" min="0" max="99"/>
-											<span>x</span> <input class="placar-input" type="text"
+											<span>x</span> <input class="placar-input" type="number"
 												pattern="[0-9]*"
 												data-bind="value: palpite.placar.golsVisitante, attr:{readonly: computadaCampeonato || iniciada}"
 												maxlength="2" min="0" max="99" />
@@ -109,6 +110,7 @@
 							</ul>
 						</div>
 					</div>
+				</form>
 				</div>
 			</div>
 		</div>

@@ -292,9 +292,16 @@ input[type="text"].data-input {
 /* Palpites */
 /* -------------------------------------------------------------- */
 /*
-#palpites {
-	display: none;
-}*/
+http://stackoverflow.com/questions/3790935/can-i-hide-the-html5-number-input-s-spin-box
+*/
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
 
 /* -------------------------------------------------------------- */
 /* jQuery UI */
