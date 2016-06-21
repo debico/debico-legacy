@@ -12,10 +12,7 @@ import br.com.debico.social.InscricaoLigaException;
 import br.com.debico.social.model.LigaApostadorLite;
 import br.com.debico.social.services.LigaApostadorService;
 
-import com.wordnik.swagger.annotations.Api;
-
 @Controller
-@Api(value = "liga_apostador", description = "Widget para tratar das inscrições dos apostadores na liga.")
 public class LigaApostadorWidgetController {
 
 	@Inject

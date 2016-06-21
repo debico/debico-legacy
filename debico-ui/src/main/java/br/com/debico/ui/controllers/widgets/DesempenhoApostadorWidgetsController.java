@@ -14,9 +14,6 @@ import br.com.debico.bolao.services.DesempenhoApostadorService;
 import br.com.debico.campeonato.services.CampeonatoService;
 import br.com.debico.ui.thymeleaf.UsuarioAuthUtils;
 
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiOperation;
-
 /**
  * Controller para recuperar os índices de desempenho do apostador.
  * <p/>
@@ -27,7 +24,6 @@ import com.wordnik.swagger.annotations.ApiOperation;
  * @since 1.2.0
  */
 @Controller
-@Api(value = "desempenho", description = "Consulta de desempenho dos participantes do bolão.")
 public class DesempenhoApostadorWidgetsController {
 
     @Inject
@@ -41,7 +37,6 @@ public class DesempenhoApostadorWidgetsController {
 
     }
 
-    @ApiOperation("Recupera a Pontuação por Rodada por Apostador")
     @RequestMapping(value = "/widgets/desempenho/apostador_rodada", method = RequestMethod.GET)
     public @ResponseBody PontuacaoRodadaApostadorSerie procurarPorNome(
             @RequestParam(value = "campeonato", required = true) String campeonato) {

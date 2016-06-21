@@ -18,8 +18,6 @@
 		<selenium.version>2.53.0</selenium.version>
 		<htmlunit.version>2.21</htmlunit.version>
 		<war-plugin.version>2.6</war-plugin.version>
-		<swagger-springmvc.version>1.0.0</swagger-springmvc.version>
-		<swagger-springmvc-ui.version>0.4</swagger-springmvc-ui.version>
 	</properties>
 	<build>
 		<plugins>
@@ -231,24 +229,6 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
-		</dependency>
-		<!--  
-		<dependency>
-			<groupId>com.jcabi</groupId>
-			<artifactId>jcabi-manifests</artifactId>
-			<version>${jcabi.version}</version>
-		</dependency>
--->
-		<!-- Swagger -->
-		<dependency>
-			<groupId>com.mangofactory</groupId>
-			<artifactId>swagger-springmvc</artifactId>
-			<version>${swagger-springmvc.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.ajar</groupId>
-			<artifactId>swagger-spring-mvc-ui</artifactId>
-			<version>${swagger-springmvc-ui.version}</version>
 		</dependency>
 
 		<!-- bug com o selenium, temos que incluir manualmente ref.: http://stackoverflow.com/questions/13840989/eclipse-java-lang-noclassdeffounderror-org-w3c-dom-elementtraversal -->

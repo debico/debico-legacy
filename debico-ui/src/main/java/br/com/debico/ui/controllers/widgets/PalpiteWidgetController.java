@@ -20,11 +20,7 @@ import br.com.debico.core.DebicoException;
 import br.com.debico.model.to.PalpiteTO;
 import br.com.debico.ui.thymeleaf.UsuarioAuthUtils;
 
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiOperation;
-
 @Controller
-@Api(value = "palpite", description = "Realiza as funcionalidades relacionadas com os Palpites do Bolão.")
 public class PalpiteWidgetController {
 
     @Inject
@@ -41,7 +37,6 @@ public class PalpiteWidgetController {
 
     }
 
-    @ApiOperation("Consulta os Palpites por Rodada")
     @RequestMapping(method = RequestMethod.GET, value = "/widgets/palpite/{permalink}/rodada/{id}")
     public @ResponseBody List<PartidaRodadaPalpiteView> palpitesRodada(
             @PathVariable("permalink") final String permalink,
@@ -50,7 +45,6 @@ public class PalpiteWidgetController {
                 UsuarioAuthUtils.userId());
     }
 
-    @ApiOperation("Consulta os Palpites por sequencial da Rodada")
     @RequestMapping(method = RequestMethod.GET, value = "/widgets/palpite/{permalink}/rodada/seq/{ordinal}")
     public @ResponseBody List<PartidaRodadaPalpiteView> palpitesRodadaOrdinal(
             @PathVariable(value = "permalink") final String permalink,
@@ -60,7 +54,6 @@ public class PalpiteWidgetController {
                 permalink, ordem, UsuarioAuthUtils.userId());
     }
 
-    @ApiOperation("Realiza um palpite")
     @RequestMapping(method = RequestMethod.POST, value = "/widgets/palpite/{permalink}")
     public @ResponseBody PalpiteTO palpitar(
             @PathVariable(value = "permalink") final String permalink,

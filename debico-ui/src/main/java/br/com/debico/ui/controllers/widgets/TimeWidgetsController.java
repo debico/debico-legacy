@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import br.com.debico.campeonato.services.TimeService;
 import br.com.debico.model.Time;
 
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiOperation;
-
 /**
  * Controller para interação com o domínio de {@link Time}
  * 
@@ -23,7 +20,6 @@ import com.wordnik.swagger.annotations.ApiOperation;
  *
  */
 @Controller
-@Api(value = "time", description = "Funcionalidades ligadas aos times (clubes).")
 public class TimeWidgetsController {
 
     @Inject
@@ -39,7 +35,6 @@ public class TimeWidgetsController {
      * @param nomeParcial
      * @return
      */
-    @ApiOperation("Pesquisa um time pelo nome parcial")
     @RequestMapping(value = "/widgets/time", method = RequestMethod.GET)
     public @ResponseBody List<Time> procurarPorNome(
             @RequestParam(required = true, value = "nome") String nomeParcial) {

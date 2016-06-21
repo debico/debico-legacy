@@ -13,11 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import br.com.debico.model.Apostador;
 import br.com.debico.social.services.ApostadorService;
 
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiOperation;
-
 @Controller
-@Api(value = "apostadores", description="Funcionalidades relacionadas ao domínio de Apostadores.")
 public class ApostadoresWidgetController {
 
 	@Inject
@@ -33,7 +29,6 @@ public class ApostadoresWidgetController {
 	 * @param nomeParcial
 	 * @return
 	 */
-	@ApiOperation("Pesquisa apostadores pelo nome parcial")
 	@RequestMapping(value = "/widgets/apostadores", method = RequestMethod.GET)
 	public @ResponseBody List<Apostador> procurarPorNome(
 			@RequestParam(required = true, value = "nome") String nomeParcial) {

@@ -52,10 +52,10 @@ import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module.Feature;
  *      Spring Security integration basics</a>
  */
 @Configuration
-@Import({ SecurityConfig.class, ResultadosConfig.class, SwaggerConfig.class })
+@Import({ SecurityConfig.class, ResultadosConfig.class })
 @EnableWebMvc
 @ComponentScan(basePackages = { "br.com.debico.ui.controllers",
-        "br.com.debico.ui.handlers" })
+	"br.com.debico.ui.handlers" })
 @PropertySource(value = "classpath:META-INF/debico-ui.properties", ignoreResourceNotFound = false)
 public class WebAppConfig extends WebMvcConfigurerAdapter {
 
@@ -68,8 +68,6 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
     @Inject
     protected SecurityConfig securityConfig;
 
-    @Inject
-    protected SwaggerConfig swaggerConfig;
 
     /**
      * @see <a
@@ -78,37 +76,37 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
      * @return
      */
     public MappingJackson2HttpMessageConverter jacksonMessageConverter() {
-        final MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
-        final ObjectMapper mapper = new ObjectMapper();
-        final Hibernate4Module module = new Hibernate4Module();
-        // https://github.com/FasterXML/jackson-databind/issues/573
-        module.configure(Feature.USE_TRANSIENT_ANNOTATION, false);
+	final MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
+	final ObjectMapper mapper = new ObjectMapper();
+	final Hibernate4Module module = new Hibernate4Module();
+	// https://github.com/FasterXML/jackson-databind/issues/573
+	module.configure(Feature.USE_TRANSIENT_ANNOTATION, false);
 
-        mapper.registerModule(module);
+	mapper.registerModule(module);
 
-        messageConverter.setObjectMapper(mapper);
-        messageConverter.setPrettyPrint(Boolean.valueOf(environment
-                .getProperty("br.com.debico.ui.web.json.prettyPrint")));
+	messageConverter.setObjectMapper(mapper);
+	messageConverter.setPrettyPrint(Boolean.valueOf(environment
+		.getProperty("br.com.debico.ui.web.json.prettyPrint")));
 
-        return messageConverter;
+	return messageConverter;
     }
 
     @Override
     public void configureMessageConverters(
-            List<HttpMessageConverter<?>> converters) {
-        converters.add(this.jacksonMessageConverter());
-        super.configureMessageConverters(converters);
+	    List<HttpMessageConverter<?>> converters) {
+	converters.add(this.jacksonMessageConverter());
+	super.configureMessageConverters(converters);
     }
 
     @Bean
     public ServletContextTemplateResolver templateResolver() {
-        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver();
-        templateResolver.setPrefix("/WEB-INF/templates/");
-        templateResolver.setSuffix(".html");
-        templateResolver.setTemplateMode("HTML5");
-        templateResolver.setCacheable(false);
+	ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver();
+	templateResolver.setPrefix("/WEB-INF/templates/");
+	templateResolver.setSuffix(".html");
+	templateResolver.setTemplateMode("HTML5");
+	templateResolver.setCacheable(false);
 
-        return templateResolver;
+	return templateResolver;
     }
 
     /**
@@ -120,29 +118,29 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
      */
     @Bean
     public SpringTemplateEngine templateEngine(
-            final ServletContextTemplateResolver templateResolver) {
-        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
-        templateEngine.setTemplateResolver(templateResolver);
-        templateEngine.addDialect(new SpringSecurityDialect());
-        templateEngine.addDialect(new DebicoDialect());
-        templateEngine.addDialect(new SpringSocialDialect());
+	    final ServletContextTemplateResolver templateResolver) {
+	SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+	templateEngine.setTemplateResolver(templateResolver);
+	templateEngine.addDialect(new SpringSecurityDialect());
+	templateEngine.addDialect(new DebicoDialect());
+	templateEngine.addDialect(new SpringSocialDialect());
 
-        return templateEngine;
+	return templateEngine;
     }
 
     @Bean
     public ViewResolver viewResolver(final SpringTemplateEngine templateEngine) {
-        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
-        viewResolver.setTemplateEngine(templateEngine);
-        viewResolver.setOrder(1);
-        viewResolver.setExcludedViewNames(new String[] { "connect*" });
-        return viewResolver;
+	ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
+	viewResolver.setTemplateEngine(templateEngine);
+	viewResolver.setOrder(1);
+	viewResolver.setExcludedViewNames(new String[] { "connect*" });
+	return viewResolver;
     }
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        // registry.addViewController("/support/");
-        super.addViewControllers(registry);
+	// registry.addViewController("/support/");
+	super.addViewControllers(registry);
     }
 
     /**
@@ -152,46 +150,43 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/robots.txt").addResourceLocations("/")
-                .setCachePeriod(DateTimeConstants.SECONDS_PER_WEEK);
+	registry.addResourceHandler("/robots.txt").addResourceLocations("/")
+		.setCachePeriod(DateTimeConstants.SECONDS_PER_WEEK);
 
-        registry.addResourceHandler("/static/css/**")
-                .addResourceLocations("/static/css/")
-                .setCachePeriod(DateTimeConstants.SECONDS_PER_WEEK);
+	registry.addResourceHandler("/static/css/**")
+		.addResourceLocations("/static/css/")
+		.setCachePeriod(DateTimeConstants.SECONDS_PER_WEEK);
 
-        registry.addResourceHandler("/static/js/**")
-                .addResourceLocations("/static/js/")
-                .setCachePeriod(DateTimeConstants.SECONDS_PER_DAY);
+	registry.addResourceHandler("/static/js/**")
+		.addResourceLocations("/static/js/")
+		.setCachePeriod(DateTimeConstants.SECONDS_PER_DAY);
 
-        registry.addResourceHandler("/static/images/**")
-                .addResourceLocations("/static/images/")
-                .setCachePeriod(
-                        DateTimeConstants.SECONDS_PER_DAY
-                                * Constants.DAYS_PER_MONTH); // um mês
+	registry.addResourceHandler("/static/images/**")
+		.addResourceLocations("/static/images/")
+		.setCachePeriod(
+			DateTimeConstants.SECONDS_PER_DAY
+				* Constants.DAYS_PER_MONTH); // um mês
 
-        // swagger
-        this.swaggerConfig.addResourceHandlers(registry);
     }
 
     @Override
     public void configureDefaultServletHandling(
-            DefaultServletHandlerConfigurer configurer) {
-        this.swaggerConfig.configureDefaultServletHandling(configurer);
+	    DefaultServletHandlerConfigurer configurer) {
     }
 
     @Bean
     public MenuInterceptor menuInterceptor() {
-        return new MenuInterceptor();
+	return new MenuInterceptor();
     }
 
     @Bean
     public TitleInterceptor titleInterceptor() {
-        return new TitleInterceptor();
+	return new TitleInterceptor();
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        // @formatter:off
+	// @formatter:off
         registry.addInterceptor(this.menuInterceptor())
                 .addPathPatterns("/**")
                 .excludePathPatterns("/connect/**")
@@ -225,34 +220,34 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
      */
     @Bean
     public MessageSource messageSource(MessageSource parentMessageSource) {
-        ResourceBundleMessageSource resourceBundleMessageSource = new ResourceBundleMessageSource();
+	ResourceBundleMessageSource resourceBundleMessageSource = new ResourceBundleMessageSource();
 
-        resourceBundleMessageSource.setParentMessageSource(parentMessageSource);
-        resourceBundleMessageSource.setBasename("messages");
-        resourceBundleMessageSource.setAlwaysUseMessageFormat(false);
+	resourceBundleMessageSource.setParentMessageSource(parentMessageSource);
+	resourceBundleMessageSource.setBasename("messages");
+	resourceBundleMessageSource.setAlwaysUseMessageFormat(false);
 
-        return resourceBundleMessageSource;
+	return resourceBundleMessageSource;
     }
 
     @Bean(name = "viewOptions")
     public ViewOptions viewOptions() {
-        final ViewOptions viewOptions = new ViewOptions();
+	final ViewOptions viewOptions = new ViewOptions();
 
-        viewOptions.setEnableGa(Boolean.valueOf(environment
-                .getProperty("br.com.debico.ui.web.ga")));
-        viewOptions.setGaWebPropertyId(environment
-                .getProperty("br.com.debico.ui.web.ga.id"));
-        viewOptions.setGaLocalhost(Boolean.valueOf(environment
-                .getProperty("br.com.debico.ui.web.ga.localhost")));
+	viewOptions.setEnableGa(Boolean.valueOf(environment
+		.getProperty("br.com.debico.ui.web.ga")));
+	viewOptions.setGaWebPropertyId(environment
+		.getProperty("br.com.debico.ui.web.ga.id"));
+	viewOptions.setGaLocalhost(Boolean.valueOf(environment
+		.getProperty("br.com.debico.ui.web.ga.localhost")));
 
-        return viewOptions;
+	return viewOptions;
     }
 
     @Bean
     public ProviderSignInUtils providerSignInUtils(
-            ConnectionFactoryLocator connectionFactoryLocator,
-            UsersConnectionRepository connectionRepository) {
-        return new ProviderSignInUtils(connectionFactoryLocator,
-                connectionRepository);
+	    ConnectionFactoryLocator connectionFactoryLocator,
+	    UsersConnectionRepository connectionRepository) {
+	return new ProviderSignInUtils(connectionFactoryLocator,
+		connectionRepository);
     }
 }
