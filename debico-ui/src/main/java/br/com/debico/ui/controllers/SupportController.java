@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Classe base para tratar das requisições de redirecionamento de acesso negado.
@@ -30,16 +31,25 @@ public class SupportController extends AbstractViewController {
 	return "support";
     }
 
+    @RequestMapping(value = "/support/error")
+    public String redirectWithErrorCode(
+	    @RequestParam(value = "msgCode", required = true) String msgCode, Model model) {
+	LOGGER.debug("[] Erro com codigo: {}", msgCode);
+	this.clearError();
+	model.addAttribute("error", true);
+	model.addAttribute("errorMsg", this.getMessage(msgCode));
+	return this.getViewName();
+    }
+
     // redirecionados do web.xml onde o HTTPErrorHandler nao conseguiu capturar.
     @RequestMapping(value = "/support/server_error")
-    public String redirectFromServerError(HttpServletRequest req,
-	    Model model) {
+    public String redirectFromServerError(HttpServletRequest req, Model model) {
 	LOGGER.debug("[redirectFromServerError] Erro no servidor");
 	this.clearError();
 	final Throwable throwable = (Throwable) req
 		.getAttribute("javax.servlet.error.exception");
 	String errorMsg = null;
-	
+
 	if (throwable != null) {
 	    errorMsg = throwable.getMessage();
 	}

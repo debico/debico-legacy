@@ -68,7 +68,6 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
     @Inject
     protected SecurityConfig securityConfig;
 
-
     /**
      * @see <a
      *      href="http://stackoverflow.com/questions/21708339/avoid-jackson-serialization-on-non-fetched-lazy-objects/21760361#21760361">Avoid
@@ -250,4 +249,5 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 	return new ProviderSignInUtils(connectionFactoryLocator,
 		connectionRepository);
     }
+
 }

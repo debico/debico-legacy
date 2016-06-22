@@ -17,10 +17,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.social.security.SpringSocialConfigurer;
 
 import br.com.debico.core.helpers.Roles;
 import br.com.debico.core.spring.config.ServicesConfig;
+import br.com.debico.social.spring.DebicoSocialSpringSocialConfigurer;
 
 /**
  * Classe de configuração do Spring Security.
@@ -123,7 +123,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				    .tokenValiditySeconds(1209600)
 				    .tokenRepository(this.persistentTokenRepository())
 				.and()
-				    .apply(new SpringSocialConfigurer().signupUrl("/public/cadastro/social"));
+				    .apply(new DebicoSocialSpringSocialConfigurer()
+				    		.signupUrl("/public/cadastro/social")
+				    		.postFailureUrl("/support/error?msgCode=login.social.error"));
 	}
 	
 	@Bean
