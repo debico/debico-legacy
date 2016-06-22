@@ -172,7 +172,7 @@ class ExploraTabelaBrasileiraoResultadosJogosService implements
 		LOGGER.debug(
 			"[doRecuperarPartidas] Tentando efetuar a conexao em {}",
 			siteURL);
-		doc = Jsoup.connect(siteURL.getPath()).get();
+		doc = Jsoup.connect(siteURL.toExternalForm()).get();
 	    } else {
 		LOGGER.debug("[doRecuperarPartidas] Tentando ler o arquivo {}",
 			siteURL);
