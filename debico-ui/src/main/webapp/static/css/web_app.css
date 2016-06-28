@@ -270,10 +270,10 @@ p.placar-pontuacao-small {
 	height: 30px;
 }
 
-input[type="text"].placar-input {
+input[type="number"].placar-input {
 	margin: 0px;
 	padding: 0px;
-	height: 1.5rem;
+	height: 3.5rem;
 	width: 1.2rem;
 	display: inline;
 	text-align: center;
@@ -302,7 +302,6 @@ input[type="number"]::-webkit-inner-spin-button {
 input[type="number"] {
     -moz-appearance: textfield;
 }
-
 /* -------------------------------------------------------------- */
 /* jQuery UI */
 /* -------------------------------------------------------------- */

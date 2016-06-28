@@ -32,8 +32,8 @@ import br.com.debico.social.utils.PropsKeys;
  * Clientes devem extender {@link ServicesConfig}.
  * 
  * @author ricardozanini
- * @see <a
- *      href="http://docs.spring.io/spring-social/docs/current/reference/htmlsingle">Spring
+ * @see <a href=
+ *      "http://docs.spring.io/spring-social/docs/current/reference/htmlsingle">Spring
  *      Social</a>
  */
 @Configuration
@@ -43,54 +43,48 @@ import br.com.debico.social.utils.PropsKeys;
 @PropertySource(value = "classpath:/META-INF/debico-social.properties", ignoreResourceNotFound = false)
 public class SocialConfig extends SocialConfigurerAdapter {
 
-    @Inject
-    protected NotifyConfig notifyConfig;
+	@Inject
+	protected NotifyConfig notifyConfig;
 
-    @Inject
-    private DataSource dataSource;
+	@Inject
+	private DataSource dataSource;
 
-    @Inject
-    private ConnectionSignUp connectionSignUp;
+	@Inject
+	private ConnectionSignUp connectionSignUp;
 
-    @Inject
-    private Environment globalEnv;
+	@Inject
+	private Environment globalEnv;
 
-    public SocialConfig() {
+	public SocialConfig() {
 
-    }
+	}
 
-    @Override
-    public void addConnectionFactories(
-	    ConnectionFactoryConfigurer connectionFactoryConfigurer,
-	    Environment env) {
-	final GoogleConnectionFactory googleConnectionFactory = new GoogleConnectionFactory(
-		env.getProperty(PropsKeys.GOOGLE_CONSUMER_KEY),
-		env.getProperty(PropsKeys.GOOGLE_CONSUMER_SECRET));
-	final FacebookConnectionFactory facebookConnectionFactory = new FacebookConnectionFactory(
-		env.getProperty(PropsKeys.FACEBOOK_APP_ID),
-		env.getProperty(PropsKeys.FACEBOOK_APP_SECRET));
+	@Override
+	public void addConnectionFactories(ConnectionFactoryConfigurer connectionFactoryConfigurer, Environment env) {
+		final GoogleConnectionFactory googleConnectionFactory = new GoogleConnectionFactory(
+				env.getProperty(PropsKeys.GOOGLE_CONSUMER_KEY), env.getProperty(PropsKeys.GOOGLE_CONSUMER_SECRET));
+		final FacebookConnectionFactory facebookConnectionFactory = new FacebookConnectionFactory(
+				env.getProperty(PropsKeys.FACEBOOK_APP_ID), env.getProperty(PropsKeys.FACEBOOK_APP_SECRET));
+		// ref.:
+		// http://stackoverflow.com/questions/36040439/users-email-is-always-null-spring-social-facebook-login
+		facebookConnectionFactory.setScope("email,public_profile,user_friends");
+		connectionFactoryConfigurer.addConnectionFactory(googleConnectionFactory);
+		connectionFactoryConfigurer.addConnectionFactory(facebookConnectionFactory);
+	}
 
-	connectionFactoryConfigurer
-		.addConnectionFactory(googleConnectionFactory);
-	connectionFactoryConfigurer
-		.addConnectionFactory(facebookConnectionFactory);
-    }
+	@Override
+	public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator) {
+		JdbcUsersConnectionRepository connectionRepository = new JdbcUsersConnectionRepository(dataSource,
+				connectionFactoryLocator, Encryptors.queryableText(globalEnv.getProperty(PropsKeys.ENC_PASS),
+						globalEnv.getProperty(PropsKeys.ENC_SALT)));
+		connectionRepository.setConnectionSignUp(connectionSignUp);
 
-    @Override
-    public UsersConnectionRepository getUsersConnectionRepository(
-	    ConnectionFactoryLocator connectionFactoryLocator) {
-	JdbcUsersConnectionRepository connectionRepository = new JdbcUsersConnectionRepository(
-		dataSource, connectionFactoryLocator, Encryptors.queryableText(
-			globalEnv.getProperty(PropsKeys.ENC_PASS),
-			globalEnv.getProperty(PropsKeys.ENC_SALT)));
-	connectionRepository.setConnectionSignUp(connectionSignUp);
+		return connectionRepository;
+	}
 
-	return connectionRepository;
-    }
-
-    @Override
-    public UserIdSource getUserIdSource() {
-	return new AuthenticationNameUserIdSource();
-    }
+	@Override
+	public UserIdSource getUserIdSource() {
+		return new AuthenticationNameUserIdSource();
+	}
 
 }

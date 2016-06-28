@@ -1,4 +1,4 @@
-package br.com.debico.social.services.impl;
+package br.com.debico.social.services.impl.spring;
 
 import javax.inject.Inject;
 import javax.inject.Named;
