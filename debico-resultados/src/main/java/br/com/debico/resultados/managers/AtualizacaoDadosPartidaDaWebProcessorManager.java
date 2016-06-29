@@ -84,6 +84,8 @@ class AtualizacaoDadosPartidaDaWebProcessorManager implements ProcessorManager {
 		final List<CampeonatoImpl> campeonatos = campeonatoService.selecionarCampeonatosAtivos();
 
 		for (Campeonato campeonato : campeonatos) {
+		    	// força a ativação do fetch. :(
+		    	campeonato.getTimes().size();
 			contexts.add(this.doStart(campeonato));
 		}
 
