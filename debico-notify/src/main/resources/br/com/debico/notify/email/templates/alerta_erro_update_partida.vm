@@ -8,7 +8,11 @@
             <p>Salve, Administrador!</p>
             <p>Infelizmente n&atilde;o foi poss&iacute;vel atualizar os dados do campeonato <strong>$campeonato.nome</strong>. 
             Confira abaixo o detalhe do erro:</p>
-            <p>$stackTrace</p>
+            <p>
+                #foreach( $el in $stackTrace )
+                    $el<br />
+                #end 
+            </p>
             <p>Um abra&ccedil;o!</p>
             <p><a href="http://www.debico.com.br/">www.debico.com.br</a></p>
         </div>
