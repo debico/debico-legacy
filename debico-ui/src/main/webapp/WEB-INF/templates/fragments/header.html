@@ -20,17 +20,22 @@
 
 		<section sec:authorize="isAuthenticated()" class="top-bar-section">
 			<ul class="right">
+				<li class="has-dropdown" sec:authorize="hasRole('ROLE_ADMIN')"><a
+					href="#"><i class="fi-skull"></i>&nbsp;Admin</a>
+					<ul class="dropdown">
+						<li><a th:href="@{/admin/processadores}"><i
+								class="fi-clock"></i>&nbsp;Processadores</a></li>
+					</ul></li>
 				<li class="has-dropdown"><a href="#"><i
 						class="fi-torsos-all"></i>&nbsp;Ligas</a>
 					<ul class="dropdown">
 						<li><a th:href="@{/ligas/administrar}"><i
 								class="fi-widget"></i>&nbsp;Administrar</a></li>
-						<li class="has-dropdown" th:if="${not #lists.isEmpty(ligas)}"><a href="#"><i
-								class="fi-heart"></i>&nbsp;Minhas Ligas</a>
+						<li class="has-dropdown" th:if="${not #lists.isEmpty(ligas)}"><a
+							href="#"><i class="fi-heart"></i>&nbsp;Minhas Ligas</a>
 							<ul class="dropdown">
-								<li th:each="l : ${ligas}"><a
-									th:href="@{|/liga/${l.id}|}" th:text="${l.nome}"></a>
-								</li>
+								<li th:each="l : ${ligas}"><a th:href="@{|/liga/${l.id}|}"
+									th:text="${l.nome}"></a></li>
 							</ul></li>
 					</ul></li>
 				<li class="has-dropdown"><a href="#"><i class="fi-trophy"></i>&nbsp;Campeonatos</a>

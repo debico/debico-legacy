@@ -1,0 +1,37 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/headTag :: headTag">
+</head>
+<body>
+	<nav th:replace="fragments/header :: barra_navegacao"></nav>
+	<div class="panel clearfix">
+		<div class="row">
+			<div class="large-12 columns">
+				<div class="row">
+					<div class="large-12 columns">
+						<br />
+						<h2>
+							<span th:text="#{admin_processadores.titulo}"></span> <small
+								th:text="#{admin_processadores.subtitulo}"></small>
+						</h2>
+						<hr />
+					</div>
+				</div>
+				<div class="row">
+					<ul>
+						<li><a th:href="@{/admin/processador/disparar}"
+							th:text="#{admin_processaores.item.label.atualiza_bolao}"></a></li>
+						<li><a
+							th:href="@{/admin/resultados/atualizacao/placar/disparar}"
+							th:text="#{admin_processaores.item.label.atualiza_partidas}"></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:replace="fragments/footer :: footer-scripts"></div>
+	<script th:src="@{/static/js/pages/support.js}"></script>
+</body>
+</html>
