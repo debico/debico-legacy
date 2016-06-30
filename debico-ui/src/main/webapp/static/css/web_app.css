@@ -227,6 +227,11 @@ div.placar {
 	padding: 0px;
 }
 
+div.escudo-visitante img, div.escudo-mandante img {
+	width: 30px;
+	height: 30px;
+}
+
 .data-hora-partida, .local-partida {
 	font-size: 0.6em;
 	text-align: center;
@@ -274,6 +279,15 @@ input[type="number"].placar-input {
 	margin: 0px;
 	padding: 0px;
 	height: 3.5rem;
+	width: 1.2rem;
+	display: inline;
+	text-align: center;
+}
+
+input[type="number"].placar-s-input {
+	margin: 0px;
+	padding: 0px;
+	height: 2rem;
 	width: 1.2rem;
 	display: inline;
 	text-align: center;
