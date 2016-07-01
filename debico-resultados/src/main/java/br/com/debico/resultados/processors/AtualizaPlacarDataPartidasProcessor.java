@@ -65,7 +65,7 @@ final class AtualizaPlacarDataPartidasProcessor extends ProcessorSupport {
 		LOGGER.debug("[execute] Iniciando a atualizacao das partidas com base na Web {}", context.getCampeonato());
 		final List<PartidaBase> partidasWeb = context.getPartidas();
 		final List<PartidaBase> partidasAtualizadas = new ArrayList<>();
- 		final List<Rodada> rodadas = this.rodadaService
+		final List<Rodada> rodadas = this.rodadaService
 				.selecionarRodadasNaoCalculadasIncuindoSemPlacar(context.getCampeonato());
 
 		if (!verificaNecessidadeProcessamento(partidasWeb, rodadas)) {
@@ -78,9 +78,11 @@ final class AtualizaPlacarDataPartidasProcessor extends ProcessorSupport {
 			final List<PartidaRodada> partidasRodada = this.campeonatoService.selecionarPartidasRodada(rodada.getId());
 			for (PartidaBase partidaWeb : partidasWeb) {
 				final PartidaBase partida = PartidaUtils.procuraPartida(partidasRodada, partidaWeb);
-				this.atualizaDataHorario(partida, partidaWeb);
+				this.atualizaDataHorarioLocal(partida, partidaWeb);
 				this.atualizaPlacar(partida, partidaWeb);
-				partidasAtualizadas.add(partida);
+				if (partida != null) {
+					partidasAtualizadas.add(partida);
+				}
 			}
 		}
 		LOGGER.debug("[execute] Fim da atualizacao das partidas com base na Web {}", context.getCampeonato());
@@ -94,10 +96,11 @@ final class AtualizaPlacarDataPartidasProcessor extends ProcessorSupport {
 				&& !(rodadasNaoCalculadas == null || rodadasNaoCalculadas.isEmpty());
 	}
 
-	private void atualizaDataHorario(PartidaBase partida, PartidaBase partidaWeb) {
+	private void atualizaDataHorarioLocal(PartidaBase partida, PartidaBase partidaWeb) {
 		if (partida != null && partidaWeb.getDataHoraPartida() != null) {
-			LOGGER.trace("[execute] Atualizando data e horario da partida {}", partida);
-			this.partidaService.atualizarDataHorario(partida.getId(), partidaWeb.getDataHoraPartida());
+			LOGGER.trace("[execute] Atualizando data, horario e local da partida {}", partida);
+			this.partidaService.atualizarDataHorarioLocal(partida.getId(), partidaWeb.getDataHoraPartida(),
+					partidaWeb.getLocal());
 		}
 	}
 

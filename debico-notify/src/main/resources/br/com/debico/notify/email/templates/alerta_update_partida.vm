@@ -21,7 +21,9 @@
                     <td>$partida.dataHoraPartida</td>
                     <td>$partida.local</td>
                     <td>$partida.mandante</td>
+                    #if( $partida.placar )<td>$partida.placar.golsMandante</td> #end
                     <td>x</td>
+                    #if( $partida.placar )<td>$partida.placar.golsVisitante</td> #end
                     <td>$partida.visitante</td>
                 </tr>
                 #end
