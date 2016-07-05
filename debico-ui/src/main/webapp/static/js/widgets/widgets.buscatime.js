@@ -53,7 +53,7 @@ $.widget("debico.buscatime", $.ui.autocomplete, {
 		// ul.attr("data-dropdown-content");
 		
 		return $("<li>")
-        	.append("<img style='padding:0.25em;' src='" + URLS.images.brasao + "/" + item.brasaoFigura +"' />")
+        	.append("<img style='padding:0.25em;' class='brasao' src='" + URLS.images.brasao + "/" + item.brasaoFigura +"' />")
         	.append("<span style='padding:0.25em;'>" + item.nome + "</span>")
         	.appendTo(ul);
 	},

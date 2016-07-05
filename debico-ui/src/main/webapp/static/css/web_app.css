@@ -227,7 +227,7 @@ div.placar {
 	padding: 0px;
 }
 
-div.escudo-visitante img, div.escudo-mandante img {
+div.escudo-visitante img, div.escudo-mandante img, img.brasao {
 	width: 30px;
 	height: 30px;
 }
