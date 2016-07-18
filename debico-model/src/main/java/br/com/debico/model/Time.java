@@ -27,6 +27,12 @@ public class Time implements Serializable, Comparable<Time> {
         this.nome = nome;
     }
     
+    public Time(final String nome, final String alias) {
+        this(nome);
+        this.alias = alias;
+    }
+    
+    
     public Time(final int id, final String nome) {
         this.nome = nome;
         this.id = id;
