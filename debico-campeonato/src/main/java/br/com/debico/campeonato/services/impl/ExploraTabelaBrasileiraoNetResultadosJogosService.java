@@ -26,6 +26,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.base.Charsets;
+
 import br.com.debico.campeonato.CampeonatoBeans;
 import br.com.debico.campeonato.services.CampeonatoService;
 import br.com.debico.campeonato.services.ExploraWebResultadosException;
@@ -42,8 +44,6 @@ import br.com.debico.model.Time;
 import br.com.debico.model.campeonato.Campeonato;
 import br.com.debico.model.campeonato.Rodada;
 
-import com.google.common.base.Charsets;
-
 /**
  * Efetua a busca no site http://www.tabeladobrasileirao.net/ pelos resultados
  * do Campeonato Brasileiro.
@@ -53,245 +53,214 @@ import com.google.common.base.Charsets;
  */
 @Named
 @Transactional(readOnly = true)
-class ExploraTabelaBrasileiraoNetResultadosJogosService implements
-	ExploraWebResultadosJogosService<PartidaRodada> {
+class ExploraTabelaBrasileiraoNetResultadosJogosService implements ExploraWebResultadosJogosService<PartidaRodada> {
 
-    private static final Logger LOGGER = LoggerFactory
-	    .getLogger(ExploraTabelaBrasileiraoNetResultadosJogosService.class);
-    private static final String PROTOCOL_HTTP = "http";
-    private static final DateTimeFormatter FMT = DateTimeFormat.forPattern(
-	    "dd/MM/yyyy HH:mm").withLocale(DefaultLocale.LOCALE);
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(ExploraTabelaBrasileiraoNetResultadosJogosService.class);
+	private static final String PROTOCOL_HTTP = "http";
+	private static final DateTimeFormatter FMT = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm")
+			.withLocale(DefaultLocale.LOCALE);
 
-    private static final AdicionadorPartida ADICIONADOR_PARTIDA_SEM_PLACAR = new AdicionadorPartidaSemPlacar();
-    private static final AdicionadorPartida ADICIONADOR_PARTIDA_COM_PLACAR = new AdicionadorPartidaComPlacar();
-    /**
-     * Hora padrão caso não encontre no site.
-     */
-    private static final String HORA_PADRAO_JOGO = "16:00";
-    /*
-     * Índices de busca na linha da tabela do HTML
-     */
-    private static final int IDX_DATA = 1;
-    private static final int IDX_HORA = 3;
-    private static final int IDX_LOCAL1 = 4;
+	private static final AdicionadorPartida ADICIONADOR_PARTIDA_SEM_PLACAR = new AdicionadorPartidaSemPlacar();
+	private static final AdicionadorPartida ADICIONADOR_PARTIDA_COM_PLACAR = new AdicionadorPartidaComPlacar();
+	/**
+	 * Hora padrão caso não encontre no site.
+	 */
+	private static final String HORA_PADRAO_JOGO = "16:00";
+	/*
+	 * Índices de busca na linha da tabela do HTML
+	 */
+	private static final int IDX_DATA = 1;
+	private static final int IDX_HORA = 3;
+	private static final int IDX_LOCAL1 = 4;
 
-    @Inject
-    private RodadaService rodadaService;
+	@Inject
+	private RodadaService rodadaService;
 
-    @Inject
-    @Named(CampeonatoBeans.CAMPEONATO_SERVICE)
-    private CampeonatoService campeonatoService;
+	@Inject
+	@Named(CampeonatoBeans.CAMPEONATO_SERVICE)
+	private CampeonatoService campeonatoService;
 
-    public ExploraTabelaBrasileiraoNetResultadosJogosService() {
+	public ExploraTabelaBrasileiraoNetResultadosJogosService() {
 
-    }
-
-    private boolean isProtocolPesquisaURLHTTP(URL siteURL) {
-	return siteURL.getProtocol().contains(PROTOCOL_HTTP);
-    }
-
-    /**
-     * Formata a data de acordo com os dados da tabela HTML do Site.
-     * 
-     * @param diaMes
-     * @param hora
-     * @param ano
-     * @return
-     */
-    private Date formatarData(String diaMes, String hora, int ano) {
-	diaMes = firstNonNull(diaMes, "").trim();
-	hora = firstNonNull(hora, "").trim();
-	if (emptyToNull(diaMes) == null) {
-	    return null;
-	}
-	if (emptyToNull(hora) == null) {
-	    hora = HORA_PADRAO_JOGO;
-	}
-	return DateTime
-		.parse(String.format("%s/%s %s", diaMes, ano, hora), FMT)
-		.toDate();
-    }
-
-    /**
-     * Com base no dia e mês distribuido pelo site, tentamos adivinhar o ano da
-     * data com base nas informações do campeonato.
-     * 
-     * @param diaMes
-     * @param campeonato
-     * @return
-     */
-    private Date recuperarDataPartida(String diaMes, String hora,
-	    Campeonato campeonato) {
-	int anoAtual = DateTime.now().getYear();
-
-	// nao temos o ano da partida
-	if (campeonato.getDataInicio() == null
-		|| campeonato.getDataFim() == null) {
-	    return formatarData(diaMes, hora, anoAtual);
 	}
 
-	final int anoIni = LocalDateTime.fromDateFields(
-		campeonato.getDataInicio()).getYear();
-	final int anoFim = LocalDateTime
-		.fromDateFields(campeonato.getDataFim()).getYear();
-	// campeonato no mesmo ano, a data da partida só pode ser dentro desse
-	// periodo.
-	if (anoIni == anoFim) {
-	    return formatarData(diaMes, hora, anoIni);
+	private boolean isProtocolPesquisaURLHTTP(URL siteURL) {
+		return siteURL.getProtocol().contains(PROTOCOL_HTTP);
 	}
 
-	final Date data1 = formatarData(diaMes, hora, anoIni);
-	final Date data2 = formatarData(diaMes, hora, anoFim);
-
-	if (data1.after(campeonato.getDataInicio())
-		&& data1.before(campeonato.getDataFim())) {
-	    return data1;
-	} else {
-	    return data2;
-	}
-
-    }
-
-    private PartidaBase recuperarResultadoPartida(Element divPartida) {
-	PartidaBase partida = new PartidaBase();
-	Element divMandante = divPartida.getElementsByAttributeValueContaining("class", "principal").first();
-	Element divVisitante = divPartida.getElementsByAttributeValueContaining("class", "visitor").first();
-	partida.setMandante(new Time(divMandante.attr("title"), divMandante.ownText()));
-	partida.setVisitante(new Time(divVisitante.attr("title"), divVisitante.ownText()));
-	Element divPlacar = divPartida.getElementsByAttributeValue("class", "game-scoreboard-values").first();
-	partida.setPlacar(PlacarUtils.novoPlacarOuNull(divPlacar.child(0).ownText(), divPlacar.child(2).ownText()));
-	
-	return partida;
-    }
-
-    private List<PartidaRodada> doRecuperarPartidas(int campeonatoId,
-	    AdicionadorPartida callback, URL siteURL)
-	    throws ExploraWebResultadosException {
-	final Campeonato campeonato = campeonatoService
-		.selecionarCampeonato(campeonatoId);
-	LOGGER.debug(
-		"[doRecuperarPartidas] Tentando recuperar partidas no site/arquivo {} do campeonato {}",
-		siteURL, campeonato);
-	final List<PartidaRodada> partidas = new ArrayList<>();
-	final Set<Time> times = campeonato.getTimes();
-	final List<Rodada> rodadas = rodadaService
-		.selecionarRodadasNaoCalculadasIncuindoSemPlacar(campeonato);
-	LOGGER.debug("[doRecuperarPartidas] Rodadas recuperadas [{}]: {}",
-		rodadas.size(), rodadas);
-
-	try {
-	    Document doc = null;
-	    if (isProtocolPesquisaURLHTTP(siteURL)) {
-		LOGGER.debug(
-			"[doRecuperarPartidas] Tentando efetuar a conexao em {}",
-			siteURL);
-		doc = Jsoup.connect(siteURL.toExternalForm()).get();
-	    } else {
-		LOGGER.debug("[doRecuperarPartidas] Tentando ler o arquivo {}",
-			siteURL);
-		doc = Jsoup.parse(siteURL.openStream(), Charsets.UTF_8.name(),
-			"");
-	    }
-
-	    final Element tabelaResultados = doc.select(
-		    "table#mod-table-rounds-1").first();
-	    final Elements linhaJogos = tabelaResultados.select("tr");
-	    for (Element jogo : linhaJogos) {
-		if (jogo.hasClass("table-row") && jogo.hasAttr("data-round")) {
-		    LOGGER.trace("Realizando o parse da tag {}", jogo);
-		    PartidaRodada partida = new PartidaRodada();
-		    partida.setRodada(RodadaUtils.procuraRodadaPorOrdem(jogo
-			    .attributes().get("data-round"), rodadas));
-		    partida.setStatus(StatusPartida.ND);
-		    partida.setComputadaCampeonato(false);
-		    partida.setLocal(jogo.child(IDX_LOCAL1).text());
-		    partida.setDataHoraPartida(recuperarDataPartida(
-			    jogo.child(IDX_DATA).text(), jogo.child(IDX_HORA)
-				    .text(), campeonato));
-
-		    final PartidaBase partidaBase = this
-			    .recuperarResultadoPartida(jogo
-				    .getElementsByAttributeValue("class",
-					    "game").first());
-		    partida.setMandante(TimeUtils.procuraTime(partidaBase
-			    .getMandante().getNome(), times));
-		    partida.setVisitante(TimeUtils.procuraTime(partidaBase
-			    .getVisitante().getNome(), times));
-		    partida.setPlacar(partidaBase.getPlacar());
-
-		    LOGGER.trace("Partida criada apos o parse {}", jogo);
-		    callback.adicionarPartida(partidas, partida);
+	/**
+	 * Formata a data de acordo com os dados da tabela HTML do Site.
+	 * 
+	 * @param diaMes
+	 * @param hora
+	 * @param ano
+	 * @return
+	 */
+	private Date formatarData(String diaMes, String hora, int ano) {
+		diaMes = firstNonNull(diaMes, "").trim();
+		hora = firstNonNull(hora, "").trim();
+		
+		if(!diaMes.matches("([0-9]{2})(\\/)([0-9]{2})")) {
+			return null;
 		}
-	    }
-	} catch (IOException e) {
-	    throw new ExploraWebResultadosException(
-		    "Nao foi possivel conectar no site", e);
-	} catch (Exception e) {
-	    throw new ExploraWebResultadosException(
-		    "Erro em tempo de execucao durante o parse", e);
+		
+		if (emptyToNull(diaMes) == null) {
+			return null;
+		}
+		if (emptyToNull(hora) == null) {
+			hora = HORA_PADRAO_JOGO;
+		}
+		return DateTime.parse(String.format("%s/%s %s", diaMes, ano, hora), FMT).toDate();
 	}
-	return partidas;
-    }
 
-    @Override
-    public List<PartidaRodada> recuperarPartidas(int campeonatoId, URL siteURL)
-	    throws ExploraWebResultadosException {
-	return this.doRecuperarPartidas(campeonatoId,
-		ADICIONADOR_PARTIDA_SEM_PLACAR, siteURL);
-    }
+	/**
+	 * Com base no dia e mês distribuido pelo site, tentamos adivinhar o ano da
+	 * data com base nas informações do campeonato.
+	 * 
+	 * @param diaMes
+	 * @param campeonato
+	 * @return
+	 */
+	private Date recuperarDataPartida(String diaMes, String hora, Campeonato campeonato) {
+		int anoAtual = DateTime.now().getYear();
 
-    @Override
-    public List<PartidaRodada> recuperarPartidasFinalizadas(int campeonatoId,
-	    URL siteURL) throws ExploraWebResultadosException {
-	// finalizada se possui placar, certo?
-	return this.doRecuperarPartidas(campeonatoId,
-		ADICIONADOR_PARTIDA_COM_PLACAR, siteURL);
-    }
+		// nao temos o ano da partida
+		if (campeonato.getDataInicio() == null || campeonato.getDataFim() == null) {
+			return formatarData(diaMes, hora, anoAtual);
+		}
 
-    // ----------- Inner
-    private static abstract class AdicionadorPartida {
-	abstract void adicionarPartida(Collection<PartidaRodada> partidas,
-		PartidaRodada partida);
+		final int anoIni = LocalDateTime.fromDateFields(campeonato.getDataInicio()).getYear();
+		final int anoFim = LocalDateTime.fromDateFields(campeonato.getDataFim()).getYear();
+		// campeonato no mesmo ano, a data da partida só pode ser dentro desse
+		// periodo.
+		if (anoIni == anoFim) {
+			return formatarData(diaMes, hora, anoIni);
+		}
 
-	protected boolean verificarIntegridadePartida(final PartidaBase partida) {
-	    return partida.getVisitante() != null
-		    && partida.getMandante() != null
-		    && partida.getDataHoraPartida() != null;
+		final Date data1 = formatarData(diaMes, hora, anoIni);
+		final Date data2 = formatarData(diaMes, hora, anoFim);
+
+		if (data1 == null || data2 == null) {
+			return null;
+		}
+
+		if (data1.after(campeonato.getDataInicio()) && data1.before(campeonato.getDataFim())) {
+			return data1;
+		} else {
+			return data2;
+		}
+
 	}
-    }
 
-    private static final class AdicionadorPartidaSemPlacar extends
-	    AdicionadorPartida {
+	private PartidaBase recuperarResultadoPartida(Element divPartida) {
+		PartidaBase partida = new PartidaBase();
+		Element divMandante = divPartida.getElementsByAttributeValueContaining("class", "principal").first();
+		Element divVisitante = divPartida.getElementsByAttributeValueContaining("class", "visitor").first();
+		partida.setMandante(new Time(divMandante.attr("title"), divMandante.ownText()));
+		partida.setVisitante(new Time(divVisitante.attr("title"), divVisitante.ownText()));
+		Element divPlacar = divPartida.getElementsByAttributeValue("class", "game-scoreboard-values").first();
+		partida.setPlacar(PlacarUtils.novoPlacarOuNull(divPlacar.child(0).ownText(), divPlacar.child(2).ownText()));
+
+		return partida;
+	}
+
+	private List<PartidaRodada> doRecuperarPartidas(int campeonatoId, AdicionadorPartida callback, URL siteURL)
+			throws ExploraWebResultadosException {
+		final Campeonato campeonato = campeonatoService.selecionarCampeonato(campeonatoId);
+		LOGGER.debug("[doRecuperarPartidas] Tentando recuperar partidas no site/arquivo {} do campeonato {}", siteURL,
+				campeonato);
+		final List<PartidaRodada> partidas = new ArrayList<>();
+		final Set<Time> times = campeonato.getTimes();
+		final List<Rodada> rodadas = rodadaService.selecionarRodadasNaoCalculadasIncuindoSemPlacar(campeonato);
+		LOGGER.debug("[doRecuperarPartidas] Rodadas recuperadas [{}]: {}", rodadas.size(), rodadas);
+
+		try {
+			Document doc = null;
+			if (isProtocolPesquisaURLHTTP(siteURL)) {
+				LOGGER.debug("[doRecuperarPartidas] Tentando efetuar a conexao em {}", siteURL);
+				doc = Jsoup.connect(siteURL.toExternalForm()).get();
+			} else {
+				LOGGER.debug("[doRecuperarPartidas] Tentando ler o arquivo {}", siteURL);
+				doc = Jsoup.parse(siteURL.openStream(), Charsets.UTF_8.name(), "");
+			}
+
+			final Element tabelaResultados = doc.select("table[data-module=table-rounds]").first();
+			final Elements linhaJogos = tabelaResultados.select("tr");
+			for (Element jogo : linhaJogos) {
+				if (jogo.hasClass("table-row") && jogo.hasAttr("data-round")) {
+					LOGGER.trace("Realizando o parse da tag {}", jogo);
+					PartidaRodada partida = new PartidaRodada();
+					partida.setRodada(RodadaUtils.procuraRodadaPorOrdem(jogo.attributes().get("data-round"), rodadas));
+					partida.setStatus(StatusPartida.ND);
+					partida.setComputadaCampeonato(false);
+					partida.setLocal(jogo.child(IDX_LOCAL1).text());
+					partida.setDataHoraPartida(
+							recuperarDataPartida(jogo.child(IDX_DATA).text(), jogo.child(IDX_HORA).text(), campeonato));
+
+					final PartidaBase partidaBase = this
+							.recuperarResultadoPartida(jogo.getElementsByAttributeValue("class", "game").first());
+					partida.setMandante(TimeUtils.procuraTime(partidaBase.getMandante().getNome(), times));
+					partida.setVisitante(TimeUtils.procuraTime(partidaBase.getVisitante().getNome(), times));
+					partida.setPlacar(partidaBase.getPlacar());
+
+					LOGGER.trace("Partida criada apos o parse {}", jogo);
+					callback.adicionarPartida(partidas, partida);
+				}
+			}
+		} catch (IOException e) {
+			throw new ExploraWebResultadosException("Nao foi possivel conectar no site", e);
+		} catch (Exception e) {
+			throw new ExploraWebResultadosException("Erro em tempo de execucao durante o parse", e);
+		}
+		return partidas;
+	}
+
 	@Override
-	public void adicionarPartida(Collection<PartidaRodada> partidas,
-		PartidaRodada partida) {
-
-	    if (verificarIntegridadePartida(partida)) {
-		partidas.add(partida);
-		LOGGER.debug("[adicionarPartida] Partida adicionada {}",
-			partida);
-		return;
-	    }
-	    LOGGER.debug("[adicionarPartida] Partida nao adicionada {}",
-		    partida);
+	public List<PartidaRodada> recuperarPartidas(int campeonatoId, URL siteURL) throws ExploraWebResultadosException {
+		return this.doRecuperarPartidas(campeonatoId, ADICIONADOR_PARTIDA_SEM_PLACAR, siteURL);
 	}
-    }
 
-    private static final class AdicionadorPartidaComPlacar extends
-	    AdicionadorPartida {
 	@Override
-	public void adicionarPartida(Collection<PartidaRodada> partidas,
-		PartidaRodada partida) {
-	    if (verificarIntegridadePartida(partida)
-		    && partida.getPlacar() != null) {
-		partidas.add(partida);
-		LOGGER.debug("[adicionarPartida] Partida adicionada {}",
-			partida);
-		return;
-	    }
-	    LOGGER.debug("[adicionarPartida] Partida nao adicionada {}",
-		    partida);
+	public List<PartidaRodada> recuperarPartidasFinalizadas(int campeonatoId, URL siteURL)
+			throws ExploraWebResultadosException {
+		// finalizada se possui placar, certo?
+		return this.doRecuperarPartidas(campeonatoId, ADICIONADOR_PARTIDA_COM_PLACAR, siteURL);
 	}
-    }
+
+	// ----------- Inner
+	private static abstract class AdicionadorPartida {
+		abstract void adicionarPartida(Collection<PartidaRodada> partidas, PartidaRodada partida);
+
+		protected boolean verificarIntegridadePartida(final PartidaBase partida) {
+			return partida.getVisitante() != null && partida.getMandante() != null
+					&& partida.getDataHoraPartida() != null;
+		}
+	}
+
+	private static final class AdicionadorPartidaSemPlacar extends AdicionadorPartida {
+		@Override
+		public void adicionarPartida(Collection<PartidaRodada> partidas, PartidaRodada partida) {
+
+			if (verificarIntegridadePartida(partida)) {
+				partidas.add(partida);
+				LOGGER.debug("[adicionarPartida] Partida adicionada {}", partida);
+				return;
+			}
+			LOGGER.debug("[adicionarPartida] Partida nao adicionada {}", partida);
+		}
+	}
+
+	private static final class AdicionadorPartidaComPlacar extends AdicionadorPartida {
+		@Override
+		public void adicionarPartida(Collection<PartidaRodada> partidas, PartidaRodada partida) {
+			if (verificarIntegridadePartida(partida) && partida.getPlacar() != null) {
+				partidas.add(partida);
+				LOGGER.debug("[adicionarPartida] Partida adicionada {}", partida);
+				return;
+			}
+			LOGGER.debug("[adicionarPartida] Partida nao adicionada {}", partida);
+		}
+	}
 
 }
