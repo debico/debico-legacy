@@ -14,9 +14,9 @@
 	<properties>
 		<thymeleaf.version>2.1.4.RELEASE</thymeleaf.version>
 		<thymeleaf.extras.version>2.1.2.RELEASE</thymeleaf.extras.version>
-		<jetty.version>9.2.17.v20160517</jetty.version>
-		<selenium.version>2.53.0</selenium.version>
-		<htmlunit.version>2.21</htmlunit.version>
+		<jetty.version>9.2.18.v20160721</jetty.version>
+		<!-- selenium.version>2.53.0</selenium.version -->
+		<htmlunit.version>2.22</htmlunit.version>
 		<war-plugin.version>2.6</war-plugin.version>
 	</properties>
 	<build>
@@ -53,8 +53,27 @@
 			<!-- Ao rodar esse profile, subir a memoria utilizada: -XX:MaxPermSize=1024m -->
 			<id>it</id>
 			<properties>
-				<failsafe.version>2.17</failsafe.version>
+				<failsafe.version>2.19.1</failsafe.version>
+				<httpclient.version>4.5.2</httpclient.version>
 			</properties>
+			<dependencies>
+				<dependency>
+					<groupId>org.eclipse.jetty.aggregate</groupId>
+					<artifactId>jetty-all</artifactId>
+					<version>${jetty.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>br.com.debico</groupId>
+					<artifactId>debico-test</artifactId>
+					<version>${project.version}</version>
+				</dependency>
+				<!-- bug: https://sourceforge.net/p/htmlunit/bugs/1786/ -->
+				<dependency>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpclient</artifactId>
+					<version>${httpclient.version}</version>
+				</dependency>
+			</dependencies>
 			<build>
 				<plugins>
 					<plugin>
@@ -62,12 +81,20 @@
 						<artifactId>maven-failsafe-plugin</artifactId>
 						<version>${failsafe.version}</version>
 						<configuration>
-							<argLine>${argLine} -XX:PermSize=256M -XX:MaxPermSize=512M</argLine>
+							<skipTests>false</skipTests>
+							<argLine>${argLine} -XX:PermSize=256M -XX:MaxPermSize=512M
+								-Dhttp.proxyHost=squid.pamcary-interno.com.br
+								-Dhttp.proxyPort=3128 -Dhttp.nonProxyHosts=localhost
+								-Dhttp.proxyUser=r_fernandes -Dhttp.proxyPassword=Vedder2468
+								-Dhttps.proxyHost=squid.pamcary-interno.com.br
+								-Dhttps.proxyPort=3128 -Dhttps.nonProxyHosts=localhost
+								-Dhttps.proxyUser=r_fernandes -Dhttps.proxyPassword=Vedder2468 
+								-Djavax.net.debug=ssl</argLine>
 							<additionalClasspathElements>
 								<additionalClasspathElement>${basedir}/src/test/resources/jetty</additionalClasspathElement>
 							</additionalClasspathElements>
 							<systemPropertyVariables>
-								<log.sys.level>WARN</log.sys.level>
+								<log.sys.level>INFO</log.sys.level>
 								<log.root.level>OFF</log.root.level>
 							</systemPropertyVariables>
 						</configuration>
@@ -139,14 +166,11 @@
 								<version>${slf4j.version}</version>
 								<scope>runtime</scope>
 							</dependency>
-							<!-- ref.: http://stackoverflow.com/questions/19054286/classnotfoundexception-org-eclipse-jetty-util-component-abstractlifecycle-runni 
-								<dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-util</artifactId> 
-								<version>${jetty.version}</version> <scope>runtime</scope> </dependency> -->
+							<!-- ref.: http://stackoverflow.com/questions/19054286/classnotfoundexception-org-eclipse-jetty-util-component-abstractlifecycle-runni -->
 						</dependencies>
 						<configuration>
 							<stopPort>8280</stopPort>
 							<stopKey>STOP</stopKey>
-
 						</configuration>
 						<executions>
 							<execution>
@@ -243,18 +267,6 @@
 			<artifactId>htmlunit-driver</artifactId>
 			<version>${htmlunit.version}</version>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-java</artifactId>
-			<version>${selenium.version}</version>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<artifactId>commons-logging</artifactId>
-					<groupId>commons-logging</groupId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>br.com.debico</groupId>

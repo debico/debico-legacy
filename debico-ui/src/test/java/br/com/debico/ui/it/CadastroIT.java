@@ -19,16 +19,17 @@ public class CadastroIT extends IntegrationTestSupport {
      */
     @Test
     public void testCadastrarELogar() {
+        LOGGER.info("Iniciando os testes para Cadastrar e Logar na App");
         final String username = "brucebanner@shield.com";
         final String pass = "ihat3green";
-        
+        LOGGER.info("Tentando criar a pagina de Cadastro");
         final CadastroPage cadastroPage = this.buildPage(CadastroPage.PATH, CadastroPage.class);
-        
+        LOGGER.info("Pagina criada, entrando com os dados do Sr. Banner");
         cadastroPage.typeNome("Bruce Banner");
         cadastroPage.typeEmail(username);
         cadastroPage.typeSenha(pass);
         cadastroPage.typeConfirmaSenha(pass);
-        
+        LOGGER.info("Efetuando o post para cadastrar");
         final AbstractPage sucessPage = cadastroPage.submit();
         
         // cadastro realizado
@@ -46,6 +47,7 @@ public class CadastroIT extends IntegrationTestSupport {
      */
     @Test
     public void testCadastroIncorreto() {
+        LOGGER.info("Iniciando os testes de Cadastro Incorreto");
         final String username = "nataliaromanova@shield.com";
         final String pass = "ki55mylips";
         

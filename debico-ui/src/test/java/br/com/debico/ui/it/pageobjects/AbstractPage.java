@@ -48,6 +48,7 @@ public abstract class AbstractPage {
     }
     
     protected AbstractPage clearAndType(WebElement element, String value) {
+        LOGGER.info("Digitando o valor '{}' no campo '{}'", value, element);
         element.clear();
         element.sendKeys(value);
         

@@ -9,7 +9,7 @@
 	<artifactId>debico-social</artifactId>
 
 	<properties>
-		<http.client.version>4.5</http.client.version>
+		<http.client.version>4.5.2</http.client.version>
 		<spring.social.version>1.1.4.RELEASE</spring.social.version>
 		<spring.social.fb.version>2.0.3.RELEASE</spring.social.fb.version>
 		<spring.social.google.version>1.0.0.RELEASE</spring.social.google.version>
