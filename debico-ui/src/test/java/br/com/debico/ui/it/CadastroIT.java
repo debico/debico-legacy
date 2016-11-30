@@ -31,17 +31,17 @@ public class CadastroIT extends IntegrationTestSupport {
         cadastroPage.typeConfirmaSenha(pass);
         LOGGER.info("Efetuando o post para cadastrar");
         final AbstractPage sucessPage = cadastroPage.submit();
-        
+
         // cadastro realizado
         assertThat(sucessPage, IsInstanceOf.instanceOf(SucessoPage.class));
-        
+
         // redirecionando para o login
-        final LoginPage loginPage = ((SucessoPage)sucessPage).continuarSeAnonimo();
-        
+        final LoginPage loginPage = ((SucessoPage) sucessPage).continuarSeAnonimo();
+
         // login com sucesso?
         assertThat(loginPage.loginAs(username, pass), IsInstanceOf.instanceOf(HomePage.class));
     }
-    
+
     /**
      * Colocaremos dados incorretos no formulario
      */
@@ -50,17 +50,17 @@ public class CadastroIT extends IntegrationTestSupport {
         LOGGER.info("Iniciando os testes de Cadastro Incorreto");
         final String username = "nataliaromanova@shield.com";
         final String pass = "ki55mylips";
-        
+
         final WebDriver driver = this.buildDriver(CadastroPage.PATH);
         final CadastroPage cadastroPage = this.buildPage(driver, CadastroPage.class);
-        
+
         cadastroPage.typeNome("Natalia Romanova");
         cadastroPage.typeEmail(username);
         cadastroPage.typeSenha(pass);
-        cadastroPage.typeConfirmaSenha(pass + pass); //ops :)
-        
+        cadastroPage.typeConfirmaSenha(pass + pass); // ops :)
+
         final AbstractPage sucessPage = cadastroPage.submit();
-        
+
         // cadastro não realizado
         assertThat(sucessPage, IsInstanceOf.instanceOf(CadastroPage.class));
     }

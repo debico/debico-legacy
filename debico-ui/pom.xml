@@ -83,13 +83,7 @@
 						<configuration>
 							<skipTests>false</skipTests>
 							<argLine>${argLine} -XX:PermSize=256M -XX:MaxPermSize=512M
-								-Dhttp.proxyHost=squid.pamcary-interno.com.br
-								-Dhttp.proxyPort=3128 -Dhttp.nonProxyHosts=localhost
-								-Dhttp.proxyUser=r_fernandes -Dhttp.proxyPassword=Vedder2468
-								-Dhttps.proxyHost=squid.pamcary-interno.com.br
-								-Dhttps.proxyPort=3128 -Dhttps.nonProxyHosts=localhost
-								-Dhttps.proxyUser=r_fernandes -Dhttps.proxyPassword=Vedder2468 
-								-Djavax.net.debug=ssl</argLine>
+								</argLine>
 							<additionalClasspathElements>
 								<additionalClasspathElement>${basedir}/src/test/resources/jetty</additionalClasspathElement>
 							</additionalClasspathElements>
