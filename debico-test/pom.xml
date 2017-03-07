@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>br.com.debico</groupId>
 		<artifactId>debico</artifactId>
-		<version>2.0.5.2</version>
+		<version>3.0.0</version>
 	</parent>
 	<artifactId>debico-test</artifactId>
 	<description>Projeto de apoio para a realização dos testes em outros módulos. Não deve ser empacotado em ambiente produtivo.</description>

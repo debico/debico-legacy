@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.debico</groupId>
 	<artifactId>debico</artifactId>
-	<version>2.0.5.2</version>
+	<version>3.0.0</version>
 	<packaging>pom</packaging>
 	<name>Debico</name>
 	<description>Mais que um bolão entre os amigos.</description>
@@ -98,7 +98,7 @@
 		<build.number.plugin.version>1.4</build.number.plugin.version>
 		<jacoco-maven-plugin.version>0.7.4.201502262128</jacoco-maven-plugin.version>
 		<maven.compiler.version>3.1</maven.compiler.version>
-		<versions-maven-plugin.version>2.2</versions-maven-plugin.version>
+		<versions-maven-plugin.version>2.3</versions-maven-plugin.version>
 	</properties>
 
 	<dependencies>
@@ -352,6 +352,10 @@
 
 	<build>
 		<plugins>
+		     <!-- 
+		     1) Atualizar a versao do pai; 2) executar versions:update-child-modules
+		     ref.: http://www.mojohaus.org/versions-maven-plugin/update-child-modules-mojo.html
+		      -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>versions-maven-plugin</artifactId>
