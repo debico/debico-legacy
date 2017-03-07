@@ -29,6 +29,7 @@
 		<module>debico-notify</module>
 		<module>debico-ui</module>
 		<module>debico-resultados</module>
+		<module>debico-bolao-api</module>
 	</modules>
 
 	<developers>
@@ -135,6 +136,11 @@
 		<dependency>
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
